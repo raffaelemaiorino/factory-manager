@@ -9,3 +9,5 @@ Thumbs.db
 .cursor/
 .tmp-ffmpeg/
 .tmp-video-frames/
+start.bat
+

@@ -1,6 +1,6 @@
 {
   "name": "factory-manager",
-  "version": "1.28.0",
+  "version": "1.28.1",
   "description": "Unofficial fan-made production planner for Satisfactory. Plan chains, machines, rates and layouts locally.",
   "productName": "Factory Manager",
   "main": "electron/main.js",

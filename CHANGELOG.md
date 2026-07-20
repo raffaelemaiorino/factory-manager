@@ -7,6 +7,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.28.1] - 2026-07-20
+
+### Changed
+- `start.bat` escluso dal repository (resta solo in locale)
+
 ## [1.28.0] - 2026-07-20
 
 ### Added
