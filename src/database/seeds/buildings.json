@@ -1,0 +1,409 @@
+{
+  "dataVersion": 3,
+  "source": "https://satisfactory-calculator.com/it/buildings",
+  "importedAt": "2026-07-04T08:47:06.657Z",
+  "categories": [
+    {
+      "slug": "estrazione",
+      "name": "Estrazione",
+      "sort_order": 1
+    },
+    {
+      "slug": "produzione",
+      "name": "Produzione",
+      "sort_order": 2
+    },
+    {
+      "slug": "generatori",
+      "name": "Generatori",
+      "sort_order": 3
+    },
+    {
+      "slug": "speciali",
+      "name": "Speciali",
+      "sort_order": 4
+    },
+    {
+      "slug": "postazioni-di-lavoro",
+      "name": "Postazioni di lavoro",
+      "sort_order": 5
+    },
+    {
+      "slug": "deposito",
+      "name": "Deposito",
+      "sort_order": 6
+    },
+    {
+      "slug": "stazioni-di-attracco",
+      "name": "Stazioni di attracco",
+      "sort_order": 7
+    },
+    {
+      "slug": "torri",
+      "name": "Torri",
+      "sort_order": 8
+    }
+  ],
+  "buildings": [
+    {
+      "game_id": "Build_MinerMk1_C",
+      "slug": "miner-mk1",
+      "name": "Trivella Mk.1",
+      "category": "estrazione",
+      "image": "assets/buildings/Build_MinerMk1_C.png"
+    },
+    {
+      "game_id": "Build_MinerMk2_C",
+      "slug": "miner-mk2",
+      "name": "Trivella Mk.2",
+      "category": "estrazione",
+      "image": "assets/buildings/Build_MinerMk2_C.png"
+    },
+    {
+      "game_id": "Build_MinerMk3_C",
+      "slug": "miner-mk3",
+      "name": "Trivella Mk.3",
+      "category": "estrazione",
+      "image": "assets/buildings/Build_MinerMk3_C.png"
+    },
+    {
+      "game_id": "Build_OilPump_C",
+      "slug": "oil-pump",
+      "name": "Estrattore di petrolio",
+      "category": "estrazione",
+      "image": "assets/buildings/Build_OilPump_C.png"
+    },
+    {
+      "game_id": "Build_WaterPump_C",
+      "slug": "water-pump",
+      "name": "Estrattore d'acqua",
+      "category": "estrazione",
+      "image": "assets/buildings/Build_WaterPump_C.png"
+    },
+    {
+      "game_id": "Build_FrackingSmasher_C",
+      "slug": "fracking-smasher",
+      "name": "Pressurizzatore per pozzi di risorse",
+      "category": "estrazione",
+      "image": "assets/buildings/Build_FrackingSmasher_C.png"
+    },
+    {
+      "game_id": "Build_FrackingExtractor_C",
+      "slug": "fracking-extractor",
+      "name": "Estrattore per pozzo di risorse",
+      "category": "estrazione",
+      "image": "assets/buildings/Build_FrackingExtractor_C.png"
+    },
+    {
+      "game_id": "Build_SmelterMk1_C",
+      "slug": "smelter",
+      "name": "Fonderia",
+      "category": "produzione",
+      "somersloop_slots": 1,
+      "image": "assets/buildings/Build_SmelterMk1_C.png"
+    },
+    {
+      "game_id": "Build_FoundryMk1_C",
+      "slug": "foundry",
+      "name": "Fucina",
+      "category": "produzione",
+      "somersloop_slots": 2,
+      "image": "assets/buildings/Build_FoundryMk1_C.png"
+    },
+    {
+      "game_id": "Build_ConstructorMk1_C",
+      "slug": "constructor",
+      "name": "Costruttore",
+      "category": "produzione",
+      "somersloop_slots": 1,
+      "image": "assets/buildings/Build_ConstructorMk1_C.png"
+    },
+    {
+      "game_id": "Build_AssemblerMk1_C",
+      "slug": "assembler",
+      "name": "Assemblatore",
+      "category": "produzione",
+      "somersloop_slots": 2,
+      "image": "assets/buildings/Build_AssemblerMk1_C.png"
+    },
+    {
+      "game_id": "Build_ManufacturerMk1_C",
+      "slug": "manufacturer",
+      "name": "Produttore",
+      "category": "produzione",
+      "somersloop_slots": 4,
+      "image": "assets/buildings/Build_ManufacturerMk1_C.png"
+    },
+    {
+      "game_id": "Build_OilRefinery_C",
+      "slug": "refinery",
+      "name": "Raffineria",
+      "category": "produzione",
+      "somersloop_slots": 2,
+      "image": "assets/buildings/Build_OilRefinery_C.png"
+    },
+    {
+      "game_id": "Build_Packager_C",
+      "slug": "packager",
+      "name": "Imballatrice",
+      "category": "produzione",
+      "image": "assets/buildings/Build_Packager_C.png"
+    },
+    {
+      "game_id": "Build_Blender_C",
+      "slug": "blender",
+      "name": "Miscelatore",
+      "category": "produzione",
+      "somersloop_slots": 4,
+      "image": "assets/buildings/Build_Blender_C.png"
+    },
+    {
+      "game_id": "Build_HadronCollider_C",
+      "slug": "particle-accelerator",
+      "name": "Acceleratore di particelle",
+      "category": "produzione",
+      "somersloop_slots": 4,
+      "image": "assets/buildings/Build_HadronCollider_C.png"
+    },
+    {
+      "game_id": "Build_QuantumEncoder_C",
+      "slug": "quantum-encoder",
+      "name": "Codificatore quantistico",
+      "category": "produzione",
+      "somersloop_slots": 4,
+      "image": "assets/buildings/Build_QuantumEncoder_C.png"
+    },
+    {
+      "game_id": "Build_Converter_C",
+      "slug": "converter",
+      "name": "Convertitore",
+      "category": "produzione",
+      "somersloop_slots": 2,
+      "image": "assets/buildings/Build_Converter_C.png"
+    },
+    {
+      "game_id": "Build_GeneratorBiomass_Automated_C",
+      "slug": "generator-biomass",
+      "name": "Generatore a biomassa",
+      "category": "generatori",
+      "image": "assets/buildings/Build_GeneratorBiomass_Automated_C.png"
+    },
+    {
+      "game_id": "Build_GeneratorCoal_C",
+      "slug": "generator-coal",
+      "name": "Generatore a carbone",
+      "category": "generatori",
+      "image": "assets/buildings/Build_GeneratorCoal_C.png"
+    },
+    {
+      "game_id": "Build_GeneratorFuel_C",
+      "slug": "generator-fuel",
+      "name": "Generatore a carburante",
+      "category": "generatori",
+      "image": "assets/buildings/Build_GeneratorFuel_C.png"
+    },
+    {
+      "game_id": "Build_GeneratorGeoThermal_C",
+      "slug": "generator-geothermal",
+      "name": "Generatore geotermico",
+      "category": "generatori",
+      "image": "assets/buildings/Build_GeneratorGeoThermal_C.png"
+    },
+    {
+      "game_id": "Build_GeneratorNuclear_C",
+      "slug": "generator-nuclear",
+      "name": "Centrale nucleare",
+      "category": "generatori",
+      "image": "assets/buildings/Build_GeneratorNuclear_C.png"
+    },
+    {
+      "game_id": "Build_PowerStorageMk1_C",
+      "slug": "power-storage",
+      "name": "Accumulatore",
+      "category": "generatori",
+      "image": "assets/buildings/Build_PowerStorageMk1_C.png"
+    },
+    {
+      "game_id": "Build_AlienPowerBuilding_C",
+      "slug": "alien-power-distributor",
+      "name": "Potenziatore di corrente alieno",
+      "category": "generatori",
+      "image": "assets/buildings/Build_AlienPowerBuilding_C.png"
+    },
+    {
+      "game_id": "Build_TradingPost_C",
+      "slug": "trading-post",
+      "name": "L'HUB",
+      "category": "speciali",
+      "image": "assets/buildings/Build_TradingPost_C.png"
+    },
+    {
+      "game_id": "Build_Mam_C",
+      "slug": "mam",
+      "name": "M.A.M.",
+      "category": "speciali",
+      "image": "assets/buildings/Build_Mam_C.png"
+    },
+    {
+      "game_id": "Build_PortalPotty_C",
+      "slug": "portal-potty",
+      "name": "SPWN",
+      "category": "speciali",
+      "image": "assets/buildings/Build_PortalPotty_C.png"
+    },
+    {
+      "game_id": "Build_SpaceElevator_C",
+      "slug": "space-elevator",
+      "name": "Ascensore spaziale",
+      "category": "speciali",
+      "image": "assets/buildings/Build_SpaceElevator_C.png"
+    },
+    {
+      "game_id": "Build_BlueprintDesigner_C",
+      "slug": "blueprint-designer",
+      "name": "Progettatore Mk.1",
+      "category": "speciali",
+      "image": "assets/buildings/Build_BlueprintDesigner_C.png"
+    },
+    {
+      "game_id": "Build_BlueprintDesigner_MK2_C",
+      "slug": "blueprint-designer-",
+      "name": "Progettatore Mk.2",
+      "category": "speciali",
+      "image": "assets/buildings/Build_BlueprintDesigner_MK2_C.png"
+    },
+    {
+      "game_id": "Build_ResourceSink_C",
+      "slug": "resource-sink",
+      "name": "Trasmutatore AWESOME",
+      "category": "speciali",
+      "image": "assets/buildings/Build_ResourceSink_C.png"
+    },
+    {
+      "game_id": "Build_ResourceSinkShop_C",
+      "slug": "resource-sink-shop",
+      "name": "Negozio AWESOME",
+      "category": "speciali",
+      "image": "assets/buildings/Build_ResourceSinkShop_C.png"
+    },
+    {
+      "game_id": "Build_WorkBench_C",
+      "slug": "work-bench",
+      "name": "Banco da lavoro",
+      "category": "postazioni-di-lavoro",
+      "image": "assets/buildings/Build_WorkBench_C.png"
+    },
+    {
+      "game_id": "Build_Workshop_C",
+      "slug": "workshop",
+      "name": "Officina",
+      "category": "postazioni-di-lavoro",
+      "image": "assets/buildings/Build_Workshop_C.png"
+    },
+    {
+      "game_id": "Build_StoragePlayer_C",
+      "slug": "storage-player",
+      "name": "Cassa di deposito personale",
+      "category": "deposito",
+      "image": "assets/buildings/Build_StoragePlayer_C.png"
+    },
+    {
+      "game_id": "Build_StorageMedkit_C",
+      "slug": "storage-medkit",
+      "name": "Cassa di materiale medico",
+      "category": "deposito",
+      "image": "assets/buildings/Build_StorageMedkit_C.png"
+    },
+    {
+      "game_id": "Build_StorageHazard_C",
+      "slug": "storage-hazard",
+      "name": "Cassa di materiale pericoloso",
+      "category": "deposito",
+      "image": "assets/buildings/Build_StorageHazard_C.png"
+    },
+    {
+      "game_id": "Build_StorageContainerMk1_C",
+      "slug": "storage-container",
+      "name": "Container di stoccaggio",
+      "category": "deposito",
+      "image": "assets/buildings/Build_StorageContainerMk1_C.png"
+    },
+    {
+      "game_id": "Build_PipeStorageTank_C",
+      "slug": "pipe-storage-tank",
+      "name": "Cisterna per liquidi",
+      "category": "deposito",
+      "image": "assets/buildings/Build_PipeStorageTank_C.png"
+    },
+    {
+      "game_id": "Build_IndustrialTank_C",
+      "slug": "industrial-tank",
+      "name": "Cisterna industriale per liquidi",
+      "category": "deposito",
+      "image": "assets/buildings/Build_IndustrialTank_C.png"
+    },
+    {
+      "game_id": "Build_CentralStorage_C",
+      "slug": "central-storage",
+      "name": "Caricatore del Deposito dimensionale",
+      "category": "deposito",
+      "image": "assets/buildings/Build_CentralStorage_C.png"
+    },
+    {
+      "game_id": "Build_StackableShelf_C",
+      "slug": "stackable-shelf",
+      "name": "Unità ripiano di base",
+      "category": "deposito",
+      "image": "assets/buildings/Build_StackableShelf_C.png"
+    },
+    {
+      "game_id": "Build_TruckStation_C",
+      "slug": "truck-station",
+      "name": "Stazione dei camion",
+      "category": "stazioni-di-attracco",
+      "image": "assets/buildings/Build_TruckStation_C.png"
+    },
+    {
+      "game_id": "Build_FluidTruckStation_C",
+      "slug": "fluid-truck-station",
+      "name": "Fluid Truck Station",
+      "category": "stazioni-di-attracco",
+      "image": "assets/buildings/Build_FluidTruckStation_C.png"
+    },
+    {
+      "game_id": "Build_DroneStation_C",
+      "slug": "drone-station",
+      "name": "Eliporto",
+      "category": "stazioni-di-attracco",
+      "image": "assets/buildings/Build_DroneStation_C.png"
+    },
+    {
+      "game_id": "Build_TrainDockingStation_C",
+      "slug": "train-docking-station",
+      "name": "Piattaforma merci",
+      "category": "stazioni-di-attracco",
+      "image": "assets/buildings/Build_TrainDockingStation_C.png"
+    },
+    {
+      "game_id": "Build_TrainDockingStationLiquid_C",
+      "slug": "train-docking-station-liquid",
+      "name": "Piattaforma merci liquide",
+      "category": "stazioni-di-attracco",
+      "image": "assets/buildings/Build_TrainDockingStationLiquid_C.png"
+    },
+    {
+      "game_id": "Build_LookoutTower_C",
+      "slug": "lookout-tower",
+      "name": "Torre d'osservazione",
+      "category": "torri",
+      "image": "assets/buildings/Build_LookoutTower_C.png"
+    },
+    {
+      "game_id": "Build_RadarTower_C",
+      "slug": "radar-tower",
+      "name": "Torre radar",
+      "category": "torri",
+      "image": "assets/buildings/Build_RadarTower_C.png"
+    }
+  ]
+}

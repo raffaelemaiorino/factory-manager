@@ -1,0 +1,1308 @@
+{
+  "dataVersion": 2,
+  "source": "https://satisfactory-calculator.com/it/items",
+  "importedAt": "2026-07-04T07:05:47.897Z",
+  "categories": [
+    {
+      "slug": "minerali",
+      "name": "Minerali",
+      "sort_order": 1
+    },
+    {
+      "slug": "lingotti",
+      "name": "Lingotti",
+      "sort_order": 2
+    },
+    {
+      "slug": "materiali",
+      "name": "Minerali",
+      "sort_order": 3
+    },
+    {
+      "slug": "alieni",
+      "name": "Alieni",
+      "sort_order": 4
+    },
+    {
+      "slug": "liquidi",
+      "name": "Liquidi",
+      "sort_order": 5
+    },
+    {
+      "slug": "gas",
+      "name": "Benzina",
+      "sort_order": 6
+    },
+    {
+      "slug": "componenti-standard",
+      "name": "Componenti standard",
+      "sort_order": 7
+    },
+    {
+      "slug": "componenti-industriali",
+      "name": "Componenti industriali",
+      "sort_order": 8
+    },
+    {
+      "slug": "componenti-elettronici",
+      "name": "Componenti elettronici",
+      "sort_order": 9
+    },
+    {
+      "slug": "comunicazioni",
+      "name": "Comunicazioni",
+      "sort_order": 10
+    },
+    {
+      "slug": "tecnologia-quantistica",
+      "name": "Tecnologia quantistica",
+      "sort_order": 11
+    },
+    {
+      "slug": "contenitori",
+      "name": "Contenitori",
+      "sort_order": 12
+    },
+    {
+      "slug": "carburante",
+      "name": "Carburante",
+      "sort_order": 13
+    },
+    {
+      "slug": "consumato",
+      "name": "Consumato",
+      "sort_order": 14
+    },
+    {
+      "slug": "munizioni",
+      "name": "Munizioni",
+      "sort_order": 15
+    },
+    {
+      "slug": "nucleare",
+      "name": "Nucleare",
+      "sort_order": 16
+    },
+    {
+      "slug": "rifiuti",
+      "name": "Rifiuti",
+      "sort_order": 17
+    },
+    {
+      "slug": "speciali",
+      "name": "Speciali",
+      "sort_order": 18
+    }
+  ],
+  "items": [
+    {
+      "game_id": "Desc_Stone_C",
+      "slug": "stone",
+      "name": "Calcare",
+      "category": "minerali",
+      "image": "assets/items/Desc_Stone_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_OreIron_C",
+      "slug": "ore-iron",
+      "name": "Minerale di ferro",
+      "category": "minerali",
+      "image": "assets/items/Desc_OreIron_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_OreCopper_C",
+      "slug": "ore-copper",
+      "name": "Minerale di rame",
+      "category": "minerali",
+      "image": "assets/items/Desc_OreCopper_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_OreGold_C",
+      "slug": "ore-gold",
+      "name": "Minerale di caterium",
+      "category": "minerali",
+      "image": "assets/items/Desc_OreGold_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Coal_C",
+      "slug": "coal",
+      "name": "Carbone",
+      "category": "minerali",
+      "image": "assets/items/Desc_Coal_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_RawQuartz_C",
+      "slug": "raw-quartz",
+      "name": "Quarzo grezzo",
+      "category": "minerali",
+      "image": "assets/items/Desc_RawQuartz_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Sulfur_C",
+      "slug": "sulfur",
+      "name": "Zolfo",
+      "category": "minerali",
+      "image": "assets/items/Desc_Sulfur_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_OreBauxite_C",
+      "slug": "ore-bauxite",
+      "name": "Bauxite",
+      "category": "minerali",
+      "image": "assets/items/Desc_OreBauxite_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SAM_C",
+      "slug": "sam",
+      "name": "S.M.A.",
+      "category": "minerali",
+      "image": "assets/items/Desc_SAM_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_OreUranium_C",
+      "slug": "ore-uranium",
+      "name": "Uranio",
+      "category": "minerali",
+      "image": "assets/items/Desc_OreUranium_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_IronIngot_C",
+      "slug": "iron-ingot",
+      "name": "Lingotto di ferro",
+      "category": "lingotti",
+      "image": "assets/items/Desc_IronIngot_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CopperIngot_C",
+      "slug": "copper-ingot",
+      "name": "Lingotto di rame",
+      "category": "lingotti",
+      "image": "assets/items/Desc_CopperIngot_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_GoldIngot_C",
+      "slug": "gold-ingot",
+      "name": "Lingotto di caterium",
+      "category": "lingotti",
+      "image": "assets/items/Desc_GoldIngot_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SteelIngot_C",
+      "slug": "steel-ingot",
+      "name": "Lingotto di acciaio",
+      "category": "lingotti",
+      "image": "assets/items/Desc_SteelIngot_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_AluminumIngot_C",
+      "slug": "aluminum-ingot",
+      "name": "Lingotto di alluminio",
+      "category": "lingotti",
+      "image": "assets/items/Desc_AluminumIngot_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_FicsiteIngot_C",
+      "slug": "ficsite-ingot",
+      "name": "Lingotto di Ficsite",
+      "category": "lingotti",
+      "image": "assets/items/Desc_FicsiteIngot_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Cement_C",
+      "slug": "cement",
+      "name": "Calcestruzzo",
+      "category": "materiali",
+      "image": "assets/items/Desc_Cement_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_QuartzCrystal_C",
+      "slug": "quartz-crystal",
+      "name": "Cristallo di quarzo",
+      "category": "materiali",
+      "image": "assets/items/Desc_QuartzCrystal_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Silica_C",
+      "slug": "silica",
+      "name": "Silice",
+      "category": "materiali",
+      "image": "assets/items/Desc_Silica_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CopperDust_C",
+      "slug": "copper-dust",
+      "name": "Polvere di rame",
+      "category": "materiali",
+      "image": "assets/items/Desc_CopperDust_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PolymerResin_C",
+      "slug": "polymer-resin",
+      "name": "Resina polimerica",
+      "category": "materiali",
+      "image": "assets/items/Desc_PolymerResin_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PetroleumCoke_C",
+      "slug": "petroleum-coke",
+      "name": "Coke petrolifero",
+      "category": "materiali",
+      "image": "assets/items/Desc_PetroleumCoke_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_AluminumScrap_C",
+      "slug": "aluminum-scrap",
+      "name": "Detriti di alluminio",
+      "category": "materiali",
+      "image": "assets/items/Desc_AluminumScrap_C.png",
+      "stack_size": 500,
+      "description": "Raffinati dall'allumina. Possono essere fusi per creare lingotti di alluminio per utilizzo industriale."
+    },
+    {
+      "game_id": "Desc_AlienProtein_C",
+      "slug": "alien-protein",
+      "name": "Proteina aliena",
+      "category": "alieni",
+      "image": "assets/items/Desc_AlienProtein_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_AlienDNACapsule_C",
+      "slug": "alien-dnacapsule",
+      "name": "Capsula di DNA alieno",
+      "category": "alieni",
+      "image": "assets/items/Desc_AlienDNACapsule_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Water_C",
+      "slug": "water",
+      "name": "Acqua",
+      "category": "liquidi",
+      "image": "assets/items/Desc_Water_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_LiquidOil_C",
+      "slug": "liquid-oil",
+      "name": "Greggio",
+      "category": "liquidi",
+      "image": "assets/items/Desc_LiquidOil_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_HeavyOilResidue_C",
+      "slug": "heavy-oil-residue",
+      "name": "Residuo di petrolio pesante",
+      "category": "liquidi",
+      "image": "assets/items/Desc_HeavyOilResidue_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_LiquidFuel_C",
+      "slug": "liquid-fuel",
+      "name": "Carburante",
+      "category": "liquidi",
+      "image": "assets/items/Desc_LiquidFuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_LiquidBiofuel_C",
+      "slug": "liquid-biofuel",
+      "name": "Biocarburante liquido",
+      "category": "liquidi",
+      "image": "assets/items/Desc_LiquidBiofuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_LiquidTurboFuel_C",
+      "slug": "liquid-turbo-fuel",
+      "name": "Turbocarburante",
+      "category": "liquidi",
+      "image": "assets/items/Desc_LiquidTurboFuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_AluminaSolution_C",
+      "slug": "alumina-solution",
+      "name": "Soluzione di allumina",
+      "category": "liquidi",
+      "image": "assets/items/Desc_AluminaSolution_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SulfuricAcid_C",
+      "slug": "sulfuric-acid",
+      "name": "Acido solforico",
+      "category": "liquidi",
+      "image": "assets/items/Desc_SulfuricAcid_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NitricAcid_C",
+      "slug": "nitric-acid",
+      "name": "Acido nitrico",
+      "category": "liquidi",
+      "image": "assets/items/Desc_NitricAcid_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_DissolvedSilica_C",
+      "slug": "dissolved-silica",
+      "name": "Silice dissolta",
+      "category": "liquidi",
+      "image": "assets/items/Desc_DissolvedSilica_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NitrogenGas_C",
+      "slug": "nitrogen-gas",
+      "name": "Azoto gassoso",
+      "category": "gas",
+      "image": "assets/items/Desc_NitrogenGas_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_RocketFuel_C",
+      "slug": "rocket-fuel",
+      "name": "Carburante per razzi",
+      "category": "gas",
+      "image": "assets/items/Desc_RocketFuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_IonizedFuel_C",
+      "slug": "ionized-fuel",
+      "name": "Carburante ionizzato",
+      "category": "gas",
+      "image": "assets/items/Desc_IonizedFuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_DarkEnergy_C",
+      "slug": "dark-energy",
+      "name": "Residuo di materia oscura",
+      "category": "gas",
+      "image": "assets/items/Desc_DarkEnergy_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_QuantumEnergy_C",
+      "slug": "quantum-energy",
+      "name": "Materia fotonica eccitata",
+      "category": "gas",
+      "image": "assets/items/Desc_QuantumEnergy_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_IronRod_C",
+      "slug": "iron-rod",
+      "name": "Barra di ferro",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_IronRod_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_IronScrew_C",
+      "slug": "iron-screw",
+      "name": "Vite",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_IronScrew_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_IronPlate_C",
+      "slug": "iron-plate",
+      "name": "Piastra di ferro",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_IronPlate_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_IronPlateReinforced_C",
+      "slug": "iron-plate-reinforced",
+      "name": "Piastra di ferro rinforzata",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_IronPlateReinforced_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CopperSheet_C",
+      "slug": "copper-sheet",
+      "name": "Lamiera di rame",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_CopperSheet_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_AluminumPlate_C",
+      "slug": "aluminum-plate",
+      "name": "Lamiera d'alluminio Alclad",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_AluminumPlate_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_AluminumCasing_C",
+      "slug": "aluminum-casing",
+      "name": "Contenitore di alluminio",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_AluminumCasing_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SteelPipe_C",
+      "slug": "steel-pipe",
+      "name": "Tubo di acciaio",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_SteelPipe_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SteelPlate_C",
+      "slug": "steel-plate",
+      "name": "Trave d'acciaio",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_SteelPlate_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SteelPlateReinforced_C",
+      "slug": "steel-plate-reinforced",
+      "name": "Trave di cemento armato",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_SteelPlateReinforced_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_ModularFrame_C",
+      "slug": "modular-frame",
+      "name": "Telaio modulare",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_ModularFrame_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_ModularFrameHeavy_C",
+      "slug": "modular-frame-heavy",
+      "name": "Telaio modulare pesante",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_ModularFrameHeavy_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_ModularFrameFused_C",
+      "slug": "modular-frame-fused",
+      "name": "Telaio modulare fuso",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_ModularFrameFused_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_FicsiteMesh_C",
+      "slug": "ficsite-mesh",
+      "name": "Trigono di Ficsite",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_FicsiteMesh_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Fabric_C",
+      "slug": "fabric",
+      "name": "Tessuto",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_Fabric_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Plastic_C",
+      "slug": "plastic",
+      "name": "Plastica",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_Plastic_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Rubber_C",
+      "slug": "rubber",
+      "name": "Gomma",
+      "category": "componenti-standard",
+      "image": "assets/items/Desc_Rubber_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Rotor_C",
+      "slug": "rotor",
+      "name": "Rotore",
+      "category": "componenti-industriali",
+      "image": "assets/items/Desc_Rotor_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Stator_C",
+      "slug": "stator",
+      "name": "Statore",
+      "category": "componenti-industriali",
+      "image": "assets/items/Desc_Stator_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Battery_C",
+      "slug": "battery",
+      "name": "Batteria",
+      "category": "componenti-industriali",
+      "image": "assets/items/Desc_Battery_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Motor_C",
+      "slug": "motor",
+      "name": "Motore",
+      "category": "componenti-industriali",
+      "image": "assets/items/Desc_Motor_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_AluminumPlateReinforced_C",
+      "slug": "aluminum-plate-reinforced",
+      "name": "Trasmutatore di calore",
+      "category": "componenti-industriali",
+      "image": "assets/items/Desc_AluminumPlateReinforced_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CoolingSystem_C",
+      "slug": "cooling-system",
+      "name": "Sistema di raffreddamento",
+      "category": "componenti-industriali",
+      "image": "assets/items/Desc_CoolingSystem_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_MotorLightweight_C",
+      "slug": "motor-lightweight",
+      "name": "Motore turbo",
+      "category": "componenti-industriali",
+      "image": "assets/items/Desc_MotorLightweight_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Wire_C",
+      "slug": "wire",
+      "name": "Filo",
+      "category": "componenti-elettronici",
+      "image": "assets/items/Desc_Wire_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Cable_C",
+      "slug": "cable",
+      "name": "Cavo",
+      "category": "componenti-elettronici",
+      "image": "assets/items/Desc_Cable_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_HighSpeedWire_C",
+      "slug": "high-speed-wire",
+      "name": "Filorapido",
+      "category": "componenti-elettronici",
+      "image": "assets/items/Desc_HighSpeedWire_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CircuitBoard_C",
+      "slug": "circuit-board",
+      "name": "Scheda a circuito",
+      "category": "componenti-elettronici",
+      "image": "assets/items/Desc_CircuitBoard_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CircuitBoardHighSpeed_C",
+      "slug": "circuit-board-high-speed",
+      "name": "Limitatore di IA",
+      "category": "componenti-elettronici",
+      "image": "assets/items/Desc_CircuitBoardHighSpeed_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_HighSpeedConnector_C",
+      "slug": "high-speed-connector",
+      "name": "Connettore ad alta velocità",
+      "category": "componenti-elettronici",
+      "image": "assets/items/Desc_HighSpeedConnector_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SAMIngot_C",
+      "slug": "samingot",
+      "name": "S.M.A. rianimata",
+      "category": "componenti-elettronici",
+      "image": "assets/items/Desc_SAMIngot_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SAMFluctuator_C",
+      "slug": "samfluctuator",
+      "name": "Fluttuatore S.M.A.",
+      "category": "componenti-elettronici",
+      "image": "assets/items/Desc_SAMFluctuator_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Computer_C",
+      "slug": "computer",
+      "name": "Computer",
+      "category": "comunicazioni",
+      "image": "assets/items/Desc_Computer_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_ComputerSuper_C",
+      "slug": "computer-super",
+      "name": "Supercomputer",
+      "category": "comunicazioni",
+      "image": "assets/items/Desc_ComputerSuper_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_ModularFrameLightweight_C",
+      "slug": "modular-frame-lightweight",
+      "name": "Unità di controllo radio",
+      "category": "comunicazioni",
+      "image": "assets/items/Desc_ModularFrameLightweight_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CrystalOscillator_C",
+      "slug": "crystal-oscillator",
+      "name": "Oscillatore al cristallo",
+      "category": "comunicazioni",
+      "image": "assets/items/Desc_CrystalOscillator_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_QuantumOscillator_C",
+      "slug": "quantum-oscillator",
+      "name": "Oscillatore a sovrapposizione",
+      "category": "comunicazioni",
+      "image": "assets/items/Desc_QuantumOscillator_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Diamond_C",
+      "slug": "diamond",
+      "name": "Diamanti",
+      "category": "tecnologia-quantistica",
+      "image": "assets/items/Desc_Diamond_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_TimeCrystal_C",
+      "slug": "time-crystal",
+      "name": "Cristallo del tempo",
+      "category": "tecnologia-quantistica",
+      "image": "assets/items/Desc_TimeCrystal_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_DarkMatter_C",
+      "slug": "dark-matter",
+      "name": "Cristalli di materia oscura",
+      "category": "tecnologia-quantistica",
+      "image": "assets/items/Desc_DarkMatter_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SingularityCell_C",
+      "slug": "singularity-cell",
+      "name": "Cella di singolarità",
+      "category": "tecnologia-quantistica",
+      "image": "assets/items/Desc_SingularityCell_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_TemporalProcessor_C",
+      "slug": "temporal-processor",
+      "name": "Processore neurale quantico",
+      "category": "tecnologia-quantistica",
+      "image": "assets/items/Desc_TemporalProcessor_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_AlienPowerFuel_C",
+      "slug": "alien-power-fuel",
+      "name": "Matrice energetica aliena",
+      "category": "tecnologia-quantistica",
+      "image": "assets/items/Desc_AlienPowerFuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_FluidCanister_C",
+      "slug": "fluid-canister",
+      "name": "Tanica vuota",
+      "category": "contenitori",
+      "image": "assets/items/Desc_FluidCanister_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_GasTank_C",
+      "slug": "gas-tank",
+      "name": "Serbatoio vuoto",
+      "category": "contenitori",
+      "image": "assets/items/Desc_GasTank_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PressureConversionCube_C",
+      "slug": "pressure-conversion-cube",
+      "name": "Cubo convertitore di pressione",
+      "category": "contenitori",
+      "image": "assets/items/Desc_PressureConversionCube_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedWater_C",
+      "slug": "packaged-water",
+      "name": "Acqua imballata",
+      "category": "contenitori",
+      "image": "assets/items/Desc_PackagedWater_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedAlumina_C",
+      "slug": "packaged-alumina",
+      "name": "Soluzione di Allumina imballata",
+      "category": "contenitori",
+      "image": "assets/items/Desc_PackagedAlumina_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedSulfuricAcid_C",
+      "slug": "packaged-sulfuric-acid",
+      "name": "Acido solforico imballato",
+      "category": "contenitori",
+      "image": "assets/items/Desc_PackagedSulfuricAcid_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedNitricAcid_C",
+      "slug": "packaged-nitric-acid",
+      "name": "Acido nitrico imballato",
+      "category": "contenitori",
+      "image": "assets/items/Desc_PackagedNitricAcid_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedNitrogenGas_C",
+      "slug": "packaged-nitrogen-gas",
+      "name": "Azoto gassoso imballato",
+      "category": "contenitori",
+      "image": "assets/items/Desc_PackagedNitrogenGas_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Leaves_C",
+      "slug": "leaves",
+      "name": "Foglie",
+      "category": "carburante",
+      "image": "assets/items/Desc_Leaves_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Mycelia_C",
+      "slug": "mycelia",
+      "name": "Miceli",
+      "category": "carburante",
+      "image": "assets/items/Desc_Mycelia_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_FlowerPetals_C",
+      "slug": "flower-petals",
+      "name": "Petali di fiori",
+      "category": "carburante",
+      "image": "assets/items/Desc_FlowerPetals_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Wood_C",
+      "slug": "wood",
+      "name": "Legname",
+      "category": "carburante",
+      "image": "assets/items/Desc_Wood_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_GenericBiomass_C",
+      "slug": "generic-biomass",
+      "name": "Biomassa",
+      "category": "carburante",
+      "image": "assets/items/Desc_GenericBiomass_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CompactedCoal_C",
+      "slug": "compacted-coal",
+      "name": "Carbone compattato",
+      "category": "carburante",
+      "image": "assets/items/Desc_CompactedCoal_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedOil_C",
+      "slug": "packaged-oil",
+      "name": "Petrolio imballato",
+      "category": "carburante",
+      "image": "assets/items/Desc_PackagedOil_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedOilResidue_C",
+      "slug": "packaged-oil-residue",
+      "name": "Residuo di petrolio pesante imballato",
+      "category": "carburante",
+      "image": "assets/items/Desc_PackagedOilResidue_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Biofuel_C",
+      "slug": "biofuel",
+      "name": "Biocarburante solido",
+      "category": "carburante",
+      "image": "assets/items/Desc_Biofuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Fuel_C",
+      "slug": "fuel",
+      "name": "Carburante imballato",
+      "category": "carburante",
+      "image": "assets/items/Desc_Fuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedBiofuel_C",
+      "slug": "packaged-biofuel",
+      "name": "Biocarburante liquido imballato",
+      "category": "carburante",
+      "image": "assets/items/Desc_PackagedBiofuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_TurboFuel_C",
+      "slug": "turbo-fuel",
+      "name": "Turbocarburante imballato",
+      "category": "carburante",
+      "image": "assets/items/Desc_TurboFuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedRocketFuel_C",
+      "slug": "packaged-rocket-fuel",
+      "name": "Carburante per razzi imballato",
+      "category": "carburante",
+      "image": "assets/items/Desc_PackagedRocketFuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PackagedIonizedFuel_C",
+      "slug": "packaged-ionized-fuel",
+      "name": "Carburante imballato ionizzato",
+      "category": "carburante",
+      "image": "assets/items/Desc_PackagedIonizedFuel_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NuclearFuelRod_C",
+      "slug": "nuclear-fuel-rod",
+      "name": "Barra di combustibile di uranio",
+      "category": "carburante",
+      "image": "assets/items/Desc_NuclearFuelRod_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PlutoniumFuelRod_C",
+      "slug": "plutonium-fuel-rod",
+      "name": "Barra di combustibile di plutonio",
+      "category": "carburante",
+      "image": "assets/items/Desc_PlutoniumFuelRod_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Gunpowder_C",
+      "slug": "gunpowder",
+      "name": "Polvere da sparo",
+      "category": "consumato",
+      "image": "assets/items/Desc_Gunpowder_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_GunpowderMK2_C",
+      "slug": "gunpowder-mk2",
+      "name": "Polvere senza fumo",
+      "category": "consumato",
+      "image": "assets/items/Desc_GunpowderMK2_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Filter_C",
+      "slug": "filter",
+      "name": "Filtro del gas",
+      "category": "consumato",
+      "image": "assets/items/Desc_Filter_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_ColorCartridge_C",
+      "slug": "color-cartridge",
+      "name": "Cartuccia di colore",
+      "category": "consumato",
+      "image": "assets/items/Desc_ColorCartridge_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "BP_EquipmentDescriptorBeacon_C",
+      "slug": "bp-equipment-descriptor-beacon",
+      "name": "Radiofaro",
+      "category": "consumato",
+      "image": "assets/items/BP_EquipmentDescriptorBeacon_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_HazmatFilter_C",
+      "slug": "hazmat-filter",
+      "name": "Filtro allo iodio",
+      "category": "consumato",
+      "image": "assets/items/Desc_HazmatFilter_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpikedRebar_C",
+      "slug": "spiked-rebar",
+      "name": "Tondino di ferro",
+      "category": "munizioni",
+      "image": "assets/items/Desc_SpikedRebar_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Rebar_Stunshot_C",
+      "slug": "rebar-stunshot",
+      "name": "Tondino stordente",
+      "category": "munizioni",
+      "image": "assets/items/Desc_Rebar_Stunshot_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Rebar_Spreadshot_C",
+      "slug": "rebar-spreadshot",
+      "name": "Tondino a dispersione",
+      "category": "munizioni",
+      "image": "assets/items/Desc_Rebar_Spreadshot_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Rebar_Explosive_C",
+      "slug": "rebar-explosive",
+      "name": "Tondino esplosivo",
+      "category": "munizioni",
+      "image": "assets/items/Desc_Rebar_Explosive_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CartridgeStandard_C",
+      "slug": "cartridge-standard",
+      "name": "Munizioni per fucile",
+      "category": "munizioni",
+      "image": "assets/items/Desc_CartridgeStandard_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CartridgeSmartProjectile_C",
+      "slug": "cartridge-smart-projectile",
+      "name": "Munizioni con ricerca guidata per fucile",
+      "category": "munizioni",
+      "image": "assets/items/Desc_CartridgeSmartProjectile_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CartridgeChaos_C",
+      "slug": "cartridge-chaos",
+      "name": "Turbomunizioni per fucile",
+      "category": "munizioni",
+      "image": "assets/items/Desc_CartridgeChaos_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NobeliskExplosive_C",
+      "slug": "nobelisk-explosive",
+      "name": "Nobelisco",
+      "category": "munizioni",
+      "image": "assets/items/Desc_NobeliskExplosive_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NobeliskGas_C",
+      "slug": "nobelisk-gas",
+      "name": "Nobelisco a gas",
+      "category": "munizioni",
+      "image": "assets/items/Desc_NobeliskGas_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NobeliskShockwave_C",
+      "slug": "nobelisk-shockwave",
+      "name": "Nobelisco a impulsi",
+      "category": "munizioni",
+      "image": "assets/items/Desc_NobeliskShockwave_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NobeliskCluster_C",
+      "slug": "nobelisk-cluster",
+      "name": "Nobelisco a grappolo",
+      "category": "munizioni",
+      "image": "assets/items/Desc_NobeliskCluster_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NobeliskNuke_C",
+      "slug": "nobelisk-nuke",
+      "name": "Nobelisco atomico",
+      "category": "munizioni",
+      "image": "assets/items/Desc_NobeliskNuke_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_ElectromagneticControlRod_C",
+      "slug": "electromagnetic-control-rod",
+      "name": "Barra di controllo elettromagnetica",
+      "category": "nucleare",
+      "image": "assets/items/Desc_ElectromagneticControlRod_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_UraniumCell_C",
+      "slug": "uranium-cell",
+      "name": "Cella di uranio rivestita",
+      "category": "nucleare",
+      "image": "assets/items/Desc_UraniumCell_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NonFissibleUranium_C",
+      "slug": "non-fissible-uranium",
+      "name": "Uranio non fissile",
+      "category": "nucleare",
+      "image": "assets/items/Desc_NonFissibleUranium_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PlutoniumPellet_C",
+      "slug": "plutonium-pellet",
+      "name": "Pellet di plutonio",
+      "category": "nucleare",
+      "image": "assets/items/Desc_PlutoniumPellet_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PlutoniumCell_C",
+      "slug": "plutonium-cell",
+      "name": "Cella di plutonio rivestita",
+      "category": "nucleare",
+      "image": "assets/items/Desc_PlutoniumCell_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Ficsonium_C",
+      "slug": "ficsonium",
+      "name": "Ficsonio",
+      "category": "nucleare",
+      "image": "assets/items/Desc_Ficsonium_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_FicsoniumFuelRod_C",
+      "slug": "ficsonium-fuel-rod",
+      "name": "Barra di combustibile di ficsonio",
+      "category": "nucleare",
+      "image": "assets/items/Desc_FicsoniumFuelRod_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_NuclearWaste_C",
+      "slug": "nuclear-waste",
+      "name": "Scorie di uranio",
+      "category": "rifiuti",
+      "image": "assets/items/Desc_NuclearWaste_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_PlutoniumWaste_C",
+      "slug": "plutonium-waste",
+      "name": "Scorie di plutonio",
+      "category": "rifiuti",
+      "image": "assets/items/Desc_PlutoniumWaste_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Crystal_C",
+      "slug": "crystal",
+      "name": "Lumaca energetica blu",
+      "category": "speciali",
+      "image": "assets/items/Desc_Crystal_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Crystal_mk2_C",
+      "slug": "crystal-mk2",
+      "name": "Lumaca energetica gialla",
+      "category": "speciali",
+      "image": "assets/items/Desc_Crystal_mk2_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_Crystal_mk3_C",
+      "slug": "crystal-mk3",
+      "name": "Lumaca energetica viola",
+      "category": "speciali",
+      "image": "assets/items/Desc_Crystal_mk3_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_CrystalShard_C",
+      "slug": "crystal-shard",
+      "name": "Frammento energetico",
+      "category": "speciali",
+      "image": "assets/items/Desc_CrystalShard_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_ResourceSinkCoupon_C",
+      "slug": "resource-sink-coupon",
+      "name": "Coupon FICSIT",
+      "category": "speciali",
+      "image": "assets/items/Desc_ResourceSinkCoupon_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_1_C",
+      "slug": "space-elevator-part-1",
+      "name": "Lamiera intelligente",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_1_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_2_C",
+      "slug": "space-elevator-part-2",
+      "name": "Struttura polivalente",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_2_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_3_C",
+      "slug": "space-elevator-part-3",
+      "name": "Cablaggio automatico",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_3_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_4_C",
+      "slug": "space-elevator-part-4",
+      "name": "Motore modulare",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_4_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_5_C",
+      "slug": "space-elevator-part-5",
+      "name": "Unità di controllo adattiva",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_5_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_7_C",
+      "slug": "space-elevator-part-7",
+      "name": "Sistema direttore di montaggio",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_7_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_6_C",
+      "slug": "space-elevator-part-6",
+      "name": "Generatore di campi magnetici",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_6_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_8_C",
+      "slug": "space-elevator-part-8",
+      "name": "Razzo a propulsione termica",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_8_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_9_C",
+      "slug": "space-elevator-part-9",
+      "name": "Pasta nucleare",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_9_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_10_C",
+      "slug": "space-elevator-part-10",
+      "name": "Scultore biochimico",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_10_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_11_C",
+      "slug": "space-elevator-part-11",
+      "name": "Motore Warp balistico",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_11_C.png",
+      "stack_size": 100
+    },
+    {
+      "game_id": "Desc_SpaceElevatorPart_12_C",
+      "slug": "space-elevator-part-12",
+      "name": "Server espansione IA",
+      "category": "speciali",
+      "image": "assets/items/Desc_SpaceElevatorPart_12_C.png",
+      "stack_size": 100
+    }
+  ]
+}

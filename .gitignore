@@ -1,0 +1,11 @@
+node_modules/
+dist/
+out/
+*.db
+*.db-shm
+*.db-wal
+.DS_Store
+Thumbs.db
+.cursor/
+.tmp-ffmpeg/
+.tmp-video-frames/

@@ -1,0 +1,26 @@
+{
+  "name": "satisfactory-manager",
+  "version": "1.26.5",
+  "description": "FACTORY MANAGER — gestione locale di risorse e catene di produzione Satisfactory",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "import:items": "node scripts/import-items.js",
+    "import:details": "node scripts/import-item-details.js"
+  },
+  "keywords": [
+    "satisfactory",
+    "electron",
+    "production-manager"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^35.0.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "sql.js": "^1.12.0"
+  }
+}
