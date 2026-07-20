@@ -1,0 +1,1142 @@
+[
+  {
+    "k": "production.treeViewTitle",
+    "en": "View the full chain as a tree graph",
+    "uk": "Показати весь ланцюг як дерево",
+    "th": "ดูทั้งสายเป็นต้นไม้"
+  },
+  {
+    "k": "production.treeViewGroupsTitle",
+    "en": "View the chain by groups (main inputs/outputs only)",
+    "uk": "Ланцюг за групами (лише головні входи/виходи)",
+    "th": "ดูสายตามกลุ่ม (อินพุต/เอาต์พุตหลักเท่านั้น)"
+  },
+  {
+    "k": "production.groupReorderHint",
+    "en": "Collapse all groups to reorder them by dragging the handle on the left.",
+    "uk": "Згорніть усі групи, щоб змінити порядок, перетягуючи маркер зліва.",
+    "th": "ยุบทุกกลุ่มเพื่อจัดลำดับใหม่โดยลากที่ด้านซ้าย"
+  },
+  {
+    "k": "production.metaExtractionsOne",
+    "en": "{count} extraction",
+    "uk": "{count} видобуток",
+    "th": "{count} การขุด"
+  },
+  {
+    "k": "production.metaExtractionsMany",
+    "en": "{count} extractions",
+    "uk": "{count} видобутків",
+    "th": "{count} การขุด"
+  },
+  {
+    "k": "production.metaStepsOne",
+    "en": "{count} resource step",
+    "uk": "{count} крок ресурсу",
+    "th": "{count} ขั้นตอน"
+  },
+  {
+    "k": "production.metaStepsMany",
+    "en": "{count} resource steps",
+    "uk": "{count} кроків ресурсу",
+    "th": "{count} ขั้นตอน"
+  },
+  {
+    "k": "production.metaTreeGroups",
+    "en": " · Group tree",
+    "uk": " · Дерево груп",
+    "th": " · ต้นไม้กลุ่ม"
+  },
+  {
+    "k": "production.metaTreeGroup",
+    "en": " · Tree: {name}",
+    "uk": " · Дерево: {name}",
+    "th": " · ต้นไม้: {name}"
+  },
+  {
+    "k": "production.cardCreated",
+    "en": "Created {when}",
+    "uk": "Створено {when}",
+    "th": "สร้าง {when}"
+  },
+  {
+    "k": "production.duplicate",
+    "en": "Duplicate",
+    "uk": "Дублювати",
+    "th": "ทำซ้ำ"
+  },
+  {
+    "k": "production.duplicateAria",
+    "en": "Duplicate {name}",
+    "uk": "Дублювати {name}",
+    "th": "ทำซ้ำ {name}"
+  },
+  {
+    "k": "production.expandStep",
+    "en": "Expand step",
+    "uk": "Розгорнути крок",
+    "th": "ขยายขั้นตอน"
+  },
+  {
+    "k": "production.collapseStep",
+    "en": "Collapse step",
+    "uk": "Згорнути крок",
+    "th": "ยุบขั้นตอน"
+  },
+  {
+    "k": "production.expandGroup",
+    "en": "Expand group",
+    "uk": "Розгорнути групу",
+    "th": "ขยายกลุ่ม"
+  },
+  {
+    "k": "production.collapseGroup",
+    "en": "Collapse group",
+    "uk": "Згорнути групу",
+    "th": "ยุบกลุ่ม"
+  },
+  {
+    "k": "production.treeViewOfGroup",
+    "en": "Tree view of {name}",
+    "uk": "Дерево {name}",
+    "th": "ต้นไม้ของ {name}"
+  },
+  {
+    "k": "production.treeViewButton",
+    "en": "Tree view",
+    "uk": "Деревоподібний вигляд",
+    "th": "มุมมองต้นไม้"
+  },
+  {
+    "k": "production.highlightStep",
+    "en": "Highlight step",
+    "uk": "Підсвітити крок",
+    "th": "เน้นขั้นตอน"
+  },
+  {
+    "k": "production.highlightStepTitle",
+    "en": "Highlight step with green background",
+    "uk": "Підсвітити крок зеленим фоном",
+    "th": "เน้นขั้นตอนด้วยพื้นหลังสีเขียว"
+  },
+  {
+    "k": "production.highlightGroup",
+    "en": "Highlight group",
+    "uk": "Підсвітити групу",
+    "th": "เน้นกลุ่ม"
+  },
+  {
+    "k": "production.highlightGroupTitle",
+    "en": "Highlight group with green background",
+    "uk": "Підсвітити групу зеленим фоном",
+    "th": "เน้นกลุ่มด้วยพื้นหลังสีเขียว"
+  },
+  {
+    "k": "production.renameGroup",
+    "en": "Rename group",
+    "uk": "Перейменувати групу",
+    "th": "เปลี่ยนชื่อกลุ่ม"
+  },
+  {
+    "k": "production.renameGroupAria",
+    "en": "Rename group {name}",
+    "uk": "Перейменувати групу {name}",
+    "th": "เปลี่ยนชื่อกลุ่ม {name}"
+  },
+  {
+    "k": "production.newGroupOption",
+    "en": "+ New group…",
+    "uk": "+ Нова група…",
+    "th": "+ กลุ่มใหม่…"
+  },
+  {
+    "k": "production.dragReorder",
+    "en": "Drag to reorder",
+    "uk": "Перетягніть для зміни порядку",
+    "th": "ลากเพื่อจัดลำดับ"
+  },
+  {
+    "k": "production.configOutput",
+    "en": "Output ({unit})",
+    "uk": "Вихід ({unit})",
+    "th": "เอาต์พุต ({unit})"
+  },
+  {
+    "k": "production.configMachines",
+    "en": "Machines",
+    "uk": "Машини",
+    "th": "เครื่องจักร"
+  },
+  {
+    "k": "production.configExtractors",
+    "en": "Extractors",
+    "uk": "Екстрактори",
+    "th": "เครื่องสกัด"
+  },
+  {
+    "k": "production.adjustOutput",
+    "en": "Adjust output",
+    "uk": "Налаштувати вихід",
+    "th": "ปรับเอาต์พุต"
+  },
+  {
+    "k": "production.adjustOverclock",
+    "en": "Adjust overclock",
+    "uk": "Налаштувати overclock",
+    "th": "ปรับ overclock"
+  },
+  {
+    "k": "production.adjustMachines",
+    "en": "Adjust machine count",
+    "uk": "Налаштувати кількість машин",
+    "th": "ปรับจำนวนเครื่อง"
+  },
+  {
+    "k": "production.adjustExtractionOutput",
+    "en": "Adjust extraction output",
+    "uk": "Налаштувати видобуток",
+    "th": "ปรับผลการขุด"
+  },
+  {
+    "k": "production.adjustExtractionOverclock",
+    "en": "Adjust extraction overclock",
+    "uk": "Налаштувати overclock видобутку",
+    "th": "ปรับ overclock การขุด"
+  },
+  {
+    "k": "production.adjustNodes",
+    "en": "Adjust {nodes} count",
+    "uk": "Налаштувати кількість: {nodes}",
+    "th": "ปรับจำนวน {nodes}"
+  },
+  {
+    "k": "production.summaryResource",
+    "en": "Resource",
+    "uk": "Ресурс",
+    "th": "ทรัพยากร"
+  },
+  {
+    "k": "production.summaryRequired",
+    "en": "Required",
+    "uk": "Потрібно",
+    "th": "ต้องการ"
+  },
+  {
+    "k": "production.summaryProduced",
+    "en": "Produced",
+    "uk": "Вироблено",
+    "th": "ผลิตได้"
+  },
+  {
+    "k": "production.summaryNode",
+    "en": "Node",
+    "uk": "Вузол",
+    "th": "nodule"
+  },
+  {
+    "k": "production.summaryCount",
+    "en": "Qty",
+    "uk": "К-сть",
+    "th": "จำนวน"
+  },
+  {
+    "k": "production.noProductionObjectives",
+    "en": "No production targets",
+    "uk": "Немає цілей виробництва",
+    "th": "ไม่มีเป้าหมายการผลิต"
+  },
+  {
+    "k": "production.inputsPerMachine",
+    "en": "Input / machine",
+    "uk": "Вхід / машина",
+    "th": "อินพุต / เครื่อง"
+  },
+  {
+    "k": "production.addResourceStepFor",
+    "en": "Add resource step for {name}",
+    "uk": "Додати крок для {name}",
+    "th": "เพิ่มขั้นตอนสำหรับ {name}"
+  },
+  {
+    "k": "production.addAnotherExtraction",
+    "en": "Add another extraction for this resource",
+    "uk": "Додати ще видобуток цього ресурсу",
+    "th": "เพิ่มการขุดอีกสำหรับทรัพยากรนี้"
+  },
+  {
+    "k": "production.addAnotherExtractionAria",
+    "en": "Add another extraction of {name}",
+    "uk": "Додати ще видобуток {name}",
+    "th": "เพิ่มการขุด {name} อีก"
+  },
+  {
+    "k": "production.resetExtraction",
+    "en": "Reset extraction",
+    "uk": "Скинути видобуток",
+    "th": "รีเซ็ตการขุด"
+  },
+  {
+    "k": "production.resetDefaults",
+    "en": "Reset to defaults",
+    "uk": "Скинути за замовчуванням",
+    "th": "รีเซ็ตเป็นค่าเริ่มต้น"
+  },
+  {
+    "k": "production.duplicateExtraction",
+    "en": "Duplicate extraction",
+    "uk": "Дублювати видобуток",
+    "th": "ทำซ้ำการขุด"
+  },
+  {
+    "k": "production.deleteExtraction",
+    "en": "Delete extraction",
+    "uk": "Видалити видобуток",
+    "th": "ลบการขุด"
+  },
+  {
+    "k": "production.deleteStep",
+    "en": "Delete {name}",
+    "uk": "Видалити {name}",
+    "th": "ลบ {name}"
+  },
+  {
+    "k": "production.linkToStep",
+    "en": "Link to step:",
+    "uk": "Зв’язок із кроком:",
+    "th": "เชื่อมไปขั้นตอน:"
+  },
+  {
+    "k": "production.linkFromExtraction",
+    "en": "Link from extraction:",
+    "uk": "З видобутку:",
+    "th": "จากการขุด:"
+  },
+  {
+    "k": "production.linkFromProduction",
+    "en": "Link from production:",
+    "uk": "З виробництва:",
+    "th": "จากการผลิต:"
+  },
+  {
+    "k": "production.linkFullyUsed",
+    "en": "Fully used",
+    "uk": "Повністю використано",
+    "th": "ใช้ครบแล้ว"
+  },
+  {
+    "k": "production.linkFullyCovered",
+    "en": "Fully covered",
+    "uk": "Повністю покрито",
+    "th": "ครอบคลุมครบ"
+  },
+  {
+    "k": "production.linkFromExtractionRate",
+    "en": "{rate} from extraction",
+    "uk": "{rate} з видобутку",
+    "th": "{rate} จากการขุด"
+  },
+  {
+    "k": "production.linkExcess",
+    "en": "Surplus: {rate}",
+    "uk": "Надлишок: {rate}",
+    "th": "ส่วนเกิน: {rate}"
+  },
+  {
+    "k": "production.linkExcessLinked",
+    "en": "Linked surplus: {rate}",
+    "uk": "Пов’язаний надлишок: {rate}",
+    "th": "ส่วนเกินที่เชื่อม: {rate}"
+  },
+  {
+    "k": "production.linkExternal",
+    "en": "External: {rate}",
+    "uk": "Зовнішнє: {rate}",
+    "th": "ภายนอก: {rate}"
+  },
+  {
+    "k": "production.linkMissing",
+    "en": "Short: {rate}",
+    "uk": "Бракує: {rate}",
+    "th": "ขาด: {rate}"
+  },
+  {
+    "k": "production.linkMissingForLinked",
+    "en": "Missing {rate} for linked steps",
+    "uk": "Бракує {rate} для пов’язаних кроків",
+    "th": "ขาด {rate} สำหรับขั้นตอนที่เชื่อม"
+  },
+  {
+    "k": "production.linkMissingInChain",
+    "en": "Short in chain: {rate}",
+    "uk": "Бракує в ланцюгу: {rate}",
+    "th": "ขาดในสาย: {rate}"
+  },
+  {
+    "k": "production.linkCoveredByExtractions",
+    "en": "Covered by extractions",
+    "uk": "Покрито видобутком",
+    "th": "ครอบคลุมโดยการขุด"
+  },
+  {
+    "k": "production.linkChainExcess",
+    "en": "Chain surplus: {rate}",
+    "uk": "Надлишок ланцюга: {rate}",
+    "th": "ส่วนเกินในสาย: {rate}"
+  },
+  {
+    "k": "production.linkInsufficient",
+    "en": "Insufficient: {rate}",
+    "uk": "Недостатньо: {rate}",
+    "th": "ไม่พอ: {rate}"
+  },
+  {
+    "k": "production.surplusFree",
+    "en": "{rate} free",
+    "uk": "{rate} вільно",
+    "th": "{rate} ว่าง"
+  },
+  {
+    "k": "energy.emptyList",
+    "en": "No power plans.",
+    "uk": "Немає енергосхем.",
+    "th": "ไม่มีแผนพลังงาน"
+  },
+  {
+    "k": "energy.emptyListHint",
+    "en": "Create your first plan with the «New plan» button.",
+    "uk": "Створіть першу схему кнопкою «Нова схема».",
+    "th": "สร้างแผนแรกด้วยปุ่ม «แผนใหม่»"
+  },
+  {
+    "k": "energy.errorLoadList",
+    "en": "Error loading power plans.",
+    "uk": "Помилка завантаження енергосхем.",
+    "th": "โหลดแผนพลังงานไม่สำเร็จ"
+  },
+  {
+    "k": "energy.pickerExtractionSub",
+    "en": "Choose water or coal",
+    "uk": "Оберіть воду або вугілля",
+    "th": "เลือกน้ำหรือถ่านหิน"
+  },
+  {
+    "k": "energy.pickerGeneratorSub",
+    "en": "Choose a generator building",
+    "uk": "Оберіть будівлю генератора",
+    "th": "เลือกอาคารเครื่องกำเนิด"
+  },
+  {
+    "k": "energy.sectionExtractions",
+    "en": "Extraction",
+    "uk": "Видобуток",
+    "th": "การขุด"
+  },
+  {
+    "k": "energy.sectionGenerators",
+    "en": "Generators",
+    "uk": "Генератори",
+    "th": "เครื่องกำเนิด"
+  },
+  {
+    "k": "energy.emptyExtractions",
+    "en": "No extraction. Add water or coal.",
+    "uk": "Немає видобутку. Додайте воду або вугілля.",
+    "th": "ยังไม่มีการขุด — เพิ่มน้ำหรือถ่านหิน"
+  },
+  {
+    "k": "energy.emptyGenerators",
+    "en": "No generators. Add a power generator building.",
+    "uk": "Немає генераторів. Додайте генератор.",
+    "th": "ยังไม่มีเครื่องกำเนิด — เพิ่มเครื่องกำเนิด"
+  },
+  {
+    "k": "energy.errorDetailLoad",
+    "en": "Error loading the plan.",
+    "uk": "Помилка завантаження схеми.",
+    "th": "โหลดแผนไม่สำเร็จ"
+  },
+  {
+    "k": "energy.notFound",
+    "en": "Plan not found.",
+    "uk": "Схему не знайдено.",
+    "th": "ไม่พบแผน"
+  },
+  {
+    "k": "energy.metaExtractionsOne",
+    "en": "{count} extraction",
+    "uk": "{count} видобуток",
+    "th": "{count} การขุด"
+  },
+  {
+    "k": "energy.metaExtractionsMany",
+    "en": "{count} extractions",
+    "uk": "{count} видобутків",
+    "th": "{count} การขุด"
+  },
+  {
+    "k": "energy.metaGeneratorsOne",
+    "en": "{count} generator",
+    "uk": "{count} генератор",
+    "th": "{count} เครื่องกำเนิด"
+  },
+  {
+    "k": "energy.metaGeneratorsMany",
+    "en": "{count} generators",
+    "uk": "{count} генераторів",
+    "th": "{count} เครื่องกำเนิด"
+  },
+  {
+    "k": "energy.extractionCoal",
+    "en": "Coal extraction",
+    "uk": "Видобуток вугілля",
+    "th": "ขุดถ่านหิน"
+  },
+  {
+    "k": "energy.configFuel",
+    "en": "Fuel ({unit})",
+    "uk": "Паливо ({unit})",
+    "th": "เชื้อเพลิง ({unit})"
+  },
+  {
+    "k": "energy.configFuelType",
+    "en": "Fuel type",
+    "uk": "Тип палива",
+    "th": "ชนิดเชื้อเพลิง"
+  },
+  {
+    "k": "energy.adjustFuel",
+    "en": "Adjust fuel",
+    "uk": "Налаштувати паливо",
+    "th": "ปรับเชื้อเพลิง"
+  },
+  {
+    "k": "energy.adjustGeneratorOverclock",
+    "en": "Adjust overclock",
+    "uk": "Налаштувати overclock",
+    "th": "ปรับ overclock"
+  },
+  {
+    "k": "energy.adjustGeneratorCount",
+    "en": "Adjust generator count",
+    "uk": "Налаштувати кількість генераторів",
+    "th": "ปรับจำนวนเครื่องกำเนิด"
+  },
+  {
+    "k": "energy.summaryRequired",
+    "en": "Required",
+    "uk": "Потрібно",
+    "th": "ต้องการ"
+  },
+  {
+    "k": "energy.summaryProduced",
+    "en": "Produced",
+    "uk": "Вироблено",
+    "th": "ผลิตได้"
+  },
+  {
+    "k": "energy.summaryMissing",
+    "en": "Shortfall",
+    "uk": "Не вистачає",
+    "th": "ขาด"
+  },
+  {
+    "k": "energy.pickerNoResources",
+    "en": "No resources available.",
+    "uk": "Немає доступних ресурсів.",
+    "th": "ไม่มีทรัพยากร"
+  },
+  {
+    "k": "energy.pickerNoGenerators",
+    "en": "No generators available.",
+    "uk": "Немає доступних генераторів.",
+    "th": "ไม่มีเครื่องกำเนิด"
+  },
+  {
+    "k": "energy.defaultWaterExtractor",
+    "en": "Water extractor",
+    "uk": "Водяний насос",
+    "th": "เครื่องสูบน้ำ"
+  },
+  {
+    "k": "energy.defaultOilExtractor",
+    "en": "Oil extractor",
+    "uk": "Нафтовий екстрактор",
+    "th": "เครื่องสูบน้ำมัน"
+  },
+  {
+    "k": "settings.subtitle",
+    "en": "Local data management and restore of the default resource catalog.",
+    "uk": "Локальні дані та відновлення каталогу за замовчуванням.",
+    "th": "จัดการข้อมูล local และคืนค่าแคตตาล็อกเริ่มต้น"
+  },
+  {
+    "k": "settings.baseData",
+    "en": "Base data",
+    "uk": "Базові дані",
+    "th": "ข้อมูลพื้นฐาน"
+  },
+  {
+    "k": "settings.baseDataLead",
+    "en": "The item catalog, buildings, and production recipes are bundled with the app. On a new PC they are populated automatically on first launch.",
+    "uk": "Каталог, будівлі та рецепти вбудовані в застосунок. На новому ПК вони завантажуються при першому запуску.",
+    "th": "แคตตาล็อก อาคาร และสูตรมาพร้อมแอป บน PC ใหม่จะโหลดอัตโนมัติเมื่อเปิดครั้งแรก"
+  },
+  {
+    "k": "settings.statItems",
+    "en": "Resources in database",
+    "uk": "Ресурси в базі",
+    "th": "ทรัพยากรในฐานข้อมูล"
+  },
+  {
+    "k": "settings.statBuildings",
+    "en": "Buildings in database",
+    "uk": "Будівлі в базі",
+    "th": "อาคารในฐานข้อมูล"
+  },
+  {
+    "k": "settings.statSchemas",
+    "en": "Production recipes",
+    "uk": "Виробничі рецепти",
+    "th": "สูตรการผลิต"
+  },
+  {
+    "k": "settings.statSomersloop",
+    "en": "Buildings with Somersloop slots",
+    "uk": "Будівлі зі слотами Somersloop",
+    "th": "อาคารที่มีช่อง Somersloop"
+  },
+  {
+    "k": "settings.statBundledVersion",
+    "en": "Bundled data version",
+    "uk": "Версія вбудованих даних",
+    "th": "เวอร์ชันข้อมูลในแอป"
+  },
+  {
+    "k": "settings.statStoredVersion",
+    "en": "Database data version",
+    "uk": "Версія даних у базі",
+    "th": "เวอร์ชันข้อมูลในฐานข้อมูล"
+  },
+  {
+    "k": "settings.statLastReset",
+    "en": "Last restore",
+    "uk": "Останнє відновлення",
+    "th": "คืนค่าล่าสุด"
+  },
+  {
+    "k": "settings.restoreTitle",
+    "en": "Restore default data",
+    "uk": "Відновити дані за замовчуванням",
+    "th": "คืนค่าข้อมูลเริ่มต้น"
+  },
+  {
+    "k": "settings.restoreBody",
+    "en": "Reload resources, buildings (including Somersloop slots), and recipes from the bundled data. Manual edits to names and categories will be lost.",
+    "uk": "Перезавантажити ресурси, будівлі (слоти Somersloop) і рецепти з даних застосунку. Ручні зміни назв і категорій буде втрачено.",
+    "th": "โหลดทรัพยากร อาคาร (ช่อง Somersloop) และสูตรจากข้อมูลในแอป การแก้ชื่อและหมวดด้วยมือจะหายไป"
+  },
+  {
+    "k": "settings.envTitle",
+    "en": "Environment",
+    "uk": "Середовище",
+    "th": "สภาพแวดล้อม"
+  },
+  {
+    "k": "settings.envLead",
+    "en": "Technical information about the app and local database.",
+    "uk": "Технічна інформація про застосунок і локальну базу.",
+    "th": "ข้อมูลทางเทคนิคเกี่ยวกับแอปและฐานข้อมูล local"
+  },
+  {
+    "k": "settings.envDatabase",
+    "en": "Database",
+    "uk": "База даних",
+    "th": "ฐานข้อมูล"
+  },
+  {
+    "k": "settings.envCatalogItems",
+    "en": "Items in catalog",
+    "uk": "Предмети в каталозі",
+    "th": "ไอเทมในแคตตาล็อก"
+  },
+  {
+    "k": "settings.envCatalogBuildings",
+    "en": "Buildings in catalog",
+    "uk": "Будівлі в каталозі",
+    "th": "อาคารในแคตตาล็อก"
+  },
+  {
+    "k": "settings.envCatalogSchemas",
+    "en": "Recipes in catalog",
+    "uk": "Рецепти в каталозі",
+    "th": "สูตรในแคตตาล็อก"
+  },
+  {
+    "k": "settings.envDbSchema",
+    "en": "DB schema",
+    "uk": "Схема БД",
+    "th": "สคีมา DB"
+  },
+  {
+    "k": "settings.envDbPath",
+    "en": "DB path",
+    "uk": "Шлях до БД",
+    "th": "พาธ DB"
+  },
+  {
+    "k": "settings.restoreSuccess",
+    "en": "Restore complete: {items} resources, {buildings} buildings, {schemas} production recipes.",
+    "uk": "Відновлено: {items} ресурсів, {buildings} будівель, {schemas} рецептів.",
+    "th": "คืนค่าแล้ว: {items} ทรัพยากร {buildings} อาคาร {schemas} สูตร"
+  },
+  {
+    "k": "settings.errorLoadInfo",
+    "en": "Error loading data information.",
+    "uk": "Помилка завантаження інформації про дані.",
+    "th": "โหลดข้อมูลไม่สำเร็จ"
+  },
+  {
+    "k": "settings.errorRestore",
+    "en": "Error during restore.",
+    "uk": "Помилка під час відновлення.",
+    "th": "คืนค่าไม่สำเร็จ"
+  },
+  {
+    "k": "modals.productionCreateTitle",
+    "en": "New production plan",
+    "uk": "Нова виробнича схема",
+    "th": "แผนการผลิตใหม่"
+  },
+  {
+    "k": "modals.productionCreatePlaceholder",
+    "en": "e.g. Rotor factory",
+    "uk": "напр. Фабрика роторів",
+    "th": "เช่น โรงงาน rotor"
+  },
+  {
+    "k": "modals.energyCreateTitle",
+    "en": "New power plan",
+    "uk": "Нова енергосхема",
+    "th": "แผนพลังงานใหม่"
+  },
+  {
+    "k": "modals.energyCreatePlaceholder",
+    "en": "e.g. Coal power plant",
+    "uk": "напр. Вугільна станція",
+    "th": "เช่น โรงไฟถ่านหิน"
+  },
+  {
+    "k": "modals.renamePlan",
+    "en": "Rename plan",
+    "uk": "Перейменувати схему",
+    "th": "เปลี่ยนชื่อแผน"
+  },
+  {
+    "k": "modals.renameProductionPlan",
+    "en": "Rename production plan",
+    "uk": "Перейменувати виробничу схему",
+    "th": "เปลี่ยนชื่อแผนการผลิต"
+  },
+  {
+    "k": "modals.renameEnergyPlan",
+    "en": "Rename power plan",
+    "uk": "Перейменувати енергосхему",
+    "th": "เปลี่ยนชื่อแผนพลังงาน"
+  },
+  {
+    "k": "modals.renameGroup",
+    "en": "Group",
+    "uk": "Група",
+    "th": "กลุ่ม"
+  },
+  {
+    "k": "modals.addExtractionTitle",
+    "en": "Add extraction",
+    "uk": "Додати видобуток",
+    "th": "เพิ่มการขุด"
+  },
+  {
+    "k": "modals.selectResource",
+    "en": "Select resource",
+    "uk": "Оберіть ресурс",
+    "th": "เลือกทรัพยากร"
+  },
+  {
+    "k": "modals.selectResourceSub",
+    "en": "Choose the resource to produce",
+    "uk": "Ресурс для виробництва",
+    "th": "ทรัพยากรที่จะผลิต"
+  },
+  {
+    "k": "modals.selectResourceExtract",
+    "en": "Select resource to extract",
+    "uk": "Ресурс для видобутку",
+    "th": "ทรัพยากรที่จะขุด"
+  },
+  {
+    "k": "modals.selectSchema",
+    "en": "Select recipe",
+    "uk": "Оберіть рецепт",
+    "th": "เลือกสูตร"
+  },
+  {
+    "k": "modals.selectSchemaFor",
+    "en": "Recipe for {name}",
+    "uk": "Рецепт для {name}",
+    "th": "สูตรสำหรับ {name}"
+  },
+  {
+    "k": "modals.selectSchemaAltHint",
+    "en": "This resource has alternate recipes. Choose which to use.",
+    "uk": "Є альтернативні рецепти. Оберіть один.",
+    "th": "มีสูตรทางเลือก — เลือกสูตรที่จะใช้"
+  },
+  {
+    "k": "modals.pickerNoSchema",
+    "en": "No recipe",
+    "uk": "Немає рецепта",
+    "th": "ไม่มีสูตร"
+  },
+  {
+    "k": "modals.editResource",
+    "en": "Edit resource",
+    "uk": "Редагувати ресурс",
+    "th": "แก้ไขทรัพยากร"
+  },
+  {
+    "k": "modals.resourceDetail",
+    "en": "Resource details",
+    "uk": "Деталі ресурсу",
+    "th": "รายละเอียดทรัพยากร"
+  },
+  {
+    "k": "modals.detailMainSchema",
+    "en": "Main recipe",
+    "uk": "Основний рецепт",
+    "th": "สูตรหลัก"
+  },
+  {
+    "k": "modals.detailAltSchemas",
+    "en": "Alternate recipes ({count})",
+    "uk": "Альтернативні рецепти ({count})",
+    "th": "สูตรทางเลือก ({count})"
+  },
+  {
+    "k": "modals.detailNoSchemas",
+    "en": "No production recipes registered for this resource.",
+    "uk": "Для цього ресурсу немає зареєстрованих рецептів.",
+    "th": "ไม่มีสูตรการผลิตสำหรับทรัพยากรนี้"
+  },
+  {
+    "k": "modals.resourceNotFound",
+    "en": "Resource not found.",
+    "uk": "Ресурс не знайдено.",
+    "th": "ไม่พบทรัพยากร"
+  },
+  {
+    "k": "modals.detailLoadError",
+    "en": "Error loading details.",
+    "uk": "Помилка завантаження деталей.",
+    "th": "โหลดรายละเอียดไม่สำเร็จ"
+  },
+  {
+    "k": "purity.impure",
+    "en": "Impure",
+    "uk": "Низька якість",
+    "th": "คุณภาพต่ำ"
+  },
+  {
+    "k": "purity.normal",
+    "en": "Normal",
+    "uk": "Звичайна",
+    "th": "ปกติ"
+  },
+  {
+    "k": "purity.pure",
+    "en": "Pure",
+    "uk": "Чиста",
+    "th": "บริสุทธิ์"
+  },
+  {
+    "k": "generators.coal",
+    "en": "Coal",
+    "uk": "Вугілля",
+    "th": "ถ่านหิน"
+  },
+  {
+    "k": "generators.fuel",
+    "en": "Fuel",
+    "uk": "Паливо",
+    "th": "เชื้อเพลิง"
+  },
+  {
+    "k": "generators.nuclear",
+    "en": "Nuclear",
+    "uk": "Ядерна",
+    "th": "นิวเคลียร์"
+  },
+  {
+    "k": "extraction.oil",
+    "en": "Crude oil extraction",
+    "uk": "Видобуток нафти",
+    "th": "ขุดน้ำมันดิบ"
+  },
+  {
+    "k": "extraction.water",
+    "en": "Water extraction",
+    "uk": "Видобуток води",
+    "th": "ขุดน้ำ"
+  },
+  {
+    "k": "extraction.mineral",
+    "en": "Mineral extraction",
+    "uk": "Видобуток мінералу",
+    "th": "ขุดแร่"
+  },
+  {
+    "k": "extraction.coal",
+    "en": "Coal extraction",
+    "uk": "Видобуток вугілля",
+    "th": "ขุดถ่านหิน"
+  },
+  {
+    "k": "actions.rename",
+    "en": "Rename",
+    "uk": "Перейменувати",
+    "th": "เปลี่ยนชื่อ"
+  },
+  {
+    "k": "actions.renameAria",
+    "en": "Rename {name}",
+    "uk": "Перейменувати {name}",
+    "th": "เปลี่ยนชื่อ {name}"
+  },
+  {
+    "k": "actions.duplicate",
+    "en": "Duplicate",
+    "uk": "Дублювати",
+    "th": "Duplicate"
+  },
+  {
+    "k": "actions.exportPlan",
+    "en": "Export plan",
+    "uk": "Експорт схеми",
+    "th": "ส่งออกแผน"
+  },
+  {
+    "k": "actions.exportAria",
+    "en": "Export {name}",
+    "uk": "Експорт {name}",
+    "th": "ส่งออก {name}"
+  },
+  {
+    "k": "actions.delete",
+    "en": "Delete",
+    "uk": "Видалити",
+    "th": "ลบ"
+  },
+  {
+    "k": "actions.deleteAria",
+    "en": "Delete {name}",
+    "uk": "Видалити {name}",
+    "th": "ลบ {name}"
+  },
+  {
+    "k": "actions.reset",
+    "en": "Reset",
+    "uk": "Скинути",
+    "th": "รีเซ็ต"
+  },
+  {
+    "k": "actions.edit",
+    "en": "Edit",
+    "uk": "Редагувати",
+    "th": "แก้ไข"
+  },
+  {
+    "k": "actions.importPlan",
+    "en": "Import plan",
+    "uk": "Імпорт схеми",
+    "th": "นำเข้าแผน"
+  },
+  {
+    "k": "graph.extraction",
+    "en": "Extraction",
+    "uk": "Видобуток",
+    "th": "การขุด"
+  },
+  {
+    "k": "graph.objective",
+    "en": "Target",
+    "uk": "Ціль",
+    "th": "เป้าหมาย"
+  },
+  {
+    "k": "graph.grouping",
+    "en": "Group",
+    "uk": "Група",
+    "th": "กลุ่ม"
+  },
+  {
+    "k": "graph.mainInputs",
+    "en": "Main inputs",
+    "uk": "Головні входи",
+    "th": "อินพุตหลัก"
+  },
+  {
+    "k": "graph.mainOutputs",
+    "en": "Main outputs",
+    "uk": "Головні виходи",
+    "th": "เอาต์พุตหลัก"
+  },
+  {
+    "k": "graph.resourceStepOne",
+    "en": "1 resource step",
+    "uk": "1 крок ресурсу",
+    "th": "1 ขั้นตอนทรัพยากร"
+  },
+  {
+    "k": "graph.resourceStepMany",
+    "en": "{count} resource steps",
+    "uk": "{count} кроків ресурсу",
+    "th": "{count} ขั้นตอนทรัพยากร"
+  },
+  {
+    "k": "graph.emptyGroups",
+    "en": "No nodes to show in the group tree.",
+    "uk": "Немає вузлів у дереві груп.",
+    "th": "ไม่มีโหนดในต้นไม้กลุ่ม"
+  },
+  {
+    "k": "graph.emptyGroup",
+    "en": "No nodes to show in group «{name}».",
+    "uk": "Немає вузлів у групі «{name}».",
+    "th": "ไม่มีโหนดในกลุ่ม «{name}»"
+  },
+  {
+    "k": "graph.emptyTree",
+    "en": "No nodes to show. Add extractions or resource steps.",
+    "uk": "Немає вузлів. Додайте видобуток або кроки ресурсів.",
+    "th": "ไม่มีโหนด — เพิ่มการขุดหรือขั้นตอนทรัพยากร"
+  },
+  {
+    "k": "graph.highlightStepAria",
+    "en": "Highlight step {name}",
+    "uk": "Підсвітити крок {name}",
+    "th": "เน้นขั้นตอน {name}"
+  },
+  {
+    "k": "confirm.deleteResourceStepTitle",
+    "en": "Delete resource step",
+    "uk": "Видалити крок ресурсу",
+    "th": "ลบขั้นตอนทรัพยากร"
+  },
+  {
+    "k": "confirm.deleteResourceStepMessage",
+    "en": "Remove «{name}» from this production plan?",
+    "uk": "Видалити «{name}» з цієї виробничої схеми?",
+    "th": "ลบ «{name}» ออกจากแผนการผลิตนี้?"
+  },
+  {
+    "k": "confirm.deleteExtractionTitle",
+    "en": "Delete extraction",
+    "uk": "Видалити видобуток",
+    "th": "ลบการขุด"
+  },
+  {
+    "k": "confirm.deleteExtractionMessage",
+    "en": "Delete extraction «{name}»?",
+    "uk": "Видалити видобуток «{name}»?",
+    "th": "ลบการขุด «{name}»?"
+  },
+  {
+    "k": "confirm.deletePlanTitle",
+    "en": "Delete plan",
+    "uk": "Видалити схему",
+    "th": "ลบแผน"
+  },
+  {
+    "k": "confirm.deletePlanMessage",
+    "en": "Delete plan «{name}»? This cannot be undone.",
+    "uk": "Видалити схему «{name}»? Цю дію не скасувати.",
+    "th": "ลบแผน «{name}»? ยกเลิกไม่ได้"
+  },
+  {
+    "k": "confirm.deleteEnergyPlanTitle",
+    "en": "Delete plan",
+    "uk": "Видалити схему",
+    "th": "ลบแผน"
+  },
+  {
+    "k": "confirm.deleteEnergyPlanMessage",
+    "en": "Delete plan «{name}»? This cannot be undone.",
+    "uk": "Видалити схему «{name}»? Цю дію не скасувати.",
+    "th": "ลบแผน «{name}»? ยกเลิกไม่ได้"
+  },
+  {
+    "k": "confirm.restoreDefaultsTitle",
+    "en": "Restore default data",
+    "uk": "Відновити дані за замовчуванням",
+    "th": "คืนค่าข้อมูลเริ่มต้น"
+  },
+  {
+    "k": "confirm.restoreDefaultsMessage",
+    "en": "Restore resources, buildings, and recipes to defaults? Manual edits to names and categories will be lost.",
+    "uk": "Відновити ресурси, будівлі та рецепти? Ручні зміни буде втрачено.",
+    "th": "คืนค่าทรัพยากร อาคาร และสูตร? การแก้ด้วยมือจะหาย"
+  },
+  {
+    "k": "confirm.restoreDefaultsConfirm",
+    "en": "Restore",
+    "uk": "Відновити",
+    "th": "คืนค่า"
+  },
+  {
+    "k": "confirm.newGroupTitle",
+    "en": "New group",
+    "uk": "Нова група",
+    "th": "กลุ่มใหม่"
+  },
+  {
+    "k": "confirm.renameGroupTitle",
+    "en": "Rename group",
+    "uk": "Перейменувати групу",
+    "th": "เปลี่ยนชื่อกลุ่ม"
+  },
+  {
+    "k": "errors.groupNameRequired",
+    "en": "Group name is required.",
+    "uk": "Назва групи обов’язкова.",
+    "th": "ต้องระบุชื่อกลุ่ม"
+  },
+  {
+    "k": "errors.saveFailed",
+    "en": "Error while saving.",
+    "uk": "Помилка збереження.",
+    "th": "บันทึกไม่สำเร็จ"
+  },
+  {
+    "k": "errors.createFailed",
+    "en": "Error while creating.",
+    "uk": "Помилка створення.",
+    "th": "สร้างไม่สำเร็จ"
+  },
+  {
+    "k": "errors.importFailed",
+    "en": "Error while importing the plan.",
+    "uk": "Помилка імпорту схеми.",
+    "th": "นำเข้าแผนไม่สำเร็จ"
+  },
+  {
+    "k": "errors.pickerEmpty",
+    "en": "No resources found.",
+    "uk": "Ресурсів не знайдено.",
+    "th": "ไม่พบทรัพยากร"
+  },
+  {
+    "k": "errors.pickerExtractEmpty",
+    "en": "No extractable resources found.",
+    "uk": "Немає ресурсів для видобутку.",
+    "th": "ไม่พบทรัพยากรที่ขุดได้"
+  }
+]

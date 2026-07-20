@@ -1,0 +1,359 @@
+{"k":"app.name","en":"Factory Manager","uk":"Factory Manager"}
+{"k":"app.title","en":"FACTORY MANAGER","uk":"FACTORY MANAGER"}
+{"k":"app.brandAlt","en":"FACTORY MANAGER","uk":"FACTORY MANAGER"}
+{"k":"app.ficsitApproved","en":"FICSIT Approved™","uk":"FICSIT Approved™"}
+{"k":"app.localeLabel","en":"English","uk":"Українська"}
+{"k":"nav.dashboard","en":"Dashboard","uk":"Dashboard"}
+{"k":"nav.resources","en":"Resources","uk":"Ресурси"}
+{"k":"nav.production","en":"Production","uk":"Виробництво"}
+{"k":"nav.energy","en":"Power","uk":"Енергія"}
+{"k":"nav.settings","en":"Settings","uk":"Налаштування"}
+{"k":"topbar.info","en":"Info","uk":"Info"}
+{"k":"topbar.infoTitle","en":"Legal information","uk":"Правова інформація"}
+{"k":"topbar.language","en":"Language","uk":"Мова"}
+{"k":"topbar.languageTitle","en":"Language / Lingua","uk":"Мова / Language"}
+{"k":"topbar.languageAria","en":"Language: {name}","uk":"Мова: {name}"}
+{"k":"breadcrumb.items","en":"Items","uk":"Предмети"}
+{"k":"breadcrumb.projects","en":"Projects","uk":"Проєкти"}
+{"k":"breadcrumb.system","en":"System","uk":"Система"}
+{"k":"locales.it","en":"Italiano","uk":"Italiano"}
+{"k":"locales.en","en":"English","uk":"English"}
+{"k":"common.loading","en":"Loading…","uk":"Завантаження…"}
+{"k":"common.loadingResources","en":"Loading resources…","uk":"Завантаження ресурсів…"}
+{"k":"common.loadingSchemas","en":"Loading plans…","uk":"Завантаження схем…"}
+{"k":"common.cancel","en":"Cancel","uk":"Скасувати"}
+{"k":"common.save","en":"Save","uk":"Зберегти"}
+{"k":"common.create","en":"Create","uk":"Створити"}
+{"k":"common.confirm","en":"Confirm","uk":"Підтвердити"}
+{"k":"common.close","en":"Close","uk":"Закрити"}
+{"k":"common.closeAria","en":"Close","uk":"Закрити"}
+{"k":"common.name","en":"Name","uk":"Назва"}
+{"k":"common.available","en":"Available","uk":"Доступно"}
+{"k":"common.never","en":"Never","uk":"Ніколи"}
+{"k":"common.connected","en":"Connected","uk":"З'єднано"}
+{"k":"common.disconnected","en":"Disconnected","uk":"Роз'єднано"}
+{"k":"common.empty","en":"Empty","uk":"Порожньо"}
+{"k":"common.balanced","en":"Balanced","uk":"Збалансовано"}
+{"k":"common.now","en":"Just now","uk":"Щойно"}
+{"k":"common.ungrouped","en":"Ungrouped","uk":"Без групи"}
+{"k":"common.emDash","en":"—","uk":"—"}
+{"k":"common.notSet","en":"Not set","uk":"Не задано"}
+{"k":"common.building","en":"Building","uk":"Будівля"}
+{"k":"common.resource","en":"Resource","uk":"Ресурс"}
+{"k":"common.mineral","en":"Mineral","uk":"Мінерал"}
+{"k":"common.fuel","en":"Fuel","uk":"Паливо"}
+{"k":"common.generator","en":"Generator","uk":"Генератор"}
+{"k":"common.schema","en":"Recipe layout","uk":"Крок виробництва"}
+{"k":"common.input","en":"Input","uk":"Вхід"}
+{"k":"common.output","en":"Output","uk":"Вихід"}
+{"k":"common.base","en":"Base","uk":"База"}
+{"k":"common.resultsOne","en":"{count} result","uk":"{count} результат"}
+{"k":"common.resultsMany","en":"{count} results","uk":"{count} результатів"}
+{"k":"common.resourcesOne","en":"{count} resource","uk":"{count} ресурс"}
+{"k":"common.resourcesMany","en":"{count} resources","uk":"{count} ресурсів"}
+{"k":"common.somersloop","en":"Somersloop","uk":"Somersloop"}
+{"k":"common.category","en":"Category","uk":"Категорія"}
+{"k":"health.deficitOne","en":"1 deficit","uk":"1 дефіцит"}
+{"k":"health.deficitMany","en":"{count} deficits","uk":"{count} дефіцитів"}
+{"k":"time.minutesAgo","en":"{count} min ago","uk":"{count} хв тому"}
+{"k":"time.hoursAgo","en":"{count} h ago","uk":"{count} год тому"}
+{"k":"time.daysAgo","en":"{count} d ago","uk":"{count} дн тому"}
+{"k":"time.updated","en":"Updated {when}","uk":"Оновлено {when}"}
+{"k":"time.created","en":"Created {when}","uk":"Створено {when}"}
+{"k":"units.perMin","en":"/min","uk":"/min"}
+{"k":"units.cubicPerMin","en":"m³/min","uk":"m³/min"}
+{"k":"units.mw","en":"MW","uk":"MW"}
+{"k":"dashboard.welcomeTitle","en":"Welcome, engineer","uk":"Вітаємо, інженере"}
+{"k":"dashboard.lead1","en":"FACTORY MANAGER is your local Satisfactory factory planner: item catalog, production chains, and power plans—everything stays on your PC with no account or cloud.","uk":"FACTORY MANAGER — локальний планувальник фабрик Satisfactory: каталог, виробничі ланцюги та енергосхеми — усе на ПК, без облікового запису та хмари."}
+{"k":"dashboard.lead2","en":"Set output targets, calculate machines, overclock, and power shards, configure miner node extraction, and size generators with the right fuel. The app updates resource and power balances in real time and flags raw-material or fuel shortfalls.","uk":"Задавайте цілі випуску, рахуйте машини, overclock і power shard, налаштовуйте видобуток на вузлах і підбирайте генератори з паливом. Застосунок оновлює баланс ресурсів і енергії в реальному часі та показує нестачу сировини чи палива."}
+{"k":"dashboard.lead3","en":"This dashboard is your operational overview: recent projects, critical alerts, production targets, and generator mix—so you know where to act before opening Production or Power.","uk":"Ця панель — оперативний огляд: останні проєкти, критичні сповіщення, цілі виробництва та mix генераторів — щоб знати, куди діяти, перш ніж відкрити Виробництво чи Енергію."}
+{"k":"dashboard.kpiProductionChains","en":"Production chains","uk":"Виробничі ланцюги"}
+{"k":"dashboard.kpiEnergyPlans","en":"Power plans","uk":"Енергосхеми"}
+{"k":"dashboard.kpiEnergyMw","en":"Power output","uk":"Виробництво енергії"}
+{"k":"dashboard.kpiMachines","en":"Machines","uk":"Машини"}
+{"k":"dashboard.kpiGenerators","en":"Generators","uk":"Генератори"}
+{"k":"dashboard.kpiNodes","en":"Nodes mined","uk":"Вузли видобутку"}
+{"k":"dashboard.kpiPowerShards","en":"Power shard","uk":"Power shard"}
+{"k":"dashboard.kpiDeficits","en":"Active deficits","uk":"Активні дефіцити"}
+{"k":"dashboard.kpiLastProject","en":"Latest project","uk":"Останній проєкт"}
+{"k":"dashboard.panelProjects","en":"Your projects","uk":"Ваші проєкти"}
+{"k":"dashboard.panelProjectsSub","en":"Sorted by last modified","uk":"За датою зміни"}
+{"k":"dashboard.panelAlerts","en":"Needs attention","uk":"Потребує уваги"}
+{"k":"dashboard.panelAlertsSub","en":"Resource and fuel deficits","uk":"Дефіцити ресурсів і палива"}
+{"k":"dashboard.chartDeficits","en":"Top resource deficits","uk":"Найбільші дефіцити"}
+{"k":"dashboard.chartDeficitsSub","en":"Aggregated across all projects","uk":"Сума по всіх проєктах"}
+{"k":"dashboard.chartObjectives","en":"Production targets","uk":"Цілі виробництва"}
+{"k":"dashboard.chartObjectivesSub","en":"Final outputs per chain","uk":"Кінцевий випуск на ланцюг"}
+{"k":"dashboard.chartPower","en":"Generator mix","uk":"Mix генераторів"}
+{"k":"dashboard.chartPowerSub","en":"Power by type","uk":"Потужність за типом"}
+{"k":"dashboard.featureResourcesTitle","en":"Resources","uk":"Ресурси"}
+{"k":"dashboard.featureResourcesBody","en":"In-game item catalog by type: ores, ingots, fluids, and components.","uk":"Каталог гри за типами: руди, злитки, рідини та компоненти."}
+{"k":"dashboard.featureProductionTitle","en":"Production chains","uk":"Виробничі ланцюги"}
+{"k":"dashboard.featureProductionBody","en":"Save and reopen factory projects without relying on the cloud.","uk":"Зберігайте та відкривайте проєкти фабрики без хмари."}
+{"k":"dashboard.featureEnergyTitle","en":"Power planning","uk":"Планування енергії"}
+{"k":"dashboard.featureEnergyBody","en":"Design extraction and generators to feed your factory.","uk":"Проєктуйте видобуток і генератори для живлення фабрики."}
+{"k":"dashboard.emptyNoProjects","en":"No projects yet.","uk":"Проєктів ще немає."}
+{"k":"dashboard.emptyProjectsHint","en":"Create a production chain or power plan to get started.","uk":"Створіть виробничий ланцюг або енергосхему, щоб почати."}
+{"k":"dashboard.emptyNoResourceDeficits","en":"No resource deficits.","uk":"Дефіцитів ресурсів немає."}
+{"k":"dashboard.emptyNoObjectives","en":"No production targets defined.","uk":"Цілі виробництва не задані."}
+{"k":"dashboard.emptyNoGenerators","en":"No generators configured.","uk":"Генератори не налаштовані."}
+{"k":"dashboard.emptyAllOk","en":"All clear — no deficits detected in your projects.","uk":"Усе гаразд — дефіцитів у проєктах не виявлено."}
+{"k":"dashboard.errorLoad","en":"Error loading the dashboard.","uk":"Помилка завантаження панелі."}
+{"k":"dashboard.errorAlerts","en":"Error loading alerts.","uk":"Помилка завантаження сповіщень."}
+{"k":"dashboard.errorCharts","en":"Error loading charts.","uk":"Помилка завантаження діаграм."}
+{"k":"dashboard.projectTypeProduction","en":"Production","uk":"Виробництво"}
+{"k":"dashboard.projectTypeEnergy","en":"Power","uk":"Енергія"}
+{"k":"dashboard.metricsNoPlan","en":"No plan yet","uk":"Схеми ще немає"}
+{"k":"dashboard.metricsNoGenerators","en":"No generators yet","uk":"Генераторів ще немає"}
+{"k":"dashboard.metricsMachines","en":"{count} machines","uk":"{count} машин"}
+{"k":"dashboard.metricsNodes","en":"{count} nodes","uk":"{count} вузлів"}
+{"k":"dashboard.metricsPowerShards","en":"{count} PS","uk":"{count} PS"}
+{"k":"dashboard.metricsGenerators","en":"{count} generators","uk":"{count} генераторів"}
+{"k":"dashboard.metricsMw","en":"{value} MW","uk":"{value} MW"}
+{"k":"resources.title","en":"Resources","uk":"Ресурси"}
+{"k":"resources.subtitle","en":"Satisfactory item catalog (Stable 1.2)","uk":"Каталог Satisfactory (Stable 1.2)"}
+{"k":"resources.searchPlaceholder","en":"Search resource…","uk":"Пошук ресурсу…"}
+{"k":"resources.hideWithoutSchemas","en":"Hide resources without production recipes","uk":"Приховати ресурси без виробничих рецептів"}
+{"k":"resources.categories","en":"Categories","uk":"Категорії"}
+{"k":"resources.emptySearch","en":"No resources match your search.","uk":"Жоден ресурс не відповідає пошуку."}
+{"k":"resources.emptyCategory","en":"No resources in this category.","uk":"У цій категорії немає ресурсів."}
+{"k":"resources.errorLoad","en":"Error loading resources.","uk":"Помилка завантаження ресурсів."}
+{"k":"resources.editAria","en":"Edit {name}","uk":"Редагувати {name}"}
+{"k":"production.title","en":"Production","uk":"Виробництво"}
+{"k":"production.subtitle","en":"Create and manage your custom production plans.","uk":"Створюйте та керуйте власними виробничими схемами."}
+{"k":"production.importPlan","en":"Import plan","uk":"Імпорт схеми"}
+{"k":"production.newPlan","en":"New plan","uk":"Нова схема"}
+{"k":"production.emptyList","en":"No production plans.","uk":"Немає виробничих схем."}
+{"k":"production.emptyListHint","en":"Create your first plan with the «New plan» button.","uk":"Створіть першу схему кнопкою «Нова схема»."}
+{"k":"production.errorLoadList","en":"Error loading production plans.","uk":"Помилка завантаження виробничих схем."}
+{"k":"production.treeView","en":"Tree view","uk":"Деревоподібний вигляд"}
+{"k":"production.treeViewGroups","en":"Grouped tree view","uk":"Дерево груп"}
+{"k":"production.backToEditor","en":"Back to editor","uk":"Назад до редактора"}
+{"k":"production.backToEditorPlan","en":"Back to plan editor","uk":"Назад до редактора схеми"}
+{"k":"production.treeViewTitle","en":"View the full chain as a tree graph","uk":"Показати весь ланцюг як дерево"}
+{"k":"production.treeViewGroupsTitle","en":"View the chain by groups (main inputs/outputs only)","uk":"Ланцюг за групами (лише головні входи/виходи)"}
+{"k":"production.addExtraction","en":"Add extraction","uk":"Додати видобуток"}
+{"k":"production.addResourceStep","en":"Add resource step","uk":"Додати крок ресурсу"}
+{"k":"production.sectionExtractions","en":"Resource extraction","uk":"Видобуток ресурсів"}
+{"k":"production.sectionResourceSteps","en":"Resource steps","uk":"Кроки ресурсів"}
+{"k":"production.groupMinerals","en":"Minerals","uk":"Мінерали"}
+{"k":"production.groupLiquids","en":"Fluids","uk":"Рідини"}
+{"k":"production.groupReorderHint","en":"Collapse all groups to reorder them by dragging the handle on the left.","uk":"Згорніть усі групи, щоб змінити порядок, перетягуючи маркер зліва."}
+{"k":"production.emptyExtractions","en":"No extractions configured.","uk":"Видобуток не налаштовано."}
+{"k":"production.emptyResourceSteps","en":"No resource steps. Add the first item to produce.","uk":"Немає кроків. Додайте перший продукт."}
+{"k":"production.errorDetailLoad","en":"Error loading the plan.","uk":"Помилка завантаження схеми."}
+{"k":"production.notFound","en":"Plan not found.","uk":"Схему не знайдено."}
+{"k":"production.metaExtractionsOne","en":"{count} extraction","uk":"{count} видобуток"}
+{"k":"production.metaExtractionsMany","en":"{count} extractions","uk":"{count} видобутків"}
+{"k":"production.metaStepsOne","en":"{count} resource step","uk":"{count} крок ресурсу"}
+{"k":"production.metaStepsMany","en":"{count} resource steps","uk":"{count} кроків ресурсу"}
+{"k":"production.metaTreeGroups","en":" · Group tree","uk":" · Дерево груп"}
+{"k":"production.metaTreeGroup","en":" · Tree: {name}","uk":" · Дерево: {name}"}
+{"k":"production.cardCreated","en":"Created {when}","uk":"Створено {when}"}
+{"k":"production.duplicate","en":"Duplicate","uk":"Дублювати"}
+{"k":"production.duplicateAria","en":"Duplicate {name}","uk":"Дублювати {name}"}
+{"k":"production.expandStep","en":"Expand step","uk":"Розгорнути крок"}
+{"k":"production.collapseStep","en":"Collapse step","uk":"Згорнути крок"}
+{"k":"production.expandGroup","en":"Expand group","uk":"Розгорнути групу"}
+{"k":"production.collapseGroup","en":"Collapse group","uk":"Згорнути групу"}
+{"k":"production.treeViewOfGroup","en":"Tree view of {name}","uk":"Дерево {name}"}
+{"k":"production.treeViewButton","en":"Tree view","uk":"Деревоподібний вигляд"}
+{"k":"production.highlightStep","en":"Highlight step","uk":"Підсвітити крок"}
+{"k":"production.highlightStepTitle","en":"Highlight step with green background","uk":"Підсвітити крок зеленим фоном"}
+{"k":"production.highlightGroup","en":"Highlight group","uk":"Підсвітити групу"}
+{"k":"production.highlightGroupTitle","en":"Highlight group with green background","uk":"Підсвітити групу зеленим фоном"}
+{"k":"production.renameGroup","en":"Rename group","uk":"Перейменувати групу"}
+{"k":"production.renameGroupAria","en":"Rename group {name}","uk":"Перейменувати групу {name}"}
+{"k":"production.newGroupOption","en":"+ New group…","uk":"+ Нова група…"}
+{"k":"production.dragReorder","en":"Drag to reorder","uk":"Перетягніть для зміни порядку"}
+{"k":"production.configOutput","en":"Output ({unit})","uk":"Вихід ({unit})"}
+{"k":"production.configOverclock","en":"Overclock (%)","uk":"Overclock (%)"}
+{"k":"production.configMachines","en":"Machines","uk":"Машини"}
+{"k":"production.configPowerShard","en":"Power shard","uk":"Power shard"}
+{"k":"production.configMiner","en":"Miner","uk":"Бур"}
+{"k":"production.configPurity","en":"Node purity","uk":"Чистота вузла"}
+{"k":"production.configNodes","en":"Nodes","uk":"Вузли"}
+{"k":"production.configExtractors","en":"Extractors","uk":"Екстрактори"}
+{"k":"production.adjustOutput","en":"Adjust output","uk":"Налаштувати вихід"}
+{"k":"production.adjustOverclock","en":"Adjust overclock","uk":"Налаштувати overclock"}
+{"k":"production.adjustMachines","en":"Adjust machine count","uk":"Налаштувати кількість машин"}
+{"k":"production.adjustExtractionOutput","en":"Adjust extraction output","uk":"Налаштувати видобуток"}
+{"k":"production.adjustExtractionOverclock","en":"Adjust extraction overclock","uk":"Налаштувати overclock видобутку"}
+{"k":"production.adjustNodes","en":"Adjust {nodes} count","uk":"Налаштувати кількість: {nodes}"}
+{"k":"production.summaryResource","en":"Resource","uk":"Ресурс"}
+{"k":"production.summaryRequired","en":"Required","uk":"Потрібно"}
+{"k":"production.summaryProduced","en":"Produced","uk":"Вироблено"}
+{"k":"production.summaryMissing","en":"Shortfall","uk":"Не вистачає"}
+{"k":"production.summaryNode","en":"Node","uk":"Вузол"}
+{"k":"production.summaryCount","en":"Qty","uk":"К-сть"}
+{"k":"production.summaryObjective","en":"Target","uk":"Ціль"}
+{"k":"production.summaryStep","en":"Step","uk":"Крок"}
+{"k":"production.noProductionObjectives","en":"No production targets","uk":"Немає цілей виробництва"}
+{"k":"production.inputsPerMachine","en":"Input / machine","uk":"Вхід / машина"}
+{"k":"production.addResourceStepFor","en":"Add resource step for {name}","uk":"Додати крок для {name}"}
+{"k":"production.addAnotherExtraction","en":"Add another extraction for this resource","uk":"Додати ще видобуток цього ресурсу"}
+{"k":"production.addAnotherExtractionAria","en":"Add another extraction of {name}","uk":"Додати ще видобуток {name}"}
+{"k":"production.resetExtraction","en":"Reset extraction","uk":"Скинути видобуток"}
+{"k":"production.resetDefaults","en":"Reset to defaults","uk":"Скинути за замовчуванням"}
+{"k":"production.duplicateExtraction","en":"Duplicate extraction","uk":"Дублювати видобуток"}
+{"k":"production.deleteExtraction","en":"Delete extraction","uk":"Видалити видобуток"}
+{"k":"production.deleteStep","en":"Delete {name}","uk":"Видалити {name}"}
+{"k":"production.linkToStep","en":"Link to step:","uk":"Зв’язок із кроком:"}
+{"k":"production.linkFromExtraction","en":"Link from extraction:","uk":"З видобутку:"}
+{"k":"production.linkFromProduction","en":"Link from production:","uk":"З виробництва:"}
+{"k":"production.linkFullyUsed","en":"Fully used","uk":"Повністю використано"}
+{"k":"production.linkFullyCovered","en":"Fully covered","uk":"Повністю покрито"}
+{"k":"production.linkFromExtractionRate","en":"{rate} from extraction","uk":"{rate} з видобутку"}
+{"k":"production.linkExcess","en":"Surplus: {rate}","uk":"Надлишок: {rate}"}
+{"k":"production.linkExcessLinked","en":"Linked surplus: {rate}","uk":"Пов’язаний надлишок: {rate}"}
+{"k":"production.linkExternal","en":"External: {rate}","uk":"Зовнішнє: {rate}"}
+{"k":"production.linkMissing","en":"Short: {rate}","uk":"Бракує: {rate}"}
+{"k":"production.linkMissingForLinked","en":"Missing {rate} for linked steps","uk":"Бракує {rate} для пов’язаних кроків"}
+{"k":"production.linkMissingInChain","en":"Short in chain: {rate}","uk":"Бракує в ланцюгу: {rate}"}
+{"k":"production.linkCoveredByExtractions","en":"Covered by extractions","uk":"Покрито видобутком"}
+{"k":"production.linkChainExcess","en":"Chain surplus: {rate}","uk":"Надлишок ланцюга: {rate}"}
+{"k":"production.linkInsufficient","en":"Insufficient: {rate}","uk":"Недостатньо: {rate}"}
+{"k":"production.surplusFree","en":"{rate} free","uk":"{rate} вільно"}
+{"k":"energy.title","en":"Power","uk":"Енергія"}
+{"k":"energy.subtitle","en":"Create and manage your power production plans.","uk":"Створюйте та керуйте енергосхемами."}
+{"k":"energy.importPlan","en":"Import plan","uk":"Імпорт схеми"}
+{"k":"energy.newPlan","en":"New plan","uk":"Нова схема"}
+{"k":"energy.emptyList","en":"No power plans.","uk":"Немає енергосхем."}
+{"k":"energy.emptyListHint","en":"Create your first plan with the «New plan» button.","uk":"Створіть першу схему кнопкою «Нова схема»."}
+{"k":"energy.errorLoadList","en":"Error loading power plans.","uk":"Помилка завантаження енергосхем."}
+{"k":"energy.addExtraction","en":"Add extraction","uk":"Додати видобуток"}
+{"k":"energy.addGeneratorPlan","en":"Add generator setup","uk":"Додати генератор"}
+{"k":"energy.pickerExtractionSub","en":"Choose water or coal","uk":"Оберіть воду або вугілля"}
+{"k":"energy.pickerGeneratorSub","en":"Choose a generator building","uk":"Оберіть будівлю генератора"}
+{"k":"energy.sectionExtractions","en":"Extraction","uk":"Видобуток"}
+{"k":"energy.sectionGenerators","en":"Generators","uk":"Генератори"}
+{"k":"energy.emptyExtractions","en":"No extraction. Add water or coal.","uk":"Немає видобутку. Додайте воду або вугілля."}
+{"k":"energy.emptyGenerators","en":"No generators. Add a power generator building.","uk":"Немає генераторів. Додайте генератор."}
+{"k":"energy.errorDetailLoad","en":"Error loading the plan.","uk":"Помилка завантаження схеми."}
+{"k":"energy.notFound","en":"Plan not found.","uk":"Схему не знайдено."}
+{"k":"energy.metaExtractionsOne","en":"{count} extraction","uk":"{count} видобуток"}
+{"k":"energy.metaExtractionsMany","en":"{count} extractions","uk":"{count} видобутків"}
+{"k":"energy.metaGeneratorsOne","en":"{count} generator","uk":"{count} генератор"}
+{"k":"energy.metaGeneratorsMany","en":"{count} generators","uk":"{count} генераторів"}
+{"k":"energy.extractionCoal","en":"Coal extraction","uk":"Видобуток вугілля"}
+{"k":"energy.configFuel","en":"Fuel ({unit})","uk":"Паливо ({unit})"}
+{"k":"energy.configFuelType","en":"Fuel type","uk":"Тип палива"}
+{"k":"energy.adjustFuel","en":"Adjust fuel","uk":"Налаштувати паливо"}
+{"k":"energy.adjustGeneratorOverclock","en":"Adjust overclock","uk":"Налаштувати overclock"}
+{"k":"energy.adjustGeneratorCount","en":"Adjust generator count","uk":"Налаштувати кількість генераторів"}
+{"k":"energy.summaryRequired","en":"Required","uk":"Потрібно"}
+{"k":"energy.summaryProduced","en":"Produced","uk":"Вироблено"}
+{"k":"energy.summaryMissing","en":"Shortfall","uk":"Не вистачає"}
+{"k":"energy.totalPower","en":"Total power","uk":"Загальна потужність"}
+{"k":"energy.pickerNoResources","en":"No resources available.","uk":"Немає доступних ресурсів."}
+{"k":"energy.pickerNoGenerators","en":"No generators available.","uk":"Немає доступних генераторів."}
+{"k":"energy.defaultWaterExtractor","en":"Water extractor","uk":"Водяний насос"}
+{"k":"energy.defaultOilExtractor","en":"Oil extractor","uk":"Нафтовий екстрактор"}
+{"k":"energy.defaultMiner","en":"Miner","uk":"Miner"}
+{"k":"settings.title","en":"Settings","uk":"Налаштування"}
+{"k":"settings.subtitle","en":"Local data management and restore of the default resource catalog.","uk":"Локальні дані та відновлення каталогу за замовчуванням."}
+{"k":"settings.baseData","en":"Base data","uk":"Базові дані"}
+{"k":"settings.baseDataLead","en":"The item catalog, buildings, and production recipes are bundled with the app. On a new PC they are populated automatically on first launch.","uk":"Каталог, будівлі та рецепти вбудовані в застосунок. На новому ПК вони завантажуються при першому запуску."}
+{"k":"settings.statItems","en":"Resources in database","uk":"Ресурси в базі"}
+{"k":"settings.statBuildings","en":"Buildings in database","uk":"Будівлі в базі"}
+{"k":"settings.statSchemas","en":"Production recipes","uk":"Виробничі рецепти"}
+{"k":"settings.statSomersloop","en":"Buildings with Somersloop slots","uk":"Будівлі зі слотами Somersloop"}
+{"k":"settings.statBundledVersion","en":"Bundled data version","uk":"Версія вбудованих даних"}
+{"k":"settings.statStoredVersion","en":"Database data version","uk":"Версія даних у базі"}
+{"k":"settings.statLastReset","en":"Last restore","uk":"Останнє відновлення"}
+{"k":"settings.restoreTitle","en":"Restore default data","uk":"Відновити дані за замовчуванням"}
+{"k":"settings.restoreBody","en":"Reload resources, buildings (including Somersloop slots), and recipes from the bundled data. Manual edits to names and categories will be lost.","uk":"Перезавантажити ресурси, будівлі (слоти Somersloop) і рецепти з даних застосунку. Ручні зміни назв і категорій буде втрачено."}
+{"k":"settings.restoreButton","en":"Restore defaults","uk":"Відновити за замовчуванням"}
+{"k":"settings.envTitle","en":"Environment","uk":"Середовище"}
+{"k":"settings.envLead","en":"Technical information about the app and local database.","uk":"Технічна інформація про застосунок і локальну базу."}
+{"k":"settings.envDatabase","en":"Database","uk":"База даних"}
+{"k":"settings.envCatalogItems","en":"Items in catalog","uk":"Предмети в каталозі"}
+{"k":"settings.envCatalogBuildings","en":"Buildings in catalog","uk":"Будівлі в каталозі"}
+{"k":"settings.envCatalogSchemas","en":"Recipes in catalog","uk":"Рецепти в каталозі"}
+{"k":"settings.envElectron","en":"Electron","uk":"Electron"}
+{"k":"settings.envNode","en":"Node.js","uk":"Node.js"}
+{"k":"settings.envDbSchema","en":"DB schema","uk":"Схема БД"}
+{"k":"settings.envDbPath","en":"DB path","uk":"Шлях до БД"}
+{"k":"settings.restoreSuccess","en":"Restore complete: {items} resources, {buildings} buildings, {schemas} production recipes.","uk":"Відновлено: {items} ресурсів, {buildings} будівель, {schemas} рецептів."}
+{"k":"settings.errorLoadInfo","en":"Error loading data information.","uk":"Помилка завантаження інформації про дані."}
+{"k":"settings.errorRestore","en":"Error during restore.","uk":"Помилка під час відновлення."}
+{"k":"footer.disclaimer","en":"Factory Manager is an independent, unofficial fan-made tool for planning Satisfactory production. Factory Manager is not affiliated with, sponsored, approved, supported, or authorized by Coffee Stain Studios. Satisfactory, its trademarks, logos, images, icons, resources, machines, recipes, data, and other content belong to Coffee Stain Studios AB and/or their respective owners. The Factory Manager developers claim no rights to game content.","uk":"Factory Manager — незалежний неофіційний фанатський інструмент для планування виробництва в Satisfactory. Не пов’язаний, не спонсорований і не авторизований Coffee Stain Studios. Satisfactory, торгові марки, логотипи, зображення, іконки, ресурси, машини, рецепти, дані та інший контент належать Coffee Stain Studios AB та/або правовласникам. Розробники Factory Manager не претендують на права на контент гри."}
+{"k":"modals.productionCreateTitle","en":"New production plan","uk":"Нова виробнича схема"}
+{"k":"modals.productionCreatePlaceholder","en":"e.g. Rotor factory","uk":"напр. Фабрика роторів"}
+{"k":"modals.energyCreateTitle","en":"New power plan","uk":"Нова енергосхема"}
+{"k":"modals.energyCreatePlaceholder","en":"e.g. Coal power plant","uk":"напр. Вугільна станція"}
+{"k":"modals.renamePlan","en":"Rename plan","uk":"Перейменувати схему"}
+{"k":"modals.renameProductionPlan","en":"Rename production plan","uk":"Перейменувати виробничу схему"}
+{"k":"modals.renameEnergyPlan","en":"Rename power plan","uk":"Перейменувати енергосхему"}
+{"k":"modals.renameGroup","en":"Group","uk":"Група"}
+{"k":"modals.addExtractionTitle","en":"Add extraction","uk":"Додати видобуток"}
+{"k":"modals.selectResource","en":"Select resource","uk":"Оберіть ресурс"}
+{"k":"modals.selectResourceSub","en":"Choose the resource to produce","uk":"Ресурс для виробництва"}
+{"k":"modals.selectResourceExtract","en":"Select resource to extract","uk":"Ресурс для видобутку"}
+{"k":"modals.selectSchema","en":"Select recipe","uk":"Оберіть рецепт"}
+{"k":"modals.selectSchemaFor","en":"Recipe for {name}","uk":"Рецепт для {name}"}
+{"k":"modals.selectSchemaAltHint","en":"This resource has alternate recipes. Choose which to use.","uk":"Є альтернативні рецепти. Оберіть один."}
+{"k":"modals.pickerNoSchema","en":"No recipe","uk":"Немає рецепта"}
+{"k":"modals.editResource","en":"Edit resource","uk":"Редагувати ресурс"}
+{"k":"modals.resourceDetail","en":"Resource details","uk":"Деталі ресурсу"}
+{"k":"modals.confirmTitle","en":"Confirm","uk":"Підтвердження"}
+{"k":"modals.detailMainSchema","en":"Main recipe","uk":"Основний рецепт"}
+{"k":"modals.detailAltSchemas","en":"Alternate recipes ({count})","uk":"Альтернативні рецепти ({count})"}
+{"k":"modals.detailNoSchemas","en":"No production recipes registered for this resource.","uk":"Для цього ресурсу немає зареєстрованих рецептів."}
+{"k":"modals.resourceNotFound","en":"Resource not found.","uk":"Ресурс не знайдено."}
+{"k":"modals.detailLoadError","en":"Error loading details.","uk":"Помилка завантаження деталей."}
+{"k":"miners.mk1","en":"Miner Mk.1","uk":"Miner Mk.1"}
+{"k":"miners.mk2","en":"Miner Mk.2","uk":"Miner Mk.2"}
+{"k":"miners.mk3","en":"Miner Mk.3","uk":"Miner Mk.3"}
+{"k":"purity.impure","en":"Impure","uk":"Низька якість"}
+{"k":"purity.normal","en":"Normal","uk":"Звичайна"}
+{"k":"purity.pure","en":"Pure","uk":"Чиста"}
+{"k":"generators.coal","en":"Coal","uk":"Вугілля"}
+{"k":"generators.fuel","en":"Fuel","uk":"Паливо"}
+{"k":"generators.nuclear","en":"Nuclear","uk":"Ядерна"}
+{"k":"extraction.oil","en":"Crude oil extraction","uk":"Видобуток нафти"}
+{"k":"extraction.water","en":"Water extraction","uk":"Видобуток води"}
+{"k":"extraction.mineral","en":"Mineral extraction","uk":"Видобуток мінералу"}
+{"k":"extraction.coal","en":"Coal extraction","uk":"Видобуток вугілля"}
+{"k":"actions.rename","en":"Rename","uk":"Перейменувати"}
+{"k":"actions.renameAria","en":"Rename {name}","uk":"Перейменувати {name}"}
+{"k":"actions.duplicate","en":"Duplicate","uk":"Дублювати"}
+{"k":"actions.exportPlan","en":"Export plan","uk":"Експорт схеми"}
+{"k":"actions.exportAria","en":"Export {name}","uk":"Експорт {name}"}
+{"k":"actions.delete","en":"Delete","uk":"Видалити"}
+{"k":"actions.deleteAria","en":"Delete {name}","uk":"Видалити {name}"}
+{"k":"actions.reset","en":"Reset","uk":"Скинути"}
+{"k":"actions.edit","en":"Edit","uk":"Редагувати"}
+{"k":"actions.importPlan","en":"Import plan","uk":"Імпорт схеми"}
+{"k":"graph.extraction","en":"Extraction","uk":"Видобуток"}
+{"k":"graph.objective","en":"Target","uk":"Ціль"}
+{"k":"graph.grouping","en":"Group","uk":"Група"}
+{"k":"graph.mainInputs","en":"Main inputs","uk":"Головні входи"}
+{"k":"graph.mainOutputs","en":"Main outputs","uk":"Головні виходи"}
+{"k":"graph.resourceStepOne","en":"1 resource step","uk":"1 крок ресурсу"}
+{"k":"graph.resourceStepMany","en":"{count} resource steps","uk":"{count} кроків ресурсу"}
+{"k":"graph.emptyGroups","en":"No nodes to show in the group tree.","uk":"Немає вузлів у дереві груп."}
+{"k":"graph.emptyGroup","en":"No nodes to show in group «{name}».","uk":"Немає вузлів у групі «{name}»."}
+{"k":"graph.emptyTree","en":"No nodes to show. Add extractions or resource steps.","uk":"Немає вузлів. Додайте видобуток або кроки ресурсів."}
+{"k":"graph.highlightStepAria","en":"Highlight step {name}","uk":"Підсвітити крок {name}"}
+{"k":"confirm.deleteResourceStepTitle","en":"Delete resource step","uk":"Видалити крок ресурсу"}
+{"k":"confirm.deleteResourceStepMessage","en":"Remove «{name}» from this production plan?","uk":"Видалити «{name}» з цієї виробничої схеми?"}
+{"k":"confirm.deleteExtractionTitle","en":"Delete extraction","uk":"Видалити видобуток"}
+{"k":"confirm.deleteExtractionMessage","en":"Delete extraction «{name}»?","uk":"Видалити видобуток «{name}»?"}
+{"k":"confirm.deletePlanTitle","en":"Delete plan","uk":"Видалити схему"}
+{"k":"confirm.deletePlanMessage","en":"Delete plan «{name}»? This cannot be undone.","uk":"Видалити схему «{name}»? Цю дію не скасувати."}
+{"k":"confirm.deleteEnergyPlanTitle","en":"Delete plan","uk":"Видалити схему"}
+{"k":"confirm.deleteEnergyPlanMessage","en":"Delete plan «{name}»? This cannot be undone.","uk":"Видалити схему «{name}»? Цю дію не скасувати."}
+{"k":"confirm.restoreDefaultsTitle","en":"Restore default data","uk":"Відновити дані за замовчуванням"}
+{"k":"confirm.restoreDefaultsMessage","en":"Restore resources, buildings, and recipes to defaults? Manual edits to names and categories will be lost.","uk":"Відновити ресурси, будівлі та рецепти? Ручні зміни буде втрачено."}
+{"k":"confirm.restoreDefaultsConfirm","en":"Restore","uk":"Відновити"}
+{"k":"confirm.newGroupTitle","en":"New group","uk":"Нова група"}
+{"k":"confirm.renameGroupTitle","en":"Rename group","uk":"Перейменувати групу"}
+{"k":"errors.nameRequired","en":"Name is required.","uk":"Назва обов’язкова."}
+{"k":"errors.groupNameRequired","en":"Group name is required.","uk":"Назва групи обов’язкова."}
+{"k":"errors.saveFailed","en":"Error while saving.","uk":"Помилка збереження."}
+{"k":"errors.createFailed","en":"Error while creating.","uk":"Помилка створення."}
+{"k":"errors.importFailed","en":"Error while importing the plan.","uk":"Помилка імпорту схеми."}
+{"k":"errors.pickerEmpty","en":"No resources found.","uk":"Ресурсів не знайдено."}
+{"k":"errors.pickerExtractEmpty","en":"No extractable resources found.","uk":"Немає ресурсів для видобутку."}
+{"k":"picker.noResources","en":"No resources found.","uk":"Ресурсів не знайдено."}
