@@ -22,3 +22,7 @@ Factory Manager does not replace the original game, does not allow users to play
 Production data and calculations may contain errors or may not always reflect the latest game updates, balancing changes, or recipe modifications.
 
 Factory Manager is provided as-is, without warranties of accuracy, availability, or fitness for a particular purpose.
+
+## Community
+
+Join the discussion on Facebook: [Factory Manager](https://www.facebook.com/groups/factorymanager)
