@@ -1,6 +1,6 @@
 {
   "name": "factory-manager",
-  "version": "1.27.0",
+  "version": "1.28.0",
   "description": "Unofficial fan-made production planner for Satisfactory. Plan chains, machines, rates and layouts locally.",
   "productName": "Factory Manager",
   "main": "electron/main.js",
@@ -8,7 +8,73 @@
     "start": "electron .",
     "dev": "electron . --enable-logging",
     "import:items": "node scripts/import-items.js",
-    "import:details": "node scripts/import-item-details.js"
+    "import:details": "node scripts/import-item-details.js",
+    "build": "electron-builder --win",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:dir": "electron-builder --win --dir"
+  },
+  "build": {
+    "appId": "com.factorymanager.app",
+    "productName": "Factory Manager",
+    "copyright": "Copyright © Raffaele Maiorino",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "src/**/*",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "src/renderer/assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Factory Manager"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.utilities",
+      "icon": "src/renderer/assets/app-icon.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
   },
   "keywords": [
     "satisfactory",
@@ -23,7 +89,8 @@
   "author": "Raffaele Maiorino",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^35.0.0"
+    "electron": "^35.0.0",
+    "electron-builder": "^26.15.3"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",

@@ -7,6 +7,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.28.0] - 2026-07-20
+
+### Added
+- Build desktop con electron-builder: installer NSIS e versione portable Windows (`npm run build`)
+
 ## [1.27.0] - 2026-07-20
 
 ### Changed
