@@ -1,42 +1,24 @@
-# FACTORY MANAGER
+# Factory Manager
 
-Gestione locale di risorse, ricette e catene di produzione di **Satisfactory**, costruito con Electron e SQLite (via sql.js, nessuna compilazione nativa).
+Factory Manager is an independent, unofficial, fan-made production planning tool for Satisfactory.
 
-## Struttura
+It is designed to help players visually plan and calculate production chains, including:
 
-```
-satisfactory/
-├── electron/           # Processo main Electron
-│   ├── main.js
-│   └── preload.js
-├── src/
-│   ├── database/       # Layer SQLite (sql.js)
-│   │   └── index.js
-│   └── renderer/       # UI (HTML/CSS/JS)
-│       ├── assets/     # Logo e immagini UI
-│       ├── index.html
-│       ├── styles/
-│       └── scripts/
-└── data/               # Placeholder — il DB vive in userData
-```
+* required resources;
+* production inputs and outputs;
+* machine quantities;
+* production rates;
+* recipes and manufacturing steps;
+* factory layouts and production schemes.
 
-## Avvio
+Factory Manager is a local application and is not affiliated with, endorsed by, sponsored by, supported by, or officially connected to Coffee Stain Studios AB, Coffee Stain Publishing AB, or any other Coffee Stain company.
 
-```bash
-npm install
-npm start
-```
+Satisfactory, its name, trademarks, logos, images, icons, resources, machines, buildings, items, recipes, production elements, game data, and all related content are the property of Coffee Stain Studios AB and/or their respective owners and licensors.
 
-Dev mode (con DevTools):
+The developers of Factory Manager do not claim ownership of any Satisfactory-related content. Any references, names, images, icons, or game assets used within the application are included solely for informational, descriptive, and identification purposes.
 
-```bash
-npm run dev
-```
+Factory Manager does not replace the original game, does not allow users to play Satisfactory, and does not distribute copies, files, or executable content from the game.
 
-## Database
+Production data and calculations may contain errors or may not always reflect the latest game updates, balancing changes, or recipe modifications.
 
-SQLite viene creato automaticamente in:
-
-- Windows: `%APPDATA%/satisfactory-manager/data/satisfactory.db`
-
-Tabelle iniziali: `items`, `item_categories`, `item_schemas`, `schema_io`.
+Factory Manager is provided as-is, without warranties of accuracy, availability, or fitness for a particular purpose.
