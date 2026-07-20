@@ -19,7 +19,7 @@
     "sqlite",
     "javascript"
   ],
-  "author": "",
+  "author": "Raffaele Maiorino",
   "license": "MIT",
   "devDependencies": {
     "electron": "^35.0.0"
