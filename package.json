@@ -1,7 +1,7 @@
 {
   "name": "factory-manager",
   "version": "1.27.0",
-  "description": "FACTORY MANAGER — gestione locale di risorse e catene di produzione Satisfactory",
+  "description": "Unofficial fan-made production planner for Satisfactory. Plan chains, machines, rates and layouts locally.",
   "productName": "Factory Manager",
   "main": "electron/main.js",
   "scripts": {
@@ -13,9 +13,14 @@
   "keywords": [
     "satisfactory",
     "electron",
-    "production-manager"
+    "production-manager",
+    "factory",
+    "fan-made",
+    "desktop",
+    "sqlite",
+    "javascript"
   ],
-  "author": "",
+  "author": "Raffaele Maiorino",
   "license": "MIT",
   "devDependencies": {
     "electron": "^35.0.0"
@@ -23,5 +28,8 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
     "sql.js": "^1.12.0"
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/groups/factorymanager"
   }
 }
