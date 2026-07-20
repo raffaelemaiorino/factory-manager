@@ -1,6 +1,13 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
-const { readFileSync, writeFileSync } = require('fs');
+const {
+  readFileSync,
+  writeFileSync,
+  existsSync,
+  mkdirSync,
+  copyFileSync,
+  statSync,
+} = require('fs');
 const {
   loadProductionUiState,
   saveProductionUiState,
@@ -9,6 +16,54 @@ const {
 const { version: appVersion } = JSON.parse(
   readFileSync(path.join(__dirname, '../package.json'), 'utf8')
 );
+
+const USER_DATA_DIR_NAME = 'factory-manager';
+const DB_FILE_NAME = 'factory-manager.db';
+const UI_STATE_FILE = 'production-ui-state.json';
+const LEGACY_USER_DATA_DIR_NAMES = [
+  'satisfactory-manager',
+  'Satisfactory Manager',
+  'FACTORY MANAGER',
+  'satisfactory-planner',
+];
+const LEGACY_DB_FILE_NAMES = ['satisfactory.db'];
+
+// Deve essere impostato prima di app.ready
+app.setPath('userData', path.join(app.getPath('appData'), USER_DATA_DIR_NAME));
+
+function migrateLegacyUserData(targetPath) {
+  const targetDb = path.join(targetPath, 'data', DB_FILE_NAME);
+  if (existsSync(targetDb)) return;
+
+  const appData = app.getPath('appData');
+  let best = null;
+
+  for (const dirName of LEGACY_USER_DATA_DIR_NAMES) {
+    for (const dbName of LEGACY_DB_FILE_NAMES) {
+      const dbPath = path.join(appData, dirName, 'data', dbName);
+      if (!existsSync(dbPath)) continue;
+      const mtime = statSync(dbPath).mtimeMs;
+      if (!best || mtime > best.mtime) {
+        best = {
+          dbPath,
+          mtime,
+          uiStatePath: path.join(appData, dirName, UI_STATE_FILE),
+        };
+      }
+    }
+  }
+
+  if (!best) return;
+
+  mkdirSync(path.join(targetPath, 'data'), { recursive: true });
+  copyFileSync(best.dbPath, targetDb);
+
+  const targetUi = path.join(targetPath, UI_STATE_FILE);
+  if (!existsSync(targetUi) && existsSync(best.uiStatePath)) {
+    copyFileSync(best.uiStatePath, targetUi);
+  }
+}
+
 const {
   initDatabase,
   getDbStatus,
@@ -101,6 +156,7 @@ app.whenReady().then(async () => {
   app.setName('FACTORY MANAGER');
   Menu.setApplicationMenu(null);
   userDataPath = app.getPath('userData');
+  migrateLegacyUserData(userDataPath);
   await initDatabase(userDataPath);
   createWindow();
 

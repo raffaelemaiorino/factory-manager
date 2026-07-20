@@ -70,15 +70,32 @@ const {
   resetEnergyExtraction: resetChainEnergyExtraction,
 } = require('./energy-extraction');
 
+const DB_FILE_NAME = 'factory-manager.db';
+const LEGACY_DB_FILE_NAMES = ['satisfactory.db'];
+
 let db;
 let dbPath;
 let SQL;
+
+function ensureDbFileFromLegacy(dataDir) {
+  const targetPath = path.join(dataDir, DB_FILE_NAME);
+  if (fs.existsSync(targetPath)) return targetPath;
+
+  for (const legacyName of LEGACY_DB_FILE_NAMES) {
+    const legacyPath = path.join(dataDir, legacyName);
+    if (!fs.existsSync(legacyPath)) continue;
+    fs.copyFileSync(legacyPath, targetPath);
+    return targetPath;
+  }
+
+  return targetPath;
+}
 
 async function initDatabase(userDataPath) {
   const dataDir = path.join(userDataPath, 'data');
   fs.mkdirSync(dataDir, { recursive: true });
 
-  dbPath = path.join(dataDir, 'satisfactory.db');
+  dbPath = ensureDbFileFromLegacy(dataDir);
 
   SQL = await initSqlJs({
     locateFile: (file) =>

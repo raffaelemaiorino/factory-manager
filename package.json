@@ -1,7 +1,8 @@
 {
-  "name": "satisfactory-manager",
-  "version": "1.26.5",
+  "name": "factory-manager",
+  "version": "1.27.0",
   "description": "FACTORY MANAGER — gestione locale di risorse e catene di produzione Satisfactory",
+  "productName": "Factory Manager",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",

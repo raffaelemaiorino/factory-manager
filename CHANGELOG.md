@@ -7,6 +7,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.27.0] - 2026-07-20
+
+### Changed
+- Dati locali in cartella `factory-manager` (AppData) e database rinominato in `factory-manager.db`, con migrazione automatica dal percorso precedente
+
 ## [1.26.5] - 2026-07-19
 
 ### Changed
