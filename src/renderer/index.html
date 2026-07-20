@@ -17,18 +17,35 @@
     <div class="app" id="app" data-view="dashboard">
       <header class="topbar">
         <div class="brand brand--compact">
-          <img class="brand-logo brand-logo--compact" src="assets/logo.png" alt="FACTORY MANAGER" />
+          <img class="brand-logo brand-logo--compact" src="assets/logo.png" alt="FACTORY MANAGER" data-i18n-alt="app.brandAlt" />
         </div>
         <div class="topbar-actions">
           <nav class="nav" id="main-nav">
-            <button class="nav-item active" type="button" data-view="dashboard">
+            <button class="nav-item active" type="button" data-view="dashboard" data-i18n="nav.dashboard">
               Dashboard
             </button>
-            <button class="nav-item" type="button" data-view="resources">Risorse</button>
-            <button class="nav-item" type="button" data-view="production">Produzione</button>
-            <button class="nav-item" type="button" data-view="energy">Energia</button>
-            <button class="nav-item" type="button" data-view="settings">Impostazioni</button>
+            <button class="nav-item" type="button" data-view="resources" data-i18n="nav.resources">Risorse</button>
+            <button class="nav-item" type="button" data-view="production" data-i18n="nav.production">Produzione</button>
+            <button class="nav-item" type="button" data-view="energy" data-i18n="nav.energy">Energia</button>
+            <button class="nav-item" type="button" data-view="settings" data-i18n="nav.settings">Impostazioni</button>
           </nav>
+          <div class="theme-select locale-select" id="locale-select">
+            <button
+              type="button"
+              class="theme-select-trigger topbar-locale-btn"
+              id="locale-select-trigger"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-controls="locale-select-menu"
+              title="Lingua / Language"
+              data-i18n-title="topbar.languageTitle"
+            >
+              <i class="fa-solid fa-globe" aria-hidden="true"></i>
+              <span class="theme-select-value" id="locale-select-value">IT</span>
+              <span class="theme-select-chevron" aria-hidden="true"></span>
+            </button>
+            <ul class="theme-select-menu locale-select-menu hidden" id="locale-select-menu" role="listbox" aria-labelledby="locale-select-trigger"></ul>
+          </div>
           <button
             type="button"
             class="topbar-info-btn"
@@ -36,9 +53,10 @@
             aria-haspopup="dialog"
             aria-controls="legal-info-modal"
             title="Informazioni legali"
+            data-i18n-title="topbar.infoTitle"
           >
             <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-            <span>Info</span>
+            <span data-i18n="topbar.info">Info</span>
           </button>
         </div>
       </header>
@@ -51,25 +69,26 @@
               class="dashboard-logo"
               src="assets/logo.png"
               alt="FACTORY MANAGER"
+              data-i18n-alt="app.brandAlt"
             />
           </section>
 
           <section class="hero card dashboard-hero">
             <div class="hero-text">
-              <span class="pill">FICSIT Approved™</span>
-              <h2>Benvenuto, ingegnere</h2>
-              <p class="hero-lead">
+              <span class="pill" data-i18n="app.ficsitApproved">FICSIT Approved™</span>
+              <h2 data-i18n="dashboard.welcomeTitle">Benvenuto, ingegnere</h2>
+              <p class="hero-lead" data-i18n="dashboard.lead1">
                 FACTORY MANAGER è lo strumento locale per pianificare le tue fabbriche in
                 Satisfactory: catalogo oggetti, catene di produzione e schemi energia, tutto
                 salvato sul PC senza account né cloud.
               </p>
-              <p>
+              <p data-i18n="dashboard.lead2">
                 Definisci obiettivi di output, calcola macchine, overclock e power shard,
                 configura estrazioni sui nodi minerari e dimensiona generatori con il
                 relativo combustibile. L’app aggiorna in tempo reale bilanci risorse ed energia
                 e segnala deficit di materie prime o di alimentazione.
               </p>
-              <p>
+              <p data-i18n="dashboard.lead3">
                 Da questa dashboard hai la panoramica operativa: progetti recenti, avvisi
                 critici, obiettivi di produzione e mix dei generatori — così sai dove
                 intervenire prima di aprire Produzione o Energia.
@@ -77,39 +96,39 @@
             </div>
             <div class="hero-stats dashboard-kpi-grid" id="dashboard-kpi">
               <div class="stat">
-                <span class="stat-label">Catene produzione</span>
+                <span class="stat-label" data-i18n="dashboard.kpiProductionChains">Catene produzione</span>
                 <span class="stat-value" id="kpi-production-chains">0</span>
               </div>
               <div class="stat">
-                <span class="stat-label">Schemi energia</span>
+                <span class="stat-label" data-i18n="dashboard.kpiEnergyPlans">Schemi energia</span>
                 <span class="stat-value" id="kpi-energy-chains">0</span>
               </div>
               <div class="stat">
-                <span class="stat-label">Produzione energia</span>
+                <span class="stat-label" data-i18n="dashboard.kpiEnergyMw">Produzione energia</span>
                 <span class="stat-value stat-value--compact" id="kpi-energy-mw">—</span>
               </div>
               <div class="stat">
-                <span class="stat-label">Macchine</span>
+                <span class="stat-label" data-i18n="dashboard.kpiMachines">Macchine</span>
                 <span class="stat-value" id="kpi-machines">0</span>
               </div>
               <div class="stat">
-                <span class="stat-label">Generatori</span>
+                <span class="stat-label" data-i18n="dashboard.kpiGenerators">Generatori</span>
                 <span class="stat-value" id="kpi-generators">0</span>
               </div>
               <div class="stat">
-                <span class="stat-label">Nodi estratti</span>
+                <span class="stat-label" data-i18n="dashboard.kpiNodes">Nodi estratti</span>
                 <span class="stat-value" id="kpi-nodes">0</span>
               </div>
               <div class="stat">
-                <span class="stat-label">Power shard</span>
+                <span class="stat-label" data-i18n="dashboard.kpiPowerShards">Power shard</span>
                 <span class="stat-value" id="kpi-power-shards">0</span>
               </div>
               <div class="stat">
-                <span class="stat-label">Deficit attivi</span>
+                <span class="stat-label" data-i18n="dashboard.kpiDeficits">Deficit attivi</span>
                 <span class="stat-value" id="kpi-deficits">0</span>
               </div>
               <div class="stat">
-                <span class="stat-label">Ultimo progetto</span>
+                <span class="stat-label" data-i18n="dashboard.kpiLastProject">Ultimo progetto</span>
                 <span class="stat-value stat-value--compact" id="kpi-last-updated">—</span>
               </div>
             </div>
@@ -118,21 +137,21 @@
           <section class="dashboard-panels">
             <article class="card dashboard-panel">
               <header class="dashboard-panel-header">
-                <h3>I tuoi progetti</h3>
-                <p class="dashboard-panel-subtitle">Ordinati per ultima modifica</p>
+                <h3 data-i18n="dashboard.panelProjects">I tuoi progetti</h3>
+                <p class="dashboard-panel-subtitle" data-i18n="dashboard.panelProjectsSub">Ordinati per ultima modifica</p>
               </header>
               <div id="dashboard-projects" class="dashboard-projects-list">
-                <p class="dashboard-loading">Caricamento…</p>
+                <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
               </div>
             </article>
 
             <article class="card dashboard-panel dashboard-panel--alerts">
               <header class="dashboard-panel-header">
-                <h3>Richiede attenzione</h3>
-                <p class="dashboard-panel-subtitle">Deficit risorse e combustibili</p>
+                <h3 data-i18n="dashboard.panelAlerts">Richiede attenzione</h3>
+                <p class="dashboard-panel-subtitle" data-i18n="dashboard.panelAlertsSub">Deficit risorse e combustibili</p>
               </header>
               <div id="dashboard-alerts" class="dashboard-alerts-list">
-                <p class="dashboard-loading">Caricamento…</p>
+                <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
               </div>
             </article>
           </section>
@@ -140,31 +159,31 @@
           <section class="dashboard-charts">
             <article class="card dashboard-chart-panel">
               <header class="dashboard-panel-header">
-                <h3>Top deficit risorse</h3>
-                <p class="dashboard-panel-subtitle">Aggregato su tutti i progetti</p>
+                <h3 data-i18n="dashboard.chartDeficits">Top deficit risorse</h3>
+                <p class="dashboard-panel-subtitle" data-i18n="dashboard.chartDeficitsSub">Aggregato su tutti i progetti</p>
               </header>
               <div id="dashboard-chart-deficits" class="dashboard-chart-body">
-                <p class="dashboard-loading">Caricamento…</p>
+                <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
               </div>
             </article>
 
             <article class="card dashboard-chart-panel">
               <header class="dashboard-panel-header">
-                <h3>Obiettivi di produzione</h3>
-                <p class="dashboard-panel-subtitle">Output finali per catena</p>
+                <h3 data-i18n="dashboard.chartObjectives">Obiettivi di produzione</h3>
+                <p class="dashboard-panel-subtitle" data-i18n="dashboard.chartObjectivesSub">Output finali per catena</p>
               </header>
               <div id="dashboard-chart-objectives" class="dashboard-chart-body">
-                <p class="dashboard-loading">Caricamento…</p>
+                <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
               </div>
             </article>
 
             <article class="card dashboard-chart-panel">
               <header class="dashboard-panel-header">
-                <h3>Mix generatori</h3>
-                <p class="dashboard-panel-subtitle">Potenza per tipo</p>
+                <h3 data-i18n="dashboard.chartPower">Mix generatori</h3>
+                <p class="dashboard-panel-subtitle" data-i18n="dashboard.chartPowerSub">Potenza per tipo</p>
               </header>
               <div id="dashboard-chart-power" class="dashboard-chart-body">
-                <p class="dashboard-loading">Caricamento…</p>
+                <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
               </div>
             </article>
           </section>
@@ -172,30 +191,30 @@
           <section class="grid">
             <article class="card feature-card clickable" data-goto="resources">
               <div class="card-icon">📦</div>
-              <h3>Risorse</h3>
-              <p>
+              <h3 data-i18n="dashboard.featureResourcesTitle">Risorse</h3>
+              <p data-i18n="dashboard.featureResourcesBody">
                 Catalogo oggetti del gioco divisi per tipologia: minerali, lingotti,
                 liquidi e componenti.
               </p>
-              <span class="tag tag-ready">Disponibile</span>
+              <span class="tag tag-ready" data-i18n="common.available">Disponibile</span>
             </article>
 
             <article class="card feature-card clickable" data-goto="production">
               <div class="card-icon">🔗</div>
-              <h3>Catene di produzione</h3>
-              <p>
+              <h3 data-i18n="dashboard.featureProductionTitle">Catene di produzione</h3>
+              <p data-i18n="dashboard.featureProductionBody">
                 Salva e riapri i tuoi progetti di fabbrica senza dipendere dal cloud.
               </p>
-              <span class="tag tag-ready">Disponibile</span>
+              <span class="tag tag-ready" data-i18n="common.available">Disponibile</span>
             </article>
 
             <article class="card feature-card clickable" data-goto="energy">
               <div class="card-icon">⚡</div>
-              <h3>Pianificazione energia</h3>
-              <p>
+              <h3 data-i18n="dashboard.featureEnergyTitle">Pianificazione energia</h3>
+              <p data-i18n="dashboard.featureEnergyBody">
                 Progetta estrazioni e generatori per alimentare la tua fabbrica.
               </p>
-              <span class="tag tag-ready">Disponibile</span>
+              <span class="tag tag-ready" data-i18n="common.available">Disponibile</span>
             </article>
           </section>
 
@@ -205,14 +224,14 @@
         <div class="view" id="view-resources">
           <section class="page-header card">
             <div class="breadcrumb">
-              <span>Oggetti</span>
+              <span data-i18n="breadcrumb.items">Oggetti</span>
               <span class="breadcrumb-sep">›</span>
-              <span class="breadcrumb-current">Risorse</span>
+              <span class="breadcrumb-current" data-i18n="resources.title">Risorse</span>
             </div>
             <div class="page-header-row">
               <div>
-                <h2>Risorse</h2>
-                <p class="page-subtitle">
+                <h2 data-i18n="resources.title">Risorse</h2>
+                <p class="page-subtitle" data-i18n="resources.subtitle">
                   Catalogo oggetti Satisfactory (Stable 1.2)
                 </p>
               </div>
@@ -221,6 +240,7 @@
                   type="search"
                   id="resource-search"
                   placeholder="Cerca risorsa…"
+                  data-i18n-placeholder="resources.searchPlaceholder"
                   autocomplete="off"
                 />
                 <span class="search-count" id="search-count"></span>
@@ -228,18 +248,18 @@
             </div>
             <label class="filter-toggle" for="hide-no-schemas">
               <input type="checkbox" id="hide-no-schemas" checked />
-              <span>Nascondi risorse senza schemi di produzione</span>
+              <span data-i18n="resources.hideWithoutSchemas">Nascondi risorse senza schemi di produzione</span>
             </label>
           </section>
 
           <div class="resources-layout">
             <aside class="card category-sidebar" id="category-sidebar">
-              <h3>Categorie</h3>
+              <h3 data-i18n="resources.categories">Categorie</h3>
               <ul class="category-list" id="category-list"></ul>
             </aside>
 
             <div class="resources-main" id="resources-container">
-              <p class="loading">Caricamento risorse…</p>
+              <p class="loading" data-i18n="common.loadingResources">Caricamento risorse…</p>
             </div>
           </div>
         </div>
@@ -248,22 +268,22 @@
         <div class="view" id="view-production">
           <section class="page-header card">
             <div class="breadcrumb">
-              <span>Progetti</span>
+              <span data-i18n="breadcrumb.projects">Progetti</span>
               <span class="breadcrumb-sep">›</span>
-              <span class="breadcrumb-current">Produzione</span>
+              <span class="breadcrumb-current" data-i18n="nav.production">Produzione</span>
             </div>
             <div class="page-header-row">
               <div>
-                <h2>Produzione</h2>
-                <p class="page-subtitle">
+                <h2 data-i18n="production.title">Produzione</h2>
+                <p class="page-subtitle" data-i18n="production.subtitle">
                   Crea e gestisci i tuoi schemi di produzione personalizzati.
                 </p>
               </div>
               <div class="page-header-actions">
-                <button type="button" class="btn btn-ghost" id="btn-import-production">
+                <button type="button" class="btn btn-ghost" id="btn-import-production" data-i18n="production.importPlan">
                   Importa schema
                 </button>
-                <button type="button" class="btn btn-primary" id="btn-new-production">
+                <button type="button" class="btn btn-primary" id="btn-new-production" data-i18n="production.newPlan">
                   Nuovo schema
                 </button>
               </div>
@@ -271,7 +291,7 @@
           </section>
 
           <div class="production-main" id="production-container">
-            <p class="loading">Caricamento schemi…</p>
+            <p class="loading" data-i18n="common.loadingSchemas">Caricamento schemi…</p>
           </div>
         </div>
 
@@ -280,9 +300,9 @@
           <section class="page-header card production-detail-header">
             <div class="production-detail-header-grid">
               <div class="breadcrumb production-detail-breadcrumb">
-                <span>Progetti</span>
+                <span data-i18n="breadcrumb.projects">Progetti</span>
                 <span class="breadcrumb-sep">›</span>
-                <button type="button" class="breadcrumb-link" id="production-detail-back">
+                <button type="button" class="breadcrumb-link" id="production-detail-back" data-i18n="nav.production">
                   Produzione
                 </button>
                 <span class="breadcrumb-sep">›</span>
@@ -300,7 +320,7 @@
                   aria-pressed="false"
                 >
                   <i class="fa-solid fa-code-fork" aria-hidden="true"></i>
-                  Visualizzazione ad albero
+                  <span data-i18n="production.treeView">Visualizzazione ad albero</span>
                 </button>
                 <button
                   type="button"
@@ -310,15 +330,15 @@
                   hidden
                 >
                   <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
-                  Visualizzazione ad albero Gruppi
+                  <span data-i18n="production.treeViewGroups">Visualizzazione ad albero Gruppi</span>
                 </button>
                 <button type="button" class="btn btn-primary" id="btn-add-extraction">
                   <i class="fa-solid fa-hammer" aria-hidden="true"></i>
-                  Aggiungi estrazione
+                  <span data-i18n="production.addExtraction">Aggiungi estrazione</span>
                 </button>
                 <button type="button" class="btn btn-primary" id="btn-add-resource-step">
                   <i class="fa-solid fa-braille" aria-hidden="true"></i>
-                  Aggiungi schema risorsa
+                  <span data-i18n="production.addResourceStep">Aggiungi schema risorsa</span>
                 </button>
               </div>
               <div id="production-detail-external-summary" class="production-external-summary"></div>
@@ -326,7 +346,7 @@
           </section>
 
           <section class="card production-detail-main" id="production-detail-body">
-            <p class="loading">Caricamento…</p>
+            <p class="loading" data-i18n="common.loading">Caricamento…</p>
           </section>
         </div>
 
@@ -334,22 +354,22 @@
         <div class="view" id="view-energy">
           <section class="page-header card">
             <div class="breadcrumb">
-              <span>Progetti</span>
+              <span data-i18n="breadcrumb.projects">Progetti</span>
               <span class="breadcrumb-sep">›</span>
-              <span class="breadcrumb-current">Energia</span>
+              <span class="breadcrumb-current" data-i18n="nav.energy">Energia</span>
             </div>
             <div class="page-header-row">
               <div>
-                <h2>Energia</h2>
-                <p class="page-subtitle">
+                <h2 data-i18n="energy.title">Energia</h2>
+                <p class="page-subtitle" data-i18n="energy.subtitle">
                   Crea e gestisci i tuoi schemi di produzione energia.
                 </p>
               </div>
               <div class="page-header-actions">
-                <button type="button" class="btn btn-ghost" id="btn-import-energy">
+                <button type="button" class="btn btn-ghost" id="btn-import-energy" data-i18n="energy.importPlan">
                   Importa schema
                 </button>
-                <button type="button" class="btn btn-primary" id="btn-new-energy">
+                <button type="button" class="btn btn-primary" id="btn-new-energy" data-i18n="energy.newPlan">
                   Nuovo schema
                 </button>
               </div>
@@ -357,7 +377,7 @@
           </section>
 
           <div class="production-main" id="energy-container">
-            <p class="loading">Caricamento schemi…</p>
+            <p class="loading" data-i18n="common.loadingSchemas">Caricamento schemi…</p>
           </div>
         </div>
 
@@ -366,9 +386,9 @@
           <section class="page-header card production-detail-header">
             <div class="production-detail-header-grid">
               <div class="breadcrumb production-detail-breadcrumb">
-                <span>Progetti</span>
+                <span data-i18n="breadcrumb.projects">Progetti</span>
                 <span class="breadcrumb-sep">›</span>
-                <button type="button" class="breadcrumb-link" id="energy-detail-back">
+                <button type="button" class="breadcrumb-link" id="energy-detail-back" data-i18n="nav.energy">
                   Energia
                 </button>
                 <span class="breadcrumb-sep">›</span>
@@ -381,11 +401,11 @@
               <div class="production-detail-actions">
                 <button type="button" class="btn btn-primary" id="btn-add-energy-extraction">
                   <i class="fa-solid fa-hammer" aria-hidden="true"></i>
-                  Aggiungi estrazione
+                  <span data-i18n="energy.addExtraction">Aggiungi estrazione</span>
                 </button>
                 <button type="button" class="btn btn-primary" id="btn-add-energy-generator">
                   <i class="fa-solid fa-industry" aria-hidden="true"></i>
-                  Aggiungi schema energia
+                  <span data-i18n="energy.addGeneratorPlan">Aggiungi schema energia</span>
                 </button>
               </div>
               <div id="energy-detail-external-summary" class="production-external-summary"></div>
@@ -393,7 +413,7 @@
           </section>
 
           <section class="card production-detail-main" id="energy-detail-body">
-            <p class="loading">Caricamento…</p>
+            <p class="loading" data-i18n="common.loading">Caricamento…</p>
           </section>
         </div>
 
@@ -401,63 +421,63 @@
         <div class="view" id="view-settings">
           <section class="page-header card">
             <div class="breadcrumb">
-              <span>Sistema</span>
+              <span data-i18n="breadcrumb.system">Sistema</span>
               <span class="breadcrumb-sep">›</span>
-              <span class="breadcrumb-current">Impostazioni</span>
+              <span class="breadcrumb-current" data-i18n="nav.settings">Impostazioni</span>
             </div>
-            <h2>Impostazioni</h2>
-            <p class="page-subtitle">
+            <h2 data-i18n="settings.title">Impostazioni</h2>
+            <p class="page-subtitle" data-i18n="settings.subtitle">
               Gestione dati locali e ripristino del catalogo risorse predefinito.
             </p>
           </section>
 
           <section class="card settings-panel">
-            <h3>Dati base</h3>
-            <p class="settings-lead">
+            <h3 data-i18n="settings.baseData">Dati base</h3>
+            <p class="settings-lead" data-i18n="settings.baseDataLead">
               Il catalogo oggetti, le strutture e gli schemi di produzione sono inclusi
               nell'applicazione. Su un PC nuovo vengono popolati automaticamente al primo avvio.
             </p>
 
             <dl class="info-list settings-stats" id="settings-resources-stats">
               <div>
-                <dt>Risorse nel database</dt>
+                <dt data-i18n="settings.statItems">Risorse nel database</dt>
                 <dd id="settings-count-items">—</dd>
               </div>
               <div>
-                <dt>Strutture nel database</dt>
+                <dt data-i18n="settings.statBuildings">Strutture nel database</dt>
                 <dd id="settings-count-buildings">—</dd>
               </div>
               <div>
-                <dt>Schemi di produzione</dt>
+                <dt data-i18n="settings.statSchemas">Schemi di produzione</dt>
                 <dd id="settings-count-schemas">—</dd>
               </div>
               <div>
-                <dt>Edifici con slot Somersloop</dt>
+                <dt data-i18n="settings.statSomersloop">Edifici con slot Somersloop</dt>
                 <dd id="settings-count-somersloop-buildings">—</dd>
               </div>
               <div>
-                <dt>Versione dati inclusi</dt>
+                <dt data-i18n="settings.statBundledVersion">Versione dati inclusi</dt>
                 <dd id="settings-bundled-version">—</dd>
               </div>
               <div>
-                <dt>Versione dati nel database</dt>
+                <dt data-i18n="settings.statStoredVersion">Versione dati nel database</dt>
                 <dd id="settings-stored-version">—</dd>
               </div>
               <div>
-                <dt>Ultimo ripristino</dt>
+                <dt data-i18n="settings.statLastReset">Ultimo ripristino</dt>
                 <dd id="settings-last-reset">—</dd>
               </div>
             </dl>
 
             <div class="settings-action">
               <div>
-                <h4>Ripristina dati predefiniti</h4>
-                <p>
+                <h4 data-i18n="settings.restoreTitle">Ripristina dati predefiniti</h4>
+                <p data-i18n="settings.restoreBody">
                   Ricarica risorse, strutture (inclusi slot Somersloop) e schemi dai dati inclusi nell'app.
                   Le modifiche manuali a nomi e categorie verranno perse.
                 </p>
               </div>
-              <button type="button" class="btn btn-danger" id="btn-restore-resources">
+              <button type="button" class="btn btn-danger" id="btn-restore-resources" data-i18n="settings.restoreButton">
                 Ripristina predefiniti
               </button>
             </div>
@@ -466,41 +486,41 @@
           </section>
 
           <section class="card settings-panel">
-            <h3>Stato ambiente</h3>
-            <p class="settings-lead">
+            <h3 data-i18n="settings.envTitle">Stato ambiente</h3>
+            <p class="settings-lead" data-i18n="settings.envLead">
               Informazioni tecniche sull'applicazione e sul database locale.
             </p>
             <dl class="info-list settings-stats">
               <div>
-                <dt>Database</dt>
+                <dt data-i18n="settings.envDatabase">Database</dt>
                 <dd id="env-db-connected">—</dd>
               </div>
               <div>
-                <dt>Oggetti nel catalogo</dt>
+                <dt data-i18n="settings.envCatalogItems">Oggetti nel catalogo</dt>
                 <dd id="env-count-items">—</dd>
               </div>
               <div>
-                <dt>Strutture nel catalogo</dt>
+                <dt data-i18n="settings.envCatalogBuildings">Strutture nel catalogo</dt>
                 <dd id="env-count-buildings">—</dd>
               </div>
               <div>
-                <dt>Schemi nel catalogo</dt>
+                <dt data-i18n="settings.envCatalogSchemas">Schemi nel catalogo</dt>
                 <dd id="env-count-schemas">—</dd>
               </div>
               <div>
-                <dt>Electron</dt>
+                <dt data-i18n="settings.envElectron">Electron</dt>
                 <dd id="env-electron">—</dd>
               </div>
               <div>
-                <dt>Node.js</dt>
+                <dt data-i18n="settings.envNode">Node.js</dt>
                 <dd id="env-node">—</dd>
               </div>
               <div>
-                <dt>Schema DB</dt>
+                <dt data-i18n="settings.envDbSchema">Schema DB</dt>
                 <dd id="env-schema">—</dd>
               </div>
               <div>
-                <dt>Percorso DB</dt>
+                <dt data-i18n="settings.envDbPath">Percorso DB</dt>
                 <dd id="env-db-path" class="mono">—</dd>
               </div>
             </dl>
@@ -511,7 +531,7 @@
       <footer class="footer">
         <div class="footer-meta">
           <span id="app-version">FACTORY MANAGER</span>
-          <p class="footer-disclaimer">
+          <p class="footer-disclaimer" data-i18n="footer.disclaimer">
             Factory Manager è uno strumento fan-made indipendente e non ufficiale per la
             pianificazione delle produzioni in Satisfactory.
             Factory Manager non è affiliato, sponsorizzato, approvato, supportato o autorizzato
@@ -523,40 +543,42 @@
             appartenenti al gioco.
           </p>
         </div>
-        <span class="footer-accent">FICSIT Approved™</span>
+        <span class="footer-accent" data-i18n="app.ficsitApproved">FICSIT Approved™</span>
       </footer>
     </div>
 
     <div class="modal-overlay hidden" id="production-create-modal" aria-hidden="true">
       <div class="modal card" role="dialog" aria-labelledby="production-create-modal-title">
         <header class="modal-header">
-          <h3 id="production-create-modal-title">Nuovo schema di produzione</h3>
+          <h3 id="production-create-modal-title" data-i18n="modals.productionCreateTitle">Nuovo schema di produzione</h3>
           <button
             type="button"
             class="modal-close"
             id="production-create-modal-close"
             aria-label="Chiudi"
+            data-i18n-aria="common.closeAria"
           >
             ×
           </button>
         </header>
         <form id="production-create-form" class="modal-body">
           <div class="form-field">
-            <label for="production-chain-name">Nome</label>
+            <label for="production-chain-name" data-i18n="common.name">Nome</label>
             <input
               type="text"
               id="production-chain-name"
               required
               autocomplete="off"
               placeholder="Es. Fabbrica di rotori"
+              data-i18n-placeholder="modals.productionCreatePlaceholder"
             />
           </div>
           <p class="form-error hidden" id="production-create-error"></p>
           <div class="modal-actions">
-            <button type="button" class="btn btn-ghost" id="production-create-cancel">
+            <button type="button" class="btn btn-ghost" id="production-create-cancel" data-i18n="common.cancel">
               Annulla
             </button>
-            <button type="submit" class="btn btn-primary">Crea</button>
+            <button type="submit" class="btn btn-primary" data-i18n="common.create">Crea</button>
           </div>
         </form>
       </div>
@@ -565,18 +587,18 @@
     <div class="modal-overlay hidden" id="energy-create-modal" aria-hidden="true">
       <div class="modal card" role="dialog" aria-labelledby="energy-create-modal-title">
         <header class="modal-header">
-          <h3 id="energy-create-modal-title">Nuovo schema energia</h3>
-          <button type="button" class="modal-close" id="energy-create-modal-close" aria-label="Chiudi">×</button>
+          <h3 id="energy-create-modal-title" data-i18n="modals.energyCreateTitle">Nuovo schema energia</h3>
+          <button type="button" class="modal-close" id="energy-create-modal-close" aria-label="Chiudi" data-i18n-aria="common.closeAria">×</button>
         </header>
         <form id="energy-create-form" class="modal-body">
           <div class="form-field">
-            <label for="energy-chain-name">Nome</label>
-            <input type="text" id="energy-chain-name" required autocomplete="off" placeholder="Es. Centrale a carbone" />
+            <label for="energy-chain-name" data-i18n="common.name">Nome</label>
+            <input type="text" id="energy-chain-name" required autocomplete="off" placeholder="Es. Centrale a carbone" data-i18n-placeholder="modals.energyCreatePlaceholder" />
           </div>
           <p class="form-error hidden" id="energy-create-error"></p>
           <div class="modal-actions">
-            <button type="button" class="btn btn-ghost" id="energy-create-cancel">Annulla</button>
-            <button type="submit" class="btn btn-primary">Crea</button>
+            <button type="button" class="btn btn-ghost" id="energy-create-cancel" data-i18n="common.cancel">Annulla</button>
+            <button type="submit" class="btn btn-primary" data-i18n="common.create">Crea</button>
           </div>
         </form>
       </div>
@@ -585,20 +607,20 @@
     <div class="modal-overlay hidden" id="schema-rename-modal" aria-hidden="true">
       <div class="modal card" role="dialog" aria-labelledby="schema-rename-modal-title">
         <header class="modal-header">
-          <h3 id="schema-rename-modal-title">Rinomina schema</h3>
-          <button type="button" class="modal-close" id="schema-rename-modal-close" aria-label="Chiudi">×</button>
+          <h3 id="schema-rename-modal-title" data-i18n="modals.renamePlan">Rinomina schema</h3>
+          <button type="button" class="modal-close" id="schema-rename-modal-close" aria-label="Chiudi" data-i18n-aria="common.closeAria">×</button>
         </header>
         <form id="schema-rename-form" class="modal-body">
           <input type="hidden" id="schema-rename-id" />
           <input type="hidden" id="schema-rename-kind" />
           <div class="form-field">
-            <label for="schema-rename-name">Nome</label>
+            <label for="schema-rename-name" data-i18n="common.name">Nome</label>
             <input type="text" id="schema-rename-name" required autocomplete="off" />
           </div>
           <p class="form-error hidden" id="schema-rename-error"></p>
           <div class="modal-actions">
-            <button type="button" class="btn btn-ghost" id="schema-rename-cancel">Annulla</button>
-            <button type="submit" class="btn btn-primary">Salva</button>
+            <button type="button" class="btn btn-ghost" id="schema-rename-cancel" data-i18n="common.cancel">Annulla</button>
+            <button type="submit" class="btn btn-primary" data-i18n="common.save">Salva</button>
           </div>
         </form>
       </div>
@@ -608,13 +630,13 @@
       <div class="modal modal-wide card" role="dialog" aria-labelledby="energy-extraction-picker-title">
         <header class="modal-header">
           <div>
-            <h3 id="energy-extraction-picker-title">Aggiungi estrazione</h3>
-            <p class="detail-item-meta">Scegli acqua o carbone</p>
+            <h3 id="energy-extraction-picker-title" data-i18n="modals.addExtractionTitle">Aggiungi estrazione</h3>
+            <p class="detail-item-meta" data-i18n="energy.pickerExtractionSub">Scegli acqua o carbone</p>
           </div>
-          <button type="button" class="modal-close" id="energy-extraction-picker-close" aria-label="Chiudi">×</button>
+          <button type="button" class="modal-close" id="energy-extraction-picker-close" aria-label="Chiudi" data-i18n-aria="common.closeAria">×</button>
         </header>
         <div class="modal-body" id="energy-extraction-picker-list">
-          <p class="loading">Caricamento…</p>
+          <p class="loading" data-i18n="common.loading">Caricamento…</p>
         </div>
       </div>
     </div>
@@ -623,13 +645,13 @@
       <div class="modal modal-wide card" role="dialog" aria-labelledby="energy-generator-picker-title">
         <header class="modal-header">
           <div>
-            <h3 id="energy-generator-picker-title">Aggiungi schema energia</h3>
-            <p class="detail-item-meta">Scegli la struttura generatrice</p>
+            <h3 id="energy-generator-picker-title" data-i18n="energy.addGeneratorPlan">Aggiungi schema energia</h3>
+            <p class="detail-item-meta" data-i18n="energy.pickerGeneratorSub">Scegli la struttura generatrice</p>
           </div>
-          <button type="button" class="modal-close" id="energy-generator-picker-close" aria-label="Chiudi">×</button>
+          <button type="button" class="modal-close" id="energy-generator-picker-close" aria-label="Chiudi" data-i18n-aria="common.closeAria">×</button>
         </header>
         <div class="modal-body" id="energy-generator-picker-list">
-          <p class="loading">Caricamento…</p>
+          <p class="loading" data-i18n="common.loading">Caricamento…</p>
         </div>
       </div>
     </div>
@@ -638,14 +660,15 @@
       <div class="modal modal-wide card" role="dialog" aria-labelledby="resource-picker-modal-title">
         <header class="modal-header">
           <div>
-            <h3 id="resource-picker-modal-title">Seleziona risorsa</h3>
-            <p class="detail-item-meta">Scegli la risorsa da produrre</p>
+            <h3 id="resource-picker-modal-title" data-i18n="modals.selectResource">Seleziona risorsa</h3>
+            <p class="detail-item-meta" data-i18n="modals.selectResourceSub">Scegli la risorsa da produrre</p>
           </div>
           <button
             type="button"
             class="modal-close"
             id="resource-picker-modal-close"
             aria-label="Chiudi"
+            data-i18n-aria="common.closeAria"
           >
             ×
           </button>
@@ -656,12 +679,13 @@
               type="search"
               id="resource-picker-search"
               placeholder="Cerca risorsa…"
+              data-i18n-placeholder="resources.searchPlaceholder"
               autocomplete="off"
             />
             <span class="search-count" id="resource-picker-count"></span>
           </div>
           <div class="picker-scroll" id="resource-picker-list">
-            <p class="loading">Caricamento risorse…</p>
+            <p class="loading" data-i18n="common.loadingResources">Caricamento risorse…</p>
           </div>
         </div>
       </div>
@@ -673,7 +697,7 @@
           <div class="detail-header-info">
             <img id="schema-picker-item-image" class="detail-item-image" alt="" hidden />
             <div>
-              <h3 id="schema-picker-modal-title">Seleziona schema</h3>
+              <h3 id="schema-picker-modal-title" data-i18n="modals.selectSchema">Seleziona schema</h3>
               <p class="detail-item-meta" id="schema-picker-item-meta"></p>
             </div>
           </div>
@@ -682,12 +706,13 @@
             class="modal-close"
             id="schema-picker-modal-close"
             aria-label="Chiudi"
+            data-i18n-aria="common.closeAria"
           >
             ×
           </button>
         </header>
         <div class="modal-body detail-body" id="schema-picker-list">
-          <p class="loading">Caricamento…</p>
+          <p class="loading" data-i18n="common.loading">Caricamento…</p>
         </div>
       </div>
     </div>
@@ -695,13 +720,13 @@
     <div class="modal-overlay hidden" id="confirm-modal" aria-hidden="true">
       <div class="modal card" role="alertdialog" aria-labelledby="confirm-modal-title">
         <header class="modal-header">
-          <h3 id="confirm-modal-title">Conferma</h3>
+          <h3 id="confirm-modal-title" data-i18n="modals.confirmTitle">Conferma</h3>
         </header>
         <div class="modal-body">
           <p class="confirm-message" id="confirm-modal-message"></p>
           <div class="modal-actions">
-            <button type="button" class="btn btn-ghost" id="confirm-modal-cancel">Annulla</button>
-            <button type="button" class="btn btn-danger" id="confirm-modal-ok">Conferma</button>
+            <button type="button" class="btn btn-ghost" id="confirm-modal-cancel" data-i18n="common.cancel">Annulla</button>
+            <button type="button" class="btn btn-danger" id="confirm-modal-ok" data-i18n="common.confirm">Conferma</button>
           </div>
         </div>
       </div>
@@ -710,25 +735,25 @@
     <div class="modal-overlay hidden" id="edit-modal" aria-hidden="true">
       <div class="modal card" role="dialog" aria-labelledby="edit-modal-title">
         <header class="modal-header">
-          <h3 id="edit-modal-title">Modifica risorsa</h3>
-          <button type="button" class="modal-close" id="edit-modal-close" aria-label="Chiudi">
+          <h3 id="edit-modal-title" data-i18n="modals.editResource">Modifica risorsa</h3>
+          <button type="button" class="modal-close" id="edit-modal-close" aria-label="Chiudi" data-i18n-aria="common.closeAria">
             ×
           </button>
         </header>
         <form id="edit-item-form" class="modal-body">
           <input type="hidden" id="edit-item-id" />
           <div class="form-field">
-            <label for="edit-item-name">Nome</label>
+            <label for="edit-item-name" data-i18n="common.name">Nome</label>
             <input type="text" id="edit-item-name" required autocomplete="off" />
           </div>
           <div class="form-field">
-            <label for="edit-item-category">Categoria</label>
+            <label for="edit-item-category" data-i18n="common.category">Categoria</label>
             <select id="edit-item-category" required></select>
           </div>
           <p class="form-error hidden" id="edit-form-error"></p>
           <div class="modal-actions">
-            <button type="button" class="btn btn-ghost" id="edit-modal-cancel">Annulla</button>
-            <button type="submit" class="btn btn-primary">Salva</button>
+            <button type="button" class="btn btn-ghost" id="edit-modal-cancel" data-i18n="common.cancel">Annulla</button>
+            <button type="submit" class="btn btn-primary" data-i18n="common.save">Salva</button>
           </div>
         </form>
       </div>
@@ -740,17 +765,17 @@
           <div class="detail-header-info">
             <img id="detail-item-image" class="detail-item-image" alt="" hidden />
             <div>
-              <h3 id="detail-modal-title">Dettaglio risorsa</h3>
+              <h3 id="detail-modal-title" data-i18n="modals.resourceDetail">Dettaglio risorsa</h3>
               <p class="detail-item-meta" id="detail-item-meta"></p>
               <blockquote class="detail-description hidden" id="detail-item-description"></blockquote>
             </div>
           </div>
-          <button type="button" class="modal-close" id="detail-modal-close" aria-label="Chiudi">
+          <button type="button" class="modal-close" id="detail-modal-close" aria-label="Chiudi" data-i18n-aria="common.closeAria">
             ×
           </button>
         </header>
         <div class="modal-body detail-body" id="detail-modal-body">
-          <p class="loading">Caricamento…</p>
+          <p class="loading" data-i18n="common.loading">Caricamento…</p>
         </div>
       </div>
     </div>
@@ -763,21 +788,21 @@
         aria-labelledby="legal-info-modal-title"
       >
         <header class="modal-header">
-          <h3 id="legal-info-modal-title">
+          <h3 id="legal-info-modal-title" data-i18n="legal.title">
             Informazioni legali, attribuzioni e limitazione di responsabilità
           </h3>
-          <button type="button" class="modal-close" id="legal-info-modal-close" aria-label="Chiudi">
+          <button type="button" class="modal-close" id="legal-info-modal-close" aria-label="Chiudi" data-i18n-aria="common.closeAria">
             ×
           </button>
         </header>
         <div class="modal-body legal-info-body" id="legal-info-modal-body" tabindex="0">
           <section class="legal-section">
-            <h4>Factory Manager</h4>
-            <p>
+            <h4 data-i18n="legal.sectionAbout.title">Factory Manager</h4>
+            <p data-i18n="legal.sectionAbout.p1">
               Factory Manager è un software indipendente, non ufficiale e fan-made, sviluppato come
               strumento complementare per i giocatori di Satisfactory.
             </p>
-            <p>
+            <p data-i18n="legal.sectionAbout.p2">
               Il software permette di eseguire calcoli e rappresentazioni visive relativi alle
               catene produttive del gioco, comprese quantità di risorse, ricette, tempi di
               produzione, input, output, consumi, numero di macchinari e organizzazione degli
@@ -786,47 +811,47 @@
           </section>
 
           <section class="legal-section">
-            <h4>Progetto indipendente e non ufficiale</h4>
-            <p>
+            <h4 data-i18n="legal.sectionIndependence.title">Progetto indipendente e non ufficiale</h4>
+            <p data-i18n="legal.sectionIndependence.p1">
               Factory Manager non è sviluppato, pubblicato, sponsorizzato, approvato, supportato o
               autorizzato da Coffee Stain Studios AB, Coffee Stain Publishing AB o da altre società
               appartenenti al gruppo Coffee Stain.
             </p>
-            <p>
+            <p data-i18n="legal.sectionIndependence.p2">
               L’utilizzo del software non crea alcun rapporto commerciale, societario, contrattuale,
               professionale o di collaborazione tra gli sviluppatori di Factory Manager e Coffee
               Stain Studios.
             </p>
-            <p>
+            <p data-i18n="legal.sectionIndependence.p3">
               Factory Manager è un progetto autonomo realizzato da appassionati per finalità
               informative e di supporto alla community.
             </p>
           </section>
 
           <section class="legal-section">
-            <h4>Proprietà intellettuale</h4>
-            <p>
+            <h4 data-i18n="legal.sectionIp.title">Proprietà intellettuale</h4>
+            <p data-i18n="legal.sectionIp.p1">
               Satisfactory, il relativo nome, i marchi, i loghi, le immagini, le icone, i materiali
               grafici, le risorse, i macchinari, gli edifici, gli oggetti, gli elementi produttivi,
               le ricette, i nomi, i dati, il design e ogni altro contenuto originale riconducibile
               al videogioco appartengono a Coffee Stain Studios AB e/o ai rispettivi titolari e
               licenzianti.
             </p>
-            <p>
+            <p data-i18n="legal.sectionIp.p2">
               Tutti i diritti relativi a tali materiali restano riservati ai rispettivi
               proprietari.
             </p>
-            <p>
+            <p data-i18n="legal.sectionIp.p3">
               Gli sviluppatori di Factory Manager non rivendicano alcun diritto di proprietà sui
               contenuti appartenenti a Satisfactory.
             </p>
-            <p>
+            <p data-i18n="legal.sectionIp.p4">
               L’eventuale utilizzo, all’interno del software, di nomi, immagini, icone, risorse,
               macchinari, elementi di produzione, ricette, dati e altri riferimenti riconducibili
               al gioco avviene esclusivamente per finalità informative, descrittive, illustrative e
               di identificazione delle meccaniche di gioco.
             </p>
-            <p>
+            <p data-i18n="legal.sectionIp.p5">
               Il codice originale, l’interfaccia, la struttura tecnica, il sistema di calcolo e le
               funzionalità sviluppate specificamente per Factory Manager appartengono invece ai
               rispettivi autori, fatti salvi tutti i diritti relativi ai contenuti di Satisfactory
@@ -835,84 +860,84 @@
           </section>
 
           <section class="legal-section">
-            <h4>Utilizzo del nome Satisfactory</h4>
-            <p>
+            <h4 data-i18n="legal.sectionName.title">Utilizzo del nome Satisfactory</h4>
+            <p data-i18n="legal.sectionName.p1">
               Il nome Satisfactory viene utilizzato esclusivamente per indicare il videogioco con
               il quale Factory Manager è compatibile e per descrivere la finalità del software.
             </p>
-            <p>
+            <p data-i18n="legal.sectionName.p2">
               Tale utilizzo non implica alcuna affiliazione, autorizzazione, sponsorizzazione o
               approvazione da parte di Coffee Stain Studios.
             </p>
-            <p>
+            <p data-i18n="legal.sectionName.p3">
               Satisfactory non costituisce il nome principale del software e non viene utilizzato
               per presentare Factory Manager come un prodotto ufficiale.
             </p>
           </section>
 
           <section class="legal-section">
-            <h4>Funzione del software</h4>
-            <p>
+            <h4 data-i18n="legal.sectionFunction.title">Funzione del software</h4>
+            <p data-i18n="legal.sectionFunction.p1">
               Factory Manager è esclusivamente uno strumento esterno di supporto alla
               pianificazione.
             </p>
-            <p>Il software:</p>
+            <p data-i18n="legal.sectionFunction.p2">Il software:</p>
             <ul>
-              <li>non sostituisce il videogioco originale;</li>
-              <li>non consente di giocare a Satisfactory;</li>
-              <li>non fornisce accesso gratuito al gioco;</li>
-              <li>non distribuisce copie del videogioco;</li>
-              <li>non modifica direttamente i file del gioco;</li>
-              <li>non contiene codice necessario all’esecuzione di Satisfactory;</li>
-              <li>non è necessario per utilizzare il videogioco originale.</li>
+              <li data-i18n="legal.sectionFunction.item1">non sostituisce il videogioco originale;</li>
+              <li data-i18n="legal.sectionFunction.item2">non consente di giocare a Satisfactory;</li>
+              <li data-i18n="legal.sectionFunction.item3">non fornisce accesso gratuito al gioco;</li>
+              <li data-i18n="legal.sectionFunction.item4">non distribuisce copie del videogioco;</li>
+              <li data-i18n="legal.sectionFunction.item5">non modifica direttamente i file del gioco;</li>
+              <li data-i18n="legal.sectionFunction.item6">non contiene codice necessario all’esecuzione di Satisfactory;</li>
+              <li data-i18n="legal.sectionFunction.item7">non è necessario per utilizzare il videogioco originale.</li>
             </ul>
-            <p>
+            <p data-i18n="legal.sectionFunction.p3">
               Per giocare a Satisfactory è necessario acquistare e possedere regolarmente il gioco
               attraverso i relativi canali ufficiali.
             </p>
           </section>
 
           <section class="legal-section">
-            <h4>Accuratezza dei dati</h4>
-            <p>
+            <h4 data-i18n="legal.sectionAccuracy.title">Accuratezza dei dati</h4>
+            <p data-i18n="legal.sectionAccuracy.p1">
               Factory Manager viene fornito come strumento di supporto e potrebbe contenere errori,
               omissioni, approssimazioni, malfunzionamenti o dati non aggiornati.
             </p>
-            <p>
+            <p data-i18n="legal.sectionAccuracy.p2">
               Aggiornamenti, modifiche alle ricette, bilanciamenti, nuove versioni o nuovi contenuti
               di Satisfactory potrebbero rendere temporaneamente inesatte alcune informazioni.
             </p>
-            <p>
+            <p data-i18n="legal.sectionAccuracy.p3">
               Gli sviluppatori non garantiscono che tutti i dati, i calcoli, gli schemi o i risultati
               prodotti dal software siano sempre completi, corretti, aggiornati o compatibili con
               l’ultima versione del gioco.
             </p>
-            <p>
+            <p data-i18n="legal.sectionAccuracy.p4">
               L’utente è invitato a verificare autonomamente i risultati e utilizza il software sotto
               la propria responsabilità.
             </p>
           </section>
 
           <section class="legal-section">
-            <h4>Limitazione di responsabilità</h4>
-            <p>
+            <h4 data-i18n="legal.sectionLiability.title">Limitazione di responsabilità</h4>
+            <p data-i18n="legal.sectionLiability.p1">
               Nei limiti consentiti dalla legge, gli sviluppatori di Factory Manager non potranno
               essere ritenuti responsabili per eventuali:
             </p>
             <ul>
-              <li>errori nei calcoli;</li>
-              <li>errori nella progettazione delle fabbriche;</li>
-              <li>perdite di dati;</li>
-              <li>malfunzionamenti;</li>
-              <li>interruzioni del servizio;</li>
-              <li>incompatibilità;</li>
-              <li>risultati inesatti;</li>
-              <li>danni diretti o indiretti;</li>
-              <li>
+              <li data-i18n="legal.sectionLiability.item1">errori nei calcoli;</li>
+              <li data-i18n="legal.sectionLiability.item2">errori nella progettazione delle fabbriche;</li>
+              <li data-i18n="legal.sectionLiability.item3">perdite di dati;</li>
+              <li data-i18n="legal.sectionLiability.item4">malfunzionamenti;</li>
+              <li data-i18n="legal.sectionLiability.item5">interruzioni del servizio;</li>
+              <li data-i18n="legal.sectionLiability.item6">incompatibilità;</li>
+              <li data-i18n="legal.sectionLiability.item7">risultati inesatti;</li>
+              <li data-i18n="legal.sectionLiability.item8">danni diretti o indiretti;</li>
+              <li data-i18n="legal.sectionLiability.item9">
                 conseguenze derivanti dall’utilizzo o dall’impossibilità di utilizzare il software.
               </li>
             </ul>
-            <p>
+            <p data-i18n="legal.sectionLiability.p2">
               Il software viene fornito senza garanzie espresse o implicite relative al suo
               funzionamento, alla sua accuratezza o alla sua idoneità per uno scopo specifico, nei
               limiti consentiti dalla normativa applicabile.
@@ -920,32 +945,33 @@
           </section>
 
           <section class="legal-section">
-            <h4>Segnalazioni dei titolari dei diritti</h4>
-            <p>
+            <h4 data-i18n="legal.sectionRights.title">Segnalazioni dei titolari dei diritti</h4>
+            <p data-i18n="legal.sectionRights.p1">
               Qualora un titolare dei diritti ritenga che un contenuto presente in Factory Manager
               violi un proprio diritto di proprietà intellettuale, può contattare gli sviluppatori
               indicando chiaramente:
             </p>
             <ul>
-              <li>il contenuto interessato;</li>
-              <li>il diritto presumibilmente violato;</li>
-              <li>la natura della richiesta;</li>
-              <li>eventuali informazioni utili alla verifica.</li>
+              <li data-i18n="legal.sectionRights.item1">il contenuto interessato;</li>
+              <li data-i18n="legal.sectionRights.item2">il diritto presumibilmente violato;</li>
+              <li data-i18n="legal.sectionRights.item3">la natura della richiesta;</li>
+              <li data-i18n="legal.sectionRights.item4">eventuali informazioni utili alla verifica.</li>
             </ul>
-            <p>
+            <p data-i18n="legal.sectionRights.p2">
               Ogni segnalazione legittima sarà esaminata e, quando necessario, il contenuto
               interessato potrà essere corretto, sostituito o rimosso.
             </p>
-            <p>
+            <p data-i18n="legal.sectionRights.p3">
               Satisfactory e tutti i relativi marchi, loghi, immagini, asset e contenuti appartengono
               a Coffee Stain Studios AB e/o ai rispettivi titolari.
             </p>
-            <p>Tutti i diritti riservati.</p>
+            <p data-i18n="legal.sectionRights.p4">Tutti i diritti riservati.</p>
           </section>
         </div>
       </div>
     </div>
 
+    <script src="scripts/i18n-ui.js"></script>
     <script src="scripts/production-scale.js"></script>
     <script src="scripts/number-format.js"></script>
     <script src="scripts/extraction-scale.js"></script>

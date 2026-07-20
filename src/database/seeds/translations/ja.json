@@ -1,0 +1,2349 @@
+{
+  "dataVersion": 1,
+  "locale": "ja",
+  "source": {
+    "items": "https://satisfactory-calculator.com/ja/items",
+    "buildings": "https://satisfactory-calculator.com/ja/buildings"
+  },
+  "importedAt": "2026-07-20T19:11:16.366Z",
+  "itemCategories": {
+    "minerali": "鉱石",
+    "lingotti": "インゴット",
+    "materiali": "鉱物",
+    "alieni": "異星生物",
+    "liquidi": "液体",
+    "gas": "ガス",
+    "componenti-standard": "基本部品",
+    "componenti-industriali": "産業用部品",
+    "componenti-elettronici": "電子機器",
+    "comunicazioni": "通信",
+    "tecnologia-quantistica": "量子技術",
+    "contenitori": "コンテナ",
+    "carburante": "燃料",
+    "consumato": "消耗品",
+    "munizioni": "弾薬",
+    "nucleare": "原子力",
+    "rifiuti": "廃棄物",
+    "speciali": "特殊"
+  },
+  "buildingCategories": {
+    "estrazione": "採掘",
+    "produzione": "生産",
+    "generatori": "発電機",
+    "speciali": "特殊",
+    "postazioni-di-lavoro": "作業場",
+    "deposito": "貯蔵庫",
+    "stazioni-di-attracco": "ドッキングステーション",
+    "torri": "タワー"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "石灰岩",
+      "description": "作成に使用する。 主に安定した土台に使用される基本的な資源。",
+      "schemas": [
+        {
+          "name": "石灰岩（硫黄）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|sulfur:2:0::stone:12:0"
+        }
+      ]
+    },
+    "Desc_OreIron_C": {
+      "name": "鉄鉱石",
+      "description": "作成に使用する。 最も重要で、基本的な資源。",
+      "schemas": [
+        {
+          "name": "鉄鉱石（石灰岩）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|stone:24:0::ore-iron:12:0"
+        }
+      ]
+    },
+    "Desc_OreCopper_C": {
+      "name": "銅鉱石",
+      "description": "作成に使用する。 主に電気部品に使用される基本的な資源。",
+      "schemas": [
+        {
+          "name": "銅鉱石（石英）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|raw-quartz:10:0::ore-copper:12:0"
+        },
+        {
+          "name": "銅鉱石（硫黄）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|sulfur:12:0::ore-copper:12:0"
+        }
+      ]
+    },
+    "Desc_OreGold_C": {
+      "name": "カテリウム鉱石",
+      "description": "主に高度な電子機器に使用されるカテリウムのインゴットに製錬される。",
+      "schemas": [
+        {
+          "name": "カテリウム鉱石（石英）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|raw-quartz:12:0::ore-gold:12:0"
+        },
+        {
+          "name": "カテリウム鉱石（銅）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-copper:15:0::ore-gold:12:0"
+        }
+      ]
+    },
+    "Desc_Coal_C": {
+      "name": "石炭"
+    },
+    "Desc_RawQuartz_C": {
+      "name": "未加工石英",
+      "description": "石英結晶とシリカに加工され、様々な用途に使用される。",
+      "schemas": [
+        {
+          "name": "未加工石英（ボーキサイト）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:10:0::raw-quartz:12:0"
+        },
+        {
+          "name": "未加工石英（石炭）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|coal:24:0::raw-quartz:12:0"
+        }
+      ]
+    },
+    "Desc_Sulfur_C": {
+      "name": "硫黄",
+      "description": "主に黒色火薬の製造に使用される。",
+      "schemas": [
+        {
+          "name": "硫黄（石炭）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|coal:20:0::sulfur:12:0"
+        },
+        {
+          "name": "硫黄（鉄）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-iron:30:0::sulfur:12:0"
+        }
+      ]
+    },
+    "Desc_OreBauxite_C": {
+      "name": "ボーキサイト",
+      "description": "アルミナの生産に使用する。アルミナはさらに精製され、アルミのインゴットを生産するためのアルミのスクラップが生産されます。",
+      "schemas": [
+        {
+          "name": "ボーキサイト（カテリウム）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-gold:15:0::ore-bauxite:12:0"
+        },
+        {
+          "name": "ボーキサイト（銅）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-copper:18:0::ore-bauxite:12:0"
+        }
+      ]
+    },
+    "Desc_SAM_C": {
+      "name": "SAM",
+      "description": "一般にSAMと呼ばれる奇妙な異星物質（Strange Alien Matter）は、既知の物理法則に従っておらず、新たな可能性を囁いているようだ。"
+    },
+    "Desc_OreUranium_C": {
+      "name": "ウラン",
+      "description": "放射性元素。 ウラン燃料棒用のウランセルの製造に使用される。 注意: 中程度の放射能がある",
+      "schemas": [
+        {
+          "name": "ウラン鉱石（ボーキサイト）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:48:0::ore-uranium:12:0"
+        }
+      ]
+    },
+    "Desc_IronIngot_C": {
+      "name": "鉄のインゴット",
+      "description": "作成に使用する最も基本的な部品。",
+      "schemas": [
+        {
+          "name": "鉄のインゴット",
+          "is_alternative": 0,
+          "building_slug": "smelter",
+          "sort_order": 0,
+          "fingerprint": "0::smelter::ore-iron:1:0::iron-ingot:1:0"
+        },
+        {
+          "name": "代替: 抽出鉄のインゴット",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::ore-iron:5:0|sulfuric-acid:1:1::iron-ingot:10:0"
+        },
+        {
+          "name": "代替: 標準の鉄のインゴット",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 2,
+          "fingerprint": "1::foundry::ore-iron:5:0|stone:8:0::iron-ingot:10:0"
+        },
+        {
+          "name": "代替: 純鉄のインゴット",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::ore-iron:7:0|water:4:1::iron-ingot:13:0"
+        },
+        {
+          "name": "代替: 鉄合金のインゴット",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 4,
+          "fingerprint": "1::foundry::ore-iron:8:0|ore-copper:2:0::iron-ingot:15:0"
+        }
+      ]
+    },
+    "Desc_CopperIngot_C": {
+      "name": "銅のインゴット"
+    },
+    "Desc_GoldIngot_C": {
+      "name": "カテリウムのインゴット"
+    },
+    "Desc_SteelIngot_C": {
+      "name": "鋼鉄のインゴット",
+      "description": "鉄鉱石と石炭の組み合わせから製錬される。建築に使用される部品をいくつか作り出すことができる。",
+      "schemas": [
+        {
+          "name": "鋼鉄のインゴット",
+          "is_alternative": 0,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "0::foundry::ore-iron:3:0|coal:3:0::steel-ingot:3:0"
+        },
+        {
+          "name": "代替: コークス鋼のインゴット",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::ore-iron:15:0|petroleum-coke:15:0::steel-ingot:20:0"
+        },
+        {
+          "name": "代替: 圧縮鋼のインゴット",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 2,
+          "fingerprint": "1::foundry::ore-iron:2:0::steel-ingot:4:0"
+        },
+        {
+          "name": "代替: 高密度鋼のインゴット",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 3,
+          "fingerprint": "1::foundry::iron-ingot:2:0|coal:2:0::steel-ingot:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "アルミのインゴット",
+      "description": "アルミナ溶液から精製されたアルミのスクラップから製造される。 アルミニウムを使った特殊な部品の製造に使われる。",
+      "schemas": [
+        {
+          "name": "アルミのインゴット",
+          "is_alternative": 0,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "0::foundry::aluminum-scrap:6:0|silica:5:0::aluminum-ingot:4:0"
+        },
+        {
+          "name": "代替: 純アルミニウムのインゴット",
+          "is_alternative": 1,
+          "building_slug": "smelter",
+          "sort_order": 1,
+          "fingerprint": "1::smelter::aluminum-scrap:2:0::aluminum-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "FICSITEのインゴット",
+      "description": "奇妙な異星物質を用いて他の金属を分子レベルで再構築することにより製造される。 FICSIT社によって完璧な建築材料として合成され、最もハイエンドなプロセスで使用される。",
+      "schemas": [
+        {
+          "name": "FICSITEのインゴット（アルミ）",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "0::converter::samingot:2:0|aluminum-ingot:4:0::ficsite-ingot:1:0"
+        },
+        {
+          "name": "FICSITEのインゴット（カテリウム）",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "0::converter::samingot:3:0|gold-ingot:4:0::ficsite-ingot:1:0"
+        },
+        {
+          "name": "FICSITEのインゴット（鉄）",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "0::converter::samingot:4:0|iron-ingot:24:0::ficsite-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_Cement_C": {
+      "name": "コンクリート",
+      "description": "建築に使用する。 安定した土台に適している。",
+      "schemas": [
+        {
+          "name": "コンクリート",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::stone:3:0::cement:1:0"
+        },
+        {
+          "name": "代替: ラバー・コンクリート",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::stone:10:0|rubber:2:0::cement:9:0"
+        },
+        {
+          "name": "代替: 上質コンクリート",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::silica:3:0|stone:12:0::cement:10:0"
+        },
+        {
+          "name": "代替: 生コンクリート",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::stone:6:0|water:5:1::cement:4:0"
+        }
+      ]
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "石英結晶"
+    },
+    "Desc_Silica_C": {
+      "name": "シリカ"
+    },
+    "Desc_CopperDust_C": {
+      "name": "銅粉",
+      "description": "粉砕された銅のインゴット。 銅の高い天然密度と粉末の粒状性により、粒子加速器で核パスタを製造するのに最適な材料になっている。",
+      "schemas": [
+        {
+          "name": "銅粉",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::copper-ingot:30:0::copper-dust:5:0"
+        }
+      ]
+    },
+    "Desc_PolymerResin_C": {
+      "name": "合成樹脂",
+      "description": "原油を燃料に精製する際の副産物。プラスチックやゴムの製造によく使用される。",
+      "schemas": [
+        {
+          "name": "燃料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:6:1::liquid-fuel:4:1|polymer-resin:3:0"
+        },
+        {
+          "name": "代替: 合成樹脂",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::liquid-oil:6:1::polymer-resin:13:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "代替: 廃重油",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::liquid-oil:3:1::heavy-oil-residue:4:1|polymer-resin:2:0"
+        }
+      ]
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "石油コークス",
+      "description": "作成に使用する。 廃重油から蒸留される炭素を多く含む素材。 Used as a less efficient coal replacement.",
+      "schemas": [
+        {
+          "name": "石油コークス",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::heavy-oil-residue:4:1::petroleum-coke:12:0"
+        }
+      ]
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "アルミのスクラップ",
+      "description": "アルミナから精製され、工業用のアルミのインゴットに製錬できる。",
+      "schemas": [
+        {
+          "name": "アルミのスクラップ",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::alumina-solution:4:1|coal:2:0::aluminum-scrap:6:0|water:2:1"
+        },
+        {
+          "name": "代替: 即席スクラップ",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::ore-bauxite:15:0|coal:10:0|sulfuric-acid:5:1|water:6:1::aluminum-scrap:30:0|water:5:1"
+        },
+        {
+          "name": "代替: 電極アルミのスクラップ",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::alumina-solution:12:1|petroleum-coke:4:0::aluminum-scrap:20:0|water:7:1"
+        }
+      ]
+    },
+    "Desc_AlienProtein_C": {
+      "name": "エイリアンのタンパク質"
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "エイリアンのDNAカプセル",
+      "description": "有機化合物からエイリアンの遺伝子情報を読み取れるようにする。 エイリアンについての研究に使用する。 更に先へ！ 知は力なり、そして力は効率に繋がります。AWESOMEシンクにエイリアンのDNAカプセルを供給すると、FICSITには知識が、そして開拓者にはクーポンが与えられます。",
+      "schemas": [
+        {
+          "name": "エイリアンのDNAカプセル",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::alien-protein:1:0::alien-dnacapsule:1:0"
+        }
+      ]
+    },
+    "Desc_Water_C": {
+      "name": "水",
+      "description": "水。",
+      "schemas": [
+        {
+          "name": "アルミのスクラップ",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::alumina-solution:4:1|coal:2:0::aluminum-scrap:6:0|water:2:1"
+        },
+        {
+          "name": "バッテリー",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::alumina-solution:2:1|aluminum-casing:1:0::battery:1:0"
+        },
+        {
+          "name": "未包装の水",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-water:2:0::water:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "非核分裂性ウラン",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 3,
+          "fingerprint": "0::blender::silica:10:0|nitric-acid:6:1|sulfuric-acid:6:1::non-fissible-uranium:20:0|water:6:1"
+        },
+        {
+          "name": "代替: 即席スクラップ",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 4,
+          "fingerprint": "1::blender::ore-bauxite:15:0|coal:10:0|sulfuric-acid:5:1|water:6:1::aluminum-scrap:30:0|water:5:1"
+        },
+        {
+          "name": "代替: 蒸留シリカ",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 5,
+          "fingerprint": "1::blender::dissolved-silica:12:1|stone:5:0|water:10:1::silica:27:0|water:8:1"
+        },
+        {
+          "name": "代替: 親物質性ウラン",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 6,
+          "fingerprint": "1::blender::ore-uranium:5:0|nuclear-waste:5:0|nitric-acid:3:1|sulfuric-acid:5:1::non-fissible-uranium:20:0|water:8:1"
+        },
+        {
+          "name": "代替: 電極アルミのスクラップ",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 7,
+          "fingerprint": "1::refinery::alumina-solution:12:1|petroleum-coke:4:0::aluminum-scrap:20:0|water:7:1"
+        }
+      ]
+    },
+    "Desc_LiquidOil_C": {
+      "name": "原油",
+      "description": "精製によって、燃料やプラスチックなど、あらゆる種類の石油製品になる。",
+      "schemas": [
+        {
+          "name": "未包装原油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-oil:2:0::liquid-oil:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "廃重油",
+      "description": "プラスチック、ゴムの生産時に発生する副産物。さらに精製して燃料や石油コークスにすることができる。",
+      "schemas": [
+        {
+          "name": "ゴム",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::rubber:2:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "プラスチック",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::liquid-oil:3:1::plastic:2:0|heavy-oil-residue:1:1"
+        },
+        {
+          "name": "未包装廃重油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-oil-residue:2:0::heavy-oil-residue:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "代替: 合成樹脂",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::liquid-oil:6:1::polymer-resin:13:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "代替: 廃重油",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 4,
+          "fingerprint": "1::refinery::liquid-oil:3:1::heavy-oil-residue:4:1|polymer-resin:2:0"
+        }
+      ]
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "燃料",
+      "description": "そのまま発電機に使用したり、パッケージ化して車両やジェットパックの燃料として使用したりできる。",
+      "schemas": [
+        {
+          "name": "未包装燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::fuel:2:0::liquid-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "燃料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::liquid-oil:6:1::liquid-fuel:4:1|polymer-resin:3:0"
+        },
+        {
+          "name": "代替: 希釈燃料",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "1::blender::heavy-oil-residue:5:1|water:10:1::liquid-fuel:10:1"
+        },
+        {
+          "name": "残留燃料",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::heavy-oil-residue:6:1::liquid-fuel:4:1"
+        }
+      ]
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "液体バイオ燃料",
+      "description": "液体バイオ燃料は、そのまま発電機に使用したり、パッケージ化して車両の燃料として使用したりできる。",
+      "schemas": [
+        {
+          "name": "未包装液体バイオ燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-biofuel:2:0::liquid-biofuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "液体バイオ燃料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::biofuel:6:0|water:3:1::liquid-biofuel:4:1"
+        }
+      ]
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "ターボ燃料"
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "アルミナ溶液",
+      "description": "ボーキサイトから抽出、溶解処理を行ったアルミナ溶液。さらに精錬してアルミのインゴット生産に使うアルミのスクラップにできる。",
+      "schemas": [
+        {
+          "name": "アルミナ溶液",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::ore-bauxite:12:0|water:18:1::alumina-solution:12:1|silica:5:0"
+        },
+        {
+          "name": "未包装アルミナ溶液",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-alumina:2:0::alumina-solution:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "代替: 汚濁アルミナ溶液",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::ore-bauxite:10:0|water:10:1::alumina-solution:12:1"
+        }
+      ]
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "硫酸",
+      "description": "硫黄と水を複雑な反応で結合して作られる鉱酸。主に精錬工程やバッテリーの製造に使用される。",
+      "schemas": [
+        {
+          "name": "未包装硫酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-sulfuric-acid:1:0::sulfuric-acid:1:1|fluid-canister:1:0"
+        },
+        {
+          "name": "硫酸",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::sulfur:5:0|water:5:1::sulfuric-acid:5:1"
+        },
+        {
+          "name": "被覆型ウラン・セル",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "0::blender::ore-uranium:10:0|cement:3:0|sulfuric-acid:8:1::uranium-cell:5:0|sulfuric-acid:2:1"
+        }
+      ]
+    },
+    "Desc_NitricAcid_C": {
+      "name": "硝酸",
+      "description": "窒素ガスと水の反応によって生成される。腐食性や酸化性が高いため、精製や燃料製造のプロセスに適している。",
+      "schemas": [
+        {
+          "name": "未包装硝酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-nitric-acid:1:0::nitric-acid:1:1|gas-tank:1:0"
+        },
+        {
+          "name": "硝酸",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::nitrogen-gas:12:1|water:3:1|iron-plate:1:0::nitric-acid:3:1"
+        }
+      ]
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "溶解シリカ",
+      "description": "水に溶けたシリカ。、未加工石英の代替精製の部品として生成される。 精製プロセスを完了する際に水からシリカを抽出できる。",
+      "schemas": [
+        {
+          "name": "代替: 精製石英",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::raw-quartz:24:0|nitric-acid:2:1::quartz-crystal:15:0|dissolved-silica:12:1"
+        }
+      ]
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "窒素ガス",
+      "description": "冶金、冷却、硝酸の製造など、さまざまな用途に使われる。MASSAGE-2(AB)bでは、地下のガス井から抽出することができる。",
+      "schemas": [
+        {
+          "name": "未包装窒素ガス",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-nitrogen-gas:1:0::nitrogen-gas:4:1|gas-tank:1:0"
+        },
+        {
+          "name": "窒素ガス",
+          "is_alternative": 0,
+          "building_slug": "fracking-extractor",
+          "sort_order": 1,
+          "fingerprint": "0::fracking-extractor::nitrogen-gas:0:1::nitrogen-gas:0:1"
+        },
+        {
+          "name": "窒素ガス（カテリウム）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "1::converter::samingot:1:0|ore-gold:12:0::nitrogen-gas:12:1"
+        },
+        {
+          "name": "窒素ガス（ボーキサイト）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 3,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:10:0::nitrogen-gas:12:1"
+        }
+      ]
+    },
+    "Desc_RocketFuel_C": {
+      "name": "ロケット燃料",
+      "description": "高インパルスの圧縮ガス燃料。 そのまま燃料式発電機に使用したり、パッケージ化して車両やジェットパックの燃料として使用したりできる。",
+      "schemas": [
+        {
+          "name": "ロケット燃料",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::liquid-turbo-fuel:6:1|nitric-acid:1:1::rocket-fuel:10:1|compacted-coal:1:0"
+        },
+        {
+          "name": "開封されたロケット燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-rocket-fuel:1:0::rocket-fuel:2:1|gas-tank:1:0"
+        },
+        {
+          "name": "代替: ニトロロケット燃料",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "1::blender::liquid-fuel:4:1|nitrogen-gas:3:1|sulfur:4:0|coal:2:0::rocket-fuel:6:1|compacted-coal:1:0"
+        }
+      ]
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "イオン燃料",
+      "description": "イオン化された燃料で、驚異的な出力を発揮する。 そのまま燃料式発電機に使用したり、パッケージ化して車両やジェットパックの燃料として使用したりできる。",
+      "schemas": [
+        {
+          "name": "イオン燃料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::rocket-fuel:16:1::ionized-fuel:16:1|compacted-coal:2:0"
+        },
+        {
+          "name": "開封されたイオン燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-ionized-fuel:2:0::ionized-fuel:4:1|gas-tank:2:0"
+        },
+        {
+          "name": "代替: ダークイオン燃料",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "1::converter::packaged-rocket-fuel:12:0|dark-matter:4:0::ionized-fuel:10:1|compacted-coal:2:0"
+        }
+      ]
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "ダークマターの残留物",
+      "description": "量子エンコーディングの副産物。変換機で代替生成される。 ダークマターの性質や特性については、科学のさまざまな分野でいまだに議論が続いているが、FICSIT社は時空間操作におけるダークマターの応用例をいくつか発見している。",
+      "schemas": [
+        {
+          "name": "AI拡張サーバー",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::space-elevator-part-6:1:0|temporal-processor:1:0|quantum-oscillator:1:0|quantum-energy:25:1::space-elevator-part-12:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "FICSONIUM燃料棒",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 1,
+          "fingerprint": "0::quantum-encoder::ficsonium:2:0|electromagnetic-control-rod:2:0|ficsite-mesh:40:0|quantum-energy:20:1::dark-energy:20:1"
+        },
+        {
+          "name": "ダークマターの残留物",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "0::converter::samingot:5:0::dark-energy:10:1"
+        },
+        {
+          "name": "ニューラル量子プロセッサー",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 3,
+          "fingerprint": "0::quantum-encoder::time-crystal:5:0|computer-super:1:0|ficsite-mesh:15:0|quantum-energy:25:1::temporal-processor:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "合成パワー・シャード",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 4,
+          "fingerprint": "0::quantum-encoder::time-crystal:2:0|dark-matter:2:0|quartz-crystal:12:0|quantum-energy:12:1::crystal-shard:1:0|dark-energy:12:1"
+        },
+        {
+          "name": "異星のパワーマトリックス",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 5,
+          "fingerprint": "0::quantum-encoder::quantum-energy:24:1::dark-energy:24:1"
+        },
+        {
+          "name": "重ね合わせ発振器",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 6,
+          "fingerprint": "0::quantum-encoder::dark-matter:6:0|crystal-oscillator:1:0|aluminum-plate:9:0|quantum-energy:25:1::quantum-oscillator:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "励起フォトニック物質"
+    },
+    "Desc_IronRod_C": {
+      "name": "鉄のロッド"
+    },
+    "Desc_IronScrew_C": {
+      "name": "ネジ"
+    },
+    "Desc_IronPlate_C": {
+      "name": "鉄板"
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "強化鉄板"
+    },
+    "Desc_CopperSheet_C": {
+      "name": "銅板"
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "アルクラッド・アルミシート",
+      "description": "高い熱伝導性や比強度を必要とする製品に使用される。薄くて軽く、耐久性に優れている。",
+      "schemas": [
+        {
+          "name": "アルクラッド・アルミシート",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::aluminum-ingot:3:0|copper-ingot:1:0::aluminum-plate:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "アルミ筐体"
+    },
+    "Desc_SteelPipe_C": {
+      "name": "鋼管",
+      "description": "主に少し高度な建物を建設する際に使用される。",
+      "schemas": [
+        {
+          "name": "鋼管",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::steel-ingot:3:0::steel-pipe:2:0"
+        },
+        {
+          "name": "代替: 成形鋼管",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::steel-ingot:5:0|cement:3:0::steel-pipe:5:0"
+        },
+        {
+          "name": "代替: 鉄のパイプ",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "1::constructor::iron-ingot:20:0::steel-pipe:5:0"
+        }
+      ]
+    },
+    "Desc_SteelPlate_C": {
+      "name": "鋼梁"
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "コンクリート被覆型鋼梁",
+      "description": "コンクリートの圧縮強度と鋼の引張強度を兼ね備えている。 主に建物を建設するための安定した基盤として使用される。",
+      "schemas": [
+        {
+          "name": "コンクリート被覆型鋼梁",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::steel-plate:3:0|cement:6:0::steel-plate-reinforced:1:0"
+        },
+        {
+          "name": "代替: コンクリート被覆型鋼管",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::steel-pipe:6:0|cement:5:0::steel-plate-reinforced:1:0"
+        }
+      ]
+    },
+    "Desc_ModularFrame_C": {
+      "name": "モジュラー・フレーム",
+      "description": "作成に使用する。 多目的の建築用ブロック。",
+      "schemas": [
+        {
+          "name": "モジュラー・フレーム",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-plate-reinforced:3:0|iron-rod:12:0::modular-frame:2:0"
+        },
+        {
+          "name": "代替: ネジ留めフレーム",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::iron-screw:56:0::modular-frame:2:0"
+        },
+        {
+          "name": "代替: 鋼鉄のフレーム",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::iron-plate-reinforced:2:0|steel-pipe:10:0::modular-frame:3:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "ヘビー・モジュラー・フレーム"
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "溶融モジュラー・フレーム"
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "FICSITEの三角板",
+      "description": "FICSITEのインゴットから作られたFICSITEの三角板は、あらゆる建設上の課題に対応する完璧な形状をしている。その性能は非常に優れており、構造工学を基本から解決する。",
+      "schemas": [
+        {
+          "name": "FICSITEの三角板",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::ficsite-ingot:1:0::ficsite-mesh:3:0"
+        }
+      ]
+    },
+    "Desc_Fabric_C": {
+      "name": "布地",
+      "description": "装備品の作成に使用する。 柔軟だが頑丈な布地。",
+      "schemas": [
+        {
+          "name": "布地",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::mycelia:1:0|generic-biomass:5:0::fabric:1:0"
+        },
+        {
+          "name": "代替: ポリエステル生地",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::polymer-resin:1:0|water:1:1::fabric:1:0"
+        }
+      ]
+    },
+    "Desc_Plastic_C": {
+      "name": "プラスチック",
+      "description": "多用途で製造が容易な素材。幅広い用途がある。",
+      "schemas": [
+        {
+          "name": "プラスチック",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::plastic:2:0|heavy-oil-residue:1:1"
+        },
+        {
+          "name": "代替: リサイクル・プラスチック",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::rubber:6:0|liquid-fuel:6:1::plastic:12:0"
+        },
+        {
+          "name": "残留プラスチック",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::polymer-resin:6:0|water:2:1::plastic:2:0"
+        }
+      ]
+    },
+    "Desc_Rubber_C": {
+      "name": "ゴム",
+      "description": "非常に柔軟な素材で、摩擦が大きい。",
+      "schemas": [
+        {
+          "name": "ゴム",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::rubber:2:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "代替: リサイクル・ゴム",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::plastic:6:0|liquid-fuel:6:1::rubber:12:0"
+        },
+        {
+          "name": "残留ゴム",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::polymer-resin:4:0|water:4:1::rubber:2:0"
+        }
+      ]
+    },
+    "Desc_Rotor_C": {
+      "name": "ローター"
+    },
+    "Desc_Stator_C": {
+      "name": "固定子",
+      "description": "作成に使用する。 モーターの固定子部分。",
+      "schemas": [
+        {
+          "name": "固定子",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::steel-pipe:3:0|wire:8:0::stator:1:0"
+        },
+        {
+          "name": "代替: クイックワイヤー固定子",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::steel-pipe:4:0|high-speed-wire:15:0::stator:2:0"
+        }
+      ]
+    },
+    "Desc_Battery_C": {
+      "name": "バッテリー",
+      "description": "主にドローンや車両の燃料として使用される。",
+      "schemas": [
+        {
+          "name": "バッテリー",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::alumina-solution:2:1|aluminum-casing:1:0::battery:1:0"
+        },
+        {
+          "name": "代替: クラシック・バッテリー",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::sulfur:6:0|plastic:8:0|wire:12:0::battery:4:0"
+        }
+      ]
+    },
+    "Desc_Motor_C": {
+      "name": "モーター"
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "ヒートシンク"
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "冷却システム",
+      "description": "高度な部品や建物が効率的な温度レベルを超えないようにする。",
+      "schemas": [
+        {
+          "name": "冷却システム",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::aluminum-plate-reinforced:2:0|rubber:2:0|water:5:1|nitrogen-gas:25:1::cooling-system:1:0"
+        },
+        {
+          "name": "代替: 冷却装置",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::aluminum-plate-reinforced:4:0|nitrogen-gas:24:1::cooling-system:2:0"
+        }
+      ]
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "ターボ・モーター"
+    },
+    "Desc_Wire_C": {
+      "name": "ワイヤー"
+    },
+    "Desc_Cable_C": {
+      "name": "ケーブル"
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "クイックワイヤー"
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "回路基板"
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "AIリミッター",
+      "description": "AIを制御し、悪意ある進化をさせない。超高度電子機器。",
+      "schemas": [
+        {
+          "name": "AIリミッター",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:5:0|high-speed-wire:20:0::circuit-board-high-speed:1:0"
+        },
+        {
+          "name": "代替: プラスチックAIリミッター",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::high-speed-wire:30:0|plastic:7:0::circuit-board-high-speed:2:0"
+        }
+      ]
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "高速コネクター"
+    },
+    "Desc_SAMIngot_C": {
+      "name": "活性SAM",
+      "description": "奇妙な異星物質を活性化させて封じ込めた状態。 接触した物質の原子結合を操作できるようなので、適切な電磁気的封じ込めが必要。",
+      "schemas": [
+        {
+          "name": "活性SAM",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::sam:4:0::samingot:1:0"
+        }
+      ]
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "SAM 変動機",
+      "description": "SAM変動機は、周波数を変化させながら電荷を加えることで、活性SAMの挙動を制御し、操作することができる。 この制御によって、物質からエネルギーへの変換や時空間物質操作などの技術が容易になる。",
+      "schemas": [
+        {
+          "name": "SAM 変動機",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::samingot:6:0|wire:5:0|steel-pipe:3:0::samfluctuator:1:0"
+        }
+      ]
+    },
+    "Desc_Computer_C": {
+      "name": "コンピューター"
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "スーパーコンピューター"
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "無線制御ユニット"
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "水晶発振器"
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "重ね合わせ発振器",
+      "description": "水晶の安定した共振作用を利用して精確な周波数の弦の振動を作り出す発振回路。テレポーテーション技術と次元操作で多用されている。",
+      "schemas": [
+        {
+          "name": "重ね合わせ発振器",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::dark-matter:6:0|crystal-oscillator:1:0|aluminum-plate:9:0|quantum-energy:25:1::quantum-oscillator:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_Diamond_C": {
+      "name": "ダイヤモンド",
+      "description": "石炭を極度の熱と圧力にさらすことで生成される合成ダイヤモンド。 時の結晶とダークマターの結晶の製造に使用される。 電力使用量: 250～750MW (平均500MW)",
+      "schemas": [
+        {
+          "name": "ダイヤモンド",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::coal:20:0::diamond:1:0"
+        },
+        {
+          "name": "代替: ダイヤモンド（ターボ）",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::coal:30:0|turbo-fuel:2:0::diamond:3:0"
+        },
+        {
+          "name": "代替: ダイヤモンド（ピンク）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "1::converter::coal:8:0|quartz-crystal:3:0::diamond:1:0"
+        },
+        {
+          "name": "代替: ダイヤモンド（曇り）",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 3,
+          "fingerprint": "1::particle-accelerator::coal:12:0|stone:24:0::diamond:1:0"
+        },
+        {
+          "name": "代替: ダイヤモンド（油性）",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 4,
+          "fingerprint": "1::particle-accelerator::liquid-oil:10:1::diamond:2:0"
+        },
+        {
+          "name": "代替: ダイヤモンド（石油）",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 5,
+          "fingerprint": "1::particle-accelerator::petroleum-coke:24:0::diamond:1:0"
+        }
+      ]
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "時の結晶",
+      "description": "時の結晶は、変換機の中で素粒子レベルで再構成されたダイヤモンドであり、時間周期的な自己組織化構造を保持することにより、量子の処理技術や保管技術の開発に使用することができる。",
+      "schemas": [
+        {
+          "name": "時の結晶",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "0::converter::diamond:2:0::time-crystal:1:0"
+        }
+      ]
+    },
+    "Desc_DarkMatter_C": {
+      "name": "ダークマターの結晶",
+      "description": "ダークマターの残留物を結晶容器内に隔離して濃縮したもの。この封じ込めにより、ダークマターを他の製造工程で確実に利用できる。 電力使用量: 500-1500MW(平均1000MW)",
+      "schemas": [
+        {
+          "name": "ダークマターの結晶",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::diamond:1:0|dark-energy:5:1::dark-matter:1:0"
+        },
+        {
+          "name": "代替: ダークマターのトラップ",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::time-crystal:1:0|dark-energy:5:1::dark-matter:2:0"
+        },
+        {
+          "name": "代替: ダークマターの結晶化",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 2,
+          "fingerprint": "1::particle-accelerator::dark-energy:10:1::dark-matter:1:0"
+        }
+      ]
+    },
+    "Desc_SingularityCell_C": {
+      "name": "シンギュラリティセル",
+      "description": "空間と時間の分解に使用される。ポータルを動かすのに必要。",
+      "schemas": [
+        {
+          "name": "シンギュラリティセル",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-9:1:0|dark-matter:20:0|iron-plate:100:0|cement:200:0::singularity-cell:10:0"
+        }
+      ]
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "ニューラル量子プロセッサー",
+      "description": "ニューラル量子プロセッサーは、ニューラルネットワークアーキテクチャーと量子コンピューティング技術の組み合わせを利用し、前例のない性能を実現する。このテクノロジーは、人工知能と相対理論工学におけるFICSIT社最大の進歩を可能にしている。",
+      "schemas": [
+        {
+          "name": "ニューラル量子プロセッサー",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::time-crystal:5:0|computer-super:1:0|ficsite-mesh:15:0|quantum-energy:25:1::temporal-processor:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "異星のパワーマトリックス",
+      "description": "この複雑な凝縮物質マトリックスは、異星の増幅装置の出力を強化するために使用される。 当初、人間の手でサマースループを作るために開発された異星のパワーマトリックスは、それだけでは超次元のエネルギー接続を維持することはできない。しかし、サマースループのエネルギーの流れを効果的に安定させることはできる。",
+      "schemas": [
+        {
+          "name": "異星のパワーマトリックス",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::quantum-energy:24:1::dark-energy:24:1"
+        }
+      ]
+    },
+    "Desc_FluidCanister_C": {
+      "name": "空の容器",
+      "description": "液体を包装して輸送する際に使用する。",
+      "schemas": [
+        {
+          "name": "未包装の水",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-water:2:0::water:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "未包装アルミナ溶液",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-alumina:2:0::alumina-solution:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "未包装ターボ燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::turbo-fuel:2:0::liquid-turbo-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "未包装原油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 3,
+          "fingerprint": "0::packager::packaged-oil:2:0::liquid-oil:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "未包装廃重油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 4,
+          "fingerprint": "0::packager::packaged-oil-residue:2:0::heavy-oil-residue:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "未包装液体バイオ燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 5,
+          "fingerprint": "0::packager::packaged-biofuel:2:0::liquid-biofuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "未包装燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 6,
+          "fingerprint": "0::packager::fuel:2:0::liquid-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "未包装硫酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 7,
+          "fingerprint": "0::packager::packaged-sulfuric-acid:1:0::sulfuric-acid:1:1|fluid-canister:1:0"
+        },
+        {
+          "name": "空の容器",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 8,
+          "fingerprint": "0::constructor::plastic:2:0::fluid-canister:4:0"
+        },
+        {
+          "name": "代替: 被覆鉄板容器",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 9,
+          "fingerprint": "1::assembler::iron-plate:2:0|copper-sheet:1:0::fluid-canister:4:0"
+        },
+        {
+          "name": "代替: 鋼鉄容器",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 10,
+          "fingerprint": "1::constructor::steel-ingot:4:0::fluid-canister:4:0"
+        }
+      ]
+    },
+    "Desc_GasTank_C": {
+      "name": "空の液体タンク",
+      "description": "気体や揮発性液体を梱包して輸送する際に使用する。",
+      "schemas": [
+        {
+          "name": "未包装硝酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-nitric-acid:1:0::nitric-acid:1:1|gas-tank:1:0"
+        },
+        {
+          "name": "未包装窒素ガス",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-nitrogen-gas:1:0::nitrogen-gas:4:1|gas-tank:1:0"
+        },
+        {
+          "name": "空の液体タンク",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "0::constructor::aluminum-ingot:1:0::gas-tank:1:0"
+        },
+        {
+          "name": "開封されたイオン燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 3,
+          "fingerprint": "0::packager::packaged-ionized-fuel:2:0::ionized-fuel:4:1|gas-tank:2:0"
+        },
+        {
+          "name": "開封されたロケット燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 4,
+          "fingerprint": "0::packager::packaged-rocket-fuel:1:0::rocket-fuel:2:1|gas-tank:1:0"
+        }
+      ]
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "圧力変換キューブ",
+      "description": "外向きの力を内圧に変換する。不安定な高エネルギー物質を保管する際に必要とされる。",
+      "schemas": [
+        {
+          "name": "圧力変換キューブ",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::modular-frame-fused:1:0|modular-frame-lightweight:2:0::pressure-conversion-cube:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedWater_C": {
+      "name": "包装済み水",
+      "description": "パイプ以外での輸送のために容器に詰められた水。",
+      "schemas": [
+        {
+          "name": "包装済み水",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::water:2:1|fluid-canister:2:0::packaged-water:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "包装済みアルミナ溶液",
+      "description": "代替輸送用に包装されたアルミナ溶液。",
+      "schemas": [
+        {
+          "name": "包装済みアルミナ溶液",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::alumina-solution:2:1|fluid-canister:2:0::packaged-alumina:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "包装済み硫酸",
+      "description": "代替輸送用に包装された硫酸。",
+      "schemas": [
+        {
+          "name": "包装済み硫酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::sulfuric-acid:2:1|fluid-canister:2:0::packaged-sulfuric-acid:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "容器入り硝酸",
+      "description": "代替輸送用に包装された硝酸。",
+      "schemas": [
+        {
+          "name": "容器入り硝酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::nitric-acid:1:1|gas-tank:1:0::packaged-nitric-acid:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "包装済み窒素ガス",
+      "description": "代替輸送用に包装された窒素ガス。",
+      "schemas": [
+        {
+          "name": "包装済み窒素ガス",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::nitrogen-gas:4:1|gas-tank:1:0::packaged-nitrogen-gas:1:0"
+        }
+      ]
+    },
+    "Desc_Leaves_C": {
+      "name": "葉",
+      "description": "主に燃料として使用される。 バイオマス・バーナーおよび車両は葉を動力として使用できる。"
+    },
+    "Desc_Mycelia_C": {
+      "name": "菌糸",
+      "description": "作成に使用する。 バイオマス・バーナーおよび車両は菌糸を動力として使用できる。"
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "花弁",
+      "description": "作成に使用する。 カラフルな土着の植物の花びら。"
+    },
+    "Desc_Wood_C": {
+      "name": "木",
+      "description": "主に燃料として使用される。 バイオマス・バーナーおよび車両は木を動力として使用できる。"
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "バイオマス",
+      "description": "主に燃料として使用される。 バイオマス・バーナーや自動車の動力源にもなる。 バイオマスは、未加工の生体物質よりもはるかにエネルギー効率が高い。",
+      "schemas": [
+        {
+          "name": "バイオマス(エイリアンのタンパク質)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::alien-protein:1:0::generic-biomass:100:0"
+        },
+        {
+          "name": "バイオマス(木)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "0::constructor::wood:4:0::generic-biomass:20:0"
+        },
+        {
+          "name": "バイオマス(菌糸)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "0::constructor::mycelia:1:0::generic-biomass:10:0"
+        },
+        {
+          "name": "バイオマス(葉)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 3,
+          "fingerprint": "0::constructor::leaves:10:0::generic-biomass:5:0"
+        }
+      ]
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "圧縮石炭",
+      "description": "石炭よりはるかに効率的な代替燃料。車両や石炭発電機の燃料として使用される。",
+      "schemas": [
+        {
+          "name": "イオン燃料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::rocket-fuel:16:1::ionized-fuel:16:1|compacted-coal:2:0"
+        },
+        {
+          "name": "ロケット燃料",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::liquid-turbo-fuel:6:1|nitric-acid:1:1::rocket-fuel:10:1|compacted-coal:1:0"
+        },
+        {
+          "name": "代替: 圧縮石炭",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::coal:5:0|sulfur:5:0::compacted-coal:5:0"
+        },
+        {
+          "name": "代替: ダークイオン燃料",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 3,
+          "fingerprint": "1::converter::packaged-rocket-fuel:12:0|dark-matter:4:0::ionized-fuel:10:1|compacted-coal:2:0"
+        },
+        {
+          "name": "代替: ニトロロケット燃料",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 4,
+          "fingerprint": "1::blender::liquid-fuel:4:1|nitrogen-gas:3:1|sulfur:4:0|coal:2:0::rocket-fuel:6:1|compacted-coal:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedOil_C": {
+      "name": "包装済み原油",
+      "description": "代替輸送用にパッケージ化された原油。車両の燃料として使用できる。",
+      "schemas": [
+        {
+          "name": "包装済み原油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-oil:2:1|fluid-canister:2:0::packaged-oil:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "包装済み廃重油",
+      "description": "代替輸送用にパッケージ化された廃重油。自動車の燃料として使用できる。",
+      "schemas": [
+        {
+          "name": "包装済み廃重油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::heavy-oil-residue:2:1|fluid-canister:2:0::packaged-oil-residue:2:0"
+        }
+      ]
+    },
+    "Desc_Biofuel_C": {
+      "name": "固体バイオ燃料",
+      "description": "固形バイオマスの中で最もエネルギー効率の良いもの。チェーンソーの燃料としても使用できる。",
+      "schemas": [
+        {
+          "name": "固体バイオ燃料",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::generic-biomass:8:0::biofuel:4:0"
+        }
+      ]
+    },
+    "Desc_Fuel_C": {
+      "name": "包装済み燃料",
+      "description": "代替輸送用にパッケージ化された燃料。自動車やジェットパックの燃料として使用できる。",
+      "schemas": [
+        {
+          "name": "包装済み燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-fuel:2:1|fluid-canister:2:0::fuel:2:0"
+        },
+        {
+          "name": "代替: 容器入り希釈燃料",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::heavy-oil-residue:1:1|packaged-water:2:0::fuel:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "包装済み液体バイオ燃料",
+      "description": "代替輸送用にパッケージ化された液体バイオ燃料。自動車やジェットパックの燃料として使用できる。",
+      "schemas": [
+        {
+          "name": "包装済み液体バイオ燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-biofuel:2:1|fluid-canister:2:0::packaged-biofuel:2:0"
+        }
+      ]
+    },
+    "Desc_TurboFuel_C": {
+      "name": "容器入りターボ燃料",
+      "description": "代替輸送用にパッケージ化されたターボ燃料。自動車やジェットパックの燃料として使用できる。",
+      "schemas": [
+        {
+          "name": "容器入りターボ燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-turbo-fuel:2:1|fluid-canister:2:0::turbo-fuel:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "包装済みロケット燃料",
+      "description": "代替輸送用のロケット燃料。車両やジェットパックの燃料として使用できる。",
+      "schemas": [
+        {
+          "name": "包装済みロケット燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::rocket-fuel:2:1|gas-tank:1:0::packaged-rocket-fuel:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "包装済みイオン燃料",
+      "description": "代替輸送用にイオン化された燃料。車両やジェットパックの燃料として使用できる。",
+      "schemas": [
+        {
+          "name": "包装済みイオン燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::ionized-fuel:4:1|gas-tank:2:0::packaged-ionized-fuel:2:0"
+        }
+      ]
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "ウラン燃料棒"
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "プルトニウム燃料棒"
+    },
+    "Desc_Gunpowder_C": {
+      "name": "黒色火薬",
+      "description": "簡易爆薬の製造に使用される火薬。",
+      "schemas": [
+        {
+          "name": "黒色火薬",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::coal:1:0|sulfur:1:0::gunpowder:2:0"
+        },
+        {
+          "name": "代替: 上質黒色火薬",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::compacted-coal:2:0::gunpowder:6:0"
+        }
+      ]
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "無煙火薬",
+      "description": "現代風銃器の製造に使用される火薬。",
+      "schemas": [
+        {
+          "name": "無煙火薬",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::gunpowder:2:0|heavy-oil-residue:1:1::gunpowder-mk2:2:0"
+        }
+      ]
+    },
+    "Desc_Filter_C": {
+      "name": "ガスフィルター"
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "カラー弾薬",
+      "description": "カスタマイザーで構造物にパターンを適用する際に使用する。 （パターンはAWESOMEショップで購入できる）"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "ビーコン",
+      "description": "削除申請中 このアイテムは将来のアップデートで削除される可能性があります。 現在は代替レシピの材料としてのみ使用されています。"
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "ヨウ素充填フィルター"
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "鉄筋",
+      "description": "護身目的で鉄筋ガンで発射できる。",
+      "schemas": [
+        {
+          "name": "鉄筋",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-rod:1:0::spiked-rebar:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "スタン鉄筋",
+      "description": "衝撃で感電させ、短時間気絶させる。 持続時間: 5秒",
+      "schemas": [
+        {
+          "name": "スタン鉄筋",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::spiked-rebar:1:0|high-speed-wire:5:0::rebar-stunshot:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "破砕鉄筋",
+      "description": "射撃時に破砕し、致命的な破片を広範囲に撃ち出すが、射程は限られる。",
+      "schemas": [
+        {
+          "name": "破砕鉄筋",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::spiked-rebar:2:0|quartz-crystal:3:0::rebar-spreadshot:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "爆砕鉄筋",
+      "description": "衝撃で爆発し、大ダメージを与える。",
+      "schemas": [
+        {
+          "name": "爆砕鉄筋",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::spiked-rebar:2:0|gunpowder-mk2:2:0|steel-pipe:2:0::rebar-explosive:1:0"
+        }
+      ]
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "ライフル弾",
+      "description": "標準装備のライフル弾で、優位性を確立するのに有効。",
+      "schemas": [
+        {
+          "name": "ライフル弾",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:3:0|gunpowder-mk2:2:0::cartridge-standard:15:0"
+        }
+      ]
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "ホーミングライフル弾",
+      "description": "弾薬が内蔵する弾丸誘導システムにより、レティクルエリア内のどんな標的にも正確に命中させることができる。 俊敏な敵や、エイムが面倒な開拓者に有効。",
+      "schemas": [
+        {
+          "name": "ホーミングライフル弾",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::cartridge-standard:20:0::cartridge-smart-projectile:10:0"
+        }
+      ]
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "ターボライフル弾",
+      "description": "軽量、コンパクト、そして揮発性。精度を犠牲にして、極端な容量と発射速度を提供する。",
+      "schemas": [
+        {
+          "name": "ターボライフル弾",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::cartridge-standard:25:0|aluminum-casing:3:0|liquid-turbo-fuel:3:1::cartridge-chaos:50:0"
+        },
+        {
+          "name": "ターボライフル弾",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "0::manufacturer::cartridge-standard:25:0|aluminum-casing:3:0|turbo-fuel:3:0::cartridge-chaos:50:0"
+        }
+      ]
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "ノーベリスク",
+      "description": "シンプルな爆薬で、岩や草木などの障害物を取り除くのに便利。",
+      "schemas": [
+        {
+          "name": "ノーベリスク",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::gunpowder:2:0|steel-pipe:2:0::nobelisk-explosive:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "ガス・ノーベリスク",
+      "description": "通常の爆発ではなく、致死性のガス雲を発生させる。",
+      "schemas": [
+        {
+          "name": "ガス・ノーベリスク",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:1:0|generic-biomass:10:0::nobelisk-gas:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "パルス・ノーベリスク",
+      "description": "通常の爆発ではなく、強力な衝撃波を発生させる。",
+      "schemas": [
+        {
+          "name": "パルス・ノーベリスク",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:5:0|crystal-oscillator:1:0::nobelisk-shockwave:5:0"
+        }
+      ]
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "クラスター・ノーベリスク"
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "ニューク・ノーベリスク"
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "電磁制御棒",
+      "description": "電磁気によって出力を調整する。",
+      "schemas": [
+        {
+          "name": "電磁制御棒",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::stator:3:0|circuit-board-high-speed:2:0::electromagnetic-control-rod:2:0"
+        },
+        {
+          "name": "代替: 電磁接続棒",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::stator:2:0|high-speed-connector:1:0::electromagnetic-control-rod:2:0"
+        }
+      ]
+    },
+    "Desc_UraniumCell_C": {
+      "name": "被覆型ウラン・セル",
+      "description": "原子力発電用ウラン燃料棒の製造に使用される。ウラン鉱石から作られる。 注意: 軽度の放射能がある。",
+      "schemas": [
+        {
+          "name": "被覆型ウラン・セル",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::ore-uranium:10:0|cement:3:0|sulfuric-acid:8:1::uranium-cell:5:0|sulfuric-acid:2:1"
+        },
+        {
+          "name": "代替: 注入型ウラン・セル",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::ore-uranium:5:0|silica:3:0|sulfur:5:0|high-speed-wire:15:0::uranium-cell:4:0"
+        }
+      ]
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "非核分裂性ウラン",
+      "description": "ウラン238の同位体は非核分裂性で、核分裂には使えないが、粒子加速器で核分裂性プルトニウムに変換することはできる。 注意: 軽度の放射能がある。",
+      "schemas": [
+        {
+          "name": "非核分裂性ウラン",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::silica:10:0|nitric-acid:6:1|sulfuric-acid:6:1::non-fissible-uranium:20:0|water:6:1"
+        },
+        {
+          "name": "代替: 親物質性ウラン",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::ore-uranium:5:0|nuclear-waste:5:0|nitric-acid:3:1|sulfuric-acid:5:1::non-fissible-uranium:20:0|water:8:1"
+        }
+      ]
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "プルトニウム・ペレット",
+      "description": "粒子加速器で非核分裂性ウランを変換して製造される。 プルトニウム燃料棒の被覆型プルトニウムセルの製造に使用される。 電力使用量: 250～750MW (平均500MW) 注意: 中程度の放射能がある",
+      "schemas": [
+        {
+          "name": "プルトニウム・ペレット",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::non-fissible-uranium:100:0|nuclear-waste:25:0::plutonium-pellet:30:0"
+        }
+      ]
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "被覆型プルトニウム・セル",
+      "description": "プルトニウム・ペレットをコンクリートに封入して作られる。 原子力発電所のプルトニウム燃料棒の製造に使用される。 電力使用量: 250～750MW (平均500MW) 注意: 中程度の放射能がある。",
+      "schemas": [
+        {
+          "name": "被覆型プルトニウム・セル",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::plutonium-pellet:2:0|cement:4:0::plutonium-cell:1:0"
+        },
+        {
+          "name": "代替: 即席プルトニウム・セル",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::non-fissible-uranium:150:0|aluminum-casing:20:0::plutonium-cell:20:0"
+        }
+      ]
+    },
+    "Desc_Ficsonium_C": {
+      "name": "FICSONIUM",
+      "description": "この素材の使用および製造は固く禁じられているが、それは地球上でのこと。宇宙におけるルールはただ一つ、効率だ。 電力使用量: 500-1500MW(平均1000MW) 注意: 中程度の放射能がある",
+      "schemas": [
+        {
+          "name": "FICSONIUM",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::plutonium-waste:1:0|singularity-cell:1:0|dark-energy:20:1::ficsonium:1:0"
+        }
+      ]
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "FICSONIUM燃料棒",
+      "description": "原子力発電所の燃料として使用される。 FICSIT社を文字通り地図に載せた動力源。クレーターはまだそこにある。 注意: 中程度の放射能がある",
+      "schemas": [
+        {
+          "name": "FICSONIUM燃料棒",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::ficsonium:2:0|electromagnetic-control-rod:2:0|ficsite-mesh:40:0|quantum-energy:20:1::dark-energy:20:1"
+        }
+      ]
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "ウラン廃棄物"
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "プルトニウム廃棄物"
+    },
+    "Desc_Crystal_C": {
+      "name": "青いパワー・スラッグ",
+      "description": "弱い未知の力を放つ、奇妙なナメクジ。"
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "黄のパワー・スラッグ",
+      "description": "未知の力を放つ、奇妙なナメクジ。"
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "紫のパワー・スラッグ",
+      "description": "強い未知の力を放つ、奇妙なナメクジ。"
+    },
+    "Desc_CrystalShard_C": {
+      "name": "パワー・シャード"
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "FICSIT クーポン",
+      "description": "AWESOMEシンクから手に入るFICSITのボーナスプログラムクーポン。 AWESOMEショップでボーナスマイルストーンや報酬と交換できる。"
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "スマート・プレート"
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "多目的フレームワーク"
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "自動ワイヤー"
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "モジュラーエンジン",
+      "description": "Project Part #4. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "モジュラーエンジン",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::motor:2:0|rubber:15:0|space-elevator-part-1:2:0::space-elevator-part-4:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "自律制御ユニット",
+      "description": "Project Part #5. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "自律制御ユニット",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-3:5:0|circuit-board:5:0|modular-frame-heavy:1:0|computer:2:0::space-elevator-part-5:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "組立指揮システム"
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "磁界発生装置",
+      "description": "Project Part #7. Ship via the Space Elevator to complete phases of Project Assembly. このモジュール式発電機は、超電導磁石と膨大な電力を利用して、容易に拡張可能な強力な磁界を作り出す。",
+      "schemas": [
+        {
+          "name": "磁界発生装置",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::electromagnetic-control-rod:2:0::space-elevator-part-6:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "熱推進型ロケット",
+      "description": "Project Part #8. Ship via the Space Elevator to complete phases of Project Assembly. 「プロジェクト・アセンブリ」の始動に必要な高圧プラズマを生成するために、極度の熱を使用する。",
+      "schemas": [
+        {
+          "name": "熱推進型ロケット",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::motor-lightweight:2:0|cooling-system:6:0|modular-frame-fused:2:0::space-elevator-part-8:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "核パスタ"
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "生化学スカルプター",
+      "description": "Project Part #10. Ship via the Space Elevator to complete phases of Project Assembly. 競合他社より何年も先を行くこの最高級3Dプリンターは、合成生物資源の生産に使用される。",
+      "schemas": [
+        {
+          "name": "生化学スカルプター",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::ficsite-mesh:80:0|water:20:1::space-elevator-part-10:4:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "弾道ワープドライブ",
+      "description": "Project Part #11. Ship via the Space Elevator to complete phases of Project Assembly. ワープドライブの起動には膨大な力が必要なため、ロケットを使用するのは論理的な次のステップだった。さらに、起動時に観測者がワープドライブから離れると、結果は劇的に向上した。",
+      "schemas": [
+        {
+          "name": "弾道ワープドライブ",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-8:1:0|singularity-cell:5:0|quantum-oscillator:2:0|dark-matter:40:0::space-elevator-part-11:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "AI拡張サーバー",
+      "description": "Project Part #12. Ship via the Space Elevator to complete phases of Project Assembly. Power Usage: 0-2000 MW (1000 MW average). 成長とは、私たちが成功を測るための指標である。",
+      "schemas": [
+        {
+          "name": "AI拡張サーバー",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::space-elevator-part-6:1:0|temporal-processor:1:0|quantum-oscillator:1:0|quantum-energy:25:1::space-elevator-part-12:1:0|dark-energy:25:1"
+        }
+      ]
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "採鉱機 Mk.1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "採鉱機 Mk.2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "採鉱機 Mk.3"
+    },
+    "Build_OilPump_C": {
+      "name": "原油抽出機"
+    },
+    "Build_WaterPump_C": {
+      "name": "揚水ポンプ"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "資源井加圧機"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "地下資源抽出機"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "製錬炉"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "鋳造炉"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "製作機"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "組立機"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "製造機"
+    },
+    "Build_OilRefinery_C": {
+      "name": "精製機"
+    },
+    "Build_Packager_C": {
+      "name": "充填機"
+    },
+    "Build_Blender_C": {
+      "name": "混合機"
+    },
+    "Build_HadronCollider_C": {
+      "name": "粒子加速器"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "量子エンコーダー"
+    },
+    "Build_Converter_C": {
+      "name": "変換機"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "バイオマス・バーナー"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "石炭発電機"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "燃料式発電機"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "地熱発電機"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "原子力発電所"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "蓄電装置"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "異星の増幅装置"
+    },
+    "Build_TradingPost_C": {
+      "name": "HUB"
+    },
+    "Build_Mam_C": {
+      "name": "MAM"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "軌道エレベータ"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "ブループリント・デザイナーMk.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "ブループリント・デザイナーMk.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "AWESOMEシンク"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "AWESOMEショップ"
+    },
+    "Build_WorkBench_C": {
+      "name": "工作台"
+    },
+    "Build_Workshop_C": {
+      "name": "装備品作業場"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "個人用貯蔵箱"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "医薬品貯蔵箱"
+    },
+    "Build_StorageHazard_C": {
+      "name": "危険物貯蔵箱"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "貯蔵コンテナ"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "液体タンク"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "産業用液体タンク"
+    },
+    "Build_CentralStorage_C": {
+      "name": "次元デポ・アップローダー"
+    },
+    "Build_StackableShelf_C": {
+      "name": "標準のシェルフ・ユニット"
+    },
+    "Build_TruckStation_C": {
+      "name": "トラック・ステーション"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "ドローンポート"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "貨物プラットフォーム"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "液体貨物プラットフォーム"
+    },
+    "Build_LookoutTower_C": {
+      "name": "展望タワー"
+    },
+    "Build_RadarTower_C": {
+      "name": "レーダー・タワー"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

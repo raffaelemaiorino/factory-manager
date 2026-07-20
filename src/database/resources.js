@@ -3,6 +3,7 @@ const { loadItemDetails } = require('./seeds/load-item-details');
 const { seedItems, syncItemMetadata } = require('./items');
 const { ensureSchemaTables, seedSchemas } = require('./schemas');
 const { seedBuildings, loadSeedData: loadBuildingsSeed, DATA_VERSION: BUILDINGS_DATA_VERSION, ensureBuildingColumns } = require('./buildings');
+const { ensureI18n, getI18nInfo } = require('./i18n');
 
 const MIN_ITEMS = 100;
 
@@ -91,6 +92,7 @@ function resetDefaultResources(db, persist) {
   ensureSchemaTables(db);
   const schemasResult = seedSchemas(db, persist, { force: true });
   const buildingsResult = seedBuildings(db, persist, { force: true });
+  const i18nResult = ensureI18n(db, persist, { force: true });
 
   const version = getBundledResourcesVersion();
   setMeta(db, 'resources_data_version', version);
@@ -101,6 +103,7 @@ function resetDefaultResources(db, persist) {
     items: itemsResult,
     schemas: schemasResult,
     buildings: buildingsResult,
+    i18n: i18nResult,
     resourcesDataVersion: version,
   };
 }
@@ -117,6 +120,7 @@ function ensureDefaultResources(db, persist) {
   ensureSchemaTables(db);
   const schemasResult = seedSchemas(db, persist);
   const buildingsResult = seedBuildings(db, persist);
+  const i18nResult = ensureI18n(db, persist);
 
   const version = getBundledResourcesVersion();
   setMeta(db, 'resources_data_version', version);
@@ -127,6 +131,7 @@ function ensureDefaultResources(db, persist) {
     items: itemsResult,
     schemas: schemasResult,
     buildings: buildingsResult,
+    i18n: i18nResult,
     resourcesDataVersion: version,
   };
 }
@@ -141,6 +146,7 @@ function getResourcesDataInfo(db) {
     bundledVersion: getBundledResourcesVersion(),
     storedVersion: getMeta(db, 'resources_data_version'),
     lastResetAt: getMeta(db, 'resources_reset_at'),
+    i18n: getI18nInfo(db),
     counts: {
       items: queryCount(db, 'items'),
       schemas: queryCount(db, 'item_schemas'),

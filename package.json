@@ -1,6 +1,6 @@
 {
   "name": "factory-manager",
-  "version": "1.28.1",
+  "version": "1.35.0",
   "description": "Unofficial fan-made production planner for Satisfactory. Plan chains, machines, rates and layouts locally.",
   "productName": "Factory Manager",
   "main": "electron/main.js",
@@ -9,6 +9,10 @@
     "dev": "electron . --enable-logging",
     "import:items": "node scripts/import-items.js",
     "import:details": "node scripts/import-item-details.js",
+    "import:locale": "node scripts/import-locale.js",
+    "import:locale:en": "node scripts/import-locale.js --locale en",
+    "import:locale:all": "node scripts/import-locale-all.js",
+    "import:locale:all:names": "node scripts/import-locale-all.js --skip-details",
     "build": "electron-builder --win",
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",

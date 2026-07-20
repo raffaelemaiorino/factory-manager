@@ -1,4 +1,11 @@
 const { loadSeedData, DATA_VERSION } = require('./seeds/buildings');
+const {
+  DEFAULT_LOCALE,
+  ensureI18nTables,
+  upsertBuildingTranslationsFromSeed,
+  seedBuildingCategoriesFromSeed,
+  getAppLocale,
+} = require('./i18n');
 
 const SOMERSLOOP_SLOTS_BY_SLUG = {
   smelter: 1,
@@ -49,15 +56,20 @@ function ensureBuildingColumns(db) {
 
 function seedBuildings(db, persist, { force = false } = {}) {
   ensureBuildingColumns(db);
+  ensureI18nTables(db);
 
-  const { buildings } = loadSeedData();
+  const { buildings, categories } = loadSeedData();
   if (!buildings.length) {
     return { seeded: false, count: 0 };
   }
 
   if (force) {
+    db.run('DELETE FROM building_translations');
+    db.run('DELETE FROM building_category_translations');
     db.run('DELETE FROM buildings');
   }
+
+  seedBuildingCategoriesFromSeed(db, categories, DEFAULT_LOCALE);
 
   for (const building of buildings) {
     const somersloopSlots = getSomersloopSlotsForBuilding(building);
@@ -79,6 +91,11 @@ function seedBuildings(db, persist, { force = false } = {}) {
         somersloopSlots,
       ]
     );
+
+    const row = queryOne(db, 'SELECT id FROM buildings WHERE slug = ?', [building.slug]);
+    if (row) {
+      upsertBuildingTranslationsFromSeed(db, row.id, building, DEFAULT_LOCALE);
+    }
   }
 
   persist();
@@ -88,22 +105,31 @@ function seedBuildings(db, persist, { force = false } = {}) {
 function getBuildingBySlug(db, slug) {
   if (!slug) return null;
   ensureBuildingColumns(db);
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
   return queryOne(
     db,
-    `SELECT id, slug, name, category, game_id, image, power_consumption, somersloop_slots
-     FROM buildings
-     WHERE slug = ?`,
-    [slug]
+    `SELECT b.id, b.slug, COALESCE(bt.name, b.name) AS name, b.category,
+            b.game_id, b.image, b.power_consumption, b.somersloop_slots
+     FROM buildings b
+     LEFT JOIN building_translations bt ON bt.building_id = b.id AND bt.locale = ?
+     WHERE b.slug = ?`,
+    [locale, slug]
   );
 }
 
 function getAllBuildings(db) {
   ensureBuildingColumns(db);
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
   const stmt = db.prepare(
-    `SELECT id, slug, name, category, game_id, image, power_consumption, somersloop_slots
-     FROM buildings
-     ORDER BY name ASC`
+    `SELECT b.id, b.slug, COALESCE(bt.name, b.name) AS name, b.category,
+            b.game_id, b.image, b.power_consumption, b.somersloop_slots
+     FROM buildings b
+     LEFT JOIN building_translations bt ON bt.building_id = b.id AND bt.locale = ?
+     ORDER BY COALESCE(bt.name, b.name) ASC`
   );
+  stmt.bind([locale]);
   const rows = [];
   while (stmt.step()) {
     rows.push(stmt.getAsObject());
@@ -111,7 +137,6 @@ function getAllBuildings(db) {
   stmt.free();
   return rows;
 }
-
 module.exports = {
   loadSeedData,
   DATA_VERSION,

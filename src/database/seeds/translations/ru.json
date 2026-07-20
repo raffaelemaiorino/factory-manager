@@ -1,0 +1,2235 @@
+{
+  "dataVersion": 1,
+  "locale": "ru",
+  "source": {
+    "items": "https://satisfactory-calculator.com/ru/items",
+    "buildings": "https://satisfactory-calculator.com/ru/buildings"
+  },
+  "importedAt": "2026-07-20T19:16:40.752Z",
+  "itemCategories": {
+    "minerali": "Руды",
+    "lingotti": "Слитки",
+    "materiali": "Минералы",
+    "alieni": "Пришельцы",
+    "liquidi": "Жидкости",
+    "gas": "Газ",
+    "componenti-standard": "Стандартные детали",
+    "componenti-industriali": "Промышленные детали",
+    "componenti-elettronici": "Электроника",
+    "comunicazioni": "Коммуникации",
+    "tecnologia-quantistica": "Квантовые технологии",
+    "contenitori": "Ёмкости",
+    "carburante": "Топливо",
+    "consumato": "Потребление",
+    "munizioni": "Боеприпасы",
+    "nucleare": "Ядерная энергия",
+    "rifiuti": "Отходы",
+    "speciali": "Особенное"
+  },
+  "buildingCategories": {
+    "estrazione": "Добыча",
+    "produzione": "Производство",
+    "generatori": "Генераторы",
+    "speciali": "Особенное",
+    "postazioni-di-lavoro": "Рабочие станции",
+    "deposito": "Хранилище",
+    "stazioni-di-attracco": "Загрузочные станции",
+    "torri": "Вышки"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "Известняк",
+      "description": "Используются в производстве. Базовый ресурс, прежде всего применяемый для строительства крепких фундаментов."
+    },
+    "Desc_OreIron_C": {
+      "name": "Железная руда",
+      "description": "Используются в производстве. Самый важный базовый ресурс."
+    },
+    "Desc_OreCopper_C": {
+      "name": "Медная руда",
+      "description": "Используются в производстве. Базовый ресурс, применяемый прежде всего для получения электроэнергии."
+    },
+    "Desc_OreGold_C": {
+      "name": "Катерийная руда",
+      "description": "Переплавляется в катерийные слитки, которые в основном используются при производстве электроники нового поколения."
+    },
+    "Desc_Coal_C": {
+      "name": "Уголь",
+      "description": "В основном используется в качестве топлива для транспортных средств и угольных генераторов, а также при производстве стали."
+    },
+    "Desc_RawQuartz_C": {
+      "name": "Неогранённый кварц",
+      "description": "Можно переработать в кварцевые кристаллы и кремнезём, которые имеют множество различных применений."
+    },
+    "Desc_Sulfur_C": {
+      "name": "Сера",
+      "description": "В основном используется для производства черного пороха."
+    },
+    "Desc_OreBauxite_C": {
+      "name": "Боксит",
+      "description": "Используется для получения глинозёма, который затем можно перерабатывать в алюминиевый лом, необходимый для производства алюминиевых слитков."
+    },
+    "Desc_SAM_C": {
+      "name": "СИМ",
+      "description": "Странная инопланетная материя (коротко — СИМ), кажется, ничего не знает о законах физики. А это означает новые возможности."
+    },
+    "Desc_OreUranium_C": {
+      "name": "Уран",
+      "description": "Радиоактивный элемент. Используется для производства обетонированных урановых ячеек, необходимых для изготовления урановых стержней. Внимание: умеренно радиоактивна."
+    },
+    "Desc_IronIngot_C": {
+      "name": "Железный слиток",
+      "description": "Используется в производстве большинства базовых деталей.",
+      "schemas": [
+        {
+          "name": "Железный слиток",
+          "is_alternative": 0,
+          "building_slug": "smelter",
+          "sort_order": 0,
+          "fingerprint": "0::smelter::ore-iron:1:0::iron-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_CopperIngot_C": {
+      "name": "Медный слиток",
+      "description": "Используется в производстве большинства базовых деталей.",
+      "schemas": [
+        {
+          "name": "Медный слиток",
+          "is_alternative": 0,
+          "building_slug": "smelter",
+          "sort_order": 0,
+          "fingerprint": "0::smelter::ore-copper:1:0::copper-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_GoldIngot_C": {
+      "name": "Катерийный слиток",
+      "description": "Выплавляется из катерийной руды. В основном используется при производстве электроники нового поколения.",
+      "schemas": [
+        {
+          "name": "Катерийный слиток",
+          "is_alternative": 0,
+          "building_slug": "smelter",
+          "sort_order": 0,
+          "fingerprint": "0::smelter::ore-gold:3:0::gold-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_SteelIngot_C": {
+      "name": "Стальной слиток",
+      "description": "Выплавляется из смеси железной руды и угля. Может использоваться для изготовления некоторых деталей, применяемых в строительстве.",
+      "schemas": [
+        {
+          "name": "Стальной слиток",
+          "is_alternative": 0,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "0::foundry::ore-iron:3:0|coal:3:0::steel-ingot:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "Алюминиевый слиток",
+      "description": "Выплавляется из алюминиевого лома, который, в свою очередь, образуется при обработке раствора глинозёма. Используется при производстве специализированных деталей на основе алюминия.",
+      "schemas": [
+        {
+          "name": "Алюминиевый слиток",
+          "is_alternative": 0,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "0::foundry::aluminum-scrap:6:0|silica:5:0::aluminum-ingot:4:0"
+        }
+      ]
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Слиток FICSIT",
+      "description": "Производится путем реорганизации молекулярной структуры других металлов с помощью странной инопланетной материи. Синтезируется корпорацией FICSIT для получения ценного строительного материала. Используется в большинстве высокотехнологичных процессов.",
+      "schemas": [
+        {
+          "name": "Слиток FICSIT (алюминий)",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "0::converter::samingot:2:0|aluminum-ingot:4:0::ficsite-ingot:1:0"
+        },
+        {
+          "name": "Слиток FICSIT (железо)",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "0::converter::samingot:4:0|iron-ingot:24:0::ficsite-ingot:1:0"
+        },
+        {
+          "name": "Слиток FICSIT (катерий)",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "0::converter::samingot:3:0|gold-ingot:4:0::ficsite-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_Cement_C": {
+      "name": "Бетон",
+      "description": "Используется в строительстве. Основа для крепких фундаментов.",
+      "schemas": [
+        {
+          "name": "Бетон",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::stone:3:0::cement:1:0"
+        }
+      ]
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "Кварцевый кристалл",
+      "description": "Продукт переработки неогранённого кварца. Используется в производстве продвинутых радиолокационных технологий и высококачественных экранов.",
+      "schemas": [
+        {
+          "name": "Кварцевый кристалл",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::raw-quartz:5:0::quartz-crystal:3:0"
+        }
+      ]
+    },
+    "Desc_Silica_C": {
+      "name": "Кремнезём",
+      "description": "Продукт переработки неогранённого кварца. Чаще всего используется для создания стеклянных строений, а также участвует в технологичных процессах обработки и альтернативном производстве электроники.",
+      "schemas": [
+        {
+          "name": "Кремнезём",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::raw-quartz:3:0::silica:5:0"
+        },
+        {
+          "name": "Раствор глинозёма",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::ore-bauxite:12:0|water:18:1::alumina-solution:12:1|silica:5:0"
+        }
+      ]
+    },
+    "Desc_CopperDust_C": {
+      "name": "Медный порошок",
+      "description": "Измельченные медные слитки. Благодаря своей высокой плотности медь в порошкообразной форме отлично подходит для производства ядерной пасты в ускорителе частиц.",
+      "schemas": [
+        {
+          "name": "Медный порошок",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::copper-ingot:30:0::copper-dust:5:0"
+        }
+      ]
+    },
+    "Desc_PolymerResin_C": {
+      "name": "Полимерная смола",
+      "description": "Побочный продукт переработки сырой нефти в топливо. Обычно используется для изготовления пластика и резины.",
+      "schemas": [
+        {
+          "name": "Топливо",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:6:1::liquid-fuel:4:1|polymer-resin:3:0"
+        }
+      ]
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "Нефтяной кокс",
+      "description": "Используются в производстве. Материал с высоким содержанием углерода, получаемый путем дистилляции мазута. Используется в качестве менее эффективной замены угля.",
+      "schemas": [
+        {
+          "name": "Нефтяной кокс",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::heavy-oil-residue:4:1::petroleum-coke:12:0"
+        }
+      ]
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "Алюминиевый лом",
+      "description": "Образуется в результате обработки глинозёма. Может переплавляться в алюминиевые слитки для промышленных целей.",
+      "schemas": [
+        {
+          "name": "Алюминиевый лом",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::alumina-solution:4:1|coal:2:0::aluminum-scrap:6:0|water:2:1"
+        }
+      ]
+    },
+    "Desc_AlienProtein_C": {
+      "name": "Инопланетный протеин"
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "Капсула инопланетной ДНК",
+      "description": "Преобразовывает органические химические вещества в считываемую генетическую информацию инопланетных существ. Используется для исследования инопланетных организмов. Прилагайте больше усилий! Знание — сила, а сила — почти эффективность. Утилизация капсул инопланетной ДНК в ЧУДО-утилизаторе даёт FICSIT знания, а первопроходцам — купоны.",
+      "schemas": [
+        {
+          "name": "Капсула инопланетной ДНК",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::alien-protein:1:0::alien-dnacapsule:1:0"
+        }
+      ]
+    },
+    "Desc_Water_C": {
+      "name": "Вода",
+      "description": "Это вода.",
+      "schemas": [
+        {
+          "name": "Аккумулятор",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::sulfuric-acid:2.5:1|alumina-solution:2:1|aluminum-casing:1:0::battery:1:0|water:1.5:1"
+        },
+        {
+          "name": "Алюминиевый лом",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::alumina-solution:4:1|coal:2:0::aluminum-scrap:6:0|water:2:1"
+        },
+        {
+          "name": "Вода (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-water:2:0::water:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Нерасщепляемый уран",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 3,
+          "fingerprint": "0::blender::nuclear-waste:15:0|silica:10:0|nitric-acid:6:1|sulfuric-acid:6:1::non-fissible-uranium:20:0|water:6:1"
+        }
+      ]
+    },
+    "Desc_LiquidOil_C": {
+      "name": "Сырая нефть",
+      "description": "Перерабатывается для получения всевозможных ресурсов на нефтяной основе, например топлива или пластика.",
+      "schemas": [
+        {
+          "name": "Нефть (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-oil:2:0::liquid-oil:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "Мазут",
+      "description": "Побочный продукт производства пластика и резины. Может быть переработан в топливо и нефтяной кокс.",
+      "schemas": [
+        {
+          "name": "Мазут (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-oil-residue:2:0::heavy-oil-residue:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Пластик",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::liquid-oil:3:1::plastic:2:0|heavy-oil-residue:1:1"
+        },
+        {
+          "name": "Резина",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "0::refinery::liquid-oil:3:1::rubber:2:0|heavy-oil-residue:2:1"
+        }
+      ]
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "Топливо",
+      "description": "Можно применять в оригинальном виде для выработки электроэнергии или распределить по ёмкостям для заправки транспорта и реактивных ранцев.",
+      "schemas": [
+        {
+          "name": "Топливо",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:6:1::liquid-fuel:4:1|polymer-resin:3:0"
+        },
+        {
+          "name": "Топливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::fuel:2:0::liquid-fuel:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "Жидкое биотопливо",
+      "description": "Жидкое биотопливо можно применять в оригинальном виде для выработки электроэнергии или распределить по ёмкостям для заправки транспорта.",
+      "schemas": [
+        {
+          "name": "Жидкое биотопливо",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::biofuel:6:0|water:3:1::liquid-biofuel:4:1"
+        },
+        {
+          "name": "Жидкое биотопливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-biofuel:2:0::liquid-biofuel:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "Турботопливо",
+      "description": "Более эффективная альтернатива обычному топливу. Можно применять в оригинальном виде для выработки электроэнергии или распределить по ёмкостям для заправки транспорта.",
+      "schemas": [
+        {
+          "name": "Турботопливо",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-fuel:6:1|compacted-coal:4:0::liquid-turbo-fuel:5:1"
+        },
+        {
+          "name": "Турботопливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::turbo-fuel:2:0::liquid-turbo-fuel:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "Раствор глинозёма",
+      "description": "Растворённый глинозём, добытый из боксита. Можно переработать в алюминиевый лом, необходимый для производства алюминиевых слитков.",
+      "schemas": [
+        {
+          "name": "Раствор глинозёма",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::ore-bauxite:12:0|water:18:1::alumina-solution:12:1|silica:5:0"
+        },
+        {
+          "name": "Раствор глинозёма (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-alumina:2:0::alumina-solution:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "Серная кислота",
+      "description": "Образуется в результате сложной реакции между водой и серой. В основном используется в процессах обработки и при производстве аккумуляторов.",
+      "schemas": [
+        {
+          "name": "Обетонированная урановая ячейка",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::ore-uranium:10:0|cement:3:0|sulfuric-acid:8:1::uranium-cell:5:0|sulfuric-acid:2:1"
+        },
+        {
+          "name": "Серная кислота",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::sulfur:5:0|water:5:1::sulfuric-acid:5:1"
+        },
+        {
+          "name": "Серная кислота (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-sulfuric-acid:1:0::sulfuric-acid:1:1|fluid-canister:1:0"
+        }
+      ]
+    },
+    "Desc_NitricAcid_C": {
+      "name": "Азотная кислота",
+      "description": "Образуется при реакции азота и воды. Благодаря коррозионной активности и окислительным свойствам идеально подходит для производства топлива и очистки.",
+      "schemas": [
+        {
+          "name": "Азотная кислота",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::nitrogen-gas:12:1|water:3:1|iron-plate:1:0::nitric-acid:3:1"
+        },
+        {
+          "name": "Азотная кислота (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-nitric-acid:1:0::nitric-acid:1:1|gas-tank:1:0"
+        }
+      ]
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Раствор кременезёма",
+      "description": "Растворенный в воде кремнезём, полученный в ходе альтернативной очистки неогранённого кварца. Кремнезём можно выделить из воды, чтобы завершить процесс очистки."
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "Азот",
+      "description": "Применяется для различных целей, например в металлургии, при охлаждении и в производстве азотной кислоты. На планете MASSAGE-2 (AB)b азот можно найти в подземных газовых скважинах.",
+      "schemas": [
+        {
+          "name": "Азот",
+          "is_alternative": 0,
+          "building_slug": "fracking-extractor",
+          "sort_order": 0,
+          "fingerprint": "0::fracking-extractor::nitrogen-gas:0:1::nitrogen-gas:0:1"
+        },
+        {
+          "name": "Азот (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-nitrogen-gas:1:0::nitrogen-gas:4:1|gas-tank:1:0"
+        }
+      ]
+    },
+    "Desc_RocketFuel_C": {
+      "name": "Ракетное топливо",
+      "description": "Высокоимпульсный сжатый газ. Можно применять в оригинальном виде для питания топливных генераторов или распределить по ёмкостям для заправки транспорта и реактивных ранцев.",
+      "schemas": [
+        {
+          "name": "Ракетное топливо",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::liquid-turbo-fuel:6:1|nitric-acid:1:1::rocket-fuel:10:1|compacted-coal:1:0"
+        },
+        {
+          "name": "Ракетное топливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-rocket-fuel:1:0::rocket-fuel:2:1|gas-tank:1:0"
+        }
+      ]
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "Ионизированное топливо",
+      "description": "Топливо, демонстрирующее потрясающую эффективность благодаря ионизации. Можно применять в оригинальном виде для питания топливных генераторов или распределить по ёмкостям для заправки транспорта и реактивных ранцев.",
+      "schemas": [
+        {
+          "name": "Ионизированное топливо",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::rocket-fuel:16:1|crystal-shard:1:0::ionized-fuel:16:1|compacted-coal:2:0"
+        },
+        {
+          "name": "Ионизированное топливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-ionized-fuel:2:0::ionized-fuel:4:1|gas-tank:2:0"
+        }
+      ]
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Остатки темной материи",
+      "description": "Побочный продукт работы квантового шифратора. Также может быть получена с помощью преобразователя. Во многих отраслях науки до сих пор спорят о природе и свойствах темной материи. Тем временем, специалисты FICSIT нашли ей несколько применений в сфере управления пространством-временем.",
+      "schemas": [
+        {
+          "name": "Инопланетная энергоматрица",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::samfluctuator:5:0|crystal-shard:3:0|quantum-oscillator:3:0|quantum-energy:24:1::alien-power-fuel:1:0|dark-energy:24:1"
+        },
+        {
+          "name": "Нейроквантовый процессор",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 1,
+          "fingerprint": "0::quantum-encoder::time-crystal:5:0|computer-super:1:0|ficsite-mesh:15:0|quantum-energy:25:1::temporal-processor:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "Остатки темной материи",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "0::converter::samingot:5:0::dark-energy:10:1"
+        },
+        {
+          "name": "Расширенный сервер ИИ",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 3,
+          "fingerprint": "0::quantum-encoder::space-elevator-part-6:1:0|temporal-processor:1:0|quantum-oscillator:1:0|quantum-energy:25:1::space-elevator-part-12:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "Синтетический энергомодуль",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 4,
+          "fingerprint": "0::quantum-encoder::time-crystal:2:0|dark-matter:2:0|quartz-crystal:12:0|quantum-energy:12:1::crystal-shard:1:0|dark-energy:12:1"
+        },
+        {
+          "name": "Суперпозиционный резонатор",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 5,
+          "fingerprint": "0::quantum-encoder::dark-matter:6:0|crystal-oscillator:1:0|aluminum-plate:9:0|quantum-energy:25:1::quantum-oscillator:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "Фиксониевый стержень",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 6,
+          "fingerprint": "0::quantum-encoder::ficsonium:2:0|electromagnetic-control-rod:2:0|ficsite-mesh:40:0|quantum-energy:20:1::ficsonium-fuel-rod:1:0|dark-energy:20:1"
+        }
+      ]
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Возбужденная фотонная материя"
+    },
+    "Desc_IronRod_C": {
+      "name": "Железный прут",
+      "description": "Используются в производстве. Базовая деталь.",
+      "schemas": [
+        {
+          "name": "Железный прут",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-ingot:1:0::iron-rod:1:0"
+        }
+      ]
+    },
+    "Desc_IronScrew_C": {
+      "name": "Винт",
+      "description": "Используются в производстве. Базовая деталь.",
+      "schemas": [
+        {
+          "name": "Винт",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-rod:1:0::iron-screw:4:0"
+        }
+      ]
+    },
+    "Desc_IronPlate_C": {
+      "name": "Железная пластина",
+      "description": "Используются в производстве. Базовая деталь.",
+      "schemas": [
+        {
+          "name": "Железная пластина",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-ingot:3:0::iron-plate:2:0"
+        }
+      ]
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "Усиленная железная пластина",
+      "description": "Используются в производстве. Более надёжная и прочная железная пластина.",
+      "schemas": [
+        {
+          "name": "Усиленная железная пластина",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-plate:6:0|iron-screw:12:0::iron-plate-reinforced:1:0"
+        }
+      ]
+    },
+    "Desc_CopperSheet_C": {
+      "name": "Медный лист",
+      "description": "Используются в производстве. В основном применяется при постройке трубопровода, так как практически не поддаётся коррозии.",
+      "schemas": [
+        {
+          "name": "Медный лист",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::copper-ingot:2:0::copper-sheet:1:0"
+        }
+      ]
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "Дюралюминиевый лист",
+      "description": "Используется для производства предметов, требующих высокой теплопроводности или особой прочности. Тонкий, легкий, высокопрочный.",
+      "schemas": [
+        {
+          "name": "Дюралюминиевый лист",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::aluminum-ingot:3:0|copper-ingot:1:0::aluminum-plate:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "Алюминиевый корпус",
+      "description": "Универсальный контейнер, отлитый из алюминиевых слитков.",
+      "schemas": [
+        {
+          "name": "Алюминиевый корпус",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::aluminum-ingot:3:0::aluminum-casing:2:0"
+        }
+      ]
+    },
+    "Desc_SteelPipe_C": {
+      "name": "Стальная труба",
+      "description": "В основном используется для строительства сооружений нового поколения.",
+      "schemas": [
+        {
+          "name": "Стальная труба",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::steel-ingot:3:0::steel-pipe:2:0"
+        }
+      ]
+    },
+    "Desc_SteelPlate_C": {
+      "name": "Стальная балка",
+      "description": "В основном используется для строительства сооружений нового поколения.",
+      "schemas": [
+        {
+          "name": "Стальная балка",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::steel-ingot:4:0::steel-plate:1:0"
+        }
+      ]
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "Железобетонная балка",
+      "description": "Сочетает в себе компрессионную твердость бетона и эластичную прочность стали. В основном используется в качестве крепкой основы при возведении строений.",
+      "schemas": [
+        {
+          "name": "Железобетонная балка",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::steel-plate:3:0|cement:6:0::steel-plate-reinforced:1:0"
+        }
+      ]
+    },
+    "Desc_ModularFrame_C": {
+      "name": "Модульный каркас",
+      "description": "Используются в производстве. Многофункциональный структурный элемент.",
+      "schemas": [
+        {
+          "name": "Модульный каркас",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-plate-reinforced:3:0|iron-rod:12:0::modular-frame:2:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "Тяжёлый модульный каркас",
+      "description": "Усиленный многофункциональный каркас.",
+      "schemas": [
+        {
+          "name": "Тяжёлый модульный каркас",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::modular-frame:5:0|steel-pipe:20:0|steel-plate-reinforced:5:0|iron-screw:120:0::modular-frame-heavy:1:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "Сплавленный модульный каркас",
+      "description": "Устойчивый к коррозии, подвергнутый азотированию, очень прочный, но при этом лёгкий модульный каркас.",
+      "schemas": [
+        {
+          "name": "Сплавленный модульный каркас",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::modular-frame-heavy:1:0|aluminum-casing:50:0|nitrogen-gas:25:1::modular-frame-fused:1:0"
+        }
+      ]
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Тригон FICSIT",
+      "description": "Тригон FICSIT, изготавливаемый из слитков FICSIT, позволяет справиться с любыми трудностями в строительстве. Настолько эффективен, что решает практически все задачи строительного проектирования.",
+      "schemas": [
+        {
+          "name": "Тригон FICSIT",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::ficsite-ingot:1:0::ficsite-mesh:3:0"
+        }
+      ]
+    },
+    "Desc_Fabric_C": {
+      "name": "Ткань",
+      "description": "Используется при изготовлении экипировки. Эластичная и надёжная ткань.",
+      "schemas": [
+        {
+          "name": "Ткань",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::mycelia:1:0|generic-biomass:5:0::fabric:1:0"
+        }
+      ]
+    },
+    "Desc_Plastic_C": {
+      "name": "Пластик",
+      "description": "Этот многоцелевой материал легко изготавливается и имеет широкое применение.",
+      "schemas": [
+        {
+          "name": "Пластик",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::plastic:2:0|heavy-oil-residue:1:1"
+        }
+      ]
+    },
+    "Desc_Rubber_C": {
+      "name": "Резина",
+      "description": "Высокоэластичный материал, обеспечивающий хорошее сцепление.",
+      "schemas": [
+        {
+          "name": "Резина",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::rubber:2:0|heavy-oil-residue:2:1"
+        }
+      ]
+    },
+    "Desc_Rotor_C": {
+      "name": "Ротор",
+      "description": "Используются в производстве. Вращающаяся часть мотора.",
+      "schemas": [
+        {
+          "name": "Ротор",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-rod:5:0|iron-screw:25:0::rotor:1:0"
+        }
+      ]
+    },
+    "Desc_Stator_C": {
+      "name": "Статор",
+      "description": "Используются в производстве. Неподвижная часть мотора.",
+      "schemas": [
+        {
+          "name": "Статор",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::steel-pipe:3:0|wire:8:0::stator:1:0"
+        }
+      ]
+    },
+    "Desc_Battery_C": {
+      "name": "Аккумулятор",
+      "description": "В основном используется в качестве источника энергии для дронов и транспортных средств.",
+      "schemas": [
+        {
+          "name": "Аккумулятор",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::sulfuric-acid:2.5:1|alumina-solution:2:1|aluminum-casing:1:0::battery:1:0|water:1.5:1"
+        }
+      ]
+    },
+    "Desc_Motor_C": {
+      "name": "Мотор",
+      "description": "Производит механическую энергию, которая приводит в движение различные виды машин.",
+      "schemas": [
+        {
+          "name": "Мотор",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::rotor:2:0|stator:2:0::motor:1:0"
+        }
+      ]
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "Радиатор",
+      "description": "Используется для более быстрого охлаждения.",
+      "schemas": [
+        {
+          "name": "Радиатор",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::aluminum-plate:5:0|copper-sheet:3:0::aluminum-plate-reinforced:1:0"
+        }
+      ]
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "Система охлаждения",
+      "description": "Предотвращает перегрев высокотехнологичных деталей и строений.",
+      "schemas": [
+        {
+          "name": "Система охлаждения",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::aluminum-plate-reinforced:2:0|rubber:2:0|water:5:1|nitrogen-gas:25:1::cooling-system:1:0"
+        }
+      ]
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "Турбомотор",
+      "description": "Более сложная и мощная версия обычного мотора.",
+      "schemas": [
+        {
+          "name": "Турбомотор",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::cooling-system:4:0|modular-frame-lightweight:2:0|motor:4:0|rubber:24:0::motor-lightweight:1:0"
+        }
+      ]
+    },
+    "Desc_Wire_C": {
+      "name": "Проволока",
+      "description": "Используются в производстве. Базовая деталь.",
+      "schemas": [
+        {
+          "name": "Проволока",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::copper-ingot:1:0::wire:2:0"
+        }
+      ]
+    },
+    "Desc_Cable_C": {
+      "name": "Кабель",
+      "description": "Используются в производстве. В основном применяется при постройке линий электросети.",
+      "schemas": [
+        {
+          "name": "Кабель",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::wire:2:0::cable:1:0"
+        }
+      ]
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "Сверхпроволока",
+      "description": "Благодаря высокой проводимости и устойчивости к коррозии катерий отлично подходит для производства небольших электронных устройств нового поколения.",
+      "schemas": [
+        {
+          "name": "Сверхпроволока",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::gold-ingot:1:0::high-speed-wire:5:0"
+        }
+      ]
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "Печатная плата",
+      "description": "Передовое электронное устройство, имеющее множество различных применений.",
+      "schemas": [
+        {
+          "name": "Печатная плата",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:2:0|plastic:4:0::circuit-board:1:0"
+        }
+      ]
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "Ограничитель ИИ",
+      "description": "Контролирует ИИ и не дает ему развиваться в нежелательных направлениях. Суперпродвинутое электронное устройство.",
+      "schemas": [
+        {
+          "name": "Ограничитель ИИ",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:5:0|high-speed-wire:20:0::circuit-board-high-speed:1:0"
+        }
+      ]
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "Скоростной разъём",
+      "description": "Позволяет эффективно соединять между собой различные кабели и провода. Имеет стандартную схему и, соответственно, множество различных применений.",
+      "schemas": [
+        {
+          "name": "Скоростной разъём",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::high-speed-wire:56:0|cable:10:0|circuit-board:1:0::high-speed-connector:1:0"
+        }
+      ]
+    },
+    "Desc_SAMIngot_C": {
+      "name": "Активизированная СИМ",
+      "description": "Активная и изолированная форма странной инопланетной материи. Требует специальной электромагнитной оболочки, поскольку может воздействовать на атомные связи любой материи, с которой контактирует.",
+      "schemas": [
+        {
+          "name": "Активизированная СИМ",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::sam:4:0::samingot:1:0"
+        }
+      ]
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "Флуктуатор СИМ",
+      "description": "Флуктуатор СИМ может управлять поведением активированной СИМ с помощью электрических разрядов различной частоты. Это упрощает работу таких технологий, как преобразование материи в энергию и пространственно-временная манипуляция материей.",
+      "schemas": [
+        {
+          "name": "Флуктуатор СИМ",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::samingot:6:0|wire:5:0|steel-pipe:3:0::samfluctuator:1:0"
+        }
+      ]
+    },
+    "Desc_Computer_C": {
+      "name": "Компьютер",
+      "description": "Сложноустроенный логический компьютер, используемый для контроля за высокотехнологичной работой других компьютеров.",
+      "schemas": [
+        {
+          "name": "Компьютер",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::circuit-board:4:0|cable:8:0|plastic:16:0::computer:1:0"
+        }
+      ]
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "Суперкомпьютер",
+      "description": "Компьютер нового поколения.",
+      "schemas": [
+        {
+          "name": "Суперкомпьютер",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::computer:4:0|circuit-board-high-speed:2:0|high-speed-connector:3:0|plastic:28:0::computer-super:1:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "Блок радиоуправления",
+      "description": "Усиливает и направляет радиосигналы.",
+      "schemas": [
+        {
+          "name": "Блок радиоуправления",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::aluminum-casing:32:0|crystal-oscillator:1:0|computer:2:0::modular-frame-lightweight:2:0"
+        }
+      ]
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "Кварцевый резонатор",
+      "description": "Электронный резонатор, использующий механический резонанс колебаний кристалла для создания электрического сигнала с точной частотой.",
+      "schemas": [
+        {
+          "name": "Кварцевый резонатор",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::quartz-crystal:36:0|cable:28:0|iron-plate-reinforced:5:0::crystal-oscillator:2:0"
+        }
+      ]
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "Суперпозиционный резонатор",
+      "description": "Резонатор, использующий механический резонанс колебаний кристалла для создания высокоточных колебаний. Часто применяется для телепортации и пространственных манипуляций.",
+      "schemas": [
+        {
+          "name": "Суперпозиционный резонатор",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::dark-matter:6:0|crystal-oscillator:1:0|aluminum-plate:9:0|quantum-energy:25:1::quantum-oscillator:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_Diamond_C": {
+      "name": "Алмазы",
+      "description": "Синтетические алмазы, полученные путем воздействия на уголь экстремально высокой температурой и давлением. Используются в производстве кристаллов времени и кристаллов тёмной материи. Затраты электроэнергии: 250–750 МВт (в среднем 500 МВт).",
+      "schemas": [
+        {
+          "name": "Алмазы",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::coal:20:0::diamond:1:0"
+        }
+      ]
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Кристалл времени",
+      "description": "Кристаллы времени — это алмазы, модифицированные в преобразователе на субатомном уровне для получения периодической по времени самоорганизующейся структуры. Их можно использовать в разработке технологий квантовой обработки и хранения.",
+      "schemas": [
+        {
+          "name": "Кристалл времени",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "0::converter::diamond:2:0::time-crystal:1:0"
+        }
+      ]
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Кристаллы темной материи",
+      "description": "Остаточный концентрат темной материи, заключенный в кристаллический сосуд. Благодаря такой форме темную материю можно уверенно использовать в различных производственных процессах. Затраты электроэнергии: 500-1500 МВт (в среднем 1000 МВт).",
+      "schemas": [
+        {
+          "name": "Кристаллы темной материи",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::diamond:1:0|dark-energy:5:1::dark-matter:1:0"
+        }
+      ]
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Ячейка сингулярности",
+      "description": "Позволяет нарушать непрерывность пространства и времени. Требуется для работы порталов.",
+      "schemas": [
+        {
+          "name": "Ячейка сингулярности",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-9:1:0|dark-matter:20:0|iron-plate:100:0|cement:200:0::singularity-cell:10:0"
+        }
+      ]
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Нейроквантовый процессор",
+      "description": "Нейроквантовый процессор сочетает архитектуру нейронной сети с методами квантовых вычислений для достижения беспрецедентной производительности. Эта технология сделала возможными несколько крупных достижений FICSIT в области искусственного интеллекта и релятивистской инженерии.",
+      "schemas": [
+        {
+          "name": "Нейроквантовый процессор",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::time-crystal:5:0|computer-super:1:0|ficsite-mesh:15:0|quantum-energy:25:1::temporal-processor:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Инопланетная энергоматрица",
+      "description": "Эта замысловатая матрица с концентрированной в ней материей улучшает результат работы экстрактора инопланетной энергии. Первоначально инопланетную энергоматрицу разрабатывали, чтобы создать рукотворный вариант петлевика. Она не может самостоятельно удерживать экстрамерное энергетическое соединение, однако может стабилизировать поток энергии петлевика.",
+      "schemas": [
+        {
+          "name": "Инопланетная энергоматрица",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::samfluctuator:5:0|crystal-shard:3:0|quantum-oscillator:3:0|quantum-energy:24:1::alien-power-fuel:1:0|dark-energy:24:1"
+        }
+      ]
+    },
+    "Desc_FluidCanister_C": {
+      "name": "Пустая канистра",
+      "description": "Ёмкость для транспортировки жидкостей.",
+      "schemas": [
+        {
+          "name": "Вода (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-water:2:0::water:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Жидкое биотопливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-biofuel:2:0::liquid-biofuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Мазут (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-oil-residue:2:0::heavy-oil-residue:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Нефть (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 3,
+          "fingerprint": "0::packager::packaged-oil:2:0::liquid-oil:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Пустая канистра",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 4,
+          "fingerprint": "0::constructor::plastic:2:0::fluid-canister:4:0"
+        },
+        {
+          "name": "Раствор глинозёма (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 5,
+          "fingerprint": "0::packager::packaged-alumina:2:0::alumina-solution:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Серная кислота (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 6,
+          "fingerprint": "0::packager::packaged-sulfuric-acid:1:0::sulfuric-acid:1:1|fluid-canister:1:0"
+        },
+        {
+          "name": "Топливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 7,
+          "fingerprint": "0::packager::fuel:2:0::liquid-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Турботопливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 8,
+          "fingerprint": "0::packager::turbo-fuel:2:0::liquid-turbo-fuel:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_GasTank_C": {
+      "name": "Пустой баллон",
+      "description": "Ёмкость для транспортировки газов и летучих жидкостей.",
+      "schemas": [
+        {
+          "name": "Азот (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-nitrogen-gas:1:0::nitrogen-gas:4:1|gas-tank:1:0"
+        },
+        {
+          "name": "Азотная кислота (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-nitric-acid:1:0::nitric-acid:1:1|gas-tank:1:0"
+        },
+        {
+          "name": "Ионизированное топливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-ionized-fuel:2:0::ionized-fuel:4:1|gas-tank:2:0"
+        },
+        {
+          "name": "Пустой баллон",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 3,
+          "fingerprint": "0::constructor::aluminum-ingot:1:0::gas-tank:1:0"
+        },
+        {
+          "name": "Ракетное топливо (распаковка)",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 4,
+          "fingerprint": "0::packager::packaged-rocket-fuel:1:0::rocket-fuel:2:1|gas-tank:1:0"
+        }
+      ]
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "Куб преобразования давления",
+      "description": "Преобразует исходящую силу во внутреннее давление. Необходим для хранения нестабильной, высокоэнергетической материи.",
+      "schemas": [
+        {
+          "name": "Куб преобразования давления",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::modular-frame-fused:1:0|modular-frame-lightweight:2:0::pressure-conversion-cube:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedWater_C": {
+      "name": "Бутыль воды",
+      "description": "Вода, упакованная для транспортировки альтернативными способами.",
+      "schemas": [
+        {
+          "name": "Бутыль воды",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::water:2:1|fluid-canister:2:0::packaged-water:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "Бутыль раствора глинозёма",
+      "description": "Раствор глинозёма, упакованный для транспортировки альтернативными способами.",
+      "schemas": [
+        {
+          "name": "Бутыль раствора глинозёма",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::alumina-solution:2:1|fluid-canister:2:0::packaged-alumina:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "Канистра серной кислоты",
+      "description": "Серная кислота, упакованная для транспортировки альтернативными способами.",
+      "schemas": [
+        {
+          "name": "Канистра серной кислоты",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::sulfuric-acid:2:1|fluid-canister:2:0::packaged-sulfuric-acid:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "Канистра азотной кислоты",
+      "description": "Азотная кислота, упакованная для транспортировки альтернативными способами.",
+      "schemas": [
+        {
+          "name": "Канистра азотной кислоты",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::nitric-acid:1:1|gas-tank:1:0::packaged-nitric-acid:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "Баллон азота",
+      "description": "Азот, упакованный для транспортировки альтернативными способами.",
+      "schemas": [
+        {
+          "name": "Баллон азота",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::nitrogen-gas:4:1|gas-tank:1:0::packaged-nitrogen-gas:1:0"
+        }
+      ]
+    },
+    "Desc_Leaves_C": {
+      "name": "Листва",
+      "description": "В основном используется в качестве топлива. Листва может служить источником энергии для сжигателей биомассы и транспортных средств."
+    },
+    "Desc_Mycelia_C": {
+      "name": "Мицелий",
+      "description": "Используются в производстве. Мицелий может также служить источником энергии для сжигателей биомассы и транспортных средств."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "Цветочные лепестки",
+      "description": "Используются в производстве. Яркие лепестки местных цветов."
+    },
+    "Desc_Wood_C": {
+      "name": "Древесина",
+      "description": "В основном используется в качестве топлива. Древесина может служить источником энергии для сжигателей биомассы и транспортных средств."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "Биомасса"
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "Угольный брикет",
+      "description": "Намного более эффективная альтернатива углю. Используется как топливо для транспорта и угольных генераторов.",
+      "schemas": [
+        {
+          "name": "Альт.: угольный брикет",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::coal:5:0|sulfur:5:0::compacted-coal:5:0"
+        },
+        {
+          "name": "Ионизированное топливо",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::rocket-fuel:16:1|crystal-shard:1:0::ionized-fuel:16:1|compacted-coal:2:0"
+        },
+        {
+          "name": "Ракетное топливо",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "0::blender::liquid-turbo-fuel:6:1|nitric-acid:1:1::rocket-fuel:10:1|compacted-coal:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedOil_C": {
+      "name": "Бочка нефти",
+      "description": "Сырая нефть, упакованная для транспортировки альтернативными способами. Можно использовать для заправки транспортных средств.",
+      "schemas": [
+        {
+          "name": "Бочка нефти",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-oil:2:1|fluid-canister:2:0::packaged-oil:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "Бочка мазута",
+      "description": "Мазут, упакованный для транспортировки альтернативными способами. Можно использовать для заправки транспортных средств.",
+      "schemas": [
+        {
+          "name": "Бочка мазута",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::heavy-oil-residue:2:1|fluid-canister:2:0::packaged-oil-residue:2:0"
+        }
+      ]
+    },
+    "Desc_Biofuel_C": {
+      "name": "Твёрдое биотопливо",
+      "description": "Наиболее энергоэффективная форма твёрдой биомассы. Можно использовать в качестве топлива для цепной пилы.",
+      "schemas": [
+        {
+          "name": "Твёрдое биотопливо",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::generic-biomass:8:0::biofuel:4:0"
+        }
+      ]
+    },
+    "Desc_Fuel_C": {
+      "name": "Канистра топлива",
+      "description": "Топливо, упакованное для транспортировки альтернативными способами. Можно использовать для заправки транспортных средств и реактивного ранца.",
+      "schemas": [
+        {
+          "name": "Канистра топлива",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-fuel:2:1|fluid-canister:2:0::fuel:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "Канистра биотоплива",
+      "description": "Жидкое биотопливо, упакованное для транспортировки альтернативными способами. Можно использовать для заправки транспортных средств и реактивного ранца.",
+      "schemas": [
+        {
+          "name": "Канистра биотоплива",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-biofuel:2:1|fluid-canister:2:0::packaged-biofuel:2:0"
+        }
+      ]
+    },
+    "Desc_TurboFuel_C": {
+      "name": "Канистра турботоплива",
+      "description": "Турботопливо, упакованное для транспортировки альтернативными способами. Можно использовать для заправки транспортных средств и реактивного ранца.",
+      "schemas": [
+        {
+          "name": "Канистра турботоплива",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-turbo-fuel:2:1|fluid-canister:2:0::turbo-fuel:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "Баллон ракетного топлива",
+      "description": "Ракетное топливо, распределенное по ёмкостям для транспортировки альтернативным способом. Можно использовать для заправки транспорта и реактивных ранцев.",
+      "schemas": [
+        {
+          "name": "Баллон ракетного топлива",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::rocket-fuel:2:1|gas-tank:1:0::packaged-rocket-fuel:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Баллон ионизированного топлива",
+      "description": "Ионизированное топливо, распределенное по ёмкостям для транспортировки альтернативным способом. Можно использовать для заправки транспорта и реактивных ранцев.",
+      "schemas": [
+        {
+          "name": "Баллон ионизированного топлива",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::ionized-fuel:4:1|gas-tank:2:0::packaged-ionized-fuel:2:0"
+        }
+      ]
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "Урановый стержень",
+      "description": "Используется в качестве топлива на атомных электростанциях. Внимание: после использования остаются радиоактивные урановые отходы. Внимание: умеренно радиоактивна.",
+      "schemas": [
+        {
+          "name": "Урановый стержень",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::uranium-cell:50:0|steel-plate-reinforced:3:0|electromagnetic-control-rod:5:0::nuclear-fuel-rod:1:0"
+        }
+      ]
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "Плутониевый стержень",
+      "description": "Используется в качестве топлива на атомных электростанциях. Внимание: после использования остаются радиоактивные плутониевые отходы. Внимание: ОЧЕНЬ радиоактивен.",
+      "schemas": [
+        {
+          "name": "Плутониевый стержень",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::plutonium-cell:30:0|steel-plate:18:0|electromagnetic-control-rod:6:0|aluminum-plate-reinforced:10:0::plutonium-fuel-rod:1:0"
+        }
+      ]
+    },
+    "Desc_Gunpowder_C": {
+      "name": "Чёрный порох",
+      "description": "Легковоспламеняющийся порошок, используется при изготовлении простой взрывчатки.",
+      "schemas": [
+        {
+          "name": "Чёрный порох",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::coal:1:0|sulfur:1:0::gunpowder:2:0"
+        }
+      ]
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "Бездымный порох",
+      "description": "Легковоспламеняющийся порошок, используется при изготовлении современного огнестрельного оружия.",
+      "schemas": [
+        {
+          "name": "Бездымный порох",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::gunpowder:2:0|heavy-oil-residue:1:1::gunpowder-mk2:2:0"
+        }
+      ]
+    },
+    "Desc_Filter_C": {
+      "name": "Газовый фильтр",
+      "description": "Используется с респиратором для очистки воздуха от токсинов и примесей.",
+      "schemas": [
+        {
+          "name": "Газовый фильтр",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::fabric:2:0|coal:4:0|iron-plate:2:0::filter:1:0"
+        }
+      ]
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "Красящий патрон",
+      "description": "Используется для нанесения трафаретов при помощи настройщика. (Трафареты можно купить в ЧУДО-магазине.)"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "Радиомаяк",
+      "description": "ОЖИДАЕТ УДАЛЕНИЯ Данный предмет, скорее всего, будет удалён в будущем обновлении. Сейчас используется только как составляющее альтернативного рецепта."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "Йодный фильтр",
+      "description": "Поглощает радиоактивные частицы, когда используется с защитным костюмом.",
+      "schemas": [
+        {
+          "name": "Йодный фильтр",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::filter:1:0|high-speed-wire:8:0|aluminum-casing:1:0::hazmat-filter:1:0"
+        }
+      ]
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "Железный болт",
+      "description": "Может использоваться как снаряд арматурного пистолета в целях самозащиты.",
+      "schemas": [
+        {
+          "name": "Железный болт",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-rod:1:0::spiked-rebar:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "Парализующий болт",
+      "description": "Поражает цель электрическим током при контакте, оглушая на короткое время. Продолжительность эффекта: 5 секунд",
+      "schemas": [
+        {
+          "name": "Парализующий болт",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::spiked-rebar:1:0|high-speed-wire:5:0::rebar-stunshot:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "Дробный болт",
+      "description": "При выстреле разлетается смертоносными осколками в разные стороны на короткое расстояние.",
+      "schemas": [
+        {
+          "name": "Дробный болт",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::spiked-rebar:2:0|quartz-crystal:3:0::rebar-spreadshot:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "Разрывной болт",
+      "description": "Взрывается при соприкосновении, нанося сильный урон.",
+      "schemas": [
+        {
+          "name": "Разрывной болт",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::spiked-rebar:2:0|gunpowder-mk2:2:0|steel-pipe:2:0::rebar-explosive:1:0"
+        }
+      ]
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "Патроны для винтовки",
+      "description": "Стандартные боеприпасы для винтовки, использующиеся для установления превосходства над противником.",
+      "schemas": [
+        {
+          "name": "Патроны для винтовки",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:3:0|gunpowder-mk2:2:0::cartridge-standard:15:0"
+        }
+      ]
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "Самонаводящиеся патроны",
+      "description": "Система самонаведения этих снарядов позволяет им попадать точно в цель, которая находится в поле прицеливания. Особенно полезна при борьбе с подвижными целями или для первопроходцев, которые не хотят беспокоиться о точной наводке.",
+      "schemas": [
+        {
+          "name": "Самонаводящиеся патроны",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::cartridge-standard:20:0|high-speed-connector:1:0::cartridge-smart-projectile:10:0"
+        }
+      ]
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "Турбопатроны для винтовки",
+      "description": "Лёгкие, компактные и неточные. Эти патроны обеспечивают исключительную производительность и скорострельность за счет снижения точности.",
+      "schemas": [
+        {
+          "name": "Турбопатроны для винтовки",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::cartridge-standard:25:0|aluminum-casing:3:0|liquid-turbo-fuel:3:1::cartridge-chaos:50:0"
+        },
+        {
+          "name": "Турбопатроны для винтовки",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "0::manufacturer::cartridge-standard:25:0|aluminum-casing:3:0|turbo-fuel:3:0::cartridge-chaos:50:0"
+        }
+      ]
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "Нобелиск",
+      "description": "Простая взрывчатка, хорошо подходящая для очистки местности от валунов, растительности и прочих препятствий.",
+      "schemas": [
+        {
+          "name": "Нобелиск",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::gunpowder:2:0|steel-pipe:2:0::nobelisk-explosive:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "Газовый нобелиск",
+      "description": "Образует облако ядовитых испарений вместо обычного взрыва.",
+      "schemas": [
+        {
+          "name": "Газовый нобелиск",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:1:0|generic-biomass:10:0::nobelisk-gas:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "Ударный нобелиск",
+      "description": "Образует мощную ударную волну вместо обычного взрыва.",
+      "schemas": [
+        {
+          "name": "Ударный нобелиск",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:5:0|crystal-oscillator:1:0::nobelisk-shockwave:5:0"
+        }
+      ]
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "Осколочный нобелиск",
+      "description": "При детонации производит несколько небольших взрывов. Полезен при расчистке больших территорий от растительности и прочего.",
+      "schemas": [
+        {
+          "name": "Осколочный нобелиск",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:3:0|gunpowder-mk2:4:0::nobelisk-cluster:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "Ядерный нобелиск",
+      "description": "Использует ядерную реакцию деления для создания мощного взрыва. ВНИМАНИЕ: Перед детонацией убедитесь, что в зоне взрыва не находится какое-либо имущество FICSIT.",
+      "schemas": [
+        {
+          "name": "Ядерный нобелиск",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::nobelisk-explosive:5:0|uranium-cell:20:0|gunpowder-mk2:10:0|circuit-board-high-speed:6:0::nobelisk-nuke:1:0"
+        }
+      ]
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "Электромагнитный регулирующий стержень",
+      "description": "Регулирует выходную мощность при помощи электромагнетизма.",
+      "schemas": [
+        {
+          "name": "Электромагнитный регулирующий стержень",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::stator:3:0|circuit-board-high-speed:2:0::electromagnetic-control-rod:2:0"
+        }
+      ]
+    },
+    "Desc_UraniumCell_C": {
+      "name": "Обетонированная урановая ячейка",
+      "description": "Используется для производства урановых стержней, необходимых для получения ядерной энергии. Изготавливается из урановой руды. Внимание: умеренно радиоактивный.",
+      "schemas": [
+        {
+          "name": "Обетонированная урановая ячейка",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::ore-uranium:10:0|cement:3:0|sulfuric-acid:8:1::uranium-cell:5:0|sulfuric-acid:2:1"
+        }
+      ]
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Нерасщепляемый уран",
+      "description": "Изотоп уран-238 не расщепляется, то есть в нем не происходит деление ядра. Однако его можно преобразовать в расщепляемый плутоний с помощью ускорителя частиц. Внимание: умеренно радиоактивный.",
+      "schemas": [
+        {
+          "name": "Нерасщепляемый уран",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::nuclear-waste:15:0|silica:10:0|nitric-acid:6:1|sulfuric-acid:6:1::non-fissible-uranium:20:0|water:6:1"
+        }
+      ]
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "Плутониевая таблетка",
+      "description": "Производится в ускорителе частиц путём преобразования нерасщепляемого урана. Используется для производства обетонированных плутониевых ячеек, необходимых для изготовления плутониевых стержней. Затраты электроэнергии: 250–750 МВт (в среднем 500 МВт). Внимание: умеренно радиоактивна.",
+      "schemas": [
+        {
+          "name": "Плутониевая таблетка",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::non-fissible-uranium:100:0|nuclear-waste:25:0::plutonium-pellet:30:0"
+        }
+      ]
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "Обетонированная плутониевая ячейка",
+      "description": "Заключённая в бетон плутониевая таблетка. Используется для производства плутониевых стержней, необходимых для выработки ядерной энергии. Затраты электроэнергии: 250–750 МВт (в среднем 500 МВт). Внимание: умеренная радиоактивность.",
+      "schemas": [
+        {
+          "name": "Обетонированная плутониевая ячейка",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::plutonium-pellet:2:0|cement:4:0::plutonium-cell:1:0"
+        }
+      ]
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Фиксоний",
+      "description": "Производство и использование этого материала строго запрещены. На Земле. А в космосе только одно правило — будьте эффективными. Затраты электроэнергии: 500-1500 МВт (в среднем 1000 МВт). Внимание: умеренно радиоактивна.",
+      "schemas": [
+        {
+          "name": "Фиксоний",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::plutonium-waste:1:0|singularity-cell:1:0|dark-energy:20:1::ficsonium:1:0"
+        }
+      ]
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Фиксониевый стержень",
+      "description": "Используется в качестве топлива на атомных электростанциях. Источник энергии FICSIT, оставляющий неизгладимое впечатление. В буквальном смысле. Можете взглянуть на кратер. Внимание: умеренно радиоактивна.",
+      "schemas": [
+        {
+          "name": "Фиксониевый стержень",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::ficsonium:2:0|electromagnetic-control-rod:2:0|ficsite-mesh:40:0|quantum-energy:20:1::ficsonium-fuel-rod:1:0|dark-energy:20:1"
+        }
+      ]
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "Урановые отходы",
+      "description": "Побочный продукт использования урановых стержней в атомной электростанции. Можно извлечь нерасщепляемый уран. Обращаться с осторожностью. Внимание: ОЧЕНЬ радиоактивен.",
+      "schemas": [
+        {
+          "name": "Урановые отходы",
+          "is_alternative": 0,
+          "building_slug": "generator-nuclear",
+          "sort_order": 0,
+          "fingerprint": "0::generator-nuclear::nuclear-fuel-rod:1:0::nuclear-waste:50:0"
+        }
+      ]
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "Плутониевые отходы",
+      "description": "Побочный продукт использования плутониевых стержней в атомной электростанции. Необходимо складировать в безопасном месте. Обращаться с осторожностью. Внимание: ЧРЕЗВЫЧАЙНО радиоактивны.",
+      "schemas": [
+        {
+          "name": "Плутониевые отходы",
+          "is_alternative": 0,
+          "building_slug": "generator-nuclear",
+          "sort_order": 0,
+          "fingerprint": "0::generator-nuclear::plutonium-fuel-rod:1:0::plutonium-waste:10:0"
+        }
+      ]
+    },
+    "Desc_Crystal_C": {
+      "name": "Синий энергослизень",
+      "description": "Странный слизень, слабо излучающий неизвестный вид энергии."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "Жёлтый энергослизень",
+      "description": "Странный слизень, излучающий неизвестный вид энергии."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "Фиолетовый энергослизень",
+      "description": "Странный слизень, мощно излучающий неизвестный вид энергии."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "Энергомодуль",
+      "description": "Энергослизень представляет собой скопление слизи, заключенное в твердой кристаллообразной раковине. Излучает странную энергию.",
+      "schemas": [
+        {
+          "name": "Синтетический энергомодуль",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::time-crystal:2:0|dark-matter:2:0|quartz-crystal:12:0|quantum-energy:12:1::crystal-shard:1:0|dark-energy:12:1"
+        },
+        {
+          "name": "Энергомодуль (1)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "0::constructor::crystal:1:0::crystal-shard:1:0"
+        },
+        {
+          "name": "Энергомодуль (2)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "0::constructor::crystal-mk2:1:0::crystal-shard:2:0"
+        },
+        {
+          "name": "Энергомодуль (5)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 3,
+          "fingerprint": "0::constructor::crystal-mk3:1:0::crystal-shard:5:0"
+        }
+      ]
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "Купон FICSIT",
+      "description": "Купон специальной бонусной программы FICSIT, который можно получить в ЧУДО-утилизаторе. Может быть использован в ЧУДО-магазине для приобретения бонусных целей и наград."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "Умная обшивка",
+      "description": "Часть проекта № 1. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка».",
+      "schemas": [
+        {
+          "name": "Умная обшивка",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-plate-reinforced:1:0|rotor:1:0::space-elevator-part-1:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "Универсальный каркас",
+      "description": "Часть проекта № 2. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка».",
+      "schemas": [
+        {
+          "name": "Универсальный каркас",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::modular-frame:1:0|steel-plate:12:0::space-elevator-part-2:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "Автопроводка",
+      "description": "Часть проекта № 3. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка».",
+      "schemas": [
+        {
+          "name": "Автопроводка",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::stator:1:0|cable:20:0::space-elevator-part-3:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "Модульный двигатель",
+      "description": "Часть проекта № 4. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка».",
+      "schemas": [
+        {
+          "name": "Модульный двигатель",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::motor:2:0|rubber:15:0|space-elevator-part-1:2:0::space-elevator-part-4:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "Адаптивный блок управления",
+      "description": "Часть проекта № 5. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка».",
+      "schemas": [
+        {
+          "name": "Адаптивный блок управления",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-3:5:0|circuit-board:5:0|modular-frame-heavy:1:0|computer:2:0::space-elevator-part-5:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "Система управления сборкой",
+      "description": "Часть проекта № 6. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка». Эта чрезвычайно быстрая и точная вычислительная система была специально разработана для управления сборочной фазой проекта «Сборка».",
+      "schemas": [
+        {
+          "name": "Система управления сборкой",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::space-elevator-part-5:2:0|computer-super:1:0::space-elevator-part-7:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "Генератор магнитного поля",
+      "description": "Часть проекта № 7. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка». Эти модульные генераторы используют сверхпроводящие магниты и большие объёмы электроэнергии для создания легко расширяемого и мощного магнитного поля.",
+      "schemas": [
+        {
+          "name": "Генератор магнитного поля",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::space-elevator-part-2:5:0|electromagnetic-control-rod:2:0::space-elevator-part-6:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "Ракета на тепловой тяге",
+      "description": "Часть проекта № 8. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка». С помощью экстремального тепла производит плазму с высоким давлением, необходимую для выполнения проекта «Сборка».",
+      "schemas": [
+        {
+          "name": "Ракета на тепловой тяге",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-4:5:0|motor-lightweight:2:0|cooling-system:6:0|modular-frame-fused:2:0::space-elevator-part-8:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "Ядерная паста",
+      "description": "Часть проекта № 9. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка». Затраты электроэнергии: 500-1500 МВт (в среднем 1000 МВт). Ядерная паста — это чрезвычайно плотная вырожденная материя, образующаяся при экстремальном давлении, которое объединяет протоны и электроны в нейтроны. Предполагается, что она образуется естественным путём в коре нейтронных звёзд.",
+      "schemas": [
+        {
+          "name": "Ядерная паста",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::copper-dust:200:0|pressure-conversion-cube:1:0::space-elevator-part-9:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Биохимический скульптор",
+      "description": "Часть проекта № 10. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка». Этот супертехнологичный 3D-принтер, опережающий конкурентов на несколько лет, используется для изготовления синтетических биоресурсов.",
+      "schemas": [
+        {
+          "name": "Биохимический скульптор",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::space-elevator-part-7:1:0|ficsite-mesh:80:0|water:20:1::space-elevator-part-10:4:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Баллистический варп-двигатель",
+      "description": "Часть проекта № 11. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка». Для запуска варп-двигателей требуется мощная сила, поэтому логично было объединить их с ракетами. Кроме того, результаты существенно улучшились благодаря тому, что увеличилась дистанция между варп-двигателями и наблюдателями после запуска.",
+      "schemas": [
+        {
+          "name": "Баллистический варп-двигатель",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-8:1:0|singularity-cell:5:0|quantum-oscillator:2:0|dark-matter:40:0::space-elevator-part-11:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "Расширенный сервер ИИ",
+      "description": "Часть проекта № 12. Совершайте поставки через космический лифт, чтобы завершать фазы проекта «Сборка». Энергопотребление: 0-2000 МВт (1000МВт в среднем). Расширение — наше всё.",
+      "schemas": [
+        {
+          "name": "Расширенный сервер ИИ",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::space-elevator-part-6:1:0|temporal-processor:1:0|quantum-oscillator:1:0|quantum-energy:25:1::space-elevator-part-12:1:0|dark-energy:25:1"
+        }
+      ]
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "Буровая установка ур. 1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "Буровая установка ур. 2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "Буровая установка ур. 3"
+    },
+    "Build_OilPump_C": {
+      "name": "Экстрактор нефти"
+    },
+    "Build_WaterPump_C": {
+      "name": "Экстрактор воды"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "Нагнетатель давления скважины"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "Экстрактор скважины"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "Плавильня"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "Литейная"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "Конструктор"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "Ассемблер"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "Изготовитель"
+    },
+    "Build_OilRefinery_C": {
+      "name": "Очистительный завод"
+    },
+    "Build_Packager_C": {
+      "name": "Упаковщик"
+    },
+    "Build_Blender_C": {
+      "name": "Смеситель"
+    },
+    "Build_HadronCollider_C": {
+      "name": "Ускоритель частиц"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "Квантовый шифратор"
+    },
+    "Build_Converter_C": {
+      "name": "Преобразователь"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "Сжигатель биомассы"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Угольный генератор"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Топливный генератор"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "Геотермальный генератор"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "Атомная электростанция"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "Накопитель электроэнергии"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Экстрактор инопланетной энергии"
+    },
+    "Build_TradingPost_C": {
+      "name": "ХАБ"
+    },
+    "Build_Mam_C": {
+      "name": "ММА"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "Космический лифт"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Создатель чертежей ур. 1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Создатель чертежей ур. 2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "ЧУДО-утилизатор"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "ЧУДО-магазин"
+    },
+    "Build_WorkBench_C": {
+      "name": "Верстак"
+    },
+    "Build_Workshop_C": {
+      "name": "Мастерская"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "Личное хранилище"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "Хранилище для медикаментов"
+    },
+    "Build_StorageHazard_C": {
+      "name": "Хранилище для опасных материалов"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "Складской контейнер"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "Цистерна"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "Промышленная цистерна"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Средство выгрузки в пространственное хранилище"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Базовый элемент полки"
+    },
+    "Build_TruckStation_C": {
+      "name": "Грузовая станция"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "Порт дронов"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "Грузовая платформа"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "Грузовая платформа для жидкостей"
+    },
+    "Build_LookoutTower_C": {
+      "name": "Смотровая вышка"
+    },
+    "Build_RadarTower_C": {
+      "name": "Радиолокационные вышки"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

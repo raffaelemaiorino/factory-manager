@@ -3,6 +3,8 @@
  * Layout libero con posizionamento assoluto e drag & drop.
  */
 (function () {
+  const t = (key, vars) => window.t(key, vars);
+
   const NODE_WIDTH = 228;
   const MIN_LAYER_GAP_X = 48;
   const MAX_LAYER_GAP_X = 220;
@@ -635,14 +637,14 @@
 
     const inputHtml = inputs.length
       ? `<div class="production-graph-node-io">
-          <span class="production-graph-node-io-label">Input</span>
+          <span class="production-graph-node-io-label">${escapeHtml(t('common.input'))}</span>
           ${inputs.map(({ io, rate }) => renderIoRow(io, rate, helpers)).join('')}
         </div>`
       : '';
 
     const outputHtml = outputs.length
       ? `<div class="production-graph-node-io">
-          <span class="production-graph-node-io-label">Output</span>
+          <span class="production-graph-node-io-label">${escapeHtml(t('common.output'))}</span>
           ${outputs.map(({ io, rate }) => renderIoRow(io, rate, helpers)).join('')}
         </div>`
       : '';
@@ -670,10 +672,10 @@
           ${renderNodeIcon(extraction.building_image, 'production-graph-building-icon', helpers)}
         </div>
         <div class="production-graph-node-body">
-          <span class="production-graph-node-type">Estrazione</span>
+          <span class="production-graph-node-type">${escapeHtml(t('graph.extraction'))}</span>
           <strong class="production-graph-node-title">${helpers.escapeHtml(displayName)}</strong>
           <div class="production-graph-node-io">
-            <span class="production-graph-node-io-label">Output</span>
+            <span class="production-graph-node-io-label">${escapeHtml(t('common.output'))}</span>
             ${renderIoRow({ item_image: item?.image, item_name: item?.name || displayName, item_slug: item?.slug, is_fluid: item?.is_fluid }, rate, helpers)}
           </div>
         </div>
@@ -690,8 +692,8 @@
       <div class="production-graph-node production-graph-node--step${isMarked ? ' production-graph-node--marked' : ''}" data-node-id="${node.id}" role="button" tabindex="0" aria-grabbed="false">
         <label
           class="production-graph-step-mark-btn${isMarked ? ' production-graph-step-mark-btn--active' : ''}"
-          title="Evidenzia lo schema con sfondo verde"
-          aria-label="Evidenzia schema ${helpers.escapeHtml(step.name)}"
+          title="${escapeHtml(t('production.highlightStepTitle'))}"
+          aria-label="${escapeHtml(t('graph.highlightStepAria', { name: step.name }))}"
         >
           <input
             type="checkbox"
@@ -706,7 +708,7 @@
           ${renderNodeIcon(schema?.building_image, 'production-graph-building-icon', helpers)}
         </div>
         <div class="production-graph-node-body">
-          <span class="production-graph-node-type">${helpers.escapeHtml(schema?.building_name || 'Schema')}</span>
+          <span class="production-graph-node-type">${helpers.escapeHtml(schema?.building_name || t('common.schema'))}</span>
           <strong class="production-graph-node-title">${helpers.escapeHtml(step.name)}</strong>
           ${renderStepIoSections(step, helpers)}
         </div>
@@ -716,14 +718,14 @@
   function renderGroupIoSections(group, helpers) {
     const inputHtml = group.inputs?.length
       ? `<div class="production-graph-node-io">
-          <span class="production-graph-node-io-label">Input principali</span>
+          <span class="production-graph-node-io-label">${escapeHtml(t('graph.mainInputs'))}</span>
           ${group.inputs.map((io) => renderIoRow(io, io.rate, helpers)).join('')}
         </div>`
       : '';
 
     const outputHtml = group.outputs?.length
       ? `<div class="production-graph-node-io">
-          <span class="production-graph-node-io-label">Output principali</span>
+          <span class="production-graph-node-io-label">${escapeHtml(t('graph.mainOutputs'))}</span>
           ${group.outputs.map((io) => renderIoRow(io, io.rate, helpers)).join('')}
         </div>`
       : '';
@@ -735,12 +737,14 @@
     const group = node.data;
     const isMarked = Boolean(group.marked);
     const stepLabel =
-      group.stepCount === 1 ? '1 schema risorsa' : `${group.stepCount} schemi risorsa`;
+      group.stepCount === 1
+        ? t('graph.resourceStepOne')
+        : t('graph.resourceStepMany', { count: group.stepCount });
 
     return `
       <div class="production-graph-node production-graph-node--group${isMarked ? ' production-graph-node--marked' : ''}" data-node-id="${node.id}" role="button" tabindex="0" aria-grabbed="false">
         <div class="production-graph-node-body">
-          <span class="production-graph-node-type">Raggruppamento</span>
+          <span class="production-graph-node-type">${escapeHtml(t('graph.grouping'))}</span>
           <strong class="production-graph-node-title">${helpers.escapeHtml(group.name)}</strong>
           <span class="production-graph-node-rate">${helpers.escapeHtml(stepLabel)}</span>
           ${renderGroupIoSections(group, helpers)}
@@ -757,10 +761,10 @@
           ${renderNodeIcon(objective.item_image, 'production-graph-item-icon production-graph-item-icon--large', helpers)}
         </div>
         <div class="production-graph-node-body">
-          <span class="production-graph-node-type">Obiettivo</span>
+          <span class="production-graph-node-type">${escapeHtml(t('graph.objective'))}</span>
           <strong class="production-graph-node-title">${helpers.escapeHtml(objective.item_name)}</strong>
           <div class="production-graph-node-io">
-            <span class="production-graph-node-io-label">Output</span>
+            <span class="production-graph-node-io-label">${escapeHtml(t('common.output'))}</span>
             ${renderIoRow(objective, objective.rate, helpers)}
           </div>
         </div>
@@ -974,10 +978,10 @@
 
     if (!graph.nodes.length) {
       const emptyMessage = collapseGroups
-        ? 'Nessun nodo da visualizzare nell’albero per gruppi.'
+        ? t('graph.emptyGroups')
         : groupKey
-          ? `Nessun nodo da visualizzare nel raggruppamento «${groupLabel || groupKey}».`
-          : 'Nessun nodo da visualizzare. Aggiungi estrazioni o schemi risorsa.';
+          ? t('graph.emptyGroup', { name: groupLabel || groupKey })
+          : t('graph.emptyTree');
       container.innerHTML = `<p class="detail-empty production-graph-empty">${helpers.escapeHtml(emptyMessage)}</p>`;
       return null;
     }

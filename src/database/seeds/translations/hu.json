@@ -1,0 +1,801 @@
+{
+  "dataVersion": 1,
+  "locale": "hu",
+  "source": {
+    "items": "https://satisfactory-calculator.com/hu/items",
+    "buildings": "https://satisfactory-calculator.com/hu/buildings"
+  },
+  "importedAt": "2026-07-20T19:10:21.495Z",
+  "itemCategories": {
+    "minerali": "Ércek",
+    "lingotti": "Öntvények",
+    "materiali": "Ásványok",
+    "alieni": "Űrlények",
+    "liquidi": "Folyadékok",
+    "gas": "Gáz",
+    "componenti-standard": "Általános alkatrészek",
+    "componenti-industriali": "Ipari alkatrészek",
+    "componenti-elettronici": "Elektronika",
+    "comunicazioni": "Számítástechnika",
+    "tecnologia-quantistica": "Kvantumtechnológia",
+    "contenitori": "Tárolók",
+    "carburante": "Üzemanyag",
+    "consumato": "Felhasznált",
+    "munizioni": "Lőszerek",
+    "nucleare": "Atomenergia",
+    "rifiuti": "Hulladék",
+    "speciali": "Speciális"
+  },
+  "buildingCategories": {
+    "estrazione": "Extraction",
+    "produzione": "Termelés",
+    "generatori": "Generátorok",
+    "speciali": "Speciális",
+    "postazioni-di-lavoro": "Munkaállomások",
+    "deposito": "Tárolás",
+    "stazioni-di-attracco": "Docking stations",
+    "torri": "Tornyok"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "Mészkő",
+      "description": "Barkácsoláshoz használható. Alapvető erőforrás, amelyet elsősorban stabil alapokhoz használnak."
+    },
+    "Desc_OreIron_C": {
+      "name": "Vasérc",
+      "description": "Barkácsoláshoz használható. A legalapvetőbb nyersanyag."
+    },
+    "Desc_OreCopper_C": {
+      "name": "Rézérc",
+      "description": "Barkácsoláshoz használható. Alapvető nyersanyag, amelyet elsősorban elektromossághoz használnak."
+    },
+    "Desc_OreGold_C": {
+      "name": "Katériumérc",
+      "description": "Katériumöntvénnyé olvasztják, amelyet elsősorban fejlett elektronikához használnak."
+    },
+    "Desc_Coal_C": {
+      "name": "Szén",
+      "description": "Elsősorban járművek és szénerőművek üzemanyagaként, valamint az acélgyártásban használatos."
+    },
+    "Desc_RawQuartz_C": {
+      "name": "Nyers kvarc",
+      "description": "Kvarckristályokká és szilícium-dioxiddá dolgozható fel; mindkettő számos felhasználási móddal rendelkezik."
+    },
+    "Desc_Sulfur_C": {
+      "name": "Kén",
+      "description": "Elsősorban puskapor előállítására használják."
+    },
+    "Desc_OreBauxite_C": {
+      "name": "Bauxit",
+      "description": "A bauxitot alumínium-oxid előállítására használják, amely tovább finomítható az alumíniumöntvények előállításához szükséges alumínium törmelékké."
+    },
+    "Desc_SAM_C": {
+      "name": "F.I.F.",
+      "description": "A Furcsa Földönkívüli Anyag (Strange Alien Matter), amelyet általában SAM-nek neveznek, úgy tűnik, nem követi a fizika ismert törvényeit. Új lehetőségekről suttog."
+    },
+    "Desc_OreUranium_C": {
+      "name": "Urán",
+      "description": "A radioactive element. Uráncellák, majd abból urán üzemanyag-rudak előállításához használják. Vigyázat: mérsékelten radioaktív!"
+    },
+    "Desc_IronIngot_C": {
+      "name": "Vasöntvény",
+      "description": "A legtöbb alapvető alkatrész gyártásához használják."
+    },
+    "Desc_CopperIngot_C": {
+      "name": "Rézöntvény",
+      "description": "A legtöbb alapvető alkatrész gyártásához használják."
+    },
+    "Desc_GoldIngot_C": {
+      "name": "Katériumöntvény",
+      "description": "Katériumércből olvasztják. Elsősorban fejlett elektronikához használatos."
+    },
+    "Desc_SteelIngot_C": {
+      "name": "Acélöntvény",
+      "description": "Vasérc és szén kombinációjából öntve. Számos építési alkatrész készítéséhez használatos."
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "Alumíniumöntvény",
+      "description": "Alumíniumtörmelékből olvasztják, amit pedig alumínium-oxidból finomítanak. Alumínium alapú alkatrészek gyártásához használják."
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Ficsit öntvény",
+      "description": "Más fémek molekuláris szintű újraépítésével állítják elő a SAM segítségével. A FICSIT által szintetizált tökéletes építőanyag, amelyet a legmodernebb eljárásokban használnak."
+    },
+    "Desc_Cement_C": {
+      "name": "Beton",
+      "description": "Építéshez használatos. Jó anyag stabil alapozáshoz."
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "Kvarckristály",
+      "description": "Nyers kvarcból származik. Fejlett radartechnológiában és minőségi kijelzőtáblák gyártásánál használják."
+    },
+    "Desc_Silica_C": {
+      "name": "Szilícium-dioxid",
+      "description": "Nyers kvarcból származik. Gyakran használják üvegszerkezeteknél, fejlett finomításnál és alternatív elektronika gyártásánál."
+    },
+    "Desc_CopperDust_C": {
+      "name": "Rézpor",
+      "description": "Őrölt rézöntvény. A réz nagy természetes sűrűsége a por szemcsésségével kombinálva alkalmassá teszi a nukleáris tészta előállítására a részecskegyorsítóban."
+    },
+    "Desc_PolymerResin_C": {
+      "name": "Polimer gyanta",
+      "description": "A nyersolaj üzemanyaggá történő finomításának mellékterméke. Általában műanyag és gumi gyártására használják."
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "Ásványolajkoksz",
+      "description": "Barkácsoláshoz használható. Pakurából desztillált széndús anyag. Used as a less efficient coal replacement."
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "Alumíniumtörmelék",
+      "description": "Alumínium-oxidból finomítják. Alumíniumöntvénnyé olvasztható ipari felhasználásra."
+    },
+    "Desc_AlienProtein_C": {
+      "name": "Földönkívüli protein",
+      "description": "Földönkívüli maradványok egy takaros kis csomagban. Gyógyászati célokra és földönkívüli organizmusok kutatásához használják."
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "Földönkívüli DNS kapszula",
+      "description": "Translates organic chemicals into readable alien genetic information. Idegen organizmusok kutatására használják. Go the extra kilometer! Knowledge is power, and power is just efficiency with fewer steps. Depositing Alien DNA Capsules in the AWESOME Sink provides FICSIT with knowledge, and pioneers with Coupons."
+    },
+    "Desc_Water_C": {
+      "name": "Víz",
+      "description": "Víz."
+    },
+    "Desc_LiquidOil_C": {
+      "name": "Kőolaj",
+      "description": "Sokféle olaj-alapú nyersanyaggá finomítható, mint például üzemanyag és műanyag."
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "Pakura",
+      "description": "A műanyag- és gumigyártás egyik mellékterméke. Tovább finomítható üzemanyaggá és olajkoksszá."
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "Üa.",
+      "description": "Az üzemanyag felhasználható áramtermelésre vagy kannába tölthető járművek és a hátirakéta üzemanyagának."
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "Folyékony bioüzemanyag",
+      "description": "A folyékony bioüzemanyag felhasználható áramtermelésre vagy csomagolható járművek üzemanyagának."
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "Turbóüzemanyag",
+      "description": "Az üzemanyag hatékonyabb alternatívája. Használható áramtermelésre, vagy kannába töltve járművek üzemanyagaként."
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "Alumínium-oxid oldat",
+      "description": "Oldott alumínium-oxid bauxitból kivonva. Alumínium törmelékké finomítható alumíniumöntvény gyártásához."
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "Kénsav",
+      "description": "A kén és a víz komplex reakcióban történő kombinálásával előállított ásványi sav. Elsősorban finomítási folyamatokban és akkumulátorgyártásban használják."
+    },
+    "Desc_NitricAcid_C": {
+      "name": "Salétromsav",
+      "description": "Nitrogén és víz reakciójával állítják elő. Magas maró képessége és oxidáló tulajdonságai miatt kiváló választás finomítási és üzemanyag-előállítási folyamatokhoz."
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Oldott szilícium",
+      "description": "Vízben oldott szilícium, amelyet a nyers kvarc alternatív finomításának részeként állítanak elő. A szilícium kinyerhető a vízből a finomítási folyamat befejezéséhez."
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "Nitrogén",
+      "description": "Számos különböző módon lehet hasznosítani, mint például a kohászat, hűtés és salétromsav előállítás. A Massage-2(AB)b-n föld alatti gázforrásokból lehet kitermelni."
+    },
+    "Desc_RocketFuel_C": {
+      "name": "Rakéta-üzemanyag",
+      "description": "Nagy impulzusú sűrített gáz üzemanyag. Használható üzemanyaggal működő generátorok működtetésére, vagy csomagolva járművek vagy hátirakéta üzemanyagaként."
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "Ionizált üzemanyag",
+      "description": "Ionizált üzemanyag, amely hihetetlen teljesítményt biztosít. Használható üzemanyaggal működő generátorok működtetésére, vagy csomagolva járművek vagy hátirakéta üzemanyagaként."
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Sötét anyag maradék",
+      "description": "A kvantum kódolási folyamat mellékterméke, valamint előállítható a konverterben. A tudomány különböző területei még vitatják a sötét anyag természetét és tulajdonságait. Eközben a FICSIT számos felhasználási módot talált rá a tér-idő manipulációban."
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Gerjesztett fotonikus Anyag",
+      "description": "A gerjesztett fotonikus anyag elengedhetetlen a kvantum kódoló összes gyártási folyamatához. A konverterben keletkezik, intenzív fotonkölcsönhatások kiváltásával SAM-nek való kitettség révén, nagy energiájú környezetben."
+    },
+    "Desc_IronRod_C": {
+      "name": "Vas Rúd",
+      "description": "Barkácsoláshoz használható. Az egyik legalapvetőbb alkatrész."
+    },
+    "Desc_IronScrew_C": {
+      "name": "Csavar",
+      "description": "Barkácsoláshoz használható. Az egyik legalapvetőbb alkatrész."
+    },
+    "Desc_IronPlate_C": {
+      "name": "Vaslemez",
+      "description": "Barkácsoláshoz használható. Az egyik legalapvetőbb alkatrész."
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "Megerősített vaslemez",
+      "description": "Barkácsoláshoz használható. A simánál strapabíróbb és tartósabb vaslemez."
+    },
+    "Desc_CopperSheet_C": {
+      "name": "Hengerelt rézlemez",
+      "description": "Barkácsoláshoz használható. Elsősorban csővezetékek építésére használatos a magas korrózióállósága miatt."
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "Rozsdamentes alumíniumlemez",
+      "description": "Nagy hővezetést vagy nagy fajlagos szilárdságot igénylő termékek előállításához használják. Vékony, könnyű és rendkívül tartós."
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "Alumínium ház",
+      "description": "Sokoldalú tároló alumíniumöntvényből készítve."
+    },
+    "Desc_SteelPipe_C": {
+      "name": "Acélcső",
+      "description": "Elsősorban kevéssé fejlettebb épületek építésénél használatos."
+    },
+    "Desc_SteelPlate_C": {
+      "name": "Acélgerenda",
+      "description": "Elsősorban kevéssé fejlettebb épületek építésénél használatos."
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "Vasbeton gerenda",
+      "description": "A beton nyomószilárdságát kombinálja az acél húzószilárdságával. Legtöbbször stabil alapként használják építmények építésénél."
+    },
+    "Desc_ModularFrame_C": {
+      "name": "Moduláris váz",
+      "description": "Barkácsoláshoz használható. Többcélú építőelem."
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "Nehéz moduláris váz",
+      "description": "Egy jóval strapabíróbb többfunkciós váz."
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "Összeolvasztott moduláris váz",
+      "description": "Korrózióálló, nitrid edzett, rendkívül robusztus, ugyanakkor könnyű moduláris váz."
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Ficsit háromszög",
+      "description": "A Ficsit öntvényből készült Ficsit háromszög tökéletes forma minden építési kihíváshoz. Teljesítménye annyira kivételes, hogy gyakorlatilag megoldotta a szerkezetépítést."
+    },
+    "Desc_Fabric_C": {
+      "name": "Szövet",
+      "description": "Különféle felszerelés előállítására alkalmas. Rugalmas, de tartós szövet."
+    },
+    "Desc_Plastic_C": {
+      "name": "Műanyag",
+      "description": "Könnyen előállítható, felhasználási területei széles skálán mozognak."
+    },
+    "Desc_Rubber_C": {
+      "name": "Gumi",
+      "description": "Nagyon rugalmas anyag, aminek nagy a súrlódása."
+    },
+    "Desc_Rotor_C": {
+      "name": "Forgórész",
+      "description": "Barkácsoláshoz használható. A motor forgórésze."
+    },
+    "Desc_Stator_C": {
+      "name": "Állórész",
+      "description": "Barkácsoláshoz használható. A motor állórésze."
+    },
+    "Desc_Battery_C": {
+      "name": "Akkumulátor",
+      "description": "Elsősorban drónok és járművek üzemanyagaként használatos."
+    },
+    "Desc_Motor_C": {
+      "name": "Motor",
+      "description": "Az elektromosságot mozgási energiává alakítja, amellyel különféle berendezések és járművek hajthatóak meg."
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "Hűtőborda",
+      "description": "Gyorsabb hőelosztásra használják."
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "Hűtőrendszer",
+      "description": "Arra használják, hogy a fejlett alkatrészek és építmények hőmérsékletét hatékony szinten tartsák."
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "Turbómotor",
+      "description": "Egy komplexebb és erősebb változata a sima motornak."
+    },
+    "Desc_Wire_C": {
+      "name": "Huzal",
+      "description": "Barkácsoláshoz használható. Az egyik legalapvetőbb alkatrész."
+    },
+    "Desc_Cable_C": {
+      "name": "Kábel",
+      "description": "Barkácsoláshoz használható. Elsősorban villanyvezetékek építésére használatos."
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "Gyorshuzal",
+      "description": "A Katérium jó vezetőképessége és korróziónak való ellenállása ideálissá teszi kicsiny, összetett elektronikák készítésére."
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "Nyomtatott Áramkör",
+      "description": "Fejlett elektronika, amelynek rengeteg különböző felhasználási módja van."
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "M.I. szabályozó",
+      "description": "Az M.I.-k irányítására szolgál és azok káros irányba való fejlődését akadályozza meg. Szuper-fejlett elektronika."
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "Nagysebességű csatolóáramkör",
+      "description": "Sok kábelt és vezetéket csatlakoztat nagyon hatékonyan. Szabványos mintát használ, így sokféleképpen alkalmazható."
+    },
+    "Desc_SAMIngot_C": {
+      "name": "Újraélesztett SAM",
+      "description": "A Furcsa Idegen Fém aktív és elzárt alakja. Megfelelő elektromágneses elszigetelés szükséges, mivel úgy tűnik, hogy képes manipulálni minden anyag atomi kötéseit, amellyel kapcsolatba kerül."
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "FIF fluktuátor",
+      "description": "A FIF fluktuátor változó frekvenciájú elektromos töltések alkalmazásával képes szabályozni és irányítani az újraélesztett FIF viselkedését. Ez olyan technológiákat tesz lehetővé, mint az anyag-energia átalakítás és a tér-időbeli anyagmanipuláció."
+    },
+    "Desc_Computer_C": {
+      "name": "Számítógép",
+      "description": "Egy fejlett elektronikai egység, amelyet a gépek fejlett viselkedésének szabályozására használnak."
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "Szuperszámítógép",
+      "description": "A sima számítógép következő generációs változata."
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "Rádiójel irányítóegység",
+      "description": "Megerősíti és irányítja a rádiójeleket."
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "Kristályoszcillátor",
+      "description": "A kristályoszcillátor egy olyan elektromos rezgéskeltő, amely egy rezgő kristály mechanikai rezonanciáját felhasználva pontos frekvenciájú elektromos jelet hoz létre."
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "Szuperpozíciós oszcillátor",
+      "description": "Olyan rezgéskeltő, amely egy rezgő kristály mechanikai rezonanciáját precíz frekvenciájú húrrezgéssé alakítja. Leggyakoribb alkalmazási területe a teleportációs és a dimenzióközi anyagtovábbítás."
+    },
+    "Desc_Diamond_C": {
+      "name": "Gyémántok",
+      "description": "Szintetikus gyémántok, amelyeket extrém hőnek és nyomásnak kitett szénből állítanak elő. Időkristályok és sötét anyag kristályok előállításához használják. Energiafelhasználás: 250–750 MW (átlagosan 500 MW)"
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Időkristály",
+      "description": "Az időkristályok olyan gyémántok, amelyeket a konverterben szubatomi szinten újrakonfiguráltak, hogy megtartsák időnkénti önszerveződő szerkezetüket. Ez lehetővé teszi, hogy felhasználják őket kvantumfeldolgozási és tárolási technológiák fejlesztésében."
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Sötét anyag kristály",
+      "description": "Koncentrált sötét anyag maradék, amelyet egy kristály belsejébe zártak. Ez az elszigetelési eljárás lehetővé teszi a sötét anyag megbízható felhasználását más gyártási folyamatokban. Energiahasználat: 500-1500 MW (1000 MW átlagosan)."
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Szingularitási cella",
+      "description": "A tér és az idő lebontására szolgál. Portálok táplálásához szükséges."
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Neurális-kvantumprocesszor",
+      "description": "A neurális-kvantumprocesszor a neurális hálózati szerkezet és a kvantumszámítási technikák kombinációját alkalmazza, hogy soha nem látott teljesítményeket érjen el. Ez a technológia tette lehetővé a FICSIT legnagyobb előrelépéseit a mesterséges intelligencia és a relativisztikus tervezés terén."
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Földönkívüli mátrix",
+      "description": "Ezt a bonyolult, sűrített anyagú mátrixot a Földönkívüli teljesítménynövelő erősségének fokozására használják. Eredetileg az ember alkotta somersloop létrehozására fejlesztették ki, de önmagában nem képes fenntartani az extra-dimenziós energiakapcsolatot. Azonban hatékonyan képes stabilizálni a somersloop energiaáramlását."
+    },
+    "Desc_FluidCanister_C": {
+      "name": "Üres kanna",
+      "description": "Folyadékok csomagolására használják szállításhoz."
+    },
+    "Desc_GasTank_C": {
+      "name": "Üres folyadékpalack",
+      "description": "Gázok és illékony folyadékok csomagolására használják szállításhoz."
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "Nyomásátalakító kocka",
+      "description": "A kimenő erőt belső nyomássá alakítja át. Instabil, nagy energiájú anyagokat kell tartalmaznia."
+    },
+    "Desc_PackagedWater_C": {
+      "name": "Csomagolt víz",
+      "description": "Palackozott víz alternatív szállításra csomagolva."
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "Palackozott alumínium-oxid oldat",
+      "description": "Palackozott alumínium-oxid oldat alternatív szállításra csomagolva."
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "Kannás kénsav",
+      "description": "Kannába töltött kénsav alternatív szállításra csomagolva."
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "Kannás salétromsav",
+      "description": "Kannába töltött salétromsav alternatív szállításra csomagolva."
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "Palackozott nitrogén",
+      "description": "Palackozott nitrogén alternatív szállításra csomagolva."
+    },
+    "Desc_Leaves_C": {
+      "name": "Levelek",
+      "description": "Elsősorban üzemanyagként használatos. Biomassza generátorok és járművek energiaforrása."
+    },
+    "Desc_Mycelia_C": {
+      "name": "Micélium",
+      "description": "Barkácsoláshoz használható. Biomassza generátorok és járművek energiaforrása."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "Virágszirmok",
+      "description": "Barkácsoláshoz használható. Színes virágszirmok."
+    },
+    "Desc_Wood_C": {
+      "name": "Fa",
+      "description": "Elsősorban üzemanyagként használatos. Biomassza generátorok és járművek energiaforrása."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "Biomassza",
+      "description": "Elsősorban üzemanyagként használatos. Biomassza generátorok és járművek energiaforrása. A biomassza sokkal hatékonyabb, mint a feldolgozatlan biológiai alapanyag."
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "Tömörített szén",
+      "description": "A szén sokkal hatékonyabb alternatívája. Üzemanyagként járművekhez illetve szénerőművekben használható."
+    },
+    "Desc_PackagedOil_C": {
+      "name": "Hordós olaj",
+      "description": "Nyersolaj, alternatív szállításhoz csomagolva. Járművek üzemanyagaként használható."
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "Hordós pakura",
+      "description": "Pakura, alternatív szállításhoz csomagolva. Járművek üzemanyagaként használható."
+    },
+    "Desc_Biofuel_C": {
+      "name": "Szilárd bioüzemanyag",
+      "description": "A szilárd biomassza legenergiahatékonyabb formája. A láncfűrész üzemanyagaként használható."
+    },
+    "Desc_Fuel_C": {
+      "name": "Kannás üzemanyag",
+      "description": "Üzemanyag, alternatív szállításhoz csomagolva. Járművek vagy Jetpack üzemanyagaként használható."
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "Kannás folyékony bioüzemanyag",
+      "description": "Folyékony bioüzemanyag, alternatív szállításhoz csomagolva. Járművek vagy Jetpack üzemanyagaként használható."
+    },
+    "Desc_TurboFuel_C": {
+      "name": "Kannás turbóüzemanyag",
+      "description": "Turbóüzemanyag, alternatív szállításhoz csomagolva. Járművek vagy Jetpack üzemanyagaként használható."
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "Csomagolt rakéta-üzemanyag",
+      "description": "Rakéta-üzemanyag, alternatív szállításhoz csomagolva. Járművek vagy hátirakéta üzemanyagaként használható."
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Csomagolt ionizált üzemanyag",
+      "description": "Ionizált üzemanyag, alternatív szállításhoz csomagolva. Járművek vagy hátirakéta üzemanyagaként használható."
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "Urán üzemanyagrúd",
+      "description": "Üzemanyagként használják atomerőművekben. Vigyázat: radioaktív uránhulladékot képez a felhasználásakor! Vigyázat: mérsékelten radioaktív!"
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "Plutónium üzemanyagrúd",
+      "description": "Üzemanyagként használják atomerőművekben. Vigyázat: radioaktív plutóniumhulladékot képez a felhasználásakor! Vigyázat: NAGYON radioaktív!"
+    },
+    "Desc_Gunpowder_C": {
+      "name": "Puskapor",
+      "description": "Robbanópor, amelyet általában egyszerű robbanóanyagok előállítására használnak."
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "Füst nélküli lőpor",
+      "description": "Robbanópor, amelyet általában egyszerű robbanóanyagok előállítására használnak."
+    },
+    "Desc_Filter_C": {
+      "name": "Légszűrők",
+      "description": "A szűrők kiszűrik a levegőből a méreganyagokat és a szennyező anyagokat amikor gázmaszkba használják."
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "Festékpatron",
+      "description": "Minták szerkezetekre felvitelére használják a Testreszabóban. (Mintákat a SZUPER boltban lehet vásárolni.)"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "Jeladó",
+      "description": "FÜGGŐBEN LÉVŐ ELTÁVOLÍTÁS Ez a tárgy (valószínűleg) eltávolításra kerül egy jövőbeni frissítésben. Jelenleg csak egy alternatív recept hozzávalójaként szolgál."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "Jóddal dúsított légszűrő",
+      "description": "Elnyeli a radioaktív részecskéket, ha a vegyvédelmi ruhával együtt használják."
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "Vastüske",
+      "description": "Kilőhető a Tüskevetőből önvédelmi céllal."
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "Sokkoló tüske",
+      "description": "Becsapódáskor megrázza a célpontot, ezzel rövid időre elkábítja. Kábítás időtartam: 5 másodperc"
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "Szilánkos tüske",
+      "description": "Ez a tüske halálos szilánkokra töredezik kilövéskor, széles sugárban, de korlátozott hatótávval."
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "Robbanó tüske",
+      "description": "Becsapódáskor felrobban, erős ebzést okozva."
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "Puskalőszer",
+      "description": "Szabványos kiszerelésű puskalőszer, hasznos a dominancia megteremtéséhez."
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "Önvezető puskalőszer",
+      "description": "Az ebbe a lőszerbe épített rávezető rendszer segítségével a lövedék pontosan eltalálja a célpontot a hajszálkereszt területén belül. Különösen hasznos fürge fenyegetéseknél vagy olyan úttörőknek, akik nem kívánnak bajlódni a pontos célzással."
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "Turbó puskalőszer",
+      "description": "Könnyített, kompakt és illékony. Ezek a lövedékek rendkívüli kapacitást és tűzgyorsaságot nyújtanak a pontosság árán."
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "Nobeliszk",
+      "description": "Egyszerű robbanószer, hasznos sziklák, növényzet és más akadályok eltávolítására."
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "Gáz nobeliszk",
+      "description": "Halálos gázfelhőt hoz létre a szokásos robbanás helyett."
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "Impulzus nobeliszk",
+      "description": "Erős lökéshullámot generál a szokásos robbanás helyett."
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "Fürt Nobeliszk",
+      "description": "Olyan nobeliszk, amely több kisebb robbanó darabra szóródik szét. Praktikus növényzet vagy egyéb kellemetlenség megtisztítására nagy területen."
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "Nukleáris nobeliszk",
+      "description": "Ez a nobeliszk maghasadást használ egy nagyméretű és erőteljes robbanáshoz. FIGYELEM: Légy biztos benne, hogy egyetlen FICSIT tulajdon sincs a robbanási zónában a detonáció előtt!"
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "Elektromágneses szabályozórúd",
+      "description": "Elektromágnesesség segítségével szabályozza az áramtermelést."
+    },
+    "Desc_UraniumCell_C": {
+      "name": "Uráncella",
+      "description": "Urán üzemanyagrudak gyártásához szükséges. Uránércből állítják elő. Vigyázat: enyhén radioaktív!"
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Nem hasadó urán",
+      "description": "Az urán 238-as tömegszámú izotópja nem hasadó, vagyis nem használható maghasadásra. A részecskegyorsítóban azonban hasadó plutóniummá alakítható. Vigyázat: enyhén radioaktív!"
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "Plutónium pellet",
+      "description": "A részecskegyorsítóban állítják elő nem hasadó urán átalakításával. Plutóniumcellák, majd abból plutónium üzemanyagrudak előállításához használják. Energiafelhasználás: 250–750 MW (átlagosan 500 MW) Vigyázat: mérsékelten radioaktív!"
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "Plutóniumcella",
+      "description": "Plutonium Pellets encased in concrete. Plutónium üzemanyagrudak gyártására használják az atomenergia előállításához. Energiafelhasználás: 250–750 MW (átlagosan 500 MW) Caution: Moderately Radioactive."
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Ficsónium",
+      "description": "Ennek az anyagnak a gyártása és használata szigorúan tiltott. Vagyis csak a Földön az. Az űrben nincsenek szabályok, csak hatékonyság. Energiahasználat: 500-1500 MW (1000 MW átlagosan). Vigyázat: mérsékelten radioaktív!"
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Ficsónium üzemanyagrúd",
+      "description": "Üzemanyagként használják atomerőművekben. Az az energiaforrás, ami felrakta a FICSIT-et a térképre. Szó szerint. A kráter még mindig ott van. Vigyázat: mérsékelten radioaktív!"
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "Uránhulladék",
+      "description": "Az atomerőmű urán üzemanyagrúd fogyasztásának mellékterméke. Non-fissile Uranium can be extracted. Handle with caution. Vigyázat: NAGYON radioaktív!"
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "Plutóniumhulladék",
+      "description": "Az atomerőmű plutónium üzemanyagrúd fogyasztásának mellékterméke. Biztonságos helyen kell tárolni. Óvatosan kezelje! Vigyázat: RENDKÍVÜL radioaktív!"
+    },
+    "Desc_Crystal_C": {
+      "name": "Kék energiacsiga",
+      "description": "Egy különös csiga, ami gyenge ismeretlen energiát sugároz magából."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "Sárga energiacsiga",
+      "description": "Egy különös csiga, ami ismeretlen energiát sugároz magából."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "Lila energiacsiga",
+      "description": "Egy különös csiga, ami erős ismeretlen energiát sugároz magából."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "Energiaszilánk",
+      "description": "Az energiacsigákból kinyert nyálka egy kristályszerű szilánkba tömörítve. Furcsa energiát sugároz."
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "FICSIT-kupon",
+      "description": "A special FICSIT bonus program Coupon, obtained through the AWESOME Sink. Can be redeemed in the AWESOME Shop for bonus milestones and rewards."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "Okoslemez",
+      "description": "Project Part #1. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "Multifunkciós váz",
+      "description": "Project Part #2. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "Automatikus huzalozás",
+      "description": "Project Part #3. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "Moduláris motor",
+      "description": "Project Part #4. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "Alkalmazkodó irányítóegység",
+      "description": "Project Part #5. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "Összeszerelés irányítórendszer",
+      "description": "Project Part #6. Ship via the Space Elevator to complete phases of Project Assembly. Ezt a rendkívül gyors és pontos számítási rendszert kifejezetten az Összeszerelés projekt összeszerelés szakaszának irányítására tervezték."
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "Mágneses mező generátor",
+      "description": "Project Part #7. Ship via the Space Elevator to complete phases of Project Assembly. Ezek a moduláris generátorok szupravezető mágnesekkel és hatalmas mennyiségű villamos energiával könnyen bővíthető és erős mágneses mezőt hoznak létre."
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "Termikus rakétahajtómű",
+      "description": "Project Part #8. Ship via the Space Elevator to complete phases of Project Assembly. Rendkívüli hőt használ fel az Összeszerelés projekt mozgatásához szükséges nagynyomású plazma előállításához."
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "Nukleáris tészta",
+      "description": "Project Part #9. Ship via the Space Elevator to complete phases of Project Assembly. Energiahasználat: 500-1500 MW (1000 MW átlagosan). A nukleáris tészta rendkívül sűrű degenerált anyag, amely akkor alakul ki, amikor az extrém nyomás a protonokat és elektronokat neutronokká kényszeríti. Feltételezik, hogy a természetben is létezik a neutroncsillagok kérgében."
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Biokémiai nyomtató",
+      "description": "Project Part #10. Ship via the Space Elevator to complete phases of Project Assembly. Évekkel megelőzve korát, ezt a csúcskategóriás 3D nyomtatót szintetikus biológiai erőforrások előállítására használják."
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Ballisztikus térhajlító rakéta",
+      "description": "Project Part #11. Ship via the Space Elevator to complete phases of Project Assembly. A térhajlító eszközök aktiválásához nagyon nagy erőre van szükség, ezért a következő logikus lépés az volt, hogy rakétákhoz rögzítettük őket. Ezenkívül, minél távolabb kerültek a megfigyelők a térhajlítóktól, annál jobban javultak az eredmények aktiváláskor."
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "M.I. bővítőszerver",
+      "description": "Project Part #12. Ship via the Space Elevator to complete phases of Project Assembly. Power Usage: 0-2000 MW (1000 MW average). A növekedés az a mérőszám, amellyel a sikert mérjük."
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "Bányagép Mk.1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "Bányagép Mk.2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "Bányagép Mk.3"
+    },
+    "Build_OilPump_C": {
+      "name": "Olajkút"
+    },
+    "Build_WaterPump_C": {
+      "name": "Szivattyú"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "Nyersanyagforrás nyomásgeneráló"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "Nyersanyagforrás kitermelő"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "Kohó"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "Öntöde"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "Fabrikátor"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "Összeszerelő"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "Gyártócsarnok"
+    },
+    "Build_OilRefinery_C": {
+      "name": "Finomító"
+    },
+    "Build_Packager_C": {
+      "name": "Csomagoló"
+    },
+    "Build_Blender_C": {
+      "name": "Keverő"
+    },
+    "Build_HadronCollider_C": {
+      "name": "Részecskegyorsító"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "Kvantumkódoló"
+    },
+    "Build_Converter_C": {
+      "name": "Konverter"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "Biomassza generátor"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Szénerőmű"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Dízelgenerátor"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "Geotermikus erőmű"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "Atomreaktor"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "Energiatároló"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Földönkívüli teljesítménynövelő"
+    },
+    "Build_TradingPost_C": {
+      "name": "a HUB-ot"
+    },
+    "Build_Mam_C": {
+      "name": "MEB"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "Űrlift"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Tervrajztervező Mk.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Tervrajztervező Mk.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "SZUPER zúzda"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "SZUPER bolt"
+    },
+    "Build_WorkBench_C": {
+      "name": "Munkapad"
+    },
+    "Build_Workshop_C": {
+      "name": "Műhely"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "Személyes Tárolóláda"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "Orvosi tárolódoboz"
+    },
+    "Build_StorageHazard_C": {
+      "name": "Veszélyes tárgy tárolódoboz"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "Tárolókonténer"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "Folyadéktartály"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "Ipari folyadéktartály"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Dimenzionális tároló feltöltő"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Egyszerű polc"
+    },
+    "Build_TruckStation_C": {
+      "name": "Teherautó állomás"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "Töltőállomás"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "Teherperon"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "Folyadék teherperon"
+    },
+    "Build_LookoutTower_C": {
+      "name": "Kilátótorony"
+    },
+    "Build_RadarTower_C": {
+      "name": "Radartorony"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

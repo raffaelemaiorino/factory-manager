@@ -39,8 +39,9 @@ function slugifyItemName(name) {
   return encodeURIComponent(name.trim()).replace(/%20/g, '+');
 }
 
-function buildItemDetailUrl(gameId, name) {
-  return `https://satisfactory-calculator.com/it/items/detail/id/${gameId}/name/${slugifyItemName(name)}`;
+function buildItemDetailUrl(gameId, name, locale = 'it') {
+  const lang = String(locale || 'it').toLowerCase();
+  return `https://satisfactory-calculator.com/${lang}/items/detail/id/${gameId}/name/${slugifyItemName(name)}`;
 }
 
 module.exports = { fetchUrl, fetchBinary, slugifyItemName, buildItemDetailUrl };

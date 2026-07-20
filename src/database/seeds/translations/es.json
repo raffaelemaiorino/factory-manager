@@ -1,0 +1,3214 @@
+{
+  "dataVersion": 1,
+  "locale": "es",
+  "source": {
+    "items": "https://satisfactory-calculator.com/es/items",
+    "buildings": "https://satisfactory-calculator.com/es/buildings"
+  },
+  "importedAt": "2026-07-20T19:05:50.672Z",
+  "itemCategories": {
+    "minerali": "Minerales",
+    "lingotti": "Lingotes",
+    "materiali": "Minerales",
+    "alieni": "Alienígenas",
+    "liquidi": "Líquidos",
+    "gas": "Gas",
+    "componenti-standard": "Piezas estándar",
+    "componenti-industriali": "Piezas industriales",
+    "componenti-elettronici": "Electrónica",
+    "comunicazioni": "Comunicaciones",
+    "tecnologia-quantistica": "Tecnología cuántica",
+    "contenitori": "Contenedores",
+    "carburante": "Combustibles",
+    "consumato": "Consumido",
+    "munizioni": "Munición",
+    "nucleare": "Nuclear",
+    "rifiuti": "Residuos",
+    "speciali": "Especial"
+  },
+  "buildingCategories": {
+    "estrazione": "Extracción",
+    "produzione": "Producción",
+    "generatori": "Generadores",
+    "speciali": "Especial",
+    "postazioni-di-lavoro": "Estaciones de trabajo",
+    "deposito": "Almacenamiento",
+    "stazioni-di-attracco": "Estaciones de carga",
+    "torri": "Torres"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "Caliza",
+      "description": "Material de fabricación. Recurso básico que se usa principalmente para hacer cimientos estables.",
+      "schemas": [
+        {
+          "name": "Caliza (azufre)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|sulfur:2:0::stone:12:0"
+        }
+      ]
+    },
+    "Desc_OreIron_C": {
+      "name": "Mineral de hierro",
+      "description": "Material de fabricación. El recurso básico más esencial.",
+      "schemas": [
+        {
+          "name": "Mineral de hierro (caliza)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|stone:24:0::ore-iron:12:0"
+        }
+      ]
+    },
+    "Desc_OreCopper_C": {
+      "name": "Mineral de cobre",
+      "description": "Material de fabricación. Recurso básico que se usa principalmente para la electricidad.",
+      "schemas": [
+        {
+          "name": "Mineral de cobre (azufre)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|sulfur:12:0::ore-copper:12:0"
+        },
+        {
+          "name": "Mineral de cobre (cuarzo)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|raw-quartz:10:0::ore-copper:12:0"
+        }
+      ]
+    },
+    "Desc_OreGold_C": {
+      "name": "Mineral de caterio",
+      "description": "Se puede fundir para crear lingotes de caterio, que se utilizan principalmente para electrónica avanzada.",
+      "schemas": [
+        {
+          "name": "Mineral de caterio (cobre)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-copper:15:0::ore-gold:12:0"
+        },
+        {
+          "name": "Mineral de caterio (cuarzo)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|raw-quartz:12:0::ore-gold:12:0"
+        }
+      ]
+    },
+    "Desc_Coal_C": {
+      "name": "Carbón",
+      "description": "Se utiliza principalmente como combustible para vehículos y generadores de carbón, o en la producción de acero.",
+      "schemas": [
+        {
+          "name": "Alternativa: Biocarbón",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "1::constructor::generic-biomass:5:0::coal:6:0"
+        },
+        {
+          "name": "Alternativa: Carbón vegetal",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "1::constructor::wood:1:0::coal:10:0"
+        },
+        {
+          "name": "Carbón (caliza)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "1::converter::samingot:1:0|stone:36:0::coal:12:0"
+        },
+        {
+          "name": "Carbón (hierro)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 3,
+          "fingerprint": "1::converter::samingot:1:0|ore-iron:18:0::coal:12:0"
+        }
+      ]
+    },
+    "Desc_RawQuartz_C": {
+      "name": "Cuarzo bruto",
+      "description": "Se puede procesar en cristales de cuarzo y sílice, que ofrecen una variedad de aplicaciones.",
+      "schemas": [
+        {
+          "name": "Cuarzo bruto (bauxita)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:10:0::raw-quartz:12:0"
+        },
+        {
+          "name": "Cuarzo bruto (carbón)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|coal:24:0::raw-quartz:12:0"
+        }
+      ]
+    },
+    "Desc_Sulfur_C": {
+      "name": "Azufre",
+      "description": "Se utiliza principalmente para producir pólvora.",
+      "schemas": [
+        {
+          "name": "Azufre (carbón)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|coal:20:0::sulfur:12:0"
+        },
+        {
+          "name": "Azufre (hierro)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-iron:30:0::sulfur:12:0"
+        }
+      ]
+    },
+    "Desc_OreBauxite_C": {
+      "name": "Bauxita",
+      "description": "Se utiliza para producir alúmina, que puede refinarse aún más hasta obtener la chatarra de aluminio necesaria para producir lingotes de aluminio.",
+      "schemas": [
+        {
+          "name": "Bauxita (caterio)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-gold:15:0::ore-bauxite:12:0"
+        },
+        {
+          "name": "Bauxita (cobre)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-copper:18:0::ore-bauxite:12:0"
+        }
+      ]
+    },
+    "Desc_SAM_C": {
+      "name": "MAR",
+      "description": "Materia alienígena rara, comúnmente conocida como MAR; no parece seguir las leyes conocidas de la física. Ofrece nuevas posibilidades."
+    },
+    "Desc_OreUranium_C": {
+      "name": "Uranio",
+      "description": "Un elemento radiactivo. Se utiliza para producir células de uranio encapsulado para barras de combustible de uranio. Precaución: Moderadamente radiactivo.",
+      "schemas": [
+        {
+          "name": "Mineral de uranio (bauxita)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:48:0::ore-uranium:12:0"
+        }
+      ]
+    },
+    "Desc_IronIngot_C": {
+      "name": "Lingote de hierro",
+      "description": "Se usa para fabricar las piezas más básicas.",
+      "schemas": [
+        {
+          "name": "Lingote de hierro",
+          "is_alternative": 0,
+          "building_slug": "smelter",
+          "sort_order": 0,
+          "fingerprint": "0::smelter::ore-iron:1:0::iron-ingot:1:0"
+        },
+        {
+          "name": "Alternativa: Lingote de aleación de hierro",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::ore-iron:8:0|ore-copper:2:0::iron-ingot:15:0"
+        },
+        {
+          "name": "Alternativa: Lingote de hierro básico",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 2,
+          "fingerprint": "1::foundry::ore-iron:5:0|stone:8:0::iron-ingot:10:0"
+        },
+        {
+          "name": "Alternativa: Lingote de hierro lixiviado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::ore-iron:5:0|sulfuric-acid:1:1::iron-ingot:10:0"
+        },
+        {
+          "name": "Alternativa: Lingote de hierro puro",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 4,
+          "fingerprint": "1::refinery::ore-iron:7:0|water:4:1::iron-ingot:13:0"
+        }
+      ]
+    },
+    "Desc_CopperIngot_C": {
+      "name": "Lingote de cobre",
+      "description": "Se usa para fabricar las piezas más básicas.",
+      "schemas": [
+        {
+          "name": "Lingote de cobre",
+          "is_alternative": 0,
+          "building_slug": "smelter",
+          "sort_order": 0,
+          "fingerprint": "0::smelter::ore-copper:1:0::copper-ingot:1:0"
+        },
+        {
+          "name": "Alternativa: Lingote de aleación de cobre",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::ore-copper:5:0|ore-iron:5:0::copper-ingot:10:0"
+        },
+        {
+          "name": "Alternativa: Lingote de cobre lixiviado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::ore-copper:9:0|sulfuric-acid:5:1::copper-ingot:22:0"
+        },
+        {
+          "name": "Alternativa: Lingote de cobre puro",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::ore-copper:6:0|water:4:1::copper-ingot:15:0"
+        },
+        {
+          "name": "Alternativa: Lingote de cobre templado",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 4,
+          "fingerprint": "1::foundry::ore-copper:5:0|petroleum-coke:8:0::copper-ingot:12:0"
+        }
+      ]
+    },
+    "Desc_GoldIngot_C": {
+      "name": "Lingote de caterio",
+      "description": "Fundido a partir de mineral de caterio. Se utiliza principalmente para electrónica avanzada.",
+      "schemas": [
+        {
+          "name": "Lingote de caterio",
+          "is_alternative": 0,
+          "building_slug": "smelter",
+          "sort_order": 0,
+          "fingerprint": "0::smelter::ore-gold:3:0::gold-ingot:1:0"
+        },
+        {
+          "name": "Alternativa: Lingote de caterio lixiviado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::ore-gold:9:0|sulfuric-acid:5:1::gold-ingot:6:0"
+        },
+        {
+          "name": "Alternativa: Lingote de caterio puro",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::ore-gold:2:0|water:2:1::gold-ingot:1:0"
+        },
+        {
+          "name": "Alternativa: Lingote de caterio templado",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 3,
+          "fingerprint": "1::foundry::ore-gold:6:0|petroleum-coke:2:0::gold-ingot:3:0"
+        }
+      ]
+    },
+    "Desc_SteelIngot_C": {
+      "name": "Lingote de acero",
+      "description": "Se obtiene fundiendo mineral de hierro y carbón. Puede transformarse en diversas piezas empleadas en la construcción de estructuras.",
+      "schemas": [
+        {
+          "name": "Lingote de acero",
+          "is_alternative": 0,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "0::foundry::ore-iron:3:0|coal:3:0::steel-ingot:3:0"
+        },
+        {
+          "name": "Alternativa: Lingote de acero compactado",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::ore-iron:2:0|compacted-coal:1:0::steel-ingot:4:0"
+        },
+        {
+          "name": "Alternativa: Lingote de acero de coque",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 2,
+          "fingerprint": "1::foundry::ore-iron:15:0|petroleum-coke:15:0::steel-ingot:20:0"
+        },
+        {
+          "name": "Alternativa: Lingote de acero sólido",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 3,
+          "fingerprint": "1::foundry::iron-ingot:2:0|coal:2:0::steel-ingot:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "Lingote de aluminio",
+      "description": "Se fabrican a partir de chatarra de aluminio, que a su vez se refina de la solución de alúmina. Se utilizan para fabricar piezas especializadas a base de aluminio.",
+      "schemas": [
+        {
+          "name": "Lingote de aluminio",
+          "is_alternative": 0,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "0::foundry::aluminum-scrap:6:0|silica:5:0::aluminum-ingot:4:0"
+        },
+        {
+          "name": "Alternativa: Lingote de aluminio puro",
+          "is_alternative": 1,
+          "building_slug": "smelter",
+          "sort_order": 1,
+          "fingerprint": "1::smelter::aluminum-scrap:2:0::aluminum-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Lingote de ficsita",
+      "description": "Producido mediante la reconstrucción de otros metales a nivel molecular utilizando materia alienígena rara. Sintetizado por FICSIT para ser el material de construcción perfecto y utilizado en los procesos más avanzados.",
+      "schemas": [
+        {
+          "name": "Lingote de ficsita (aluminio)",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "0::converter::samingot:2:0|aluminum-ingot:4:0::ficsite-ingot:1:0"
+        },
+        {
+          "name": "Lingote de ficsita (caterio)",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "0::converter::samingot:3:0|gold-ingot:4:0::ficsite-ingot:1:0"
+        },
+        {
+          "name": "Lingote de ficsita (hierro)",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "0::converter::samingot:4:0|iron-ingot:24:0::ficsite-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_Cement_C": {
+      "name": "Hormigón",
+      "description": "Se usa para construir. Es bueno para realizar cimientos estables.",
+      "schemas": [
+        {
+          "name": "Hormigón",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::stone:3:0::cement:1:0"
+        },
+        {
+          "name": "Alternativa: Hormigón de calidad",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::silica:3:0|stone:12:0::cement:10:0"
+        },
+        {
+          "name": "Alternativa: Hormigón de goma",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::stone:10:0|rubber:2:0::cement:9:0"
+        },
+        {
+          "name": "Alternativa: Hormigón mojado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::stone:6:0|water:5:1::cement:4:0"
+        }
+      ]
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "Cristal de cuarzo",
+      "description": "Derivado del cuarzo bruto. Se usa en la producción de tecnología de radar avanzada y pantallas de visualización de alta calidad.",
+      "schemas": [
+        {
+          "name": "Cristal de cuarzo",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::raw-quartz:5:0::quartz-crystal:3:0"
+        },
+        {
+          "name": "Alternativa: Cristal de cuarzo fundido",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::raw-quartz:25:0|coal:12:0::quartz-crystal:18:0"
+        },
+        {
+          "name": "Alternativa: Cristal de cuarzo puro",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::raw-quartz:9:0|water:5:1::quartz-crystal:7:0"
+        },
+        {
+          "name": "Alternativa: Purificación de cuarzo",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::raw-quartz:24:0|nitric-acid:2:1::quartz-crystal:15:0|dissolved-silica:12:1"
+        }
+      ]
+    },
+    "Desc_Silica_C": {
+      "name": "Sílice",
+      "description": "Derivado del cuarzo bruto. Comúnmente utilizado para crear estructuras de vidrio, procesos de refinado avanzados y para producción alternativa de electrónica.",
+      "schemas": [
+        {
+          "name": "Solución de alúmina",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::ore-bauxite:12:0|water:18:1::alumina-solution:12:1|silica:5:0"
+        },
+        {
+          "name": "Sílice",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "0::constructor::raw-quartz:3:0::silica:5:0"
+        },
+        {
+          "name": "Alternativa: Sílice destilada",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "1::blender::dissolved-silica:12:1|stone:5:0|water:10:1::silica:27:0|water:8:1"
+        },
+        {
+          "name": "Alternativa: Sílice económico",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 3,
+          "fingerprint": "1::assembler::raw-quartz:3:0|stone:5:0::silica:7:0"
+        }
+      ]
+    },
+    "Desc_CopperDust_C": {
+      "name": "Cobre en polvo",
+      "description": "Lingotes de cobre triturados. La alta densidad natural del cobre, combinada con la granularidad del polvo, hace que este componente sea ideal para producir pasta nuclear en el acelerador de partículas.",
+      "schemas": [
+        {
+          "name": "Cobre en polvo",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::copper-ingot:30:0::copper-dust:5:0"
+        }
+      ]
+    },
+    "Desc_PolymerResin_C": {
+      "name": "Resina de polímero",
+      "description": "Un subproducto del refinamiento del petróleo crudo para convertirlo en combustible, comúnmente utilizado para fabricar plástico y caucho.",
+      "schemas": [
+        {
+          "name": "Combustible",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:6:1::liquid-fuel:4:1|polymer-resin:3:0"
+        },
+        {
+          "name": "Alternativa: Residuo de petróleo pesado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::liquid-oil:3:1::heavy-oil-residue:4:1|polymer-resin:2:0"
+        },
+        {
+          "name": "Alternativa: Resina de polímero",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::liquid-oil:6:1::polymer-resin:13:0|heavy-oil-residue:2:1"
+        }
+      ]
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "Coque de petróleo",
+      "description": "Material de fabricación. Un material rico en carbono destilado a partir de residuo de petróleo pesado. Se utiliza como reemplazo menos eficiente al carbón.",
+      "schemas": [
+        {
+          "name": "Coque de petróleo",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::heavy-oil-residue:4:1::petroleum-coke:12:0"
+        }
+      ]
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "Chatarra de aluminio",
+      "description": "Refinada a partir de alúmina. Puede fundirse en lingotes de aluminio para uso industrial.",
+      "schemas": [
+        {
+          "name": "Chatarra de aluminio",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::alumina-solution:4:1|coal:2:0::aluminum-scrap:6:0|water:2:1"
+        },
+        {
+          "name": "Alternativa: Chatarra instantánea",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::ore-bauxite:15:0|coal:10:0|sulfuric-acid:5:1|water:6:1::aluminum-scrap:30:0|water:5:1"
+        },
+        {
+          "name": "Alternativa: Electrodo de chatarra de aluminio",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::alumina-solution:12:1|petroleum-coke:4:0::aluminum-scrap:20:0|water:7:1"
+        }
+      ]
+    },
+    "Desc_AlienProtein_C": {
+      "name": "Proteína alienígena"
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "Cápsula de ADN de alienígena",
+      "description": "Transforma sustancias químicas orgánicas en información genética alienígena legible. Se utiliza para investigar organismos alienígenas. ¡Ve más allá! Saber es poder, y el poder es solo eficiencia con menos pasos. Depositar cápsulas de ADN alienígena en el triturador FLIPANTE proporciona conocimientos a FICSIT y cupones a los pioneros.",
+      "schemas": [
+        {
+          "name": "Cápsula de ADN de alienígena",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::alien-protein:1:0::alien-dnacapsule:1:0"
+        }
+      ]
+    },
+    "Desc_Water_C": {
+      "name": "Agua",
+      "description": "Es agua.",
+      "schemas": [
+        {
+          "name": "Batería",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::sulfuric-acid:2.5:1|alumina-solution:2:1|aluminum-casing:1:0::battery:1:0|water:1.5:1"
+        },
+        {
+          "name": "Chatarra de aluminio",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::alumina-solution:4:1|coal:2:0::aluminum-scrap:6:0|water:2:1"
+        },
+        {
+          "name": "Extraer agua",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-water:2:0::water:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Uranio no fisible",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 3,
+          "fingerprint": "0::blender::nuclear-waste:15:0|silica:10:0|nitric-acid:6:1|sulfuric-acid:6:1::non-fissible-uranium:20:0|water:6:1"
+        },
+        {
+          "name": "Alternativa: Chatarra instantánea",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 4,
+          "fingerprint": "1::blender::ore-bauxite:15:0|coal:10:0|sulfuric-acid:5:1|water:6:1::aluminum-scrap:30:0|water:5:1"
+        },
+        {
+          "name": "Alternativa: Electrodo de chatarra de aluminio",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 5,
+          "fingerprint": "1::refinery::alumina-solution:12:1|petroleum-coke:4:0::aluminum-scrap:20:0|water:7:1"
+        },
+        {
+          "name": "Alternativa: Sílice destilada",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 6,
+          "fingerprint": "1::blender::dissolved-silica:12:1|stone:5:0|water:10:1::silica:27:0|water:8:1"
+        },
+        {
+          "name": "Alternativa: Uranio fértil",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 7,
+          "fingerprint": "1::blender::ore-uranium:5:0|nuclear-waste:5:0|nitric-acid:3:1|sulfuric-acid:5:1::non-fissible-uranium:20:0|water:8:1"
+        }
+      ]
+    },
+    "Desc_LiquidOil_C": {
+      "name": "Petróleo crudo",
+      "description": "Se refina para producir todo tipo de materiales derivados del petróleo, como combustible y plástico.",
+      "schemas": [
+        {
+          "name": "Extraer petróleo",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-oil:2:0::liquid-oil:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "Residuo de petróleo pesado",
+      "description": "Un subproducto de la producción de plástico y caucho. Puede refinarse en combustible y coque de petróleo.",
+      "schemas": [
+        {
+          "name": "Extraer residuo de petróleo pesado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-oil-residue:2:0::heavy-oil-residue:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Goma",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::liquid-oil:3:1::rubber:2:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "Plástico",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "0::refinery::liquid-oil:3:1::plastic:2:0|heavy-oil-residue:1:1"
+        },
+        {
+          "name": "Alternativa: Residuo de petróleo pesado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::liquid-oil:3:1::heavy-oil-residue:4:1|polymer-resin:2:0"
+        },
+        {
+          "name": "Alternativa: Resina de polímero",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 4,
+          "fingerprint": "1::refinery::liquid-oil:6:1::polymer-resin:13:0|heavy-oil-residue:2:1"
+        }
+      ]
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "Combustible",
+      "description": "Puede utilizarse en este formato para generar energía o envasarse para emplearla como combustible para vehículos o la mochila propulsora.",
+      "schemas": [
+        {
+          "name": "Combustible",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:6:1::liquid-fuel:4:1|polymer-resin:3:0"
+        },
+        {
+          "name": "Extraer combustible",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::fuel:2:0::liquid-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Alternativa: Combustible diluido",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "1::blender::heavy-oil-residue:5:1|water:10:1::liquid-fuel:10:1"
+        },
+        {
+          "name": "Residuo de combustible",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::heavy-oil-residue:6:1::liquid-fuel:4:1"
+        }
+      ]
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "Biocombustible líquido",
+      "description": "El biocombustible líquido puede utilizarse para generar energía o envasarse para emplearlo como combustible en vehículos.",
+      "schemas": [
+        {
+          "name": "Biocombustible líquido",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::biofuel:6:0|water:3:1::liquid-biofuel:4:1"
+        },
+        {
+          "name": "Extraer biocombustible líquido",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-biofuel:2:0::liquid-biofuel:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "Turbocombustible",
+      "description": "Una alternativa más eficaz al combustible. Puede utilizarse para generar energía o envasarse para usar en vehículos.",
+      "schemas": [
+        {
+          "name": "Extraer turbocombustible",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::turbo-fuel:2:0::liquid-turbo-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Turbocombustible",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::liquid-fuel:6:1|compacted-coal:4:0::liquid-turbo-fuel:5:1"
+        },
+        {
+          "name": "Alternativa: Turbocombustible mezclado",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "1::blender::liquid-fuel:2:1|heavy-oil-residue:4:1|sulfur:3:0|petroleum-coke:3:0::liquid-turbo-fuel:6:1"
+        },
+        {
+          "name": "Alternativa: Turbocombustible pesado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::heavy-oil-residue:5:1|compacted-coal:4:0::liquid-turbo-fuel:4:1"
+        }
+      ]
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "Solución de alúmina",
+      "description": "Alúmina disuelta, extraída de la bauxita. Puede ser refinada en chatarra de aluminio para la producción de lingotes de aluminio.",
+      "schemas": [
+        {
+          "name": "Extraer solución de alúmina",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-alumina:2:0::alumina-solution:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Solución de alúmina",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::ore-bauxite:12:0|water:18:1::alumina-solution:12:1|silica:5:0"
+        },
+        {
+          "name": "Alternativa: Alúmina chapucera",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::ore-bauxite:10:0|water:10:1::alumina-solution:12:1"
+        }
+      ]
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "Ácido sulfúrico",
+      "description": "Producido al combinar azufre y agua en una reacción compleja. Se utiliza principalmente en procesos de refinamiento y en la producción de baterías.",
+      "schemas": [
+        {
+          "name": "Célula de uranio revestida",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::ore-uranium:10:0|cement:3:0|sulfuric-acid:8:1::uranium-cell:5:0|sulfuric-acid:2:1"
+        },
+        {
+          "name": "Extraer ácido sulfúrico",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-sulfuric-acid:1:0::sulfuric-acid:1:1|fluid-canister:1:0"
+        },
+        {
+          "name": "Ácido sulfúrico",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "0::refinery::sulfur:5:0|water:5:1::sulfuric-acid:5:1"
+        }
+      ]
+    },
+    "Desc_NitricAcid_C": {
+      "name": "Ácido nítrico",
+      "description": "Se produce por reacción del gas nitrógeno con el agua. Su alta corrosividad y propiedades de oxidación lo convierten en una excelente opción para los procesos de refinado y producción de combustible.",
+      "schemas": [
+        {
+          "name": "Extraer ácido nítrico",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-nitric-acid:1:0::nitric-acid:1:1|gas-tank:1:0"
+        },
+        {
+          "name": "Ácido nítrico",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::nitrogen-gas:12:1|water:3:1|iron-plate:1:0::nitric-acid:3:1"
+        }
+      ]
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Sílice disuelta",
+      "description": "Sílice disuelta en agua, producida como parte del refinamiento alternativo del cuarzo bruto. La sílice se puede extraer del agua para completar el proceso de refinamiento.",
+      "schemas": [
+        {
+          "name": "Alternativa: Purificación de cuarzo",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::raw-quartz:24:0|nitric-acid:2:1::quartz-crystal:15:0|dissolved-silica:12:1"
+        }
+      ]
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "Gas nitrógeno",
+      "description": "Posee diversas aplicaciones, como metalurgia, refrigeración y producción de ácido nítrico. En MASSAGE-2 (AB)b, puede extraerse de pozos de gas subterráneos.",
+      "schemas": [
+        {
+          "name": "Extraer gas nitrógeno",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-nitrogen-gas:1:0::nitrogen-gas:4:1|gas-tank:1:0"
+        },
+        {
+          "name": "Gas nitrógeno",
+          "is_alternative": 0,
+          "building_slug": "fracking-extractor",
+          "sort_order": 1,
+          "fingerprint": "0::fracking-extractor::nitrogen-gas:0:1::nitrogen-gas:0:1"
+        },
+        {
+          "name": "Gas nitrógeno (bauxita)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:10:0::nitrogen-gas:12:1"
+        },
+        {
+          "name": "Gas nitrógeno (caterio)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 3,
+          "fingerprint": "1::converter::samingot:1:0|ore-gold:12:0::nitrogen-gas:12:1"
+        }
+      ]
+    },
+    "Desc_RocketFuel_C": {
+      "name": "Combustible de cohete",
+      "description": "Un combustible de gas comprimido de alto impulso. Puede usarse tal cual en generadores a combustible o envasado como combustible para vehículos o mochilas propulsoras.",
+      "schemas": [
+        {
+          "name": "Combustible de cohete",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::liquid-turbo-fuel:6:1|nitric-acid:1:1::rocket-fuel:10:1|compacted-coal:1:0"
+        },
+        {
+          "name": "Extraer combustible para cohetes",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-rocket-fuel:1:0::rocket-fuel:2:1|gas-tank:1:0"
+        },
+        {
+          "name": "Alternativa: Combustible de cohetes nitro",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "1::blender::liquid-fuel:4:1|nitrogen-gas:3:1|sulfur:4:0|coal:2:0::rocket-fuel:6:1|compacted-coal:1:0"
+        }
+      ]
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "Combustible ionizado",
+      "description": "Combustible que ha sido ionizado, lo que le confiere un rendimiento extraordinario. Puede usarse tal cual en generadores a combustible o envasado como combustible para vehículos o mochilas propulsoras.",
+      "schemas": [
+        {
+          "name": "Combustible ionizado",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::rocket-fuel:16:1|crystal-shard:1:0::ionized-fuel:16:1|compacted-coal:2:0"
+        },
+        {
+          "name": "Extraer combustible ionizado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-ionized-fuel:2:0::ionized-fuel:4:1|gas-tank:2:0"
+        },
+        {
+          "name": "Alternativa: Combustible de iones oscuros",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "1::converter::packaged-rocket-fuel:12:0|dark-matter:4:0::ionized-fuel:10:1|compacted-coal:2:0"
+        }
+      ]
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Residuo de materia oscura",
+      "description": "Producida como subproducto de procesos de codificación cuántica y generada alternativamente en el convertidor. Varios campos de la ciencia siguen debatiendo la naturaleza y las propiedades de la materia oscura. Mientras tanto, FICSIT le ha encontrado varias aplicaciones en la manipulación del espacio-tiempo.",
+      "schemas": [
+        {
+          "name": "Barra de combustible de ficsonio",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::ficsonium:2:0|electromagnetic-control-rod:2:0|ficsite-mesh:40:0|quantum-energy:20:1::ficsonium-fuel-rod:1:0|dark-energy:20:1"
+        },
+        {
+          "name": "Esquirla de energía sintética",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 1,
+          "fingerprint": "0::quantum-encoder::time-crystal:2:0|dark-matter:2:0|quartz-crystal:12:0|quantum-energy:12:1::crystal-shard:1:0|dark-energy:12:1"
+        },
+        {
+          "name": "Matriz de energía alienígena",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 2,
+          "fingerprint": "0::quantum-encoder::samfluctuator:5:0|crystal-shard:3:0|quantum-oscillator:3:0|quantum-energy:24:1::alien-power-fuel:1:0|dark-energy:24:1"
+        },
+        {
+          "name": "Oscilador de superposición",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 3,
+          "fingerprint": "0::quantum-encoder::dark-matter:6:0|crystal-oscillator:1:0|aluminum-plate:9:0|quantum-energy:25:1::quantum-oscillator:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "Procesador neurocuántico",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 4,
+          "fingerprint": "0::quantum-encoder::time-crystal:5:0|computer-super:1:0|ficsite-mesh:15:0|quantum-energy:25:1::temporal-processor:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "Residuo de materia oscura",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 5,
+          "fingerprint": "0::converter::samingot:5:0::dark-energy:10:1"
+        },
+        {
+          "name": "Servidor de expansión de IA",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 6,
+          "fingerprint": "0::quantum-encoder::space-elevator-part-6:1:0|temporal-processor:1:0|quantum-oscillator:1:0|quantum-energy:25:1::space-elevator-part-12:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Materia fotónica excitada"
+    },
+    "Desc_IronRod_C": {
+      "name": "Barra de hierro",
+      "description": "Material de fabricación. Una de las piezas más básicas.",
+      "schemas": [
+        {
+          "name": "Barra de hierro",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-ingot:1:0::iron-rod:1:0"
+        },
+        {
+          "name": "Alternativa: Barra de acero",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "1::constructor::steel-ingot:1:0::iron-rod:4:0"
+        },
+        {
+          "name": "Alternativa: Barra de aluminio",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "1::constructor::aluminum-ingot:1:0::iron-rod:7:0"
+        }
+      ]
+    },
+    "Desc_IronScrew_C": {
+      "name": "Tornillos",
+      "description": "Material de fabricación. Una de las piezas más básicas.",
+      "schemas": [
+        {
+          "name": "Tornillos",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-rod:1:0::iron-screw:4:0"
+        },
+        {
+          "name": "Alternativa: Tornillos de acero",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "1::constructor::steel-plate:1:0::iron-screw:52:0"
+        },
+        {
+          "name": "Alternativa: Tornillos fundidos",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "1::constructor::iron-ingot:5:0::iron-screw:20:0"
+        }
+      ]
+    },
+    "Desc_IronPlate_C": {
+      "name": "Plancha de hierro",
+      "description": "Material de fabricación. Una de las piezas más básicas.",
+      "schemas": [
+        {
+          "name": "Plancha de hierro",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-ingot:3:0::iron-plate:2:0"
+        },
+        {
+          "name": "Alternativa: Plancha de acero fundido",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::iron-ingot:1:0|steel-ingot:1:0::iron-plate:3:0"
+        },
+        {
+          "name": "Alternativa: Plancha de hierro revestida",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::iron-ingot:5:0|plastic:1:0::iron-plate:10:0"
+        }
+      ]
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "Plancha de hierro reforzada",
+      "description": "Material de fabricación. Una plancha de hierro más resistente y duradera.",
+      "schemas": [
+        {
+          "name": "Plancha de hierro reforzada",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-plate:6:0|iron-screw:12:0::iron-plate-reinforced:1:0"
+        },
+        {
+          "name": "Alternativa: Plancha de hierro adherida",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::iron-plate:3:0|rubber:1:0::iron-plate-reinforced:1:0"
+        },
+        {
+          "name": "Alternativa: Plancha de hierro atornillada",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::iron-plate:18:0|iron-screw:50:0::iron-plate-reinforced:3:0"
+        },
+        {
+          "name": "Alternativa: Plancha de hierro soldada",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 3,
+          "fingerprint": "1::assembler::iron-plate:10:0|wire:20:0::iron-plate-reinforced:3:0"
+        }
+      ]
+    },
+    "Desc_CopperSheet_C": {
+      "name": "Lámina de Cobre",
+      "description": "Material de fabricación. Se usa principalmente para tuberías debido a su alta resistencia a la corrosión.",
+      "schemas": [
+        {
+          "name": "Lámina de Cobre",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::copper-ingot:2:0::copper-sheet:1:0"
+        },
+        {
+          "name": "Alternativa: Lámina de cobre vaporizada",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::copper-ingot:3:0|water:3:1::copper-sheet:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "Lámina de aluminio revestido",
+      "description": "Se utiliza para fabricar productos que requieren una alta conducción de calor o una alta fuerza específica. Delgada, ligera y muy duradera.",
+      "schemas": [
+        {
+          "name": "Lámina de aluminio revestido",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::aluminum-ingot:3:0|copper-ingot:1:0::aluminum-plate:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "Carcasa de aluminio",
+      "description": "Un contenedor versátil creado con lingotes de aluminio.",
+      "schemas": [
+        {
+          "name": "Carcasa de aluminio",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::aluminum-ingot:3:0::aluminum-casing:2:0"
+        },
+        {
+          "name": "Alternativa: Carcasa de aluminio revestido",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::aluminum-ingot:20:0|copper-ingot:10:0::aluminum-casing:15:0"
+        }
+      ]
+    },
+    "Desc_SteelPipe_C": {
+      "name": "Tubería de acero",
+      "description": "Se utiliza principalmente en la construcción de estructuras un poco más avanzadas.",
+      "schemas": [
+        {
+          "name": "Tubería de acero",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::steel-ingot:3:0::steel-pipe:2:0"
+        },
+        {
+          "name": "Alternativa: Tubería de acero moldeado",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::steel-ingot:5:0|cement:3:0::steel-pipe:5:0"
+        },
+        {
+          "name": "Alternativa: Tubería de hierro",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "1::constructor::iron-ingot:20:0::steel-pipe:5:0"
+        }
+      ]
+    },
+    "Desc_SteelPlate_C": {
+      "name": "Viga de acero",
+      "description": "Se utiliza principalmente en la construcción de estructuras un poco más avanzadas.",
+      "schemas": [
+        {
+          "name": "Viga de acero",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::steel-ingot:4:0::steel-plate:1:0"
+        },
+        {
+          "name": "Alternativa: Viga de aluminio",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "1::constructor::aluminum-ingot:3:0::steel-plate:3:0"
+        },
+        {
+          "name": "Alternativa: Viga moldeada",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 2,
+          "fingerprint": "1::foundry::steel-ingot:24:0|cement:16:0::steel-plate:9:0"
+        }
+      ]
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "Viga industrial reforzada",
+      "description": "Utiliza simultáneamente la resistencia a la compresión del hormigón y la resistencia a la tensión del acero. Se emplea principalmente como base estable en la construcción de estructuras.",
+      "schemas": [
+        {
+          "name": "Viga industrial reforzada",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::steel-plate:3:0|cement:6:0::steel-plate-reinforced:1:0"
+        },
+        {
+          "name": "Alternativa: Tubería industrial reforzada",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::steel-pipe:6:0|cement:5:0::steel-plate-reinforced:1:0"
+        }
+      ]
+    },
+    "Desc_ModularFrame_C": {
+      "name": "Armazón modular",
+      "description": "Material de fabricación. Un bloque de construcción multiuso.",
+      "schemas": [
+        {
+          "name": "Armazón modular",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-plate-reinforced:3:0|iron-rod:12:0::modular-frame:2:0"
+        },
+        {
+          "name": "Alternativa: Armazón atornillado",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::iron-plate-reinforced:3:0|iron-screw:56:0::modular-frame:2:0"
+        },
+        {
+          "name": "Alternativa: Armazón de acero",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::iron-plate-reinforced:2:0|steel-pipe:10:0::modular-frame:3:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "Armazón modular pesado",
+      "description": "Un armazón multiuso más robusto.",
+      "schemas": [
+        {
+          "name": "Armazón modular pesado",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::modular-frame:5:0|steel-pipe:20:0|steel-plate-reinforced:5:0|iron-screw:120:0::modular-frame-heavy:1:0"
+        },
+        {
+          "name": "Alternativa: Armazón flexible pesado",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::modular-frame:5:0|steel-plate-reinforced:3:0|rubber:20:0|iron-screw:104:0::modular-frame-heavy:1:0"
+        },
+        {
+          "name": "Alternativa: Armazón revestido pesado",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 2,
+          "fingerprint": "1::manufacturer::modular-frame:8:0|steel-plate-reinforced:10:0|steel-pipe:36:0|cement:22:0::modular-frame-heavy:3:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "Armazón modular fusionado",
+      "description": "Un armazón modular resistente a la corrosión y endurecido con nitruro. Es muy resistente a la par que ligero.",
+      "schemas": [
+        {
+          "name": "Armazón modular fusionado",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::modular-frame-heavy:1:0|aluminum-casing:50:0|nitrogen-gas:25:1::modular-frame-fused:1:0"
+        },
+        {
+          "name": "Alternativa: Armazón termofusionado",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::modular-frame-heavy:1:0|aluminum-ingot:50:0|nitric-acid:8:1|liquid-fuel:10:1::modular-frame-fused:1:0"
+        }
+      ]
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Trígono de ficsita",
+      "description": "El trígono de ficsita, fabricado con lingotes de ficsita, tiene la forma perfecta para todos los desafíos de construcción. Su rendimiento es tan excepcional que prácticamente ha revolucionado la ingeniería estructural.",
+      "schemas": [
+        {
+          "name": "Trígono de ficsita",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::ficsite-ingot:1:0::ficsite-mesh:3:0"
+        }
+      ]
+    },
+    "Desc_Fabric_C": {
+      "name": "Tejido",
+      "description": "Se usa para fabricar equipamiento. Un tejido flexible y resistente.",
+      "schemas": [
+        {
+          "name": "Tejido",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::mycelia:1:0|generic-biomass:5:0::fabric:1:0"
+        },
+        {
+          "name": "Alternativa: Tela de poliéster",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::polymer-resin:1:0|water:1:1::fabric:1:0"
+        }
+      ]
+    },
+    "Desc_Plastic_C": {
+      "name": "Plástico",
+      "description": "Versátil y fácil de fabricar, este material tiene una amplia gama de usos.",
+      "schemas": [
+        {
+          "name": "Plástico",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::plastic:2:0|heavy-oil-residue:1:1"
+        },
+        {
+          "name": "Alternativa: Plástico reciclado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::rubber:6:0|liquid-fuel:6:1::plastic:12:0"
+        },
+        {
+          "name": "Plástico residual",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::polymer-resin:6:0|water:2:1::plastic:2:0"
+        }
+      ]
+    },
+    "Desc_Rubber_C": {
+      "name": "Goma",
+      "description": "Un material muy flexible y que tiene mucha fricción.",
+      "schemas": [
+        {
+          "name": "Goma",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::rubber:2:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "Alternativa: Caucho reciclado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::plastic:6:0|liquid-fuel:6:1::rubber:12:0"
+        },
+        {
+          "name": "Caucho residual",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::polymer-resin:4:0|water:4:1::rubber:2:0"
+        }
+      ]
+    },
+    "Desc_Rotor_C": {
+      "name": "Rotor",
+      "description": "Material de fabricación. Las piezas móviles de un motor.",
+      "schemas": [
+        {
+          "name": "Rotor",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-rod:5:0|iron-screw:25:0::rotor:1:0"
+        },
+        {
+          "name": "Alternativa: Rotor de acero",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::steel-pipe:2:0|wire:6:0::rotor:1:0"
+        },
+        {
+          "name": "Alternativa: Rotor de cobre",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::copper-sheet:6:0|iron-screw:52:0::rotor:3:0"
+        }
+      ]
+    },
+    "Desc_Stator_C": {
+      "name": "Estátor",
+      "description": "Material de fabricación. Las piezas fijas de un motor.",
+      "schemas": [
+        {
+          "name": "Estátor",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::steel-pipe:3:0|wire:8:0::stator:1:0"
+        },
+        {
+          "name": "Alternativa: Estátor de turboalambre",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::steel-pipe:4:0|high-speed-wire:15:0::stator:2:0"
+        }
+      ]
+    },
+    "Desc_Battery_C": {
+      "name": "Batería",
+      "description": "Se utiliza principalmente como combustible para drones y vehículos.",
+      "schemas": [
+        {
+          "name": "Batería",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::sulfuric-acid:2.5:1|alumina-solution:2:1|aluminum-casing:1:0::battery:1:0|water:1.5:1"
+        },
+        {
+          "name": "Alternativa: Batería clásica",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::sulfur:6:0|aluminum-plate:7:0|plastic:8:0|wire:12:0::battery:4:0"
+        }
+      ]
+    },
+    "Desc_Motor_C": {
+      "name": "Motor",
+      "description": "Crea una fuerza mecánica que se usa para mover objetos de máquinas a vehículos.",
+      "schemas": [
+        {
+          "name": "Motor",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::rotor:2:0|stator:2:0::motor:1:0"
+        },
+        {
+          "name": "Alternativa: Motor eléctrico",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::electromagnetic-control-rod:1:0|rotor:2:0::motor:2:0"
+        },
+        {
+          "name": "Alternativa: Motor robusto",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 2,
+          "fingerprint": "1::manufacturer::rotor:3:0|stator:3:0|crystal-oscillator:1:0::motor:6:0"
+        }
+      ]
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "Disipador de calor",
+      "description": "Se usa para disipar el calor más rápido.",
+      "schemas": [
+        {
+          "name": "Disipador de calor",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::aluminum-plate:5:0|copper-sheet:3:0::aluminum-plate-reinforced:1:0"
+        },
+        {
+          "name": "Alternativa: Intercambiador de calor",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::aluminum-casing:3:0|rubber:3:0::aluminum-plate-reinforced:1:0"
+        }
+      ]
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "Sistema de refrigeración",
+      "description": "Evita que las piezas y estructuras avanzadas excedan los niveles de temperatura eficientes.",
+      "schemas": [
+        {
+          "name": "Sistema de refrigeración",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::aluminum-plate-reinforced:2:0|rubber:2:0|water:5:1|nitrogen-gas:25:1::cooling-system:1:0"
+        },
+        {
+          "name": "Alternativa: Dispositivo de refrigeración",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::aluminum-plate-reinforced:4:0|motor:1:0|nitrogen-gas:24:1::cooling-system:2:0"
+        }
+      ]
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "Motor turbo",
+      "description": "Una versión más compleja y potente del motor normal.",
+      "schemas": [
+        {
+          "name": "Motor turbo",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::cooling-system:4:0|modular-frame-lightweight:2:0|motor:4:0|rubber:24:0::motor-lightweight:1:0"
+        },
+        {
+          "name": "Alternativa: Motor turbo eléctrico",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::motor:7:0|modular-frame-lightweight:9:0|electromagnetic-control-rod:5:0|rotor:7:0::motor-lightweight:3:0"
+        },
+        {
+          "name": "Alternativa: Motor turbo presurizado",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 2,
+          "fingerprint": "1::manufacturer::motor:4:0|pressure-conversion-cube:1:0|packaged-nitrogen-gas:24:0|stator:8:0::motor-lightweight:2:0"
+        }
+      ]
+    },
+    "Desc_Wire_C": {
+      "name": "Alambre",
+      "description": "Material de fabricación. Una de las piezas más básicas.",
+      "schemas": [
+        {
+          "name": "Alambre",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::copper-ingot:1:0::wire:2:0"
+        },
+        {
+          "name": "Alternativa: Alambre de caterio",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "1::constructor::gold-ingot:1:0::wire:8:0"
+        },
+        {
+          "name": "Alternativa: Alambre de hierro",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "1::constructor::iron-ingot:5:0::wire:9:0"
+        },
+        {
+          "name": "Alternativa: Alambre fundido",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 3,
+          "fingerprint": "1::assembler::copper-ingot:4:0|gold-ingot:1:0::wire:30:0"
+        }
+      ]
+    },
+    "Desc_Cable_C": {
+      "name": "Cable",
+      "description": "Material de fabricación. Se usa principalmente para construir líneas eléctricas.",
+      "schemas": [
+        {
+          "name": "Cable",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::wire:2:0::cable:1:0"
+        },
+        {
+          "name": "Alternativa: Cable aislado",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::wire:9:0|rubber:6:0::cable:20:0"
+        },
+        {
+          "name": "Alternativa: Cable de turboalambre",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::high-speed-wire:3:0|rubber:2:0::cable:11:0"
+        },
+        {
+          "name": "Alternativa: Cable revestido",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::wire:5:0|heavy-oil-residue:2:1::cable:9:0"
+        }
+      ]
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "Turboalambre",
+      "description": "La alta conductividad y la gran resistencia a la corrosión del caterio hacen que sea ideal para dispositivos electrónicos pequeños y avanzados.",
+      "schemas": [
+        {
+          "name": "Turboalambre",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::gold-ingot:1:0::high-speed-wire:5:0"
+        },
+        {
+          "name": "Alternativa: Turboalambre fundido",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::gold-ingot:1:0|copper-ingot:5:0::high-speed-wire:12:0"
+        }
+      ]
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "Circuito impreso",
+      "description": "Electrónica avanzada que tiene multitud de usos.",
+      "schemas": [
+        {
+          "name": "Circuito impreso",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:2:0|plastic:4:0::circuit-board:1:0"
+        },
+        {
+          "name": "Alternativa: Circuito impreso de caterio",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::plastic:10:0|high-speed-wire:30:0::circuit-board:7:0"
+        },
+        {
+          "name": "Alternativa: Circuito impreso de electrodos",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::rubber:4:0|petroleum-coke:8:0::circuit-board:1:0"
+        },
+        {
+          "name": "Alternativa: Circuito impreso de silicio",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 3,
+          "fingerprint": "1::assembler::copper-sheet:11:0|silica:11:0::circuit-board:5:0"
+        }
+      ]
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "Limitador de IA",
+      "description": "Controla las IA y evita que evolucionen de forma maliciosa. Electrónica superavanzada.",
+      "schemas": [
+        {
+          "name": "Limitador de IA",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:5:0|high-speed-wire:20:0::circuit-board-high-speed:1:0"
+        },
+        {
+          "name": "Alternativa: Limitador de IA de plástico",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::high-speed-wire:30:0|plastic:7:0::circuit-board-high-speed:2:0"
+        }
+      ]
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "Conector de alta velocidad",
+      "description": "Conecta múltiples cables y alambres de una manera muy eficiente. Utiliza un patrón estándar, por lo que tiene muchas aplicaciones variadas.",
+      "schemas": [
+        {
+          "name": "Conector de alta velocidad",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::high-speed-wire:56:0|cable:10:0|circuit-board:1:0::high-speed-connector:1:0"
+        },
+        {
+          "name": "Alternativa: Conector de alta velocidad de silicio",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::high-speed-wire:60:0|silica:25:0|circuit-board:2:0::high-speed-connector:2:0"
+        }
+      ]
+    },
+    "Desc_SAMIngot_C": {
+      "name": "MAR reanimada",
+      "description": "La forma activa y contenida de la materia alienígena rara. Se requiere un aislamiento electromagnético adecuado, ya que parece tener la capacidad de manipular los enlaces atómicos de cualquier materia con la que entre en contacto.",
+      "schemas": [
+        {
+          "name": "MAR reanimada",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::sam:4:0::samingot:1:0"
+        }
+      ]
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "Fluctuador de MAR",
+      "description": "El fluctuador de MAR es capaz de regular y dirigir el comportamiento de la MAR reanimada mediante la aplicación de cargas eléctricas con frecuencias variables. Este control facilita tecnologías como la conversión de materia en energía y la manipulación espaciotemporal de la materia.",
+      "schemas": [
+        {
+          "name": "Fluctuador de MAR",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::samingot:6:0|wire:5:0|steel-pipe:3:0::samfluctuator:1:0"
+        }
+      ]
+    },
+    "Desc_Computer_C": {
+      "name": "Ordenador",
+      "description": "Una compleja máquina lógica que se utiliza para controlar el comportamiento avanzado en otras máquinas.",
+      "schemas": [
+        {
+          "name": "Ordenador",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::circuit-board:4:0|cable:8:0|plastic:16:0::computer:1:0"
+        },
+        {
+          "name": "Alternativa: Ordenador de Cristal",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::circuit-board:3:0|crystal-oscillator:1:0::computer:2:0"
+        },
+        {
+          "name": "Alternativa: Ordenador de caterio",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 2,
+          "fingerprint": "1::manufacturer::circuit-board:4:0|high-speed-wire:14:0|rubber:6:0::computer:1:0"
+        }
+      ]
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "Supercomputadora",
+      "description": "La versión más avanzada de un ordenador.",
+      "schemas": [
+        {
+          "name": "Supercomputadora",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::computer:4:0|circuit-board-high-speed:2:0|high-speed-connector:3:0|plastic:28:0::computer-super:1:0"
+        },
+        {
+          "name": "Alternativa: Ordenador en superestado",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::computer:3:0|electromagnetic-control-rod:1:0|battery:10:0|wire:25:0::computer-super:1:0"
+        },
+        {
+          "name": "Alternativa: Superordenador overclockeado",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::modular-frame-lightweight:2:0|cooling-system:2:0::computer-super:1:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "Unidad de control por radio",
+      "description": "Mejora y dirige las señales de radio.",
+      "schemas": [
+        {
+          "name": "Unidad de control por radio",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::aluminum-casing:32:0|crystal-oscillator:1:0|computer:2:0::modular-frame-lightweight:2:0"
+        },
+        {
+          "name": "Alternativa: Sistema de control de radio",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::crystal-oscillator:1:0|circuit-board:10:0|aluminum-casing:60:0|rubber:30:0::modular-frame-lightweight:3:0"
+        },
+        {
+          "name": "Alternativa: Unidad de conexión de radio",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 2,
+          "fingerprint": "1::manufacturer::aluminum-plate-reinforced:4:0|high-speed-connector:2:0|quartz-crystal:12:0::modular-frame-lightweight:1:0"
+        }
+      ]
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "Oscilador de cristal",
+      "description": "Un circuito oscilador electrónico que usa la resonancia mecánica de un cristal vibratorio para crear una señal eléctrica con una frecuencia precisa.",
+      "schemas": [
+        {
+          "name": "Oscilador de cristal",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::quartz-crystal:36:0|cable:28:0|iron-plate-reinforced:5:0::crystal-oscillator:2:0"
+        },
+        {
+          "name": "Alternativa: Oscilador de cristal aislado",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::quartz-crystal:10:0|rubber:7:0|circuit-board-high-speed:1:0::crystal-oscillator:1:0"
+        }
+      ]
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "Oscilador de superposición",
+      "description": "Un circuito oscilador que usa la resonancia mecánica de un cristal que vibra para crear una vibración de cuerda con una frecuencia precisa. Se suele usar en tecnologías de teletransporte y de manipulación dimensional.",
+      "schemas": [
+        {
+          "name": "Oscilador de superposición",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::dark-matter:6:0|crystal-oscillator:1:0|aluminum-plate:9:0|quantum-energy:25:1::quantum-oscillator:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_Diamond_C": {
+      "name": "Diamantes",
+      "description": "Diamantes sintéticos producidos al exponer el carbón a calor y presión extremos. Utilizados en la producción de cronocristales y cristales de materia oscura. Uso de la energía: 250-750 MW (500 MW de media).",
+      "schemas": [
+        {
+          "name": "Diamantes",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::coal:20:0::diamond:1:0"
+        },
+        {
+          "name": "Alternativa: Diamantes a base de petróleo",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::liquid-oil:10:1::diamond:2:0"
+        },
+        {
+          "name": "Alternativa: Diamantes de petróleo",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 2,
+          "fingerprint": "1::particle-accelerator::petroleum-coke:24:0::diamond:1:0"
+        },
+        {
+          "name": "Alternativa: Diamantes rosas",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 3,
+          "fingerprint": "1::converter::coal:8:0|quartz-crystal:3:0::diamond:1:0"
+        },
+        {
+          "name": "Alternativa: Diamantes turbios",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 4,
+          "fingerprint": "1::particle-accelerator::coal:12:0|stone:24:0::diamond:1:0"
+        },
+        {
+          "name": "Alternativa: Diamantes turbo",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 5,
+          "fingerprint": "1::particle-accelerator::coal:30:0|turbo-fuel:2:0::diamond:3:0"
+        }
+      ]
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Cronocristales",
+      "description": "Los cronocristales son diamantes que han sido reconfigurados a nivel subatómico en el convertidor para conservar una estructura autoorganizada con periodicidad temporal, lo que permite utilizarlos en el desarrollo de tecnologías de almacenamiento y procesamiento cuántico.",
+      "schemas": [
+        {
+          "name": "Cronocristales",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "0::converter::diamond:2:0::time-crystal:1:0"
+        }
+      ]
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Cristal de materia oscura",
+      "description": "Residuo de materia oscura concentrado que se aísla dentro de un recipiente cristalino. Esta forma de contención permite utilizar la materia oscura de forma estable en otros procesos de producción. Consumo de Energía: 500-1500 MW (1000 MW de media).",
+      "schemas": [
+        {
+          "name": "Cristal de materia oscura",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::diamond:1:0|dark-energy:5:1::dark-matter:1:0"
+        },
+        {
+          "name": "Alternativa: Cristalización de materia oscura",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::dark-energy:10:1::dark-matter:1:0"
+        },
+        {
+          "name": "Alternativa: Trampa de materia oscura",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 2,
+          "fingerprint": "1::particle-accelerator::time-crystal:1:0|dark-energy:5:1::dark-matter:2:0"
+        }
+      ]
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Célula de singularidad",
+      "description": "Se utiliza para descomponer el espacio y el tiempo. Se requiere para alimentar portales.",
+      "schemas": [
+        {
+          "name": "Célula de singularidad",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-9:1:0|dark-matter:20:0|iron-plate:100:0|cement:200:0::singularity-cell:10:0"
+        }
+      ]
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Procesador neurocuántico",
+      "description": "El procesador neurocuántico utiliza una combinación de arquitectura de red neuronal y técnicas de computación cuántica para lograr un rendimiento sin precedentes. Esta tecnología ha permitido algunos de los mayores avances de FICSIT en inteligencia artificial e ingeniería relativista.",
+      "schemas": [
+        {
+          "name": "Procesador neurocuántico",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::time-crystal:5:0|computer-super:1:0|ficsite-mesh:15:0|quantum-energy:25:1::temporal-processor:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Matriz de energía alienígena",
+      "description": "Esta intrincada matriz de materia condensada se utiliza para mejorar la salida del amplificador de energía alienígena. Desarrollada inicialmente con la intención de crear un Somertoc artificial, la matriz de energía alienígena no puede soportar la conexión de energía extradimensional por sí sola. Sin embargo, puede estabilizar eficazmente el flujo de energía del Somertoc.",
+      "schemas": [
+        {
+          "name": "Matriz de energía alienígena",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::samfluctuator:5:0|crystal-shard:3:0|quantum-oscillator:3:0|quantum-energy:24:1::alien-power-fuel:1:0|dark-energy:24:1"
+        }
+      ]
+    },
+    "Desc_FluidCanister_C": {
+      "name": "Recipiente vacío",
+      "description": "Se utiliza para envasar fluidos para su transporte.",
+      "schemas": [
+        {
+          "name": "Extraer agua",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-water:2:0::water:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Extraer biocombustible líquido",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-biofuel:2:0::liquid-biofuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Extraer combustible",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::fuel:2:0::liquid-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Extraer petróleo",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 3,
+          "fingerprint": "0::packager::packaged-oil:2:0::liquid-oil:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Extraer residuo de petróleo pesado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 4,
+          "fingerprint": "0::packager::packaged-oil-residue:2:0::heavy-oil-residue:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Extraer solución de alúmina",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 5,
+          "fingerprint": "0::packager::packaged-alumina:2:0::alumina-solution:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Extraer turbocombustible",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 6,
+          "fingerprint": "0::packager::turbo-fuel:2:0::liquid-turbo-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "Extraer ácido sulfúrico",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 7,
+          "fingerprint": "0::packager::packaged-sulfuric-acid:1:0::sulfuric-acid:1:1|fluid-canister:1:0"
+        },
+        {
+          "name": "Recipiente vacío",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 8,
+          "fingerprint": "0::constructor::plastic:2:0::fluid-canister:4:0"
+        },
+        {
+          "name": "Alternativa: Recipiente de acero",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 9,
+          "fingerprint": "1::constructor::steel-ingot:4:0::fluid-canister:4:0"
+        },
+        {
+          "name": "Alternativa: Recipiente de hierro revestido",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 10,
+          "fingerprint": "1::assembler::iron-plate:2:0|copper-sheet:1:0::fluid-canister:4:0"
+        }
+      ]
+    },
+    "Desc_GasTank_C": {
+      "name": "Bombona de fluidos vacía",
+      "description": "Se utiliza para envasar gases y líquidos volátiles para su transporte.",
+      "schemas": [
+        {
+          "name": "Bombona de fluidos vacía",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::aluminum-ingot:1:0::gas-tank:1:0"
+        },
+        {
+          "name": "Extraer combustible ionizado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-ionized-fuel:2:0::ionized-fuel:4:1|gas-tank:2:0"
+        },
+        {
+          "name": "Extraer combustible para cohetes",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-rocket-fuel:1:0::rocket-fuel:2:1|gas-tank:1:0"
+        },
+        {
+          "name": "Extraer gas nitrógeno",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 3,
+          "fingerprint": "0::packager::packaged-nitrogen-gas:1:0::nitrogen-gas:4:1|gas-tank:1:0"
+        },
+        {
+          "name": "Extraer ácido nítrico",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 4,
+          "fingerprint": "0::packager::packaged-nitric-acid:1:0::nitric-acid:1:1|gas-tank:1:0"
+        }
+      ]
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "Cubo conversor de presiones",
+      "description": "Convierte la fuerza saliente en presión interna. Necesario para contener la materia inestable de alta densidad energética.",
+      "schemas": [
+        {
+          "name": "Cubo conversor de presiones",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::modular-frame-fused:1:0|modular-frame-lightweight:2:0::pressure-conversion-cube:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedWater_C": {
+      "name": "Agua Envasado",
+      "description": "Agua, envasada para transporte alternativo.",
+      "schemas": [
+        {
+          "name": "Agua Envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::water:2:1|fluid-canister:2:0::packaged-water:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "Solución de alúmina envasada",
+      "description": "Solución de alúmina, envasada para su transporte alternativo.",
+      "schemas": [
+        {
+          "name": "Solución de alúmina envasada",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::alumina-solution:2:1|fluid-canister:2:0::packaged-alumina:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "Ácido sulfúrico envasado",
+      "description": "Ácido sulfúrico, envasado para transporte alternativo.",
+      "schemas": [
+        {
+          "name": "Ácido sulfúrico envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::sulfuric-acid:2:1|fluid-canister:2:0::packaged-sulfuric-acid:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "Ácido nítrico envasado",
+      "description": "Ácido nítrico, envasado para transporte alternativo.",
+      "schemas": [
+        {
+          "name": "Ácido nítrico envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::nitric-acid:1:1|gas-tank:1:0::packaged-nitric-acid:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "Gas nitrógeno envasado",
+      "description": "Gas nitrógeno, envasado para transporte alternativo.",
+      "schemas": [
+        {
+          "name": "Gas nitrógeno envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::nitrogen-gas:4:1|gas-tank:1:0::packaged-nitrogen-gas:1:0"
+        }
+      ]
+    },
+    "Desc_Leaves_C": {
+      "name": "Hojas",
+      "description": "Se usa principalmente como combustible.￼ Los quemadores de biomasa y los vehículos pueden usarlas como fuente de energía."
+    },
+    "Desc_Mycelia_C": {
+      "name": "Micelios",
+      "description": "Material de fabricación. Los quemadores de biomasa y los vehículos también pueden usar micelios como fuente de energía."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "Pétalos de flores",
+      "description": "Material de fabricación. Unos coloridos pétalos de flores nativas."
+    },
+    "Desc_Wood_C": {
+      "name": "Madera",
+      "description": "Se usa principalmente como combustible.￼ Los quemadores de biomasa y los vehículos pueden usar madera como fuente de energía."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "Biomasa"
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "Carbón compactado",
+      "description": "Una alternativa mucho más eficiente al carbón. Se utiliza como combustible para vehículos y generadores de carbón.",
+      "schemas": [
+        {
+          "name": "Alternativa: Carbón compactado",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::coal:5:0|sulfur:5:0::compacted-coal:5:0"
+        },
+        {
+          "name": "Combustible de cohete",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::liquid-turbo-fuel:6:1|nitric-acid:1:1::rocket-fuel:10:1|compacted-coal:1:0"
+        },
+        {
+          "name": "Combustible ionizado",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "0::refinery::rocket-fuel:16:1|crystal-shard:1:0::ionized-fuel:16:1|compacted-coal:2:0"
+        },
+        {
+          "name": "Alternativa: Combustible de cohetes nitro",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 3,
+          "fingerprint": "1::blender::liquid-fuel:4:1|nitrogen-gas:3:1|sulfur:4:0|coal:2:0::rocket-fuel:6:1|compacted-coal:1:0"
+        },
+        {
+          "name": "Alternativa: Combustible de iones oscuros",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 4,
+          "fingerprint": "1::converter::packaged-rocket-fuel:12:0|dark-matter:4:0::ionized-fuel:10:1|compacted-coal:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedOil_C": {
+      "name": "Petróleo envasado",
+      "description": "Petróleo Crudo, envasado para facilitar su transporte. Puede usarse como combustible de Vehículos.",
+      "schemas": [
+        {
+          "name": "Petróleo envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-oil:2:1|fluid-canister:2:0::packaged-oil:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "Residuo de petróleo pesado envasado",
+      "description": "Residuo de Petróleo Pesado, envasado para facilitar su transporte. Puede usarse como combustible de Vehículos.",
+      "schemas": [
+        {
+          "name": "Residuo de petróleo pesado envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::heavy-oil-residue:2:1|fluid-canister:2:0::packaged-oil-residue:2:0"
+        }
+      ]
+    },
+    "Desc_Biofuel_C": {
+      "name": "Biocombustible sólido",
+      "description": "La forma más eficiente de biomasa sólida. Puede usarse para accionar una Motosierra.",
+      "schemas": [
+        {
+          "name": "Biocombustible sólido",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::generic-biomass:8:0::biofuel:4:0"
+        }
+      ]
+    },
+    "Desc_Fuel_C": {
+      "name": "Combustible envasado",
+      "description": "Combustible, envasado para facilitar su transporte. Puede usarse como combustible de Vehículos o para la Mochila Propulsora.",
+      "schemas": [
+        {
+          "name": "Combustible envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-fuel:2:1|fluid-canister:2:0::fuel:2:0"
+        },
+        {
+          "name": "Alternativa: Combustible diluido envasado",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::heavy-oil-residue:1:1|packaged-water:2:0::fuel:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "Biocombustible líquido envasado",
+      "description": "Biocombustible líquido, envasado para transporte alternativo. Puede usarse como combustible para vehículos y Jetpack.",
+      "schemas": [
+        {
+          "name": "Biocombustible líquido envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-biofuel:2:1|fluid-canister:2:0::packaged-biofuel:2:0"
+        }
+      ]
+    },
+    "Desc_TurboFuel_C": {
+      "name": "Turbocombustible envasado",
+      "description": "Turbocombustible, envasado para transporte alternativo. Puede usarse como combustible para vehículos y Jetpack.",
+      "schemas": [
+        {
+          "name": "Turbocombustible envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-turbo-fuel:2:1|fluid-canister:2:0::turbo-fuel:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "Combustible de cohete envasado",
+      "description": "Combustible para cohetes, envasado para transporte alternativo. Puede usarse como combustible para vehículos y mochilas propulsoras.",
+      "schemas": [
+        {
+          "name": "Combustible de cohete envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::rocket-fuel:2:1|gas-tank:1:0::packaged-rocket-fuel:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Combustible ionizado envasado",
+      "description": "Combustible ionizado, envasado para transporte alternativo. Puede usarse como combustible para vehículos y mochilas propulsoras.",
+      "schemas": [
+        {
+          "name": "Combustible ionizado envasado",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::ionized-fuel:4:1|gas-tank:2:0::packaged-ionized-fuel:2:0"
+        }
+      ]
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "Barra de combustible de uranio",
+      "description": "Se utiliza como combustible para centrales nucleares. Precaución: Produce residuos de uranio radiactivo cuando se consume. Precaución: Moderadamente radiactivo.",
+      "schemas": [
+        {
+          "name": "Barra de combustible de uranio",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::uranium-cell:50:0|steel-plate-reinforced:3:0|electromagnetic-control-rod:5:0::nuclear-fuel-rod:1:0"
+        },
+        {
+          "name": "Alternativa: Unidad de combustible de uranio",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::uranium-cell:100:0|electromagnetic-control-rod:10:0|crystal-oscillator:3:0|rotor:10:0::nuclear-fuel-rod:3:0"
+        }
+      ]
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "Barra de combustible de plutonio",
+      "description": "Se utiliza como combustible para centrales nucleares. Precaución: Produce residuos radiactivos de plutonio cuando se consume. Precaución: ALTAMENTE radiactivo.",
+      "schemas": [
+        {
+          "name": "Barra de combustible de plutonio",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::plutonium-cell:30:0|steel-plate:18:0|electromagnetic-control-rod:6:0|aluminum-plate-reinforced:10:0::plutonium-fuel-rod:1:0"
+        },
+        {
+          "name": "Alternativa: Unidad de combustible de plutonio",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::plutonium-cell:20:0|pressure-conversion-cube:1:0::plutonium-fuel-rod:1:0"
+        }
+      ]
+    },
+    "Desc_Gunpowder_C": {
+      "name": "Pólvora",
+      "description": "Un polvo explosivo que se usa comúnmente para fabricar explosivos simples.",
+      "schemas": [
+        {
+          "name": "Pólvora",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::coal:1:0|sulfur:1:0::gunpowder:2:0"
+        },
+        {
+          "name": "Alternativa: Pólvora fina",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::sulfur:1:0|compacted-coal:2:0::gunpowder:6:0"
+        }
+      ]
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "Pólvora sin humo",
+      "description": "Un polvo explosivo que se suele usar para la producción de armas de fuego modernas.",
+      "schemas": [
+        {
+          "name": "Pólvora sin humo",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::gunpowder:2:0|heavy-oil-residue:1:1::gunpowder-mk2:2:0"
+        }
+      ]
+    },
+    "Desc_Filter_C": {
+      "name": "Filtro de gas",
+      "description": "Filtra toxinas y contaminantes del aire cuando se usa con una máscara antigás.",
+      "schemas": [
+        {
+          "name": "Filtro de gas",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::fabric:2:0|coal:4:0|iron-plate:2:0::filter:1:0"
+        }
+      ]
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "Cartucho de color",
+      "description": "Se usa para aplicar Patrones a estructuras con el Personalizador. (Los patrones se pueden comprar en la tienda FLIPANTE)."
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "Baliza",
+      "description": "PENDIENTE DE ELIMINACIÓN Este elemento (probablemente) será eliminado en una actualización futura. Actualmente sólo se usa como ingrediente en una receta alternativa."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "Filtro de yodo",
+      "description": "Absorbe partículas radiactivas cuando se usa con el traje de protección.",
+      "schemas": [
+        {
+          "name": "Filtro de yodo",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::filter:1:0|high-speed-wire:8:0|aluminum-casing:1:0::hazmat-filter:1:0"
+        }
+      ]
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "Varilla de hierro",
+      "description": "Se puede disparar usando la pistola de varillas con fines de autodefensa.",
+      "schemas": [
+        {
+          "name": "Varilla de hierro",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-rod:1:0::spiked-rebar:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "Varilla aturdidora",
+      "description": "Electrocuta al objetivo al impactar, aturdiéndolo durante unos instantes. Duración del aturdimiento: 5 segundos",
+      "schemas": [
+        {
+          "name": "Varilla aturdidora",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::spiked-rebar:1:0|high-speed-wire:5:0::rebar-stunshot:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "Varilla de fragmentación",
+      "description": "Se fractura cuando se dispara, lanzando escombros letales en una amplia extensión pero con un alcance limitado.",
+      "schemas": [
+        {
+          "name": "Varilla de fragmentación",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::spiked-rebar:2:0|quartz-crystal:3:0::rebar-spreadshot:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "Varilla explosiva",
+      "description": "Explota al impactar, provocando grandes daños.",
+      "schemas": [
+        {
+          "name": "Varilla explosiva",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::spiked-rebar:2:0|gunpowder-mk2:2:0|steel-pipe:2:0::rebar-explosive:1:0"
+        }
+      ]
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "Munición de rifle",
+      "description": "Munición estándar para rifle, útil para dejar claro tu dominio.",
+      "schemas": [
+        {
+          "name": "Munición de rifle",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:3:0|gunpowder-mk2:2:0::cartridge-standard:15:0"
+        }
+      ]
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "Munición buscadora de rifle",
+      "description": "El sistema de guiado de balas integrado en esta munición le permite alcanzar con precisión cualquier objetivo dentro del área de la retícula. Útil especialmente cuando se trata con amenazas ágiles, o para los Pioneros que no pueden molestarse en apuntar correctamente.",
+      "schemas": [
+        {
+          "name": "Munición buscadora de rifle",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::cartridge-standard:20:0|high-speed-connector:1:0::cartridge-smart-projectile:10:0"
+        }
+      ]
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "Turbomunición para rifle",
+      "description": "Ligeras, compactas y volátiles. Estas balas ofrecen mayor capacidad y velocidad de disparo a costa de precisión.",
+      "schemas": [
+        {
+          "name": "Turbomunición para rifle",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::cartridge-standard:25:0|aluminum-casing:3:0|liquid-turbo-fuel:3:1::cartridge-chaos:50:0"
+        },
+        {
+          "name": "Turbomunición para rifle",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "0::manufacturer::cartridge-standard:25:0|aluminum-casing:3:0|turbo-fuel:3:0::cartridge-chaos:50:0"
+        }
+      ]
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "Nobelisco",
+      "description": "Un explosivo sencillo y útil para eliminar rocas, vegetación y otros obstáculos.",
+      "schemas": [
+        {
+          "name": "Nobelisco",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::gunpowder:2:0|steel-pipe:2:0::nobelisk-explosive:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "Nobelisco de gas",
+      "description": "Crea una nube de gas mortal en lugar de una explosión normal.",
+      "schemas": [
+        {
+          "name": "Nobelisco de gas",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:1:0|generic-biomass:10:0::nobelisk-gas:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "Nobelisco de pulso",
+      "description": "Genera una poderosa onda de choque en lugar de una explosión normal.",
+      "schemas": [
+        {
+          "name": "Nobelisco de pulso",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:5:0|crystal-oscillator:1:0::nobelisk-shockwave:5:0"
+        }
+      ]
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "Nobelisco de fragmentación",
+      "description": "Nobelisco que crea varias explosiones menores al detonar. Práctico para eliminar vegetación u otros inconvenientes en áreas extensas.",
+      "schemas": [
+        {
+          "name": "Nobelisco de fragmentación",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:3:0|gunpowder-mk2:4:0::nobelisk-cluster:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "Nobelisco nuclear",
+      "description": "Usa una reacción de fusión nuclear para generar una explosión masiva. ADVERTENCIA: Asegúrese de que toda propiedad de FICSIT se encuentre fuera del radio de la explosión antes de la detonación.",
+      "schemas": [
+        {
+          "name": "Nobelisco nuclear",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::nobelisk-explosive:5:0|uranium-cell:20:0|gunpowder-mk2:10:0|circuit-board-high-speed:6:0::nobelisk-nuke:1:0"
+        }
+      ]
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "Barra de control electromagnética",
+      "description": "Regulan la producción de energía a través del electromagnetismo.",
+      "schemas": [
+        {
+          "name": "Barra de control electromagnética",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::stator:3:0|circuit-board-high-speed:2:0::electromagnetic-control-rod:2:0"
+        },
+        {
+          "name": "Alternativa: Barra de Control Electromagnética",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::stator:2:0|high-speed-connector:1:0::electromagnetic-control-rod:2:0"
+        }
+      ]
+    },
+    "Desc_UraniumCell_C": {
+      "name": "Célula de uranio revestida",
+      "description": "Se utiliza para producir barras de combustible de uranio para la producción de energía nuclear. Hecho de mineral de uranio. Precaución: Ligeramente radiactivo.",
+      "schemas": [
+        {
+          "name": "Célula de uranio revestida",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::ore-uranium:10:0|cement:3:0|sulfuric-acid:8:1::uranium-cell:5:0|sulfuric-acid:2:1"
+        },
+        {
+          "name": "Alternativa: Célula de uranio inyectado",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::ore-uranium:5:0|silica:3:0|sulfur:5:0|high-speed-wire:15:0::uranium-cell:4:0"
+        }
+      ]
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Uranio no fisible",
+      "description": "El isótopo uranio-238 no es fisible, lo que significa que no puede utilizarse para la fisión nuclear. Sin embargo, puede convertirse en plutonio fisionable en el acelerador de partículas. Precaución: Ligeramente radiactivo.",
+      "schemas": [
+        {
+          "name": "Uranio no fisible",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::nuclear-waste:15:0|silica:10:0|nitric-acid:6:1|sulfuric-acid:6:1::non-fissible-uranium:20:0|water:6:1"
+        },
+        {
+          "name": "Alternativa: Uranio fértil",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::ore-uranium:5:0|nuclear-waste:5:0|nitric-acid:3:1|sulfuric-acid:5:1::non-fissible-uranium:20:0|water:8:1"
+        }
+      ]
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "Gránulo de plutonio",
+      "description": "Producido en el acelerador de partículas a través de la conversión de uranio no fisible. Utilizado para producir células de plutonio revestidas para barras de combustible de plutonio. Uso de la energía: 250-750 MW (500 MW de media). Precaución: Moderadamente radiactivo.",
+      "schemas": [
+        {
+          "name": "Gránulo de plutonio",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::non-fissible-uranium:100:0|nuclear-waste:25:0::plutonium-pellet:30:0"
+        }
+      ]
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "Célula de plutonio revestida",
+      "description": "Gránulos de plutonio revestidos de hormigón. Se utilizan para producir barras de combustible de plutonio para la producción de energía nuclear. Uso de la energía: 250-750 MW (500 MW de media). Precaución: Moderadamente radiactivo.",
+      "schemas": [
+        {
+          "name": "Célula de plutonio revestida",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::plutonium-pellet:2:0|cement:4:0::plutonium-cell:1:0"
+        },
+        {
+          "name": "Alternativa: Célula de plutonio instantánea",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::non-fissible-uranium:150:0|aluminum-casing:20:0::plutonium-cell:20:0"
+        }
+      ]
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Ficsonio",
+      "description": "El uso y producción de este material está estrictamente prohibido. En la Tierra, claro. No hay reglas en el espacio, solo eficiencia. Consumo de Energía: 500-1500 MW (1000 MW de media). Precaución: Moderadamente radiactivo.",
+      "schemas": [
+        {
+          "name": "Ficsonio",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::plutonium-waste:1:0|singularity-cell:1:0|dark-energy:20:1::ficsonium:1:0"
+        }
+      ]
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Barra de combustible de ficsonio",
+      "description": "Se utiliza como combustible para centrales nucleares. La fuente de energía que puso a FICSIT en el mapa. Literalmente. El cráter sigue allí. Precaución: Moderadamente radiactivo.",
+      "schemas": [
+        {
+          "name": "Barra de combustible de ficsonio",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::ficsonium:2:0|electromagnetic-control-rod:2:0|ficsite-mesh:40:0|quantum-energy:20:1::ficsonium-fuel-rod:1:0|dark-energy:20:1"
+        }
+      ]
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "Residuos de uranio",
+      "description": "Subproducto del consumo de barras de combustible de uranio en una planta de energía nuclear. Se puede extraer Uranio no fisionable. Maneje con precaución. Precaución: ALTAMENTE radiactivo.",
+      "schemas": [
+        {
+          "name": "Residuos de uranio",
+          "is_alternative": 0,
+          "building_slug": "generator-nuclear",
+          "sort_order": 0,
+          "fingerprint": "0::generator-nuclear::nuclear-fuel-rod:1:0::nuclear-waste:50:0"
+        }
+      ]
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "Residuos de plutonio",
+      "description": "El subproducto de consumir barras de combustible de plutonio en la central nuclear. Debe almacenarse en un lugar seguro. Manipular con precaución. Precaución: EXTREMADAMENTE radioactivo.",
+      "schemas": [
+        {
+          "name": "Residuos de plutonio",
+          "is_alternative": 0,
+          "building_slug": "generator-nuclear",
+          "sort_order": 0,
+          "fingerprint": "0::generator-nuclear::plutonium-fuel-rod:1:0::plutonium-waste:10:0"
+        }
+      ]
+    },
+    "Desc_Crystal_C": {
+      "name": "Electrobabosa azul",
+      "description": "Una extraña babosa que irradia un débil poder desconocido."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "Electrobabosa amarilla",
+      "description": "Una extraña babosa que irradia un poder desconocido."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "Electrobabosa morada",
+      "description": "Una babosa extraña que irradia una energía potente y desconocida."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "Esquirla de energía",
+      "description": "Moco de electrobabosa comprimido en un fragmento cristalino sólido. Irradia una energía extraña.",
+      "schemas": [
+        {
+          "name": "Esquirla de energía (1)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::crystal:1:0::crystal-shard:1:0"
+        },
+        {
+          "name": "Esquirla de energía (2)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "0::constructor::crystal-mk2:1:0::crystal-shard:2:0"
+        },
+        {
+          "name": "Esquirla de energía (5)",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "0::constructor::crystal-mk3:1:0::crystal-shard:5:0"
+        },
+        {
+          "name": "Esquirla de energía sintética",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 3,
+          "fingerprint": "0::quantum-encoder::time-crystal:2:0|dark-matter:2:0|quartz-crystal:12:0|quantum-energy:12:1::crystal-shard:1:0|dark-energy:12:1"
+        }
+      ]
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "Cupón FICSIT",
+      "description": "Los cupones especiales del programa de bonificación FICSIT que se obtienen a través del triturador AWESOME, se pueden canjear en la tienda AWESOME por hitos y recompensas adicionales."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "Placas inteligentes",
+      "description": "Project Part #1. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "Placas inteligentes",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-plate-reinforced:1:0|rotor:1:0::space-elevator-part-1:1:0"
+        },
+        {
+          "name": "Alternativa: Placas de plástico inteligente",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::iron-plate-reinforced:1:0|rotor:1:0|plastic:3:0::space-elevator-part-1:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "Estructura versátil",
+      "description": "Project Part #2. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "Estructura versátil",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::modular-frame:1:0|steel-plate:12:0::space-elevator-part-2:2:0"
+        },
+        {
+          "name": "Alternativa: Estructura flexible",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::modular-frame:1:0|steel-plate:6:0|rubber:8:0::space-elevator-part-2:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "Cableado automático",
+      "description": "Project Part #3. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "Cableado automático",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::stator:1:0|cable:20:0::space-elevator-part-3:1:0"
+        },
+        {
+          "name": "Alternativa: Cableado automatizado de alta velocidad",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::stator:2:0|wire:40:0|high-speed-connector:1:0::space-elevator-part-3:4:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "Motor modular",
+      "description": "Project Part #4. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "Motor modular",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::motor:2:0|rubber:15:0|space-elevator-part-1:2:0::space-elevator-part-4:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "Unidad de control adaptativa",
+      "description": "Project Part #5. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "Unidad de control adaptativa",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-3:5:0|circuit-board:5:0|modular-frame-heavy:1:0|computer:2:0::space-elevator-part-5:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "Sistema director de montaje",
+      "description": "Project Part #6. Ship via the Space Elevator to complete phases of Project Assembly. Este sistema de computación extremadamente rápido y preciso está diseñado específicamente para dirigir la fase de ensamblaje del Proyecto Montaje.",
+      "schemas": [
+        {
+          "name": "Sistema director de montaje",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::space-elevator-part-5:2:0|computer-super:1:0::space-elevator-part-7:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "Generador de campos magnéticos",
+      "description": "Project Part #7. Ship via the Space Elevator to complete phases of Project Assembly. Estos generadores modulares utilizan imanes superconductores y grandes cantidades de electricidad para producir un campo magnético potente y fácilmente ampliable.",
+      "schemas": [
+        {
+          "name": "Generador de campos magnéticos",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::space-elevator-part-2:5:0|electromagnetic-control-rod:2:0::space-elevator-part-6:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "Cohete de propulsión térmica",
+      "description": "Project Part #8. Ship via the Space Elevator to complete phases of Project Assembly. Utiliza calor extremo para producir el plasma de alta presión necesario para poner en movimiento el Proyecto Montaje.",
+      "schemas": [
+        {
+          "name": "Cohete de propulsión térmica",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-4:5:0|motor-lightweight:2:0|cooling-system:6:0|modular-frame-fused:2:0::space-elevator-part-8:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "Pasta nuclear",
+      "description": "Project Part #9. Ship via the Space Elevator to complete phases of Project Assembly. Consumo de Energía: 500-1500 MW (1000 MW de media). La pasta nuclear es una materia degenerada extremadamente densa, que se forma cuando la presión extrema obliga a los protones y electrones a formar neutrones. Se cree que existe de forma natural en la corteza de las estrellas de neutrones.",
+      "schemas": [
+        {
+          "name": "Pasta nuclear",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::copper-dust:200:0|pressure-conversion-cube:1:0::space-elevator-part-9:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Escultor bioquímico",
+      "description": "Project Part #10. Ship via the Space Elevator to complete phases of Project Assembly. Esta impresora 3D extremadamente avanzada, que le lleva años a la competencia, se utiliza para la producción de recursos biológicos sintéticos.",
+      "schemas": [
+        {
+          "name": "Escultor bioquímico",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::space-elevator-part-7:1:0|ficsite-mesh:80:0|water:20:1::space-elevator-part-10:4:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Unidad de deformación balística",
+      "description": "Project Part #11. Ship via the Space Elevator to complete phases of Project Assembly. Se requiere una gran cantidad de fuerza para que se activen las unidades de deformación, por lo que fijarlas a cohetes era el siguiente paso lógico. Además, los resultados mejoraron enormemente con una separación mayor entre los observadores y las unidades de deformación.",
+      "schemas": [
+        {
+          "name": "Unidad de deformación balística",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-8:1:0|singularity-cell:5:0|quantum-oscillator:2:0|dark-matter:40:0::space-elevator-part-11:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "Servidor de expansión de IA",
+      "description": "Project Part #12. Ship via the Space Elevator to complete phases of Project Assembly. Consumo de Energía: 0-2000 MW (1000 MW de media). El crecimiento es el criterio con el que medimos el éxito.",
+      "schemas": [
+        {
+          "name": "Servidor de expansión de IA",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::space-elevator-part-6:1:0|temporal-processor:1:0|quantum-oscillator:1:0|quantum-energy:25:1::space-elevator-part-12:1:0|dark-energy:25:1"
+        }
+      ]
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "Cantera Mk.1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "Taladro Mk.2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "Cantera Mk.3"
+    },
+    "Build_OilPump_C": {
+      "name": "Extractor de petróleo"
+    },
+    "Build_WaterPump_C": {
+      "name": "Extractor de agua"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "Presurizador de pozo de recursos"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "Extractor de pozo de recursos"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "Horno"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "Fundición"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "Constructor"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "Ensambladora"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "Productor"
+    },
+    "Build_OilRefinery_C": {
+      "name": "Refinería"
+    },
+    "Build_Packager_C": {
+      "name": "Envasadora"
+    },
+    "Build_Blender_C": {
+      "name": "Mezcladora"
+    },
+    "Build_HadronCollider_C": {
+      "name": "Acelerador de Partículas"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "Codificador cuántico"
+    },
+    "Build_Converter_C": {
+      "name": "Transformador"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "Incinerador de Biomasa"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Generador de carbón"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Generador de combustible"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "Generador geotérmico"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "Central nuclear"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "Acumulador de Energía"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Amplificador de energía alienígena"
+    },
+    "Build_TradingPost_C": {
+      "name": "El HUB"
+    },
+    "Build_Mam_C": {
+      "name": "MAM"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "Ascensor espacial"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Diseñador de planos Mk.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Diseñador de planos Mk.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "Triturador AWESOME"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "Tienda AWESOME"
+    },
+    "Build_WorkBench_C": {
+      "name": "Banco de trabajo"
+    },
+    "Build_Workshop_C": {
+      "name": "Taller de equipamiento"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "Caja de almacenamiento personal"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "Caja de almacenamiento: primeros auxilios"
+    },
+    "Build_StorageHazard_C": {
+      "name": "Caja de almacenamiento: riesgo biológico"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "Contenedor de almacenamiento"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "Regulador de fluidos"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "Tanque de fluido industrial"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Cargador del depósito dimensional"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Unidad de estantería básica"
+    },
+    "Build_TruckStation_C": {
+      "name": "Estación de camiones"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "Estación de drones"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "Plataforma de carga"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "Plataforma de carga de fluidos"
+    },
+    "Build_LookoutTower_C": {
+      "name": "Torre de vigía"
+    },
+    "Build_RadarTower_C": {
+      "name": "Torre del radar"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

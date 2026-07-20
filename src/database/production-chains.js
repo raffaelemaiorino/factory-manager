@@ -412,9 +412,8 @@ function mapStep(row, item, schema) {
 
 function schemaNameForStep(schema) {
   const name = String(schema?.name ?? '').trim();
-  return name.replace(/^Alternativo:\s*/i, '') || 'Schema';
+  return name.replace(/^(Alternativo|Alternate):\s*/i, '') || 'Schema';
 }
-
 function generateStepName(db, chainId, itemSchemaId, schemaName) {
   const countRow = queryOne(
     db,

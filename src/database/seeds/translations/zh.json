@@ -1,0 +1,2349 @@
+{
+  "dataVersion": 1,
+  "locale": "zh",
+  "source": {
+    "items": "https://satisfactory-calculator.com/zh/items",
+    "buildings": "https://satisfactory-calculator.com/zh/buildings"
+  },
+  "importedAt": "2026-07-20T19:22:06.602Z",
+  "itemCategories": {
+    "minerali": "矿石",
+    "lingotti": "金属锭",
+    "materiali": "矿物",
+    "alieni": "外星残骸",
+    "liquidi": "液体",
+    "gas": "气体",
+    "componenti-standard": "标准部件",
+    "componenti-industriali": "工业部件",
+    "componenti-elettronici": "电子元器件",
+    "comunicazioni": "通信",
+    "tecnologia-quantistica": "量子科技",
+    "contenitori": "容器",
+    "carburante": "燃料",
+    "consumato": "消耗品",
+    "munizioni": "弹药",
+    "nucleare": "核能",
+    "rifiuti": "废料",
+    "speciali": "特殊"
+  },
+  "buildingCategories": {
+    "estrazione": "开采",
+    "produzione": "生产量",
+    "generatori": "发电机",
+    "speciali": "特殊",
+    "postazioni-di-lavoro": "工坊",
+    "deposito": "收纳",
+    "stazioni-di-attracco": "对接站",
+    "torri": "高塔"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "石灰石",
+      "description": "用于制作。 基础资源，主要用于铺设牢固的地基。",
+      "schemas": [
+        {
+          "name": "石灰石（硫磺）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|sulfur:2:0::stone:12:0"
+        }
+      ]
+    },
+    "Desc_OreIron_C": {
+      "name": "铁矿石",
+      "description": "用于制作。 最重要的基础资源。",
+      "schemas": [
+        {
+          "name": "铁矿石（石灰石）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|stone:24:0::ore-iron:12:0"
+        }
+      ]
+    },
+    "Desc_OreCopper_C": {
+      "name": "铜矿石",
+      "description": "用于制作。 基础资源，主要用于电力设施。",
+      "schemas": [
+        {
+          "name": "铜矿石（石英）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|raw-quartz:10:0::ore-copper:12:0"
+        },
+        {
+          "name": "铜矿石（硫磺）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|sulfur:12:0::ore-copper:12:0"
+        }
+      ]
+    },
+    "Desc_OreGold_C": {
+      "name": "钦金矿石",
+      "description": "能够熔炼为主要用于制造先进电子元器件的钦金锭。",
+      "schemas": [
+        {
+          "name": "钦金矿石（石英）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|raw-quartz:12:0::ore-gold:12:0"
+        },
+        {
+          "name": "钦金矿石（铜）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-copper:15:0::ore-gold:12:0"
+        }
+      ]
+    },
+    "Desc_Coal_C": {
+      "name": "煤"
+    },
+    "Desc_RawQuartz_C": {
+      "name": "粗石英",
+      "description": "能够加工为石英晶体以及二氧化硅，两者都有着广泛的用途。",
+      "schemas": [
+        {
+          "name": "粗石英（煤）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|coal:24:0::raw-quartz:12:0"
+        },
+        {
+          "name": "粗石英（铝土矿）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:10:0::raw-quartz:12:0"
+        }
+      ]
+    },
+    "Desc_Sulfur_C": {
+      "name": "硫磺",
+      "description": "主要用于生产黑火药。",
+      "schemas": [
+        {
+          "name": "硫磺（煤）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|coal:20:0::sulfur:12:0"
+        },
+        {
+          "name": "硫磺（铁）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-iron:30:0::sulfur:12:0"
+        }
+      ]
+    },
+    "Desc_OreBauxite_C": {
+      "name": "铝土矿",
+      "description": "用于生产氧化铝，可进一步提炼为生产铝锭所需的碎铝渣。",
+      "schemas": [
+        {
+          "name": "铝土矿（钦金）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-gold:15:0::ore-bauxite:12:0"
+        },
+        {
+          "name": "铝土矿（铜）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-copper:18:0::ore-bauxite:12:0"
+        }
+      ]
+    },
+    "Desc_SAM_C": {
+      "name": "SAM物质",
+      "description": "外星奇异物质（S.A.M.），经常被简略为SAM，这种物质似乎违反了所有已知的物理定律，并且很有可能为你带来不可思议的机遇。"
+    },
+    "Desc_OreUranium_C": {
+      "name": "铀",
+      "description": "一种放射性元素。 用于生产铀燃料棒所需的封装铀棒。 警告：具有中度放射性。",
+      "schemas": [
+        {
+          "name": "铀矿石（铝土矿）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:48:0::ore-uranium:12:0"
+        }
+      ]
+    },
+    "Desc_IronIngot_C": {
+      "name": "铁锭",
+      "description": "用于制造最基础的零部件。",
+      "schemas": [
+        {
+          "name": "铁锭",
+          "is_alternative": 0,
+          "building_slug": "smelter",
+          "sort_order": 0,
+          "fingerprint": "0::smelter::ore-iron:1:0::iron-ingot:1:0"
+        },
+        {
+          "name": "替代：基础铁锭",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::ore-iron:5:0|stone:8:0::iron-ingot:10:0"
+        },
+        {
+          "name": "替代：滤化铁锭",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::ore-iron:5:0|sulfuric-acid:1:1::iron-ingot:10:0"
+        },
+        {
+          "name": "替代：铁合金锭",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 3,
+          "fingerprint": "1::foundry::ore-iron:8:0|ore-copper:2:0::iron-ingot:15:0"
+        },
+        {
+          "name": "替代：高纯度铁锭",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 4,
+          "fingerprint": "1::refinery::ore-iron:7:0|water:4:1::iron-ingot:13:0"
+        }
+      ]
+    },
+    "Desc_CopperIngot_C": {
+      "name": "铜锭"
+    },
+    "Desc_GoldIngot_C": {
+      "name": "钦金锭"
+    },
+    "Desc_SteelIngot_C": {
+      "name": "钢锭",
+      "description": "在铁矿石中加入煤炭后一起熔炼的产物。能够用于生产各式各样的建筑部件。",
+      "schemas": [
+        {
+          "name": "钢锭",
+          "is_alternative": 0,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "0::foundry::ore-iron:3:0|coal:3:0::steel-ingot:3:0"
+        },
+        {
+          "name": "替代：坚固钢锭",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::iron-ingot:2:0|coal:2:0::steel-ingot:3:0"
+        },
+        {
+          "name": "替代：致密钢锭",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 2,
+          "fingerprint": "1::foundry::ore-iron:2:0::steel-ingot:4:0"
+        },
+        {
+          "name": "替代：高碳钢锭",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 3,
+          "fingerprint": "1::foundry::ore-iron:15:0|petroleum-coke:15:0::steel-ingot:20:0"
+        }
+      ]
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "铝锭",
+      "description": "使用从氧化铝溶液中精炼的碎铝渣熔炼而成。 用于制作一系列特殊的铝制零部件。",
+      "schemas": [
+        {
+          "name": "铝锭",
+          "is_alternative": 0,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "0::foundry::aluminum-scrap:6:0|silica:5:0::aluminum-ingot:4:0"
+        },
+        {
+          "name": "替代：高纯度铝锭",
+          "is_alternative": 1,
+          "building_slug": "smelter",
+          "sort_order": 1,
+          "fingerprint": "1::smelter::aluminum-scrap:2:0::aluminum-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "F金锭",
+      "description": "利用外星奇异物质从分子层面对其他金属进行重构而获取的材料。 由FICSIT合成的完美建筑材料，能够用于最尖端的生产工艺。",
+      "schemas": [
+        {
+          "name": "F金锭（钦金）",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "0::converter::samingot:3:0|gold-ingot:4:0::ficsite-ingot:1:0"
+        },
+        {
+          "name": "F金锭（铁）",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "0::converter::samingot:4:0|iron-ingot:24:0::ficsite-ingot:1:0"
+        },
+        {
+          "name": "F金锭（铝）",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "0::converter::samingot:2:0|aluminum-ingot:4:0::ficsite-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_Cement_C": {
+      "name": "混凝土",
+      "description": "用于建筑。 适用于铺设地基。",
+      "schemas": [
+        {
+          "name": "混凝土",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::stone:3:0::cement:1:0"
+        },
+        {
+          "name": "替代: 塑性混凝土",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::stone:6:0|water:5:1::cement:4:0"
+        },
+        {
+          "name": "替代: 橡胶混凝土",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::stone:10:0|rubber:2:0::cement:9:0"
+        },
+        {
+          "name": "替代：细末混凝土",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 3,
+          "fingerprint": "1::assembler::silica:3:0|stone:12:0::cement:10:0"
+        }
+      ]
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "石英晶体"
+    },
+    "Desc_Silica_C": {
+      "name": "二氧化硅"
+    },
+    "Desc_CopperDust_C": {
+      "name": "铜粉",
+      "description": "加工为粉末的铜锭。 铜这种金属的天然高密度特性以及粉末形态的颗粒度使其成为了在粒子加速站中制作核意面的最佳原料。",
+      "schemas": [
+        {
+          "name": "铜粉",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::copper-ingot:30:0::copper-dust:5:0"
+        }
+      ]
+    },
+    "Desc_PolymerResin_C": {
+      "name": "聚合树脂",
+      "description": "将原油加工为燃油的过程中的副产品。通常被用于制作塑料以及橡胶。",
+      "schemas": [
+        {
+          "name": "燃料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:6:1::liquid-fuel:4:1|polymer-resin:3:0"
+        },
+        {
+          "name": "替代：聚合树脂",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::liquid-oil:6:1::polymer-resin:13:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "替代：重油残渣",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::liquid-oil:3:1::heavy-oil-residue:4:1|polymer-resin:2:0"
+        }
+      ]
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "油焦",
+      "description": "用于制作。 从重油残渣中提炼出的富碳物质。 可当作能效较低的煤炭替代品或用于铝精炼。",
+      "schemas": [
+        {
+          "name": "油焦",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::heavy-oil-residue:4:1::petroleum-coke:12:0"
+        }
+      ]
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "碎铝渣",
+      "description": "由氧化铝精炼而成。能够进一步冶炼为铝锭以实现各种工业用途。",
+      "schemas": [
+        {
+          "name": "碎铝渣",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::alumina-solution:4:1|coal:2:0::aluminum-scrap:6:0|water:2:1"
+        },
+        {
+          "name": "替代: 速成型碎铝渣",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::ore-bauxite:15:0|coal:10:0|sulfuric-acid:5:1|water:6:1::aluminum-scrap:30:0|water:5:1"
+        },
+        {
+          "name": "替代：电解制铝",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::alumina-solution:12:1|petroleum-coke:4:0::aluminum-scrap:20:0|water:7:1"
+        }
+      ]
+    },
+    "Desc_AlienProtein_C": {
+      "name": "外星生物蛋白质"
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "外星DNA胶囊",
+      "description": "将有机化合物转换成可以读取的外星基因信息。 用于外星生命体研究项目。 再接再厉！知识就是力量，力量就是简单粗暴的效率。把这些外星DNA胶囊投入到AWESOME回收器，用知识换取FICSIT兑换券吧。",
+      "schemas": [
+        {
+          "name": "外星DNA胶囊",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::alien-protein:1:0::alien-dnacapsule:1:0"
+        }
+      ]
+    },
+    "Desc_Water_C": {
+      "name": "水",
+      "description": "就是水。",
+      "schemas": [
+        {
+          "name": "导出水",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-water:2:0::water:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "电池",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::alumina-solution:2:1|aluminum-casing:1:0::battery:1:0"
+        },
+        {
+          "name": "碎铝渣",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "0::refinery::alumina-solution:4:1|coal:2:0::aluminum-scrap:6:0|water:2:1"
+        },
+        {
+          "name": "非裂变贫铀",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 3,
+          "fingerprint": "0::blender::silica:10:0|nitric-acid:6:1|sulfuric-acid:6:1::non-fissible-uranium:20:0|water:6:1"
+        },
+        {
+          "name": "替代: 速成型碎铝渣",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 4,
+          "fingerprint": "1::blender::ore-bauxite:15:0|coal:10:0|sulfuric-acid:5:1|water:6:1::aluminum-scrap:30:0|water:5:1"
+        },
+        {
+          "name": "替代：富铀",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 5,
+          "fingerprint": "1::blender::ore-uranium:5:0|nuclear-waste:5:0|nitric-acid:3:1|sulfuric-acid:5:1::non-fissible-uranium:20:0|water:8:1"
+        },
+        {
+          "name": "替代：提纯二氧化硅",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 6,
+          "fingerprint": "1::blender::dissolved-silica:12:1|stone:5:0|water:10:1::silica:27:0|water:8:1"
+        },
+        {
+          "name": "替代：电解制铝",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 7,
+          "fingerprint": "1::refinery::alumina-solution:12:1|petroleum-coke:4:0::aluminum-scrap:20:0|water:7:1"
+        }
+      ]
+    },
+    "Desc_LiquidOil_C": {
+      "name": "原油",
+      "description": "能够被精炼为各类石油产物，例如燃油与塑料等。",
+      "schemas": [
+        {
+          "name": "导出原油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-oil:2:0::liquid-oil:2:1|fluid-canister:2:0"
+        }
+      ]
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "重油残渣",
+      "description": "塑料和橡胶生产过程中的副产物。 可以进一步提炼为燃油和石油焦。",
+      "schemas": [
+        {
+          "name": "塑料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::plastic:2:0|heavy-oil-residue:1:1"
+        },
+        {
+          "name": "导出重油残渣",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-oil-residue:2:0::heavy-oil-residue:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "橡胶",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "0::refinery::liquid-oil:3:1::rubber:2:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "替代：聚合树脂",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::liquid-oil:6:1::polymer-resin:13:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "替代：重油残渣",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 4,
+          "fingerprint": "1::refinery::liquid-oil:3:1::heavy-oil-residue:4:1|polymer-resin:2:0"
+        }
+      ]
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "燃料",
+      "description": "能够直接用于发电，也可以在灌装后用作载具或喷射背包的燃料。",
+      "schemas": [
+        {
+          "name": "导出燃油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::fuel:2:0::liquid-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "燃料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::liquid-oil:6:1::liquid-fuel:4:1|polymer-resin:3:0"
+        },
+        {
+          "name": "替代：稀释燃油",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "1::blender::heavy-oil-residue:5:1|water:10:1::liquid-fuel:10:1"
+        },
+        {
+          "name": "残渣燃料油",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::heavy-oil-residue:6:1::liquid-fuel:4:1"
+        }
+      ]
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "液态生物燃料",
+      "description": "液态生物燃料能够直接用于发电，也可以在灌装后用作载具燃料。",
+      "schemas": [
+        {
+          "name": "导出液态生物燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-biofuel:2:0::liquid-biofuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "液态生物燃料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::biofuel:6:0|water:3:1::liquid-biofuel:4:1"
+        }
+      ]
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "涡轮燃油"
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "氧化铝溶液",
+      "description": "从铝土矿提取的液状氧化铝。可进一步精炼提纯为碎铝渣以制造铝锭。",
+      "schemas": [
+        {
+          "name": "导出氧化铝溶液",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-alumina:2:0::alumina-solution:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "氧化铝溶液",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::ore-bauxite:12:0|water:18:1::alumina-solution:12:1|silica:5:0"
+        },
+        {
+          "name": "替代：氧化铝匀浆",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::ore-bauxite:10:0|water:10:1::alumina-solution:12:1"
+        }
+      ]
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "硫酸",
+      "description": "硫磺与水经过复杂的化学反应结合而成的产物。主要用于精炼加工与电池生产。",
+      "schemas": [
+        {
+          "name": "导出硫酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-sulfuric-acid:1:0::sulfuric-acid:1:1|fluid-canister:1:0"
+        },
+        {
+          "name": "封装铀棒",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::ore-uranium:10:0|cement:3:0|sulfuric-acid:8:1::uranium-cell:5:0|sulfuric-acid:2:1"
+        },
+        {
+          "name": "硫酸",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "0::refinery::sulfur:5:0|water:5:1::sulfuric-acid:5:1"
+        }
+      ]
+    },
+    "Desc_NitricAcid_C": {
+      "name": "硝酸",
+      "description": "氮气与水发生反应后的产物。强腐蚀性与氧化性的特点使得这种物质能够在精炼以及燃料生产工艺中发挥巨大的作用。",
+      "schemas": [
+        {
+          "name": "导出硝酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-nitric-acid:1:0::nitric-acid:1:1|gas-tank:1:0"
+        },
+        {
+          "name": "硝酸",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::nitrogen-gas:12:1|water:3:1|iron-plate:1:0::nitric-acid:3:1"
+        }
+      ]
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "二氧化硅溶解液",
+      "description": "水溶液形式的二氧化硅，使用替代配方精炼粗石英时的副产品。 提取水溶液中的二氧化硅以实现对粗石英的高效精炼。",
+      "schemas": [
+        {
+          "name": "替代：石英净化",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::raw-quartz:24:0|nitric-acid:2:1::quartz-crystal:15:0|dissolved-silica:12:1"
+        }
+      ]
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "氮气",
+      "description": "在冶金、冷却以及硝酸制取等方面有着广泛的用途。羊萨基-2(AB)b的地下气体井中可以直接抽取氮气。",
+      "schemas": [
+        {
+          "name": "导出氮气",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-nitrogen-gas:1:0::nitrogen-gas:4:1|gas-tank:1:0"
+        },
+        {
+          "name": "氮气",
+          "is_alternative": 0,
+          "building_slug": "fracking-extractor",
+          "sort_order": 1,
+          "fingerprint": "0::fracking-extractor::nitrogen-gas:0:1::nitrogen-gas:0:1"
+        },
+        {
+          "name": "氮气（钦金）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "1::converter::samingot:1:0|ore-gold:12:0::nitrogen-gas:12:1"
+        },
+        {
+          "name": "氮气（铝土矿）",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 3,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:10:0::nitrogen-gas:12:1"
+        }
+      ]
+    },
+    "Desc_RocketFuel_C": {
+      "name": "火箭燃料",
+      "description": "推动力极高的高压气体燃料。 能够直接输入燃油发电机使用，也可以在灌装后用作载具或喷射背包的燃料。",
+      "schemas": [
+        {
+          "name": "导出火箭燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-rocket-fuel:1:0::rocket-fuel:2:1|gas-tank:1:0"
+        },
+        {
+          "name": "火箭燃料",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::liquid-turbo-fuel:6:1|nitric-acid:1:1::rocket-fuel:10:1|compacted-coal:1:0"
+        },
+        {
+          "name": "替代：硝基火箭燃料",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "1::blender::liquid-fuel:4:1|nitrogen-gas:3:1|sulfur:4:0|coal:2:0::rocket-fuel:6:1|compacted-coal:1:0"
+        }
+      ]
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "电离燃油",
+      "description": "离子化的燃油，能够输出超乎想象的能量。 能够直接输入燃油发电机使用，也可以在灌装后用作载具或喷射背包的燃料。",
+      "schemas": [
+        {
+          "name": "导出电离燃油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-ionized-fuel:2:0::ionized-fuel:4:1|gas-tank:2:0"
+        },
+        {
+          "name": "电离燃油",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "0::refinery::rocket-fuel:16:1::ionized-fuel:16:1|compacted-coal:2:0"
+        },
+        {
+          "name": "替代：暗离子燃料",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "1::converter::packaged-rocket-fuel:12:0|dark-matter:4:0::ionized-fuel:10:1|compacted-coal:2:0"
+        }
+      ]
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "暗物质残渣",
+      "description": "量子编码过程中的副产品，除此以外也可以在转化站中合成。 在诸多科研领域中，人们仍然尚未对暗物质的本质与特性得出统一的结论。与此同时，FICSIT已经遥遥领先，并在时空扭曲领域为其找到了多种用途。",
+      "schemas": [
+        {
+          "name": "AI拓展伺服器",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::space-elevator-part-6:1:0|temporal-processor:1:0|quantum-oscillator:1:0|quantum-energy:25:1::space-elevator-part-12:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "叠加振荡器",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 1,
+          "fingerprint": "0::quantum-encoder::dark-matter:6:0|crystal-oscillator:1:0|aluminum-plate:9:0|quantum-energy:25:1::quantum-oscillator:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "合成能量碎片",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 2,
+          "fingerprint": "0::quantum-encoder::time-crystal:2:0|dark-matter:2:0|quartz-crystal:12:0|quantum-energy:12:1::crystal-shard:1:0|dark-energy:12:1"
+        },
+        {
+          "name": "外星能量矩阵",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 3,
+          "fingerprint": "0::quantum-encoder::quantum-energy:24:1::dark-energy:24:1"
+        },
+        {
+          "name": "暗物质残渣",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 4,
+          "fingerprint": "0::converter::samingot:5:0::dark-energy:10:1"
+        },
+        {
+          "name": "神经量子处理器",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 5,
+          "fingerprint": "0::quantum-encoder::time-crystal:5:0|computer-super:1:0|ficsite-mesh:15:0|quantum-energy:25:1::temporal-processor:1:0|dark-energy:25:1"
+        },
+        {
+          "name": "镄燃料棒",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 6,
+          "fingerprint": "0::quantum-encoder::ficsonium:2:0|electromagnetic-control-rod:2:0|ficsite-mesh:40:0|quantum-energy:20:1::dark-energy:20:1"
+        }
+      ]
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "激发态光子物质"
+    },
+    "Desc_IronRod_C": {
+      "name": "铁棒"
+    },
+    "Desc_IronScrew_C": {
+      "name": "螺丝"
+    },
+    "Desc_IronPlate_C": {
+      "name": "铁板"
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "强化铁板"
+    },
+    "Desc_CopperSheet_C": {
+      "name": "铜板"
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "复合铝板",
+      "description": "用于制作各类对于导热性或强度要求较高的产品。这种材料拥有着轻薄与高耐久的特性。",
+      "schemas": [
+        {
+          "name": "复合铝板",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::aluminum-ingot:3:0|copper-ingot:1:0::aluminum-plate:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "铝制外壳"
+    },
+    "Desc_SteelPipe_C": {
+      "name": "钢管",
+      "description": "主要用于制作一系列较为先进的建筑。",
+      "schemas": [
+        {
+          "name": "钢管",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::steel-ingot:3:0::steel-pipe:2:0"
+        },
+        {
+          "name": "替代：浇铸钢管",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::steel-ingot:5:0|cement:3:0::steel-pipe:5:0"
+        },
+        {
+          "name": "替代：铁制管道",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "1::constructor::iron-ingot:20:0::steel-pipe:5:0"
+        }
+      ]
+    },
+    "Desc_SteelPlate_C": {
+      "name": "钢梁"
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "钢筋混凝土梁",
+      "description": "兼具混凝土的抗压强度和钢的抗拉强度。 主要用作建筑物的稳定基座。",
+      "schemas": [
+        {
+          "name": "钢筋混凝土梁",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::steel-plate:3:0|cement:6:0::steel-plate-reinforced:1:0"
+        },
+        {
+          "name": "替代：钢管混凝土梁",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::steel-pipe:6:0|cement:5:0::steel-plate-reinforced:1:0"
+        }
+      ]
+    },
+    "Desc_ModularFrame_C": {
+      "name": "模块化框架",
+      "description": "用于制作。 多功能建筑方块。",
+      "schemas": [
+        {
+          "name": "模块化框架",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::iron-plate-reinforced:3:0|iron-rod:12:0::modular-frame:2:0"
+        },
+        {
+          "name": "替代：钢制框架",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::iron-plate-reinforced:2:0|steel-pipe:10:0::modular-frame:3:0"
+        },
+        {
+          "name": "替代：铆接式框架",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::iron-screw:56:0::modular-frame:2:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "重型模块化框架"
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "焊接模块化框架"
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "F金三角",
+      "description": "使用F金锭制作而成的F金三角，完美的外形能够满足一切工程挑战。这种无可挑剔的卓越品质几乎可以说是结构工程学的终极答案。",
+      "schemas": [
+        {
+          "name": "F金三角",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::ficsite-ingot:1:0::ficsite-mesh:3:0"
+        }
+      ]
+    },
+    "Desc_Fabric_C": {
+      "name": "纤维织物",
+      "description": "用于制作装备。 柔韧但耐用的纤维织物。",
+      "schemas": [
+        {
+          "name": "纤维织物",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::mycelia:1:0|generic-biomass:5:0::fabric:1:0"
+        },
+        {
+          "name": "替代: 聚酯布料",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::polymer-resin:1:0|water:1:1::fabric:1:0"
+        }
+      ]
+    },
+    "Desc_Plastic_C": {
+      "name": "塑料",
+      "description": "用途广泛，制造方便，这种材料在许多方面都能够派上用场。",
+      "schemas": [
+        {
+          "name": "塑料",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::plastic:2:0|heavy-oil-residue:1:1"
+        },
+        {
+          "name": "替代：再生塑料",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::rubber:6:0|liquid-fuel:6:1::plastic:12:0"
+        },
+        {
+          "name": "聚合塑料",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::polymer-resin:6:0|water:2:1::plastic:2:0"
+        }
+      ]
+    },
+    "Desc_Rubber_C": {
+      "name": "橡胶",
+      "description": "摩擦力极佳的柔韧材料。",
+      "schemas": [
+        {
+          "name": "橡胶",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::liquid-oil:3:1::rubber:2:0|heavy-oil-residue:2:1"
+        },
+        {
+          "name": "替代: 再生橡胶",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::plastic:6:0|liquid-fuel:6:1::rubber:12:0"
+        },
+        {
+          "name": "聚合橡胶",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::polymer-resin:4:0|water:4:1::rubber:2:0"
+        }
+      ]
+    },
+    "Desc_Rotor_C": {
+      "name": "转子"
+    },
+    "Desc_Stator_C": {
+      "name": "定子",
+      "description": "用于制作。 马达的静止部件。",
+      "schemas": [
+        {
+          "name": "定子",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::steel-pipe:3:0|wire:8:0::stator:1:0"
+        },
+        {
+          "name": "替代：急速电线定子",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::steel-pipe:4:0|high-speed-wire:15:0::stator:2:0"
+        }
+      ]
+    },
+    "Desc_Battery_C": {
+      "name": "电池",
+      "description": "主要用作无人机及其他载具的燃料。",
+      "schemas": [
+        {
+          "name": "电池",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::alumina-solution:2:1|aluminum-casing:1:0::battery:1:0"
+        },
+        {
+          "name": "替代：传统电池",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::sulfur:6:0|plastic:8:0|wire:12:0::battery:4:0"
+        }
+      ]
+    },
+    "Desc_Motor_C": {
+      "name": "马达"
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "散热器"
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "冷却系统",
+      "description": "帮助各类先进零部件与建筑物避免陷入过热状态。",
+      "schemas": [
+        {
+          "name": "冷却系统",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::aluminum-plate-reinforced:2:0|rubber:2:0|water:5:1|nitrogen-gas:25:1::cooling-system:1:0"
+        },
+        {
+          "name": "替代: 冷却装置",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::aluminum-plate-reinforced:4:0|nitrogen-gas:24:1::cooling-system:2:0"
+        }
+      ]
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "涡轮马达"
+    },
+    "Desc_Wire_C": {
+      "name": "电线"
+    },
+    "Desc_Cable_C": {
+      "name": "电缆"
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "急速电线"
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "电路板"
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "AI限制器",
+      "description": "限制人工智能并阻止其往危险方向进化。这是一种极其高端的电子元器件。",
+      "schemas": [
+        {
+          "name": "AI限制器",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:5:0|high-speed-wire:20:0::circuit-board-high-speed:1:0"
+        },
+        {
+          "name": "替代：塑料AI限制器",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::high-speed-wire:30:0|plastic:7:0::circuit-board-high-speed:2:0"
+        }
+      ]
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "高速连接器"
+    },
+    "Desc_SAMIngot_C": {
+      "name": "活性SAM物质",
+      "description": "已经激活并封装的外星奇异物质。 活性状态的外星奇异物质似乎能够扭曲与之接触的一切物体的原子间键结，因此必须通过电磁手段来储存。",
+      "schemas": [
+        {
+          "name": "活性SAM物质",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::sam:4:0::samingot:1:0"
+        }
+      ]
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "SAM物质波波动器",
+      "description": "通过施加各种频率的电荷，SAM物质波动器能够调节与控制活性SAM物质的行为。 多亏了这种有效地控制手段，类似物质-能量转化以及时空物质操纵等尖端科技才得以成为现实。",
+      "schemas": [
+        {
+          "name": "SAM物质波波动器",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::samingot:6:0|wire:5:0|steel-pipe:3:0::samfluctuator:1:0"
+        }
+      ]
+    },
+    "Desc_Computer_C": {
+      "name": "计算机"
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "超级计算机"
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "无线电控制单元"
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "晶体振荡器"
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "叠加振荡器",
+      "description": "这种振荡电路能够通过水晶震荡时的机械共振产生精确频率的弦震动。常用于传送科技以及操纵维度。",
+      "schemas": [
+        {
+          "name": "叠加振荡器",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::dark-matter:6:0|crystal-oscillator:1:0|aluminum-plate:9:0|quantum-energy:25:1::quantum-oscillator:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_Diamond_C": {
+      "name": "钻石",
+      "description": "通过对煤炭施加极端高温与高压得到的人造钻石。 用于生产时间水晶与暗物质水晶。 用电量: 250-750 MW( 平均500 MW)。",
+      "schemas": [
+        {
+          "name": "钻石",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::coal:20:0::diamond:1:0"
+        },
+        {
+          "name": "替代：油基钻石",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::liquid-oil:10:1::diamond:2:0"
+        },
+        {
+          "name": "替代：涡轮钻石",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 2,
+          "fingerprint": "1::particle-accelerator::coal:30:0|turbo-fuel:2:0::diamond:3:0"
+        },
+        {
+          "name": "替代：石油钻石",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 3,
+          "fingerprint": "1::particle-accelerator::petroleum-coke:24:0::diamond:1:0"
+        },
+        {
+          "name": "替代：粉钻",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 4,
+          "fingerprint": "1::converter::coal:8:0|quartz-crystal:3:0::diamond:1:0"
+        },
+        {
+          "name": "替代：雾状钻石",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 5,
+          "fingerprint": "1::particle-accelerator::coal:12:0|stone:24:0::diamond:1:0"
+        }
+      ]
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "时间水晶",
+      "description": "时间水晶是通过转化站在亚原子层面上对钻石重组后的产物，这种物质的自组织结构能够有效存续固定的时间周期。这种特殊的性质使得时间水晶能够被用于开发量子处理与存储科技。",
+      "schemas": [
+        {
+          "name": "时间水晶",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "0::converter::diamond:2:0::time-crystal:1:0"
+        }
+      ]
+    },
+    "Desc_DarkMatter_C": {
+      "name": "暗物质晶体",
+      "description": "晶体形态的容器能够安全隔离高浓度的暗物质残渣。这种储存手段使得暗物质能够被稳定用于其他制造加工流程。 耗电量: 500-1500 MW (平均 1000MW)。",
+      "schemas": [
+        {
+          "name": "暗物质晶体",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::diamond:1:0|dark-energy:5:1::dark-matter:1:0"
+        },
+        {
+          "name": "替代：晶体化暗物质",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::dark-energy:10:1::dark-matter:1:0"
+        },
+        {
+          "name": "替代：暗物质捕获器",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 2,
+          "fingerprint": "1::particle-accelerator::time-crystal:1:0|dark-energy:5:1::dark-matter:2:0"
+        }
+      ]
+    },
+    "Desc_SingularityCell_C": {
+      "name": "奇点电池",
+      "description": "用于打破时空连接并驱动传送门。",
+      "schemas": [
+        {
+          "name": "奇点电池",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-9:1:0|dark-matter:20:0|iron-plate:100:0|cement:200:0::singularity-cell:10:0"
+        }
+      ]
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "神经量子处理器",
+      "description": "作为神经网络构造与量子计算科技的产物，神经量子处理器能够达到史无前例的极限性能。凭借这项科技，FICSIT得以在人工智能以及相对论工程学领域获得了举足轻重的成就。",
+      "schemas": [
+        {
+          "name": "神经量子处理器",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::time-crystal:5:0|computer-super:1:0|ficsite-mesh:15:0|quantum-energy:25:1::temporal-processor:1:0|dark-energy:25:1"
+        }
+      ]
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "外星能量矩阵",
+      "description": "一种异常复杂的高浓物质矩阵，能够用于提升外星能源强化装置的输出功率。 最初被设计来替代索莫晶体，但是人工合成的外星能源矩阵并无法独自维系稳定的多维能量链接。尽管如此，这种装置仍然能够有效地稳定索莫晶体释放的能量脉流。",
+      "schemas": [
+        {
+          "name": "外星能量矩阵",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::quantum-energy:24:1::dark-energy:24:1"
+        }
+      ]
+    },
+    "Desc_FluidCanister_C": {
+      "name": "空桶",
+      "description": "用于灌装液体以便运输。",
+      "schemas": [
+        {
+          "name": "导出原油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-oil:2:0::liquid-oil:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "导出氧化铝溶液",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-alumina:2:0::alumina-solution:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "导出水",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-water:2:0::water:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "导出涡轮燃油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 3,
+          "fingerprint": "0::packager::turbo-fuel:2:0::liquid-turbo-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "导出液态生物燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 4,
+          "fingerprint": "0::packager::packaged-biofuel:2:0::liquid-biofuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "导出燃油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 5,
+          "fingerprint": "0::packager::fuel:2:0::liquid-fuel:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "导出硫酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 6,
+          "fingerprint": "0::packager::packaged-sulfuric-acid:1:0::sulfuric-acid:1:1|fluid-canister:1:0"
+        },
+        {
+          "name": "导出重油残渣",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 7,
+          "fingerprint": "0::packager::packaged-oil-residue:2:0::heavy-oil-residue:2:1|fluid-canister:2:0"
+        },
+        {
+          "name": "空桶",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 8,
+          "fingerprint": "0::constructor::plastic:2:0::fluid-canister:4:0"
+        },
+        {
+          "name": "替代: 钢罐",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 9,
+          "fingerprint": "1::constructor::steel-ingot:4:0::fluid-canister:4:0"
+        },
+        {
+          "name": "替代：镀层铁桶",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 10,
+          "fingerprint": "1::assembler::iron-plate:2:0|copper-sheet:1:0::fluid-canister:4:0"
+        }
+      ]
+    },
+    "Desc_GasTank_C": {
+      "name": "空瓶",
+      "description": "用于灌装气体和挥发性液体以便运输。",
+      "schemas": [
+        {
+          "name": "导出氮气",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::packaged-nitrogen-gas:1:0::nitrogen-gas:4:1|gas-tank:1:0"
+        },
+        {
+          "name": "导出火箭燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 1,
+          "fingerprint": "0::packager::packaged-rocket-fuel:1:0::rocket-fuel:2:1|gas-tank:1:0"
+        },
+        {
+          "name": "导出电离燃油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 2,
+          "fingerprint": "0::packager::packaged-ionized-fuel:2:0::ionized-fuel:4:1|gas-tank:2:0"
+        },
+        {
+          "name": "导出硝酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 3,
+          "fingerprint": "0::packager::packaged-nitric-acid:1:0::nitric-acid:1:1|gas-tank:1:0"
+        },
+        {
+          "name": "空瓶",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 4,
+          "fingerprint": "0::constructor::aluminum-ingot:1:0::gas-tank:1:0"
+        }
+      ]
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "封压方块",
+      "description": "将向外扩张的膨胀力转化为内压强。专门用于储存不稳定的高能物质。",
+      "schemas": [
+        {
+          "name": "封压方块",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::modular-frame-fused:1:0|modular-frame-lightweight:2:0::pressure-conversion-cube:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedWater_C": {
+      "name": "桶装水",
+      "description": "灌装后的水，以便用替代方式运输。",
+      "schemas": [
+        {
+          "name": "桶装水",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::water:2:1|fluid-canister:2:0::packaged-water:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "桶装氧化铝溶液",
+      "description": "灌装后的氧化铝溶液，以便用替代方式运输。",
+      "schemas": [
+        {
+          "name": "桶装氧化铝溶液",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::alumina-solution:2:1|fluid-canister:2:0::packaged-alumina:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "桶装硫酸",
+      "description": "灌装后的硫酸，以便用替代方式运输。",
+      "schemas": [
+        {
+          "name": "桶装硫酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::sulfuric-acid:2:1|fluid-canister:2:0::packaged-sulfuric-acid:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "桶装硝酸",
+      "description": "灌装后的硝酸，以便用替代方式运输。",
+      "schemas": [
+        {
+          "name": "桶装硝酸",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::nitric-acid:1:1|gas-tank:1:0::packaged-nitric-acid:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "瓶装氮气",
+      "description": "灌装后的氮气，以便用替代方式运输。",
+      "schemas": [
+        {
+          "name": "瓶装氮气",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::nitrogen-gas:4:1|gas-tank:1:0::packaged-nitrogen-gas:1:0"
+        }
+      ]
+    },
+    "Desc_Leaves_C": {
+      "name": "树叶",
+      "description": "主要用作燃料。 可作为生物质燃烧炉和载具的燃料。"
+    },
+    "Desc_Mycelia_C": {
+      "name": "菌丝体",
+      "description": "用于制作。 生物质燃烧器和载具也可以直接使用菌丝体作为燃料。"
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "花瓣",
+      "description": "用于制作。 五颜六色的天然花瓣。"
+    },
+    "Desc_Wood_C": {
+      "name": "木材",
+      "description": "主要用作燃料。 可作为生物质燃烧炉和载具的能源。"
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "生物质",
+      "description": "主要用作燃料。 可作为生物质燃烧器和载具的能源。 与原始的生物材料相比，生物质能够大幅提高能效。",
+      "schemas": [
+        {
+          "name": "生物质（外星生物蛋白质）",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::alien-protein:1:0::generic-biomass:100:0"
+        },
+        {
+          "name": "生物质（木材）",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "0::constructor::wood:4:0::generic-biomass:20:0"
+        },
+        {
+          "name": "生物质（树叶）",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "0::constructor::leaves:10:0::generic-biomass:5:0"
+        },
+        {
+          "name": "生物质（菌丝体）",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 3,
+          "fingerprint": "0::constructor::mycelia:1:0::generic-biomass:10:0"
+        }
+      ]
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "压缩煤",
+      "description": "与传统煤炭相比，这种替代形式能够大幅提高能效。主要用作载具以及煤炭发电机的燃料。",
+      "schemas": [
+        {
+          "name": "替代：压缩煤",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::coal:5:0|sulfur:5:0::compacted-coal:5:0"
+        },
+        {
+          "name": "火箭燃料",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "0::blender::liquid-turbo-fuel:6:1|nitric-acid:1:1::rocket-fuel:10:1|compacted-coal:1:0"
+        },
+        {
+          "name": "电离燃油",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "0::refinery::rocket-fuel:16:1::ionized-fuel:16:1|compacted-coal:2:0"
+        },
+        {
+          "name": "替代：暗离子燃料",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 3,
+          "fingerprint": "1::converter::packaged-rocket-fuel:12:0|dark-matter:4:0::ionized-fuel:10:1|compacted-coal:2:0"
+        },
+        {
+          "name": "替代：硝基火箭燃料",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 4,
+          "fingerprint": "1::blender::liquid-fuel:4:1|nitrogen-gas:3:1|sulfur:4:0|coal:2:0::rocket-fuel:6:1|compacted-coal:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedOil_C": {
+      "name": "桶装原油",
+      "description": "灌装后的原油，以便用其他方式运输。可用作载具燃料。",
+      "schemas": [
+        {
+          "name": "桶装原油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-oil:2:1|fluid-canister:2:0::packaged-oil:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "桶装重油残渣",
+      "description": "灌装后的重渣油，以便用其他方式运输。可用作载具燃料。",
+      "schemas": [
+        {
+          "name": "桶装重油残渣",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::heavy-oil-residue:2:1|fluid-canister:2:0::packaged-oil-residue:2:0"
+        }
+      ]
+    },
+    "Desc_Biofuel_C": {
+      "name": "固态生物燃料",
+      "description": "固体生物燃料的最高能效形态。可用作链锯的燃料。",
+      "schemas": [
+        {
+          "name": "固态生物燃料",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::generic-biomass:8:0::biofuel:4:0"
+        }
+      ]
+    },
+    "Desc_Fuel_C": {
+      "name": "桶装燃油",
+      "description": "桶装燃油，适用于不同的运输方式。可作为载具和喷射背包的燃料。",
+      "schemas": [
+        {
+          "name": "桶装燃油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-fuel:2:1|fluid-canister:2:0::fuel:2:0"
+        },
+        {
+          "name": "替代：桶装稀释燃油",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::heavy-oil-residue:1:1|packaged-water:2:0::fuel:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "桶装液态生物燃料",
+      "description": "桶装液态生物燃料，适用于不同的运输方式。可作为载具和喷射背包的燃料。",
+      "schemas": [
+        {
+          "name": "桶装液态生物燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-biofuel:2:1|fluid-canister:2:0::packaged-biofuel:2:0"
+        }
+      ]
+    },
+    "Desc_TurboFuel_C": {
+      "name": "桶装涡轮燃油",
+      "description": "桶装涡轮燃料，适用于不同的运输方式。可作为载具和喷射背包的燃料。",
+      "schemas": [
+        {
+          "name": "桶装涡轮燃油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::liquid-turbo-fuel:2:1|fluid-canister:2:0::turbo-fuel:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "桶装火箭燃料",
+      "description": "灌装后的火箭燃料，以便用替代方式运输。可用作载具以及喷射背包的燃料。",
+      "schemas": [
+        {
+          "name": "桶装火箭燃料",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::rocket-fuel:2:1|gas-tank:1:0::packaged-rocket-fuel:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "桶装电离燃油",
+      "description": "灌装后的电离燃油，以便用替代方式运输。可用作载具以及喷射背包的燃料。",
+      "schemas": [
+        {
+          "name": "桶装电离燃油",
+          "is_alternative": 0,
+          "building_slug": "packager",
+          "sort_order": 0,
+          "fingerprint": "0::packager::ionized-fuel:4:1|gas-tank:2:0::packaged-ionized-fuel:2:0"
+        }
+      ]
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "铀燃料棒"
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "钚燃料棒"
+    },
+    "Desc_Gunpowder_C": {
+      "name": "黑火药",
+      "description": "一种爆炸性粉末，通常用于制造简易爆炸物。",
+      "schemas": [
+        {
+          "name": "黑火药",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::coal:1:0|sulfur:1:0::gunpowder:2:0"
+        },
+        {
+          "name": "替代: 细末黑火药",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::compacted-coal:2:0::gunpowder:6:0"
+        }
+      ]
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "无烟火药",
+      "description": "一种爆炸性粉末，通常用于制造现代化枪械。",
+      "schemas": [
+        {
+          "name": "无烟火药",
+          "is_alternative": 0,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "0::refinery::gunpowder:2:0|heavy-oil-residue:1:1::gunpowder-mk2:2:0"
+        }
+      ]
+    },
+    "Desc_Filter_C": {
+      "name": "气体过滤器"
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "彩色子弹",
+      "description": "在使用定制器为建造物绘制图案时用作消耗品。 （能够在AWESOME商店购买额外图案。）"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "信标",
+      "description": "计 划 移 除 该物品将(可能) 在未来的更新中移除。 当前仅在一个替代配方的原材料中使用到。"
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "碘化过滤器"
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "铁棒弹",
+      "description": "能够使用射棒枪发射以达到自我保护的目的。",
+      "schemas": [
+        {
+          "name": "铁棒弹",
+          "is_alternative": 0,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "0::constructor::iron-rod:1:0::spiked-rebar:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "电击铁棒弹",
+      "description": "在撞击时电击目标，将其麻痹一小段时间。 麻痹时间: 5秒",
+      "schemas": [
+        {
+          "name": "电击铁棒弹",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::spiked-rebar:1:0|high-speed-wire:5:0::rebar-stunshot:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "散射铁棒弹",
+      "description": "发射时分裂，致命的碎片会扩散至大范围，但是有效射程较短。",
+      "schemas": [
+        {
+          "name": "散射铁棒弹",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::spiked-rebar:2:0|quartz-crystal:3:0::rebar-spreadshot:1:0"
+        }
+      ]
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "爆炸铁棒弹",
+      "description": "在撞击时爆炸，能造成巨额伤害。",
+      "schemas": [
+        {
+          "name": "爆炸铁棒弹",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::spiked-rebar:2:0|gunpowder-mk2:2:0|steel-pipe:2:0::rebar-explosive:1:0"
+        }
+      ]
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "步枪弹药",
+      "description": "制式步枪弹药，用于巩固支配地位。",
+      "schemas": [
+        {
+          "name": "步枪弹药",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::copper-sheet:3:0|gunpowder-mk2:2:0::cartridge-standard:15:0"
+        }
+      ]
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "追踪步枪弹",
+      "description": "这种弹药内置有制导系统，因此能够精确地命中十字线区域内的任意目标。 在移动敏捷的威胁目标前，或对于没法好好瞄准的开拓者而言特别有用。",
+      "schemas": [
+        {
+          "name": "追踪步枪弹",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::cartridge-standard:20:0::cartridge-smart-projectile:10:0"
+        }
+      ]
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "涡轮步枪弹",
+      "description": "轻量，紧凑，威猛。这种子弹以精准度为代价，换取极高的弹夹容量与射击速度。",
+      "schemas": [
+        {
+          "name": "涡轮步枪弹",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::cartridge-standard:25:0|aluminum-casing:3:0|liquid-turbo-fuel:3:1::cartridge-chaos:50:0"
+        },
+        {
+          "name": "涡轮步枪弹",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "0::manufacturer::cartridge-standard:25:0|aluminum-casing:3:0|turbo-fuel:3:0::cartridge-chaos:50:0"
+        }
+      ]
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "诺氏雷筒",
+      "description": "一种简易爆炸物，对清除巨石、植被或其他障碍物十分有帮助。",
+      "schemas": [
+        {
+          "name": "诺氏雷筒",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::gunpowder:2:0|steel-pipe:2:0::nobelisk-explosive:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "毒气诺石",
+      "description": "触发时将不会爆炸，而是释放一团剧毒气体。",
+      "schemas": [
+        {
+          "name": "毒气诺石",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:1:0|generic-biomass:10:0::nobelisk-gas:1:0"
+        }
+      ]
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "脉冲诺石",
+      "description": "触发时将不会爆炸，而是生成一道强力冲击波。",
+      "schemas": [
+        {
+          "name": "脉冲诺石",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::nobelisk-explosive:5:0|crystal-oscillator:1:0::nobelisk-shockwave:5:0"
+        }
+      ]
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "集束诺氏雷筒"
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "核子诺氏雷筒"
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "电磁控制杆",
+      "description": "通过电磁效应调节能源输出。",
+      "schemas": [
+        {
+          "name": "电磁控制杆",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::stator:3:0|circuit-board-high-speed:2:0::electromagnetic-control-rod:2:0"
+        },
+        {
+          "name": "替代：电磁连接杆",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::stator:2:0|high-speed-connector:1:0::electromagnetic-control-rod:2:0"
+        }
+      ]
+    },
+    "Desc_UraniumCell_C": {
+      "name": "封装铀棒",
+      "description": "用于生产核电站需要的铀燃料棒。使用铀矿石冶炼而成。 警告：具有轻微放射性。",
+      "schemas": [
+        {
+          "name": "封装铀棒",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::ore-uranium:10:0|cement:3:0|sulfuric-acid:8:1::uranium-cell:5:0|sulfuric-acid:2:1"
+        },
+        {
+          "name": "替代：混合型铀棒",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::ore-uranium:5:0|silica:3:0|sulfur:5:0|high-speed-wire:15:0::uranium-cell:4:0"
+        }
+      ]
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "非裂变贫铀",
+      "description": "铀-238是一种非裂变同位素，因此无法直接用于核裂变反应。但是粒子加速站能够将其转化为能够裂变的钚。 警告：具有轻微放射性。",
+      "schemas": [
+        {
+          "name": "非裂变贫铀",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::silica:10:0|nitric-acid:6:1|sulfuric-acid:6:1::non-fissible-uranium:20:0|water:6:1"
+        },
+        {
+          "name": "替代：富铀",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::ore-uranium:5:0|nuclear-waste:5:0|nitric-acid:3:1|sulfuric-acid:5:1::non-fissible-uranium:20:0|water:8:1"
+        }
+      ]
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "钚丸",
+      "description": "通过在粒子加速站转化非裂变贫铀生成。 用于生产钚燃料棒所需的封装钚棒。 用电量: 250-750 MW( 平均500 MW)。 警告：具有中度放射性。",
+      "schemas": [
+        {
+          "name": "钚丸",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::non-fissible-uranium:100:0|nuclear-waste:25:0::plutonium-pellet:30:0"
+        }
+      ]
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "封装钚棒",
+      "description": "封装在混凝土中的钚丸。 用于生产核电站需要的钚燃料棒。 用电量: 250-750 MW( 平均500 MW)。 警告：具有中度放射性。",
+      "schemas": [
+        {
+          "name": "封装钚棒",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::plutonium-pellet:2:0|cement:4:0::plutonium-cell:1:0"
+        },
+        {
+          "name": "替代：速成型钚棒",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::non-fissible-uranium:150:0|aluminum-casing:20:0::plutonium-cell:20:0"
+        }
+      ]
+    },
+    "Desc_Ficsonium_C": {
+      "name": "镄",
+      "description": "这种物质的生产与使用都是被严令禁止的……不过那是在地球上，在太空这个无主之地，效率为王。 耗电量: 500-1500 MW (平均 1000MW)。 警告：具有中度放射性。",
+      "schemas": [
+        {
+          "name": "镄",
+          "is_alternative": 0,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "0::particle-accelerator::plutonium-waste:1:0|singularity-cell:1:0|dark-energy:20:1::ficsonium:1:0"
+        }
+      ]
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "镄燃料棒",
+      "description": "能够用作核电站的燃料。 正是这种惊天动地的能源使得FICSIT得以青史留名。真的不开玩笑，当时留下的爆炸坑依旧历历在目。 警告：具有中度放射性。",
+      "schemas": [
+        {
+          "name": "镄燃料棒",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::ficsonium:2:0|electromagnetic-control-rod:2:0|ficsite-mesh:40:0|quantum-energy:20:1::dark-energy:20:1"
+        }
+      ]
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "铀废料"
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "钚废料"
+    },
+    "Desc_Crystal_C": {
+      "name": "蓝色能量蛞蝓",
+      "description": "某种奇怪的蛞蝓生物，散发着微弱的神秘能量。"
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "黄色能量蛞蝓",
+      "description": "某种奇怪的蛞蝓生物，散发着神秘能量。"
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "紫色能量蛞蝓",
+      "description": "某种奇怪的蛞蝓生物，散发着强大的神秘能量。"
+    },
+    "Desc_CrystalShard_C": {
+      "name": "能量碎片"
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "FICSIT兑换券",
+      "description": "通过AWESOME回收器获得的特殊FICSIT奖励计划兑换券。可在AWESOME商店中兑换奖励里程碑及其他奖品。"
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "智能嵌板"
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "多功能框架"
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "自动线路"
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "模块化引擎",
+      "description": "项目组件＃4. 送往太空电梯以完成【组装项目】的阶段。",
+      "schemas": [
+        {
+          "name": "模块化引擎",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::motor:2:0|rubber:15:0|space-elevator-part-1:2:0::space-elevator-part-4:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "自适应控制单元",
+      "description": "项目组件＃5. 送往太空电梯以完成【组装项目】的阶段。",
+      "schemas": [
+        {
+          "name": "自适应控制单元",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-3:5:0|circuit-board:5:0|modular-frame-heavy:1:0|computer:2:0::space-elevator-part-5:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "组装编导系统"
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "磁场发生器",
+      "description": "项目组件＃7. 送往太空电梯以完成【组装项目】的阶段。 这些模块化的发生器能够利用超导磁体与大量的电力来产生一个可扩展的强大磁场。",
+      "schemas": [
+        {
+          "name": "磁场发生器",
+          "is_alternative": 0,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "0::assembler::electromagnetic-control-rod:2:0::space-elevator-part-6:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "热能推进火箭",
+      "description": "项目组件＃8. 送往太空电梯以完成【组装项目】的阶段。 利用极端高温环境下产生的高压等离子工质来推动组装项目。",
+      "schemas": [
+        {
+          "name": "热能推进火箭",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::motor-lightweight:2:0|cooling-system:6:0|modular-frame-fused:2:0::space-elevator-part-8:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "核意面"
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "生化塑造器",
+      "description": "项目组件＃10. 送往太空电梯以完成【组装项目】的阶段。 这款最顶尖的3D打印设备已经达到了竞争对手们望尘莫及的先进水平，能够用于合成生物资源。",
+      "schemas": [
+        {
+          "name": "生化塑造器",
+          "is_alternative": 0,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "0::blender::ficsite-mesh:80:0|water:20:1::space-elevator-part-10:4:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "弹道跃迁引擎",
+      "description": "项目组件＃11. 送往太空电梯以完成【组装项目】的阶段。 启动跃迁引擎需要极大的推力，因此火箭成为了最理想的推进手段。除此以外，只需要确保围观群众不要在发射场凑热闹，跃迁引擎的成功率将能够大大提升。",
+      "schemas": [
+        {
+          "name": "弹道跃迁引擎",
+          "is_alternative": 0,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "0::manufacturer::space-elevator-part-8:1:0|singularity-cell:5:0|quantum-oscillator:2:0|dark-matter:40:0::space-elevator-part-11:1:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "AI拓展伺服器",
+      "description": "项目组件＃12. 送往太空电梯以完成【组装项目】的阶段。 用电量: 0-2000 MW( 平均1000 MW)。 发展是衡量成功的唯一标准。",
+      "schemas": [
+        {
+          "name": "AI拓展伺服器",
+          "is_alternative": 0,
+          "building_slug": "quantum-encoder",
+          "sort_order": 0,
+          "fingerprint": "0::quantum-encoder::space-elevator-part-6:1:0|temporal-processor:1:0|quantum-oscillator:1:0|quantum-energy:25:1::space-elevator-part-12:1:0|dark-energy:25:1"
+        }
+      ]
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "1级采矿机"
+    },
+    "Build_MinerMk2_C": {
+      "name": "2级采矿机"
+    },
+    "Build_MinerMk3_C": {
+      "name": "3级采矿机"
+    },
+    "Build_OilPump_C": {
+      "name": "油井"
+    },
+    "Build_WaterPump_C": {
+      "name": "抽水站"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "资源井增压站"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "资源抽取器"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "冶炼站"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "铸造站"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "构筑站"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "装配站"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "制造站"
+    },
+    "Build_OilRefinery_C": {
+      "name": "精炼站"
+    },
+    "Build_Packager_C": {
+      "name": "灌装站"
+    },
+    "Build_Blender_C": {
+      "name": "混料站"
+    },
+    "Build_HadronCollider_C": {
+      "name": "粒子加速站"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "量子编码站"
+    },
+    "Build_Converter_C": {
+      "name": "转化站"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "生物质燃烧器"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "煤炭发电机"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "燃油发电机"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "地热发电机"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "核电站"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "蓄电池"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "外星能源强化装置"
+    },
+    "Build_TradingPost_C": {
+      "name": "枢纽"
+    },
+    "Build_Mam_C": {
+      "name": "分子分析机"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "太空电梯"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "1级蓝图设计器"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "2级蓝图设计器"
+    },
+    "Build_ResourceSink_C": {
+      "name": "AWESOME回收器"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "AWESOME商店"
+    },
+    "Build_WorkBench_C": {
+      "name": "制作台"
+    },
+    "Build_Workshop_C": {
+      "name": "装备工坊"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "个人储物盒"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "医疗储物盒"
+    },
+    "Build_StorageHazard_C": {
+      "name": "有害物质储物盒"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "存储集装箱"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "液体缓冲罐"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "工业级液体缓冲罐"
+    },
+    "Build_CentralStorage_C": {
+      "name": "位面存储站上传器"
+    },
+    "Build_StackableShelf_C": {
+      "name": "基础货架装置"
+    },
+    "Build_TruckStation_C": {
+      "name": "卡车站"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "无人机平台"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "货运站台"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "液体货运站台"
+    },
+    "Build_LookoutTower_C": {
+      "name": "瞭望塔"
+    },
+    "Build_RadarTower_C": {
+      "name": "雷达塔"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

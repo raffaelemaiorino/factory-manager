@@ -1,4 +1,6 @@
 (() => {
+  const t = (key, vars) => window.t(key, vars);
+
   const DELETE_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`;
   const EDIT_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l9.06-9.06.92.92L5.92 20.08zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`;
   const EXPORT_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67 2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg>`;
@@ -7,15 +9,35 @@
 
   const ENERGY_EXTRACTION_SLUGS = ['coal', 'water'];
   const MINER_OPTIONS = [
-    { slug: 'miner-mk1', label: 'Trivella Mk.1' },
-    { slug: 'miner-mk2', label: 'Trivella Mk.2' },
-    { slug: 'miner-mk3', label: 'Trivella Mk.3' },
+    { slug: 'miner-mk1', label: 'Miner Mk.1' },
+    { slug: 'miner-mk2', label: 'Miner Mk.2' },
+    { slug: 'miner-mk3', label: 'Miner Mk.3' },
   ];
   const PURITY_OPTIONS = [
-    { value: 'impure', label: 'Impuro' },
-    { value: 'normal', label: 'Normale' },
-    { value: 'pure', label: 'Puro' },
+    { value: 'impure', label: 'Impure' },
+    { value: 'normal', label: 'Normal' },
+    { value: 'pure', label: 'Pure' },
   ];
+
+  function localizedMinerOptions() {
+    const fromUi = productionUi()?.MINER_OPTIONS;
+    if (fromUi?.length) return fromUi;
+    return [
+      { slug: 'miner-mk1', label: t('miners.mk1') },
+      { slug: 'miner-mk2', label: t('miners.mk2') },
+      { slug: 'miner-mk3', label: t('miners.mk3') },
+    ];
+  }
+
+  function localizedPurityOptions() {
+    const fromUi = productionUi()?.PURITY_OPTIONS;
+    if (fromUi?.length) return fromUi;
+    return [
+      { value: 'impure', label: t('purity.impure') },
+      { value: 'normal', label: t('purity.normal') },
+      { value: 'pure', label: t('purity.pure') },
+    ];
+  }
   const NODES_SLIDER_MAX = 25;
   const WATER_NODES_SLIDER_MAX = 500;
 
@@ -25,6 +47,7 @@
   let activeEnergyDetail = null;
   let energyExtractionItems = [];
   let energyGeneratorCatalog = [];
+  let itemNameBySlug = new Map();
   const extractionConfigDebounce = new Map();
   const generatorConfigDebounce = new Map();
 
@@ -47,7 +70,8 @@
     if (!iso) return '—';
     const date = new Date(iso.includes('T') ? iso : `${iso.replace(' ', 'T')}Z`);
     if (Number.isNaN(date.getTime())) return iso;
-    return date.toLocaleString('it-IT', {
+    const locale = window.I18nUI?.getLocale?.() || 'it';
+    return date.toLocaleString(locale, {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
@@ -97,7 +121,7 @@
   function renderGeneratorInputsHtml(generator) {
     const inputs = [
       renderEnergyGeneratorInputWithLinks(generator, generator.fuel_item_slug, {
-        name: generator.fuel_item?.name ?? generator.fuel_label ?? 'Combustibile',
+        name: generator.fuel_item?.name ?? generator.fuel_label ?? t('common.fuel'),
         image: generator.fuel_item?.image ?? null,
         is_fluid: Boolean(generator.fuel_is_fluid || generator.fuel_item?.is_fluid),
       }),
@@ -106,7 +130,7 @@
     if (generatorUsesWater(generator)) {
       inputs.push(
         renderEnergyGeneratorInputWithLinks(generator, 'water', {
-          name: generator.water_item?.name ?? 'Acqua',
+          name: generator.water_item?.name ?? t('common.water'),
           image: generator.water_item?.image ?? null,
           is_fluid: true,
         })
@@ -116,7 +140,7 @@
     return inputs.join('');
   }
 
-  function showConfirm({ title, message, confirmLabel = 'Conferma' }) {
+  function showConfirm({ title, message, confirmLabel = t('common.confirm') }) {
     if (typeof window.showConfirm === 'function') {
       return window.showConfirm({ title, message, confirmLabel });
     }
@@ -317,7 +341,7 @@
     for (const generator of generators) {
       if ((generator.water_consumption ?? 0) > 0) {
         const waterEntry = ensureEntry('water', {
-          item_name: generator.water_item?.name ?? 'Acqua',
+          item_name: generator.water_item?.name ?? t('common.water'),
           item_image: generator.water_item?.image ?? null,
           is_fluid: true,
         });
@@ -445,30 +469,34 @@
               .join('')}
             ${
               linkState === 'balanced' && externalCovered && externalRate > 0
-                ? `<span class="production-link-covered">${formatRate(externalRate)} da estrazione</span>
-                   <span class="production-link-covered">Coperto completamente</span>`
+                ? `<span class="production-link-covered">${escapeHtml(t('production.linkFromExtractionRate', { rate: formatRate(externalRate) }))}</span>
+                   <span class="production-link-covered">${escapeHtml(t('production.linkFullyCovered'))}</span>`
                 : linkState === 'balanced'
-                  ? `<span class="production-link-covered">Coperto completamente</span>`
+                  ? `<span class="production-link-covered">${escapeHtml(t('production.linkFullyCovered'))}</span>`
                   : linkState === 'excess'
-                    ? `<span class="production-link-external">Eccedenza collegata: ${formatRate(linkedExcessRate)}</span>`
+                    ? `<span class="production-link-external">${escapeHtml(t('production.linkExcessLinked', { rate: formatRate(linkedExcessRate) }))}</span>`
                     : externalRate > 0
-                      ? `<span class="production-link-deficit">Esterno: ${formatRate(externalRate)}</span>`
-                      : `<span class="production-link-deficit">Mancante: ${formatRate(Math.max(0, requiredRate - linkedProductionRate))}</span>`
+                      ? `<span class="production-link-deficit">${escapeHtml(t('production.linkExternal', { rate: formatRate(externalRate) }))}</span>`
+                      : `<span class="production-link-deficit">${escapeHtml(t('production.linkMissing', { rate: formatRate(Math.max(0, requiredRate - linkedProductionRate)) }))}</span>`
             }
           </div>`
         : chainBalanceEntry && linkState
           ? `<div class="production-input-linked">
               ${
                 linkState === 'balanced'
-                  ? `<span class="production-link-covered">Coperto dalle estrazioni</span>`
+                  ? `<span class="production-link-covered">${escapeHtml(t('production.linkCoveredByExtracted'))}</span>`
                   : linkState === 'excess'
-                    ? `<span class="production-link-external">Eccedenza in catena: ${formatRate(
-                        UI.normalizeLinkDelta?.(
-                          chainBalanceEntry.produced - chainBalanceEntry.demand,
-                          chainBalanceEntry.produced
-                        ) ?? 0
+                    ? `<span class="production-link-external">${escapeHtml(
+                        t('production.linkChainExcess', {
+                          rate: formatRate(
+                            UI.normalizeLinkDelta?.(
+                              chainBalanceEntry.produced - chainBalanceEntry.demand,
+                              chainBalanceEntry.produced
+                            ) ?? 0
+                          ),
+                        })
                       )}</span>`
-                    : `<span class="production-link-deficit">Mancante in catena: ${formatRate(chainBalanceEntry.missing)}</span>`
+                    : `<span class="production-link-deficit">${escapeHtml(t('production.linkMissingInChain', { rate: formatRate(chainBalanceEntry.missing) }))}</span>`
               }
             </div>`
           : '';
@@ -476,7 +504,7 @@
     const productionLinkSection =
       productionCandidates.length > 0
         ? `<div class="production-input-links">
-            <span class="production-input-links-label">Collega da produzione:</span>
+            <span class="production-input-links-label">${escapeHtml(t('production.linkFromProduction'))}</span>
             <div class="production-link-options">
               ${productionCandidates
                 .map((objective) => {
@@ -556,7 +584,7 @@
   }
 
   function getExtractionDisplayName(extraction, allExtractions = []) {
-    const baseName = extraction.item?.name || 'Risorsa';
+    const baseName = extraction.item?.name || t('common.resource');
     const sameItem = allExtractions
       .filter((item) => item.item_id === extraction.item_id)
       .sort((a, b) => a.sort_order - b.sort_order || a.id - b.id);
@@ -582,7 +610,7 @@
       const inputsBalanced = balance.every((entry) => entry.missing <= tolerance);
       rows.push(`
         <tr${inputsBalanced ? ' class="production-external-row--balanced"' : ''}>
-          <td>Potenza</td>
+          <td>${escapeHtml(t('energy.totalPower'))}</td>
           <td class="production-external-rate"></td>
           <td class="production-external-rate">${formatMw(totalMw)}</td>
           <td class="production-external-rate"></td>
@@ -622,10 +650,10 @@
         <table class="production-external-table production-external-table--resources">
           <thead>
             <tr>
-              <th>Risorsa</th>
-              <th class="production-external-rate">Richiesta</th>
-              <th class="production-external-rate">Prodotta</th>
-              <th class="production-external-rate">Mancante</th>
+              <th>${escapeHtml(t('common.resource'))}</th>
+              <th class="production-external-rate">${escapeHtml(t('energy.summaryRequired'))}</th>
+              <th class="production-external-rate">${escapeHtml(t('energy.summaryProduced'))}</th>
+              <th class="production-external-rate">${escapeHtml(t('energy.summaryMissing'))}</th>
             </tr>
           </thead>
           <tbody>${rows.join('')}</tbody>
@@ -638,8 +666,8 @@
     if (!energyChains.length) {
       container.innerHTML = `
         <section class="card production-empty">
-          <p class="empty-state">Nessuno schema energia.</p>
-          <p class="production-empty-hint">Crea il tuo primo schema con il pulsante «Nuovo schema».</p>
+          <p class="empty-state">${escapeHtml(t('energy.emptyList'))}</p>
+          <p class="production-empty-hint">${escapeHtml(t('energy.emptyListHint'))}</p>
         </section>`;
       return;
     }
@@ -661,7 +689,7 @@
         <div class="production-card-body" role="button" tabindex="0" data-id="${chain.id}">
           <div class="production-card-info">
             <h3>${escapeHtml(chain.name)}</h3>
-            <p class="production-card-meta">Creato ${formatDateTime(chain.created_at)}</p>
+            <p class="production-card-meta">${escapeHtml(t('production.cardCreated', { when: formatDateTime(chain.created_at) }))}</p>
           </div>
           ${
             summaryHtml
@@ -674,21 +702,21 @@
             type="button"
             class="production-edit-btn"
             data-id="${chain.id}"
-            aria-label="Rinomina ${escapeHtml(chain.name)}"
-            title="Rinomina"
+            aria-label="${escapeHtml(t('actions.renameAria', { name: chain.name }))}"
+            title="${escapeHtml(t('actions.rename'))}"
           >${EDIT_ICON}</button>
           <button
             type="button"
             class="production-export-btn"
             data-id="${chain.id}"
-            aria-label="Esporta ${escapeHtml(chain.name)}"
-            title="Esporta schema"
+            aria-label="${escapeHtml(t('actions.exportAria', { name: chain.name }))}"
+            title="${escapeHtml(t('actions.exportPlan'))}"
           >${EXPORT_ICON}</button>
           <button
             type="button"
             class="production-delete-btn"
             data-id="${chain.id}"
-            aria-label="Elimina ${escapeHtml(chain.name)}"
+            aria-label="${escapeHtml(t('actions.deleteAria', { name: chain.name }))}"
           >${DELETE_ICON}</button>
         </div>
       </article>`;
@@ -713,14 +741,14 @@
 
   async function loadEnergyChains() {
     const container = document.getElementById('energy-container');
-    container.innerHTML = '<p class="loading">Caricamento schemi…</p>';
+    container.innerHTML = `<p class="loading">${escapeHtml(t('common.loadingSchemas'))}</p>`;
 
     try {
       energyChains = await window.satisfactory.getEnergyChains();
       await loadEnergyChainSummaries();
       renderEnergyChains();
     } catch (err) {
-      container.innerHTML = '<p class="empty-state">Errore nel caricamento degli schemi energia.</p>';
+      container.innerHTML = `<p class="empty-state">${escapeHtml(t('energy.errorLoadList'))}</p>`;
       console.error('Energy load error:', err);
     }
   }
@@ -753,7 +781,8 @@
     const outputDisplayValue =
       UI.formatExtractionOutputInputValue?.(targetOutput, extraction.overclock) ??
       String(Math.round(targetOutput));
-    const defaultBuildingName = kind === 'water' ? "Estrattore d'acqua" : 'Trivella';
+    const defaultBuildingName =
+      kind === 'water' ? t('energy.defaultWaterExtractor') : t('energy.defaultMiner');
 
     const img = item?.image
       ? `<img class="production-extraction-image" src="${escapeHtml(item.image)}" alt="" />`
@@ -766,10 +795,10 @@
       kind === 'coal'
         ? `
             <div class="production-config-field production-config-field--select">
-              <span class="production-config-label">Trivella</span>
+              <span class="production-config-label">${escapeHtml(t('production.configMiner'))}</span>
               ${UI.renderThemeSelect({
                 id: `energy-extraction-miner-${extraction.id}`,
-                options: (UI.MINER_OPTIONS ?? MINER_OPTIONS).map((miner) => ({
+                options: localizedMinerOptions().map((miner) => ({
                   value: miner.slug,
                   label: miner.label,
                 })),
@@ -783,10 +812,10 @@
       kind === 'coal'
         ? `
             <div class="production-config-field production-config-field--select">
-              <span class="production-config-label">Purezza nodo</span>
+              <span class="production-config-label">${escapeHtml(t('production.configPurity'))}</span>
               ${UI.renderThemeSelect({
                 id: `energy-extraction-purity-${extraction.id}`,
-                options: (UI.PURITY_OPTIONS ?? PURITY_OPTIONS).map((purity) => ({
+                options: localizedPurityOptions().map((purity) => ({
                   value: purity.value,
                   label: purity.label,
                 })),
@@ -796,11 +825,13 @@
             </div>`
         : '';
 
-    const nodesLabel = kind === 'water' ? 'Estrattori' : 'Nodi';
+    const nodesLabel = kind === 'water' ? t('production.configExtractors') : t('production.configNodes');
     const subtitle =
       kind === 'water'
-        ? 'Estrazione acqua'
-        : UI.getExtractionSubtitle?.('mineral') ?? 'Estrazione carbone';
+        ? t('extraction.water')
+        : extraction.item?.slug === 'coal'
+          ? t('extraction.coal')
+          : UI.getExtractionSubtitle?.('mineral') ?? t('energy.extractionCoal');
 
     return `
       <article class="production-extraction" data-extraction-id="${extraction.id}">
@@ -813,9 +844,9 @@
                 <p>${escapeHtml(subtitle)}</p>
               </div>
               <div class="production-step-actions">
-                <button type="button" class="production-step-reset-btn energy-extraction-duplicate-btn" data-item-id="${extraction.item_id}" aria-label="Duplica estrazione" title="Aggiungi altra estrazione">${ADD_ICON}</button>
-                <button type="button" class="production-step-reset-btn energy-extraction-reset-btn" data-extraction-id="${extraction.id}" aria-label="Reimposta" title="Reimposta valori predefiniti">${RESET_ICON}</button>
-                <button type="button" class="production-step-delete-btn energy-extraction-delete-btn" data-extraction-id="${extraction.id}" aria-label="Elimina">${DELETE_ICON}</button>
+                <button type="button" class="production-step-reset-btn energy-extraction-duplicate-btn" data-item-id="${extraction.item_id}" aria-label="${escapeHtml(t('production.duplicateExtraction'))}" title="${escapeHtml(t('production.addAnotherExtraction'))}">${ADD_ICON}</button>
+                <button type="button" class="production-step-reset-btn energy-extraction-reset-btn" data-extraction-id="${extraction.id}" aria-label="${escapeHtml(t('actions.reset'))}" title="${escapeHtml(t('production.resetDefaults'))}">${RESET_ICON}</button>
+                <button type="button" class="production-step-delete-btn energy-extraction-delete-btn" data-extraction-id="${extraction.id}" aria-label="${escapeHtml(t('actions.delete'))}">${DELETE_ICON}</button>
               </div>
             </header>
             <div class="production-config-grid">
@@ -824,20 +855,20 @@
               <div class="production-config-field">
                 <label class="production-config-label" for="energy-extraction-output-${extraction.id}">Output (${outputUnit})</label>
                 <input type="text" class="production-config-input production-extraction-output-input production-config-decimal-input" id="energy-extraction-output-${extraction.id}" data-extraction-id="${extraction.id}" min="${outputSliderMin}" max="${outputSliderMax}" inputmode="decimal" readonly value="${outputDisplayValue}" />
-                <input type="range" class="production-config-slider production-extraction-output-slider" data-extraction-id="${extraction.id}" min="${outputSliderMin}" max="${outputSliderMax}" step="${outputSliderStep}" value="${fractionalExtractionOutput ? targetOutput : Math.round(targetOutput)}" aria-label="Regola output estrazione" />
+                <input type="range" class="production-config-slider production-extraction-output-slider" data-extraction-id="${extraction.id}" min="${outputSliderMin}" max="${outputSliderMax}" step="${outputSliderStep}" value="${fractionalExtractionOutput ? targetOutput : Math.round(targetOutput)}" aria-label="${escapeHtml(t('production.adjustExtractionOutput'))}" />
               </div>
               <div class="production-config-field">
-                <label class="production-config-label" for="energy-extraction-overclock-${extraction.id}">Overclock (%)</label>
+                <label class="production-config-label" for="energy-extraction-overclock-${extraction.id}">${escapeHtml(t('production.configOverclock'))}</label>
                 <input type="number" class="production-config-input production-extraction-overclock-input" id="energy-extraction-overclock-${extraction.id}" data-extraction-id="${extraction.id}" min="${window.EnergyScale.OVERCLOCK_MIN}" max="${window.EnergyScale.OVERCLOCK_MAX}" step="1" readonly value="${UI.formatOverclockInputValue?.(extraction.overclock) ?? Math.round(extraction.overclock)}" />
-                <input type="range" class="production-config-slider production-extraction-overclock-slider" data-extraction-id="${extraction.id}" min="${window.EnergyScale.OVERCLOCK_MIN}" max="${window.EnergyScale.OVERCLOCK_MAX}" step="1" value="${Math.round(extraction.overclock)}" aria-label="Regola overclock estrazione" />
+                <input type="range" class="production-config-slider production-extraction-overclock-slider" data-extraction-id="${extraction.id}" min="${window.EnergyScale.OVERCLOCK_MIN}" max="${window.EnergyScale.OVERCLOCK_MAX}" step="1" value="${Math.round(extraction.overclock)}" aria-label="${escapeHtml(t('production.adjustExtractionOverclock'))}" />
               </div>
               <div class="production-config-field">
                 <label class="production-config-label" for="energy-extraction-nodes-${extraction.id}">${nodesLabel}</label>
                 <input type="number" class="production-config-input production-extraction-nodes-input" id="energy-extraction-nodes-${extraction.id}" data-extraction-id="${extraction.id}" min="1" max="${nodesSliderMax}" step="1" readonly value="${UI.formatMachineCountInput?.(nodeCount) ?? nodeCount}" />
-                <input type="range" class="production-config-slider production-extraction-nodes-slider" data-extraction-id="${extraction.id}" min="1" max="${nodesSliderMax}" step="1" value="${Math.round(nodeCount)}" aria-label="Regola numero ${nodesLabel.toLowerCase()}" />
+                <input type="range" class="production-config-slider production-extraction-nodes-slider" data-extraction-id="${extraction.id}" min="1" max="${nodesSliderMax}" step="1" value="${Math.round(nodeCount)}" aria-label="${escapeHtml(t('production.adjustNodes', { nodes: nodesLabel.toLowerCase() }))}" />
               </div>
               <div class="production-config-field">
-                <label class="production-config-label" for="energy-extraction-power-${extraction.id}">Frammento energetico</label>
+                <label class="production-config-label" for="energy-extraction-power-${extraction.id}">${escapeHtml(t('production.configPowerShard'))}</label>
                 <input type="text" class="production-config-input production-config-readonly production-extraction-power-shards" id="energy-extraction-power-${extraction.id}" readonly tabindex="-1" value="${UI.computeTotalPowerShards?.(extraction.overclock, nodeCount) ?? 0}" />
               </div>
             </div>
@@ -871,7 +902,7 @@
     if ((generator.water_rate_base ?? 0) > 0) {
       rates.push({
         item_slug: 'water',
-        item_name: generator.water_item?.name ?? 'Acqua',
+        item_name: generator.water_item?.name ?? t('common.water'),
         item_image: generator.water_item?.image ?? null,
         is_fluid: true,
         base_per_min: generator.water_rate_base,
@@ -910,33 +941,33 @@
     const configGrid = `
       <div class="production-config-grid production-config-grid--energy-generator">
         <div class="production-config-field">
-          <label class="production-config-label" for="energy-generator-fuel-input-${generator.id}">Combustibile (${fuelUnit})</label>
+          <label class="production-config-label" for="energy-generator-fuel-input-${generator.id}">${escapeHtml(t('energy.configFuel', { unit: fuelUnit }))}</label>
           <input type="number" class="production-config-input energy-generator-fuel-input" id="energy-generator-fuel-input-${generator.id}" data-generator-id="${generator.id}" min="${fuelSliderMin}" max="${fuelSliderMax}" step="0.001" readonly value="${formatEnergyFuelInputValue(targetFuel)}" />
-          <input type="range" class="production-config-slider energy-generator-fuel-slider" data-generator-id="${generator.id}" min="${fuelSliderMin}" max="${fuelSliderMax}" step="0.001" value="${targetFuel}" aria-label="Regola combustibile" />
+          <input type="range" class="production-config-slider energy-generator-fuel-slider" data-generator-id="${generator.id}" min="${fuelSliderMin}" max="${fuelSliderMax}" step="0.001" value="${targetFuel}" aria-label="${escapeHtml(t('energy.adjustFuel'))}" />
         </div>
         <div class="production-config-oc-machines">
           <div class="production-config-field">
-            <label class="production-config-label" for="energy-generator-overclock-${generator.id}">Overclock (%)</label>
+            <label class="production-config-label" for="energy-generator-overclock-${generator.id}">${escapeHtml(t('production.configOverclock'))}</label>
             <input type="number" class="production-config-input energy-generator-overclock-input" id="energy-generator-overclock-${generator.id}" data-generator-id="${generator.id}" min="${window.EnergyScale.OVERCLOCK_MIN}" max="${window.EnergyScale.OVERCLOCK_MAX}" step="1" readonly value="${UI.formatOverclockInputValue?.(generator.overclock) ?? Math.round(generator.overclock)}" />
-            <input type="range" class="production-config-slider energy-generator-overclock-slider" data-generator-id="${generator.id}" min="${window.EnergyScale.OVERCLOCK_MIN}" max="${window.EnergyScale.OVERCLOCK_MAX}" step="1" value="${Math.round(generator.overclock)}" aria-label="Regola overclock" />
+            <input type="range" class="production-config-slider energy-generator-overclock-slider" data-generator-id="${generator.id}" min="${window.EnergyScale.OVERCLOCK_MIN}" max="${window.EnergyScale.OVERCLOCK_MAX}" step="1" value="${Math.round(generator.overclock)}" aria-label="${escapeHtml(t('energy.adjustGeneratorOverclock'))}" />
           </div>
           <div class="production-config-field">
-            <label class="production-config-label" for="energy-generator-machines-${generator.id}">Generatori</label>
+            <label class="production-config-label" for="energy-generator-machines-${generator.id}">${escapeHtml(t('energy.sectionGenerators'))}</label>
             <input type="number" class="production-config-input energy-generator-machines-input" id="energy-generator-machines-${generator.id}" data-generator-id="${generator.id}" min="1" step="1" readonly value="${UI.formatMachineCountInput?.(generator.machine_count) ?? Math.round(generator.machine_count)}" />
-            <input type="range" class="production-config-slider energy-generator-machines-slider" data-generator-id="${generator.id}" min="1" max="${machinesSliderMax}" step="1" value="${Math.round(generator.machine_count)}" aria-label="Regola numero generatori" />
+            <input type="range" class="production-config-slider energy-generator-machines-slider" data-generator-id="${generator.id}" min="1" max="${machinesSliderMax}" step="1" value="${Math.round(generator.machine_count)}" aria-label="${escapeHtml(t('energy.adjustGeneratorCount'))}" />
           </div>
         </div>
         <div class="production-config-field">
-          <label class="production-config-label" for="energy-generator-power-shards-${generator.id}">Frammento energetico</label>
+          <label class="production-config-label" for="energy-generator-power-shards-${generator.id}">${escapeHtml(t('production.configPowerShard'))}</label>
           <input type="text" class="production-config-input production-config-readonly" id="energy-generator-power-shards-${generator.id}" readonly tabindex="-1" value="${UI.computeTotalPowerShards?.(generator.overclock, generator.machine_count) ?? 0}" />
         </div>
         <div class="production-config-field production-config-field--select">
-          <span class="production-config-label">Tipo combustibile</span>
+          <span class="production-config-label">${escapeHtml(t('energy.configFuelType'))}</span>
           ${UI.renderThemeSelect({
             id: `energy-generator-fuel-${generator.id}`,
             options: fuelOptions.map((option) => ({
               value: option.slug,
-              label: option.label,
+              label: resolveFuelOptionLabel(option),
             })),
             selectedValue: generator.fuel_slug,
             dataset: { generatorId: generator.id, field: 'fuel' },
@@ -957,12 +988,12 @@
         <header class="production-step-header">
           ${headerImg}
           <div class="production-step-title">
-            <h4>${escapeHtml(generator.building_name ?? 'Generatore')}</h4>
+            <h4>${escapeHtml(generator.building_name ?? t('common.generator'))}</h4>
             <p class="production-step-resource">${escapeHtml(formatGeneratorSubtitle(generator))}</p>
           </div>
           <div class="production-step-actions">
-            <button type="button" class="production-step-reset-btn energy-generator-reset-btn" data-generator-id="${generator.id}" aria-label="Reimposta" title="Reimposta valori predefiniti">${RESET_ICON}</button>
-            <button type="button" class="production-step-delete-btn energy-generator-delete-btn" data-generator-id="${generator.id}" aria-label="Elimina">${DELETE_ICON}</button>
+            <button type="button" class="production-step-reset-btn energy-generator-reset-btn" data-generator-id="${generator.id}" aria-label="${escapeHtml(t('actions.reset'))}" title="${escapeHtml(t('production.resetDefaults'))}">${RESET_ICON}</button>
+            <button type="button" class="production-step-delete-btn energy-generator-delete-btn" data-generator-id="${generator.id}" aria-label="${escapeHtml(t('actions.delete'))}">${DELETE_ICON}</button>
           </div>
         </header>
         <article class="craft-schema production-step-editor">
@@ -989,7 +1020,7 @@
 
   function renderEnergyDetailContent(detail) {
     if (!detail?.chain) {
-      energyDetailBody.innerHTML = '<p class="detail-empty">Schema non trovato.</p>';
+      energyDetailBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('energy.notFound'))}</p>`;
       document.getElementById('energy-detail-external-summary').innerHTML = '';
       return;
     }
@@ -999,27 +1030,34 @@
 
     document.getElementById('energy-detail-heading').textContent = detail.chain.name;
     document.getElementById('energy-detail-breadcrumb').textContent = detail.chain.name;
-    document.getElementById('energy-detail-meta').textContent =
-      `${extractions.length} estrazione${extractions.length === 1 ? '' : 'i'}, ${generators.length} generatore${generators.length === 1 ? '' : ' i'}`;
+    const extPart =
+      extractions.length === 1
+        ? t('energy.metaExtractionsOne', { count: extractions.length })
+        : t('energy.metaExtractionsMany', { count: extractions.length });
+    const genPart =
+      generators.length === 1
+        ? t('energy.metaGeneratorsOne', { count: generators.length })
+        : t('energy.metaGeneratorsMany', { count: generators.length });
+    document.getElementById('energy-detail-meta').textContent = `${extPart}, ${genPart}`;
     document.getElementById('energy-detail-external-summary').innerHTML = renderEnergySummary(detail);
     syncEnergyBalanceCache();
 
     const extractionsHtml = extractions.length
       ? extractions.map((ext) => renderEnergyExtraction(ext, extractions)).join('')
-      : '<p class="detail-empty production-extractions-empty">Nessuna estrazione. Aggiungi acqua o carbone.</p>';
+      : `<p class="detail-empty production-extractions-empty">${escapeHtml(t('energy.emptyExtractions'))}</p>`;
 
     const generatorsHtml = generators.length
       ? `<div class="production-steps-list">${generators.map((gen) => renderEnergyGenerator(gen)).join('')}</div>`
-      : '<p class="detail-empty production-schemas-empty">Nessun generatore. Aggiungi una struttura di produzione energia.</p>';
+      : `<p class="detail-empty production-schemas-empty">${escapeHtml(t('energy.emptyGenerators'))}</p>`;
 
     energyDetailBody.innerHTML = `
       <div class="production-detail-columns">
         <section class="production-extractions-section">
-          <h3 class="production-section-header">Estrazioni</h3>
+          <h3 class="production-section-header">${escapeHtml(t('energy.sectionExtractions'))}</h3>
           <div class="production-extractions-list">${extractionsHtml}</div>
         </section>
         <section class="production-schemas-section">
-          <h3 class="production-section-header">Generatori</h3>
+          <h3 class="production-section-header">${escapeHtml(t('energy.sectionGenerators'))}</h3>
           ${generatorsHtml}
         </section>
       </div>`;
@@ -1031,7 +1069,7 @@
   async function openEnergyDetail(chainId) {
     activeEnergyChainId = chainId;
     activeEnergyDetail = null;
-    energyDetailBody.innerHTML = '<p class="loading">Caricamento…</p>';
+    energyDetailBody.innerHTML = `<p class="loading">${escapeHtml(t('common.loading'))}</p>`;
     document.getElementById('energy-detail-heading').textContent = '—';
     document.getElementById('energy-detail-breadcrumb').textContent = '—';
     document.getElementById('energy-detail-meta').textContent = '';
@@ -1039,10 +1077,11 @@
     window.switchView('energy-detail');
 
     try {
+      await ensureItemNameCache();
       activeEnergyDetail = await window.satisfactory.getEnergyChainDetail(chainId);
       renderEnergyDetailContent(activeEnergyDetail);
     } catch (err) {
-      energyDetailBody.innerHTML = '<p class="detail-empty">Errore nel caricamento dello schema.</p>';
+      energyDetailBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('energy.errorDetailLoad'))}</p>`;
       console.error('Energy detail error:', err);
     }
   }
@@ -1052,8 +1091,25 @@
     loadEnergyChainSummaries().then(() => renderEnergyChains()).catch(console.error);
   }
 
+  async function ensureItemNameCache() {
+    if (itemNameBySlug.size) return;
+    const grouped = await window.satisfactory.getResources();
+    const map = new Map();
+    for (const cat of grouped) {
+      for (const item of cat.items ?? []) {
+        if (item?.slug) map.set(item.slug, item.name);
+      }
+    }
+    itemNameBySlug = map;
+  }
+
+  function resolveFuelOptionLabel(option) {
+    return itemNameBySlug.get(option.slug) || option.label || option.slug;
+  }
+
   async function ensureEnergyExtractionItems() {
     if (energyExtractionItems.length) return;
+    await ensureItemNameCache();
     const grouped = await window.satisfactory.getResources();
     const allItems = grouped.flatMap((cat) => cat.items ?? []);
     energyExtractionItems = allItems.filter((item) => ENERGY_EXTRACTION_SLUGS.includes(item.slug));
@@ -1069,7 +1125,7 @@
       .then(() => {
         const list = document.getElementById('energy-extraction-picker-list');
         if (!energyExtractionItems.length) {
-          list.innerHTML = '<p class="empty-state">Nessuna risorsa disponibile.</p>';
+          list.innerHTML = `<p class="empty-state">${escapeHtml(t('energy.pickerNoResources'))}</p>`;
         } else {
           list.innerHTML = `
             <div class="picker-grid">
@@ -1100,7 +1156,7 @@
       .then(() => {
         const list = document.getElementById('energy-generator-picker-list');
         if (!energyGeneratorCatalog.length) {
-          list.innerHTML = '<p class="empty-state">Nessun generatore disponibile.</p>';
+          list.innerHTML = `<p class="empty-state">${escapeHtml(t('energy.pickerNoGenerators'))}</p>`;
         } else {
           list.innerHTML = `
             <div class="picker-grid">
@@ -1581,7 +1637,7 @@
         renderEnergyChains();
       } catch (err) {
         console.error('Energy import error:', err);
-        window.alert?.(err.message || 'Errore durante l’importazione dello schema.');
+        window.alert?.(err.message || t('errors.importFailed'));
       }
     });
     document.getElementById('energy-create-modal-close').addEventListener('click', closeEnergyCreateModal);
@@ -1608,7 +1664,7 @@
       hideEnergyCreateError();
       const name = document.getElementById('energy-chain-name').value.trim();
       if (!name) {
-        showEnergyCreateError('Il nome è obbligatorio.');
+        showEnergyCreateError(t('errors.nameRequired'));
         return;
       }
       try {
@@ -1618,7 +1674,7 @@
         renderEnergyChains();
         openEnergyDetail(chain.id);
       } catch (err) {
-        showEnergyCreateError(err.message || 'Errore durante la creazione.');
+        showEnergyCreateError(err.message || t('errors.createFailed'));
       }
     });
 
@@ -1671,9 +1727,9 @@
         const chain = energyChains.find((item) => item.id === chainId);
         if (!chain) return;
         const confirmed = await showConfirm({
-          title: 'Elimina schema',
-          message: `Eliminare lo schema «${chain.name}»? L'operazione non può essere annullata.`,
-          confirmLabel: 'Elimina',
+          title: t('confirm.deleteEnergyPlanTitle'),
+          message: t('confirm.deleteEnergyPlanMessage', { name: chain.name }),
+          confirmLabel: t('actions.delete'),
         });
         if (!confirmed) return;
         try {
@@ -1965,6 +2021,18 @@
     openEnergyDetail,
     closeEnergyDetail,
     computeEnergyResourceBalance,
+    clearLocaleCaches: () => {
+      energyExtractionItems = [];
+      energyGeneratorCatalog = [];
+      itemNameBySlug = new Map();
+    },
+    reloadActiveDetail: async () => {
+      if (!activeEnergyChainId) return null;
+      await ensureItemNameCache();
+      activeEnergyDetail = await window.satisfactory.getEnergyChainDetail(activeEnergyChainId);
+      renderEnergyDetailContent(activeEnergyDetail);
+      return activeEnergyDetail;
+    },
   };
 
   setupEnergy();

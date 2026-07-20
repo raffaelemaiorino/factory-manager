@@ -69,6 +69,7 @@ const {
   deleteEnergyExtraction: removeEnergyExtraction,
   resetEnergyExtraction: resetChainEnergyExtraction,
 } = require('./energy-extraction');
+const { ensureI18n, getI18nInfo, getAppLocale, setAppLocale, listLocales, listAvailableLocales } = require('./i18n');
 
 const DB_FILE_NAME = 'factory-manager.db';
 const LEGACY_DB_FILE_NAMES = ['satisfactory.db'];
@@ -179,6 +180,7 @@ function runMigrations() {
   ensureEnergyExtractionsTable(db);
   ensureProductionChainStepsTable(db);
   migrateDropItemsStackSizeColumn(db);
+  ensureI18n(db, null);
 
   const versionRow = queryOne('SELECT version FROM schema_version LIMIT 1');
   if (!versionRow) {
@@ -230,6 +232,7 @@ function getDbStatus() {
     path: dbPath,
     schemaVersion: version?.version ?? 0,
     resources,
+    i18n: getI18nInfo(db),
     counts: {
       items: resources.counts.items,
       schemas: resources.counts.schemas,
@@ -560,4 +563,9 @@ module.exports = {
   resetEnergyChainGenerator,
   setEnergyGeneratorInputLinks,
   setEnergyGeneratorProductionLinks,
+  getI18nInfo: () => getI18nInfo(getDb()),
+  getAppLocale: () => getAppLocale(getDb()),
+  setAppLocale: (locale) => setAppLocale(getDb(), persist, locale),
+  listLocales: () => listLocales(getDb()),
+  listAvailableLocales: () => listAvailableLocales(getDb()),
 };

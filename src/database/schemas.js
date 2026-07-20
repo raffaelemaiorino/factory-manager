@@ -2,6 +2,12 @@ const { getSchemaSeeds } = require('./seeds/load-item-details');
 const { ALUMINUM_SCRAP_SCHEMAS } = require('./seeds/aluminum-scrap-schemas');
 const { ITEM_SCHEMA_SEEDS } = require('./seeds/ingots-schemas');
 const { getBuildingBySlug } = require('./buildings');
+const {
+  DEFAULT_LOCALE,
+  ensureI18nTables,
+  upsertSchemaTranslationsFromSeed,
+  getAppLocale,
+} = require('./i18n');
 
 function getAllSchemaSeeds() {
   const generated = getSchemaSeeds();
@@ -65,6 +71,8 @@ function ensureSchemaTables(db) {
 }
 
 function insertSchema(db, itemId, schemaDef) {
+  ensureI18nTables(db);
+
   db.run(
     `INSERT INTO item_schemas (item_id, name, is_alternative, building_name, building_slug, duration, sort_order)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -80,6 +88,7 @@ function insertSchema(db, itemId, schemaDef) {
   );
 
   const schemaId = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
+  upsertSchemaTranslationsFromSeed(db, schemaId, schemaDef, DEFAULT_LOCALE);
 
   for (const io of schemaDef.inputs) {
     db.run(
@@ -100,6 +109,7 @@ function insertSchema(db, itemId, schemaDef) {
 
 function seedSchemas(db, persist, { force = false } = {}) {
   ensureSchemaTables(db);
+  ensureI18nTables(db);
 
   let seededCount = 0;
   let itemsSeeded = 0;
@@ -107,6 +117,7 @@ function seedSchemas(db, persist, { force = false } = {}) {
   db.run('BEGIN TRANSACTION');
   try {
     if (force) {
+      db.run('DELETE FROM schema_translations');
       db.run('DELETE FROM schema_io');
       db.run('DELETE FROM item_schemas');
     }
@@ -141,15 +152,20 @@ function seedSchemas(db, persist, { force = false } = {}) {
 }
 
 function loadSchemaIo(db, schemaId, isOutput) {
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
   return queryAll(
     db,
     `SELECT sio.slot, sio.amount, sio.is_fluid,
-            i.slug AS item_slug, i.name AS item_name, i.image AS item_image
+            i.slug AS item_slug,
+            COALESCE(it.name, i.name) AS item_name,
+            i.image AS item_image
      FROM schema_io sio
      LEFT JOIN items i ON i.slug = sio.item_slug
+     LEFT JOIN item_translations it ON it.item_id = i.id AND it.locale = ?
      WHERE sio.schema_id = ? AND sio.is_output = ?
      ORDER BY sio.slot ASC`,
-    [schemaId, isOutput ? 1 : 0]
+    [locale, schemaId, isOutput ? 1 : 0]
   );
 }
 
@@ -158,18 +174,34 @@ function attachBuildingMeta(db, schema) {
   const building = getBuildingBySlug(db, schema.building_slug);
   return {
     ...schema,
+    building_name: building?.name ?? schema.building_name,
     building_image: building?.image ?? null,
     somersloop_slots: building?.somersloop_slots ?? 0,
   };
 }
 
+function localizedSchemaSelect() {
+  return `
+    s.id, s.item_id,
+    COALESCE(st.name, s.name) AS name,
+    s.is_alternative,
+    COALESCE(bt.name, s.building_name) AS building_name,
+    s.building_slug, s.duration, s.sort_order
+  `;
+}
+
 function getItemSchemaById(db, schemaId) {
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
   const schema = queryOne(
     db,
-    `SELECT id, item_id, name, is_alternative, building_name, building_slug, duration, sort_order
-     FROM item_schemas
-     WHERE id = ?`,
-    [schemaId]
+    `SELECT ${localizedSchemaSelect()}
+     FROM item_schemas s
+     LEFT JOIN schema_translations st ON st.schema_id = s.id AND st.locale = ?
+     LEFT JOIN buildings b ON b.slug = s.building_slug
+     LEFT JOIN building_translations bt ON bt.building_id = b.id AND bt.locale = ?
+     WHERE s.id = ?`,
+    [locale, locale, schemaId]
   );
   if (!schema) return null;
 
@@ -182,13 +214,18 @@ function getItemSchemaById(db, schemaId) {
 }
 
 function getItemSchemas(db, itemId) {
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
   const schemas = queryAll(
     db,
-    `SELECT id, item_id, name, is_alternative, building_name, building_slug, duration, sort_order
-     FROM item_schemas
-     WHERE item_id = ?
-     ORDER BY is_alternative ASC, sort_order ASC`,
-    [itemId]
+    `SELECT ${localizedSchemaSelect()}
+     FROM item_schemas s
+     LEFT JOIN schema_translations st ON st.schema_id = s.id AND st.locale = ?
+     LEFT JOIN buildings b ON b.slug = s.building_slug
+     LEFT JOIN building_translations bt ON bt.building_id = b.id AND bt.locale = ?
+     WHERE s.item_id = ?
+     ORDER BY s.is_alternative ASC, s.sort_order ASC`,
+    [locale, locale, itemId]
   );
 
   return schemas.map((schema) =>
@@ -200,7 +237,6 @@ function getItemSchemas(db, itemId) {
     })
   );
 }
-
 function getItemDetail(db, getItemByIdFn, itemId) {
   const item = getItemByIdFn(db, itemId);
   if (!item) return null;

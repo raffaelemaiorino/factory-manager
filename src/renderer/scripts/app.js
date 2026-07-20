@@ -19,16 +19,53 @@ const DRAG_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h2v2
 const EXTRACTION_LIQUID_SLUGS = ['liquid-oil', 'water'];
 
 const MINER_OPTIONS = [
-  { slug: 'miner-mk1', label: 'Trivella Mk.1' },
-  { slug: 'miner-mk2', label: 'Trivella Mk.2' },
-  { slug: 'miner-mk3', label: 'Trivella Mk.3' },
+  { slug: 'miner-mk1', label: 'Miner Mk.1' },
+  { slug: 'miner-mk2', label: 'Miner Mk.2' },
+  { slug: 'miner-mk3', label: 'Miner Mk.3' },
 ];
 
 const PURITY_OPTIONS = [
-  { value: 'impure', label: 'Impuro' },
-  { value: 'normal', label: 'Normale' },
-  { value: 'pure', label: 'Puro' },
+  { value: 'impure', label: 'Impure' },
+  { value: 'normal', label: 'Normal' },
+  { value: 'pure', label: 'Pure' },
 ];
+
+let activeLocale = 'it';
+let availableLocales = [];
+
+function formatUiResultsCount(n) {
+  const count = formatDisplayInteger(n);
+  return n === 1 ? t('common.resultsOne', { count }) : t('common.resultsMany', { count });
+}
+
+function formatUiResourcesCount(n) {
+  const count = formatDisplayInteger(n);
+  return n === 1 ? t('common.resourcesOne', { count }) : t('common.resourcesMany', { count });
+}
+
+function formatProductionDetailMeta(extractionsCount, stepsCount) {
+  const extPart =
+    extractionsCount === 1
+      ? t('production.metaExtractionsOne', { count: extractionsCount })
+      : t('production.metaExtractionsMany', { count: extractionsCount });
+  const stepPart =
+    stepsCount === 1
+      ? t('production.metaStepsOne', { count: stepsCount })
+      : t('production.metaStepsMany', { count: stepsCount });
+  let suffix = '';
+  if (productionDetailViewMode === 'group-tree') {
+    suffix = t('production.metaTreeGroups');
+  } else if (productionDetailViewMode === 'tree' && productionTreeGroupKey) {
+    suffix = t('production.metaTreeGroup', { name: getProductionGroupLabel(productionTreeGroupKey) });
+  }
+  return `${extPart}, ${stepPart}${suffix}`;
+}
+
+function deficitHealthLabel(deficitCount) {
+  return deficitCount === 1
+    ? t('health.deficitOne')
+    : t('health.deficitMany', { count: deficitCount });
+}
 
 const NODES_SLIDER_MAX = 25;
 const WATER_NODES_SLIDER_MAX = 500;
@@ -366,6 +403,185 @@ function setupLegalInfoModal() {
   });
 }
 
+function renderLocaleSelect() {
+  const menu = document.getElementById('locale-select-menu');
+  const valueEl = document.getElementById('locale-select-value');
+  const trigger = document.getElementById('locale-select-trigger');
+  if (!menu || !valueEl || !trigger) return;
+
+  const current =
+    availableLocales.find((locale) => locale.code === activeLocale) ||
+    availableLocales[0] ||
+    { code: 'it', name: 'Italiano' };
+
+  valueEl.textContent = String(current.code || 'it').toUpperCase();
+  trigger.title = t('topbar.languageTitle');
+  trigger.setAttribute(
+    'aria-label',
+    t('topbar.languageAria', { name: current.name || current.code })
+  );
+
+  menu.innerHTML = availableLocales
+    .map((locale) => {
+      const code = String(locale.code || '').toUpperCase();
+      const isActive = locale.code === activeLocale;
+      return `<li
+        class="theme-select-option locale-select-option ${isActive ? 'theme-select-option--active' : ''}"
+        role="option"
+        tabindex="-1"
+        data-value="${escapeHtml(locale.code)}"
+        aria-selected="${isActive ? 'true' : 'false'}"
+      >
+        <span class="locale-select-option-name">${escapeHtml(locale.name)}</span>
+        <span class="locale-select-option-code">${escapeHtml(code)}</span>
+      </li>`;
+    })
+    .join('');
+}
+
+async function refreshAfterLocaleChange() {
+  syncLocaleDependentLabels();
+  pickerResourcesData = [];
+  window.EnergyUI?.clearLocaleCaches?.();
+
+  const app = document.getElementById('app');
+  const currentView = app?.dataset.view || 'dashboard';
+
+  if (currentView === 'resources' || resourcesData.length) {
+    try {
+      await refreshResourcesView();
+    } catch (err) {
+      console.error('Locale resources refresh error:', err);
+    }
+  }
+
+  if (currentView === 'production') {
+    try {
+      await loadProductionChains();
+    } catch (err) {
+      console.error('Locale production refresh error:', err);
+    }
+  }
+
+  if (currentView === 'production-detail' && activeProductionChainId) {
+    try {
+      activeProductionDetail = await window.satisfactory.getProductionChainDetail(
+        activeProductionChainId
+      );
+      renderProductionDetailContent(activeProductionDetail);
+    } catch (err) {
+      console.error('Locale production detail refresh error:', err);
+    }
+  }
+
+  if (currentView === 'energy' && window.EnergyUI) {
+    try {
+      await window.EnergyUI.loadEnergyChains();
+    } catch (err) {
+      console.error('Locale energy refresh error:', err);
+    }
+  }
+
+  if (currentView === 'energy-detail' && window.EnergyUI?.reloadActiveDetail) {
+    try {
+      await window.EnergyUI.reloadActiveDetail();
+    } catch (err) {
+      console.error('Locale energy detail refresh error:', err);
+    }
+  }
+
+  if (currentView === 'dashboard') {
+    try {
+      await initDashboard();
+    } catch (err) {
+      console.error('Locale dashboard refresh error:', err);
+    }
+  }
+
+  if (currentView === 'settings') {
+    try {
+      await loadSettings();
+    } catch (err) {
+      console.error('Locale settings refresh error:', err);
+    }
+  }
+}
+
+async function setUiLocale(localeCode, { persist = true } = {}) {
+  const next = String(localeCode || 'it').toLowerCase();
+  if (persist) {
+    await window.satisfactory.setAppLocale(next);
+  }
+  activeLocale = next;
+  if (window.I18nUI?.loadLocale) {
+    await window.I18nUI.loadLocale(activeLocale);
+  } else {
+    document.documentElement.lang = activeLocale;
+  }
+  syncLocaleDependentLabels();
+  renderLocaleSelect();
+  if (persist) {
+    await refreshAfterLocaleChange();
+  }
+}
+
+async function initLocaleSelector() {
+  try {
+    const info = await window.satisfactory.getI18nInfo();
+    availableLocales = info.availableLocales?.length
+      ? info.availableLocales
+      : info.locales || [
+          { code: 'it', name: 'Italiano' },
+          { code: 'en', name: 'English' },
+        ];
+    activeLocale = info.activeLocale || 'it';
+  } catch (err) {
+    console.error('Locale init error:', err);
+    availableLocales = [
+      { code: 'it', name: 'Italiano' },
+      { code: 'en', name: 'English' },
+    ];
+    activeLocale = 'it';
+  }
+
+  if (window.I18nUI?.loadLocale) {
+    await window.I18nUI.loadLocale(activeLocale);
+  } else {
+    document.documentElement.lang = activeLocale;
+  }
+  syncLocaleDependentLabels();
+  renderLocaleSelect();
+}
+
+function setupLocaleSelector() {
+  const root = document.getElementById('locale-select');
+  if (!root) return;
+
+  root.addEventListener('click', async (e) => {
+    const option = e.target.closest('.locale-select-option');
+    if (option) {
+      e.preventDefault();
+      e.stopPropagation();
+      const next = option.dataset.value;
+      closeAllThemeSelects();
+      if (!next || next === activeLocale) return;
+      try {
+        await setUiLocale(next);
+      } catch (err) {
+        console.error('Locale change error:', err);
+      }
+      return;
+    }
+
+    const trigger = e.target.closest('#locale-select-trigger');
+    if (trigger) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleThemeSelect(root);
+    }
+  });
+}
+
 async function initDashboard() {
   try {
     const appInfo = await window.satisfactory.getAppInfo();
@@ -388,11 +604,11 @@ async function initDashboard() {
   } catch (err) {
     console.error('Dashboard load error:', err);
     document.getElementById('dashboard-projects').innerHTML =
-      '<p class="dashboard-empty">Errore nel caricamento della dashboard.</p>';
+      `<p class="dashboard-empty">${escapeHtml(t('dashboard.errorLoad'))}</p>`;
     document.getElementById('dashboard-alerts').innerHTML =
-      '<p class="dashboard-empty">Errore nel caricamento degli avvisi.</p>';
+      `<p class="dashboard-empty">${escapeHtml(t('dashboard.errorAlerts'))}</p>`;
     document.getElementById('dashboard-chart-deficits').innerHTML =
-      '<p class="dashboard-empty">Errore nel caricamento dei grafici.</p>';
+      `<p class="dashboard-empty">${escapeHtml(t('dashboard.errorCharts'))}</p>`;
     document.getElementById('dashboard-chart-objectives').innerHTML = '';
     document.getElementById('dashboard-chart-power').innerHTML = '';
   }
@@ -401,7 +617,7 @@ async function initDashboard() {
 function renderEnvironmentStats(status) {
   const connectedEl = document.getElementById('env-db-connected');
   if (connectedEl) {
-    connectedEl.textContent = status.connected ? 'Connesso' : 'Non connesso';
+    connectedEl.textContent = status.connected ? t('common.connected') : t('common.disconnected');
     connectedEl.classList.toggle('ok', status.connected);
   }
 
@@ -442,7 +658,7 @@ function countProductionDeficits(steps, extractions) {
 
 function getProductionChainHealth(steps, extractions) {
   if (!steps.length && !extractions.length) {
-    return { status: 'empty', deficitCount: 0, label: 'Vuoto' };
+    return { status: 'empty', deficitCount: 0, label: t('common.empty') };
   }
 
   const deficitCount = countProductionDeficits(steps, extractions);
@@ -450,23 +666,23 @@ function getProductionChainHealth(steps, extractions) {
     return {
       status: 'error',
       deficitCount,
-      label: deficitCount === 1 ? '1 deficit' : `${deficitCount} deficit`,
+      label: deficitHealthLabel(deficitCount),
     };
   }
 
-  return { status: 'ok', deficitCount: 0, label: 'Bilanciato' };
+  return { status: 'ok', deficitCount: 0, label: t('common.balanced') };
 }
 
 function getEnergyChainHealth(detail) {
   const generators = detail?.generators ?? [];
   const extractions = detail?.extractions ?? [];
   if (!generators.length && !extractions.length) {
-    return { status: 'empty', deficitCount: 0, label: 'Vuoto' };
+    return { status: 'empty', deficitCount: 0, label: t('common.empty') };
   }
 
   const computeBalance = window.EnergyUI?.computeEnergyResourceBalance;
   if (!computeBalance) {
-    return { status: 'ok', deficitCount: 0, label: 'Bilanciato' };
+    return { status: 'ok', deficitCount: 0, label: t('common.balanced') };
   }
 
   const deficitCount = computeBalance(generators, extractions).filter(
@@ -477,11 +693,11 @@ function getEnergyChainHealth(detail) {
     return {
       status: 'error',
       deficitCount,
-      label: deficitCount === 1 ? '1 deficit' : `${deficitCount} deficit`,
+      label: deficitHealthLabel(deficitCount),
     };
   }
 
-  return { status: 'ok', deficitCount: 0, label: 'Bilanciato' };
+  return { status: 'ok', deficitCount: 0, label: t('common.balanced') };
 }
 
 function formatDashboardRelativeTime(iso) {
@@ -491,12 +707,12 @@ function formatDashboardRelativeTime(iso) {
 
   const diffMs = Date.now() - date.getTime();
   const diffMin = Math.floor(diffMs / 60000);
-  if (diffMin < 1) return 'Adesso';
-  if (diffMin < 60) return `${diffMin} min fa`;
+  if (diffMin < 1) return t('common.now');
+  if (diffMin < 60) return t('time.minutesAgo', { count: diffMin });
   const diffHours = Math.floor(diffMin / 60);
-  if (diffHours < 24) return `${diffHours} h fa`;
+  if (diffHours < 24) return t('time.hoursAgo', { count: diffHours });
   const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7) return `${diffDays} g fa`;
+  if (diffDays < 7) return t('time.daysAgo', { count: diffDays });
   return formatDateTime(iso);
 }
 
@@ -509,9 +725,9 @@ function buildProductionProjectSummary(chain, detail) {
   const powerShards = computeChainPowerShards(steps);
 
   const metrics = [];
-  if (machines > 0) metrics.push(`${machines} macchine`);
-  if (nodes > 0) metrics.push(`${nodes} nodi`);
-  if (powerShards > 0) metrics.push(`${powerShards} PS`);
+  if (machines > 0) metrics.push(t('dashboard.metricsMachines', { count: machines }));
+  if (nodes > 0) metrics.push(t('dashboard.metricsNodes', { count: nodes }));
+  if (powerShards > 0) metrics.push(t('dashboard.metricsPowerShards', { count: powerShards }));
 
   return {
     id: chain.id,
@@ -519,7 +735,7 @@ function buildProductionProjectSummary(chain, detail) {
     name: chain.name,
     updated_at: chain.updated_at || chain.created_at,
     health,
-    metricsText: metrics.join(' · ') || 'Nessuno schema ancora',
+    metricsText: metrics.join(' · ') || t('dashboard.metricsNoPlan'),
     detail,
   };
 }
@@ -535,8 +751,8 @@ function buildEnergyProjectSummary(chain, detail) {
   const totalMw = generators.reduce((sum, gen) => sum + (gen.power_output_mw ?? 0), 0);
 
   const metrics = [];
-  if (machines > 0) metrics.push(`${machines} generatori`);
-  if (totalMw > 0) metrics.push(`${formatProductionValue(totalMw)} MW`);
+  if (machines > 0) metrics.push(t('dashboard.metricsGenerators', { count: machines }));
+  if (totalMw > 0) metrics.push(t('dashboard.metricsMw', { value: formatProductionValue(totalMw) }));
 
   return {
     id: chain.id,
@@ -544,7 +760,7 @@ function buildEnergyProjectSummary(chain, detail) {
     name: chain.name,
     updated_at: chain.updated_at || chain.created_at,
     health,
-    metricsText: metrics.join(' · ') || 'Nessun generatore ancora',
+    metricsText: metrics.join(' · ') || t('dashboard.metricsNoGenerators'),
     detail,
   };
 }
@@ -596,10 +812,37 @@ function collectDashboardAlerts(projects) {
 }
 
 const DASHBOARD_GENERATOR_LABELS = {
-  'generator-coal': 'Carbone',
-  'generator-fuel': 'Carburante',
-  'generator-nuclear': 'Nucleare',
+  'generator-coal': 'Coal',
+  'generator-fuel': 'Fuel',
+  'generator-nuclear': 'Nuclear',
 };
+
+function syncLocaleDependentLabels() {
+  MINER_OPTIONS.splice(
+    0,
+    MINER_OPTIONS.length,
+    { slug: 'miner-mk1', label: t('miners.mk1') },
+    { slug: 'miner-mk2', label: t('miners.mk2') },
+    { slug: 'miner-mk3', label: t('miners.mk3') }
+  );
+
+  PURITY_OPTIONS.splice(
+    0,
+    PURITY_OPTIONS.length,
+    { value: 'impure', label: t('purity.impure') },
+    { value: 'normal', label: t('purity.normal') },
+    { value: 'pure', label: t('purity.pure') }
+  );
+
+  Object.keys(DASHBOARD_GENERATOR_LABELS).forEach((key) => {
+    delete DASHBOARD_GENERATOR_LABELS[key];
+  });
+  Object.assign(DASHBOARD_GENERATOR_LABELS, {
+    'generator-coal': t('generators.coal'),
+    'generator-fuel': t('generators.fuel'),
+    'generator-nuclear': t('generators.nuclear'),
+  });
+}
 
 const DASHBOARD_GENERATOR_ICONS = {
   'generator-coal': 'fa-fire',
@@ -751,7 +994,8 @@ function renderDashboardDeficitsChart(deficits) {
   const container = document.getElementById('dashboard-chart-deficits');
   if (!deficits.length) {
     container.innerHTML =
-      '<p class="dashboard-empty dashboard-empty--ok"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Nessun deficit risorsa.</p>';
+      '<p class="dashboard-empty dashboard-empty--ok"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> ' +
+      `${escapeHtml(t('dashboard.emptyNoResourceDeficits'))}</p>`;
     return;
   }
 
@@ -775,7 +1019,7 @@ function renderDashboardObjectivesChart(objectives) {
   const container = document.getElementById('dashboard-chart-objectives');
   if (!objectives.length) {
     container.innerHTML =
-      '<p class="dashboard-empty">Nessun obiettivo di produzione definito.</p>';
+      `<p class="dashboard-empty">${escapeHtml(t('dashboard.emptyNoObjectives'))}</p>`;
     return;
   }
 
@@ -802,7 +1046,7 @@ function renderDashboardObjectivesChart(objectives) {
 function renderDashboardPowerChart(mix) {
   const container = document.getElementById('dashboard-chart-power');
   if (!mix.length) {
-    container.innerHTML = '<p class="dashboard-empty">Nessun generatore configurato.</p>';
+    container.innerHTML = `<p class="dashboard-empty">${escapeHtml(t('dashboard.emptyNoGenerators'))}</p>`;
     return;
   }
 
@@ -890,15 +1134,18 @@ function renderDashboardProjectsList(projects) {
   const container = document.getElementById('dashboard-projects');
   if (!projects.length) {
     container.innerHTML = `
-      <p class="dashboard-empty">Nessun progetto ancora.</p>
-      <p class="dashboard-empty-hint">Crea una catena di produzione o uno schema energia per iniziare.</p>`;
+      <p class="dashboard-empty">${escapeHtml(t('dashboard.emptyNoProjects'))}</p>
+      <p class="dashboard-empty-hint">${escapeHtml(t('dashboard.emptyProjectsHint'))}</p>`;
     return;
   }
 
   container.innerHTML = projects
     .slice(0, 8)
     .map((project) => {
-      const typeLabel = project.type === 'production' ? 'Produzione' : 'Energia';
+      const typeLabel =
+        project.type === 'production'
+          ? t('dashboard.projectTypeProduction')
+          : t('dashboard.projectTypeEnergy');
       const typeIcon = project.type === 'production' ? 'fa-link' : 'fa-bolt';
       return `
         <button
@@ -920,7 +1167,7 @@ function renderDashboardProjectsList(projects) {
               <span class="dashboard-project-sep">·</span>
               <span>${escapeHtml(project.metricsText)}</span>
             </span>
-            <span class="dashboard-project-updated">Aggiornato ${formatDashboardRelativeTime(project.updated_at)}</span>
+            <span class="dashboard-project-updated">${escapeHtml(t('time.updated', { when: formatDashboardRelativeTime(project.updated_at) }))}</span>
           </span>
         </button>`;
     })
@@ -933,7 +1180,7 @@ function renderDashboardAlertsList(alerts) {
     container.innerHTML = `
       <p class="dashboard-empty dashboard-empty--ok">
         <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
-        Tutto in ordine — nessun deficit rilevato nei tuoi progetti.
+        ${escapeHtml(t('dashboard.emptyAllOk'))}
       </p>`;
     return;
   }
@@ -1107,7 +1354,7 @@ function renderItemCard(item) {
         type="button"
         class="resource-edit-btn"
         data-id="${item.id}"
-        aria-label="Modifica ${escapeHtml(item.name)}"
+        aria-label="${escapeHtml(t('resources.editAria', { name: item.name }))}"
       >${EDIT_ICON}</button>
       ${renderItemImage(item)}
       <div class="resource-info">
@@ -1124,7 +1371,7 @@ function renderCategorySection(category) {
       <header class="resource-category-header">
         <div>
           <h3>${escapeHtml(category.name)}</h3>
-          <span class="resource-category-count">${formatDisplayInteger(category.items.length)} risorse</span>
+          <span class="resource-category-count">${formatUiResourcesCount(category.items.length)}</span>
         </div>
       </header>
       <div class="resource-grid">
@@ -1139,13 +1386,12 @@ function renderSearchResults(items) {
   const filtered = filterItemsList(items);
 
   if (!filtered.length) {
-    container.innerHTML =
-      '<p class="empty-state">Nessuna risorsa trovata per la ricerca.</p>';
-    countEl.textContent = `${formatDisplayInteger(0)} risultati`;
+    container.innerHTML = `<p class="empty-state">${escapeHtml(t('resources.emptySearch'))}</p>`;
+    countEl.textContent = formatUiResultsCount(0);
     return;
   }
 
-  countEl.textContent = `${formatDisplayInteger(filtered.length)} risultat${filtered.length === 1 ? 'o' : 'i'}`;
+  countEl.textContent = formatUiResultsCount(filtered.length);
 
   const grouped = filtered.reduce((acc, item) => {
     const key = item.category;
@@ -1174,7 +1420,7 @@ function renderResources() {
   const totalItems = categories.reduce((sum, c) => sum + c.items.length, 0);
 
   if (!totalItems) {
-    container.innerHTML = '<p class="empty-state">Nessuna risorsa in questa categoria.</p>';
+    container.innerHTML = `<p class="empty-state">${escapeHtml(t('resources.emptyCategory'))}</p>`;
     return;
   }
 
@@ -1198,13 +1444,12 @@ async function refreshResourcesView() {
 
 async function loadResources() {
   const container = document.getElementById('resources-container');
-  container.innerHTML = '<p class="loading">Caricamento risorse…</p>';
+  container.innerHTML = `<p class="loading">${escapeHtml(t('common.loadingResources'))}</p>`;
 
   try {
     await refreshResourcesView();
   } catch (err) {
-    container.innerHTML =
-      '<p class="empty-state">Errore nel caricamento delle risorse.</p>';
+    container.innerHTML = `<p class="empty-state">${escapeHtml(t('resources.errorLoad'))}</p>`;
     console.error('Resources load error:', err);
   }
 }
@@ -1215,8 +1460,8 @@ function renderProductionChains() {
   if (!productionChains.length) {
     container.innerHTML = `
       <section class="card production-empty">
-        <p class="empty-state">Nessuno schema di produzione.</p>
-        <p class="production-empty-hint">Crea il tuo primo schema con il pulsante «Nuovo schema».</p>
+        <p class="empty-state">${escapeHtml(t('production.emptyList'))}</p>
+        <p class="production-empty-hint">${escapeHtml(t('production.emptyListHint'))}</p>
       </section>`;
     return;
   }
@@ -1243,7 +1488,7 @@ function renderProductionChainCard(chain) {
       <div class="production-card-body" role="button" tabindex="0" data-id="${chain.id}">
         <div class="production-card-info">
           <h3>${escapeHtml(chain.name)}</h3>
-          <p class="production-card-meta">Creato ${formatDateTime(chain.created_at)}</p>
+          <p class="production-card-meta">${escapeHtml(t('production.cardCreated', { when: formatDateTime(chain.created_at) }))}</p>
         </div>
         ${
           summaryHtml
@@ -1256,28 +1501,28 @@ function renderProductionChainCard(chain) {
           type="button"
           class="production-edit-btn"
           data-id="${chain.id}"
-          aria-label="Rinomina ${escapeHtml(chain.name)}"
-          title="Rinomina"
+          aria-label="${escapeHtml(t('actions.renameAria', { name: chain.name }))}"
+          title="${escapeHtml(t('actions.rename'))}"
         >${EDIT_ICON}</button>
         <button
           type="button"
           class="production-duplicate-btn"
           data-id="${chain.id}"
-          aria-label="Duplica ${escapeHtml(chain.name)}"
-          title="Duplica"
+          aria-label="${escapeHtml(t('production.duplicateAria', { name: chain.name }))}"
+          title="${escapeHtml(t('production.duplicate'))}"
         >${DUPLICATE_ICON}</button>
         <button
           type="button"
           class="production-export-btn"
           data-id="${chain.id}"
-          aria-label="Esporta ${escapeHtml(chain.name)}"
-          title="Esporta schema"
+          aria-label="${escapeHtml(t('actions.exportAria', { name: chain.name }))}"
+          title="${escapeHtml(t('actions.exportPlan'))}"
         >${EXPORT_ICON}</button>
         <button
           type="button"
           class="production-delete-btn"
           data-id="${chain.id}"
-          aria-label="Elimina ${escapeHtml(chain.name)}"
+          aria-label="${escapeHtml(t('actions.deleteAria', { name: chain.name }))}"
         >${DELETE_ICON}</button>
       </div>
     </article>`;
@@ -1510,7 +1755,7 @@ function formatProducerLinkOptionRate(producer, consumerStepId, itemSlug, allSte
   const surplus = getProducerOutputSurplus(producer, itemSlug, allSteps);
   const linkedElsewhere = getLinkedConsumersForOutput(producer, itemSlug, allSteps).length > 0;
   if (linkedElsewhere && surplus > 0 && surplus + LINK_BALANCE_TOLERANCE < outputRate) {
-    return `${formatRateWithUnit(surplus, unit)} liberi`;
+    return t('production.surplusFree', { rate: formatRateWithUnit(surplus, unit) });
   }
 
   return formatRateWithUnit(outputRate, unit);
@@ -1613,7 +1858,7 @@ function formatExtractionLinkOptionRate(extraction, consumerStepId, itemSlug, al
   const required = getStepInputRateForItem(consumer, itemSlug);
   const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
   if (surplus + LINK_BALANCE_TOLERANCE < required) {
-    return `${formatRateWithUnit(surplus, unit)} liberi`;
+    return t('production.surplusFree', { rate: formatRateWithUnit(surplus, unit) });
   }
 
   return formatRateWithUnit(required, unit);
@@ -1670,7 +1915,7 @@ function formatExtractionConsumerLinkOptionRate(consumer, extraction, itemSlug, 
 
   const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
   if (surplus + LINK_BALANCE_TOLERANCE < requiredRate) {
-    return `${formatRateWithUnit(surplus, unit)} liberi`;
+    return t('production.surplusFree', { rate: formatRateWithUnit(surplus, unit) });
   }
 
   return formatRateWithUnit(requiredRate, unit);
@@ -1834,8 +2079,8 @@ function updateProductionStepToggleButton(stepEl, state) {
   if (!btn) return;
 
   const configByState = {
-    expanded: { icon: 'fa-chevron-up', label: 'Comprimi schema' },
-    collapsed: { icon: 'fa-chevron-down', label: 'Espandi schema' },
+    expanded: { icon: 'fa-chevron-up', label: t('production.collapseStep') },
+    collapsed: { icon: 'fa-chevron-down', label: t('production.expandStep') },
   };
   const config = configByState[state] ?? configByState.expanded;
 
@@ -1867,10 +2112,10 @@ function updateProductionGroupToggleButton(groupEl, state) {
   if (!btn) return;
 
   btn.setAttribute('aria-expanded', state === 'collapsed' ? 'false' : 'true');
-  btn.title = state === 'collapsed' ? 'Espandi raggruppamento' : 'Comprimi raggruppamento';
+  btn.title = state === 'collapsed' ? t('production.expandGroup') : t('production.collapseGroup');
   btn.setAttribute(
     'aria-label',
-    state === 'collapsed' ? 'Espandi raggruppamento' : 'Comprimi raggruppamento'
+    state === 'collapsed' ? t('production.expandGroup') : t('production.collapseGroup')
   );
 
   const icon = btn.querySelector('i');
@@ -2009,7 +2254,7 @@ async function addProductionStepForInputSlug(itemSlug) {
 
     const itemId = findResourceItemIdBySlug(itemSlug);
     if (!itemId) {
-      console.warn('Risorsa non trovata:', itemSlug);
+      console.warn('Resource not found:', itemSlug);
       return;
     }
 
@@ -2124,7 +2369,7 @@ function getProductionGraphHelpers(detail) {
 }
 
 function getProductionGroupLabel(groupKey) {
-  if (!groupKey || groupKey === PRODUCTION_GROUP_KEY_UNGROUPED) return 'Senza gruppo';
+  if (!groupKey || groupKey === PRODUCTION_GROUP_KEY_UNGROUPED) return t('common.ungrouped');
   return groupKey;
 }
 
@@ -2145,25 +2390,25 @@ function updateProductionTreeButtonState() {
   const isAnyTree = isTree || isGroupTree;
 
   const iconClass = isTree ? 'fa-align-right' : 'fa-code-fork';
-  const label = isTree ? "Torna all'editor" : 'Visualizzazione ad albero';
+  const label = isTree ? t('production.backToEditor') : t('production.treeView');
   btn.classList.toggle('btn-tree--active', isTree);
-  btn.innerHTML = `<i class="fa-solid ${iconClass}" aria-hidden="true"></i>${label}`;
+  btn.innerHTML = `<i class="fa-solid ${iconClass}" aria-hidden="true"></i>${escapeHtml(label)}`;
   btn.setAttribute('aria-pressed', isTree ? 'true' : 'false');
   btn.title = isTree
     ? productionTreeGroupKey
-      ? `Esci dalla visualizzazione ad albero del raggruppamento «${getProductionGroupLabel(productionTreeGroupKey)}»`
-      : "Torna all'editor dello schema"
-    : 'Visualizza tutta la catena come grafico ad albero';
+      ? t('production.treeViewOfGroup', { name: getProductionGroupLabel(productionTreeGroupKey) })
+      : t('production.backToEditorPlan')
+    : t('production.treeViewTitle');
 
   if (groupBtn) {
     const groupIconClass = isGroupTree ? 'fa-align-right' : 'fa-layer-group';
-    const groupLabel = isGroupTree ? "Torna all'editor" : 'Visualizzazione ad albero Gruppi';
+    const groupLabel = isGroupTree ? t('production.backToEditor') : t('production.treeViewGroups');
     groupBtn.classList.toggle('btn-tree--active', isGroupTree);
-    groupBtn.innerHTML = `<i class="fa-solid ${groupIconClass}" aria-hidden="true"></i>${groupLabel}`;
+    groupBtn.innerHTML = `<i class="fa-solid ${groupIconClass}" aria-hidden="true"></i>${escapeHtml(groupLabel)}`;
     groupBtn.setAttribute('aria-pressed', isGroupTree ? 'true' : 'false');
     groupBtn.title = isGroupTree
-      ? "Torna all'editor dello schema"
-      : 'Visualizza la catena per raggruppamenti (solo input/output principali)';
+      ? t('production.backToEditorPlan')
+      : t('production.treeViewGroupsTitle');
   }
 
   actionsEl?.classList.toggle('production-detail-actions--tree-view', isAnyTree);
@@ -2230,11 +2475,13 @@ function getExtractionKind(extraction) {
 function getExtractionSubtitle(kind) {
   switch (kind) {
     case 'oil':
-      return 'Estrazione greggio';
+      return t('extraction.oil');
     case 'water':
-      return 'Estrazione acqua';
+      return t('extraction.water');
+    case 'coal':
+      return t('extraction.coal');
     default:
-      return 'Estrazione minerale';
+      return t('extraction.mineral');
   }
 }
 
@@ -2342,7 +2589,7 @@ function computeChainResourceBalance(allSteps, extractions = []) {
         entry.demand > LINK_BALANCE_TOLERANCE || entry.produced > LINK_BALANCE_TOLERANCE
     )
     .sort((a, b) =>
-      (a.item_name || a.item_slug).localeCompare(b.item_name || b.item_slug, 'it')
+      (a.item_name || a.item_slug).localeCompare(b.item_name || b.item_slug, activeLocale || 'it')
     );
 }
 
@@ -2375,7 +2622,10 @@ function computeExtractionNodeGroups(extractions = []) {
   }
 
   return [...groups.values()].sort((a, b) => {
-    const nameCmp = (a.item_name || a.item_slug).localeCompare(b.item_name || b.item_slug, 'it');
+    const nameCmp = (a.item_name || a.item_slug).localeCompare(
+      b.item_name || b.item_slug,
+      activeLocale || 'it'
+    );
     if (nameCmp !== 0) return nameCmp;
     return (PURITY_SORT_ORDER[a.purity] ?? 1) - (PURITY_SORT_ORDER[b.purity] ?? 1);
   });
@@ -2413,8 +2663,8 @@ function renderProductionNodesSummary(extractions = []) {
       <table class="production-external-table">
         <thead>
           <tr>
-            <th>Nodo</th>
-            <th>N°</th>
+            <th>${escapeHtml(t('production.summaryNode'))}</th>
+            <th>${escapeHtml(t('production.summaryCount'))}</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
@@ -2463,10 +2713,10 @@ function renderProductionMineralsSummary(steps, extractions = []) {
       <table class="production-external-table production-external-table--resources">
         <thead>
           <tr>
-            <th>Risorsa</th>
-            <th class="production-external-rate">Richiesta</th>
-            <th class="production-external-rate">Prodotta</th>
-            <th class="production-external-rate">Mancante</th>
+            <th>${escapeHtml(t('production.summaryResource'))}</th>
+            <th class="production-external-rate">${escapeHtml(t('production.summaryRequired'))}</th>
+            <th class="production-external-rate">${escapeHtml(t('production.summaryProduced'))}</th>
+            <th class="production-external-rate">${escapeHtml(t('production.summaryMissing'))}</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
@@ -2502,7 +2752,7 @@ function computeProductionObjectives(steps = []) {
     const stepB = steps.find((step) => step.id === b.step_id);
     const orderCmp = (stepA?.sort_order ?? 0) - (stepB?.sort_order ?? 0);
     if (orderCmp !== 0) return orderCmp;
-    return a.item_name.localeCompare(b.item_name, 'it');
+    return a.item_name.localeCompare(b.item_name, activeLocale || 'it');
   });
 }
 
@@ -2530,16 +2780,16 @@ function renderProductionObjectivesSummary(steps = []) {
 
   const body = objectives.length
     ? rows
-    : `<tr><td colspan="3" class="production-external-empty">Nessun obiettivo di produzione</td></tr>`;
+    : `<tr><td colspan="3" class="production-external-empty">${escapeHtml(t('production.noProductionObjectives'))}</td></tr>`;
 
   return `
     <div class="production-external-summary-inner production-external-summary-inner--objectives">
       <table class="production-external-table production-external-table--objectives">
         <thead>
           <tr>
-            <th>Risorsa</th>
-            <th class="production-external-rate">Obiettivo</th>
-            <th>Schema</th>
+            <th>${escapeHtml(t('production.summaryResource'))}</th>
+            <th class="production-external-rate">${escapeHtml(t('production.summaryObjective'))}</th>
+            <th>${escapeHtml(t('production.summaryStep'))}</th>
           </tr>
         </thead>
         <tbody>${body}</tbody>
@@ -2640,7 +2890,7 @@ function collectProductionGroupNames(steps = []) {
     const name = normalizeProductionGroupName(step.group_name);
     if (name) names.add(name);
   }
-  return [...names].sort((a, b) => a.localeCompare(b, 'it'));
+  return [...names].sort((a, b) => a.localeCompare(b, activeLocale || 'it'));
 }
 
 function buildProductionStepGroups(steps = [], groupMarks = {}) {
@@ -2665,7 +2915,7 @@ function buildProductionStepGroups(steps = [], groupMarks = {}) {
       if (a.minOrder !== b.minOrder) return a.minOrder - b.minOrder;
       if (a.key === PRODUCTION_GROUP_KEY_UNGROUPED) return 1;
       if (b.key === PRODUCTION_GROUP_KEY_UNGROUPED) return -1;
-      return a.key.localeCompare(b.key, 'it');
+      return a.key.localeCompare(b.key, activeLocale || 'it');
     })
     .map((group) => ({
       ...group,
@@ -2679,9 +2929,9 @@ function renderProductionStepGroupSelect(step, allSteps = []) {
   const groups = collectProductionGroupNames(allSteps);
   const current = normalizeProductionGroupName(step.group_name) ?? '';
   const options = [
-    { value: '', label: 'Senza gruppo' },
+    { value: '', label: t('common.ungrouped') },
     ...groups.map((name) => ({ value: name, label: name })),
-    { value: '__new__', label: '+ Nuovo gruppo…' },
+    { value: '__new__', label: t('production.newGroupOption') },
   ];
 
   return `
@@ -2710,7 +2960,7 @@ function syncProductionMarkButton(btn, marked, activeClass) {
 
 function renderProductionStepGroup(group, allSteps = []) {
   const state = getProductionGroupViewState(group.key);
-  const label = group.name ?? 'Senza gruppo';
+  const label = group.name ?? t('common.ungrouped');
   const stepsHtml = group.steps.map((step) => renderProductionStep(step, allSteps)).join('');
   const isGroupMarked = Boolean(group.marked);
   const markBtn =
@@ -2718,8 +2968,8 @@ function renderProductionStepGroup(group, allSteps = []) {
       ? `
         <label
           class="production-step-group-mark-btn${isGroupMarked ? ' production-step-group-mark-btn--active' : ''}"
-          title="Evidenzia il raggruppamento con sfondo verde"
-          aria-label="Evidenzia raggruppamento ${escapeHtml(label)}"
+          title="${escapeHtml(t('production.highlightGroupTitle'))}"
+          aria-label="${escapeHtml(t('production.highlightGroup'))} ${escapeHtml(label)}"
         >
           <input
             type="checkbox"
@@ -2737,8 +2987,8 @@ function renderProductionStepGroup(group, allSteps = []) {
           type="button"
           class="production-step-group-rename-btn"
           data-group-key="${escapeHtml(group.key)}"
-          title="Rinomina raggruppamento"
-          aria-label="Rinomina raggruppamento ${escapeHtml(label)}"
+          title="${escapeHtml(t('production.renameGroup'))}"
+          aria-label="${escapeHtml(t('production.renameGroupAria', { name: label }))}"
         ><i class="fa-solid fa-pen" aria-hidden="true"></i></button>`
       : '';
 
@@ -2753,15 +3003,15 @@ function renderProductionStepGroup(group, allSteps = []) {
           role="button"
           tabindex="-1"
           aria-hidden="true"
-          aria-label="Trascina per riordinare il raggruppamento"
+          aria-label="${escapeHtml(t('production.dragReorder'))}"
         >${DRAG_ICON}</div>
         <button
           type="button"
           class="production-step-group-toggle-btn"
           data-group-key="${escapeHtml(group.key)}"
           aria-expanded="${state !== 'collapsed' ? 'true' : 'false'}"
-          title="${state === 'collapsed' ? 'Espandi raggruppamento' : 'Comprimi raggruppamento'}"
-          aria-label="${state === 'collapsed' ? 'Espandi raggruppamento' : 'Comprimi raggruppamento'}"
+          title="${escapeHtml(state === 'collapsed' ? t('production.expandGroup') : t('production.collapseGroup'))}"
+          aria-label="${escapeHtml(state === 'collapsed' ? t('production.expandGroup') : t('production.collapseGroup'))}"
         ><i class="fa-solid ${state === 'collapsed' ? 'fa-chevron-down' : 'fa-chevron-up'}" aria-hidden="true"></i></button>
         <h4 class="production-step-group-title">${escapeHtml(label)}</h4>
         <div class="production-step-group-header-actions">
@@ -2772,9 +3022,9 @@ function renderProductionStepGroup(group, allSteps = []) {
           type="button"
           class="btn btn-tree production-step-group-tree-btn"
           data-group-key="${escapeHtml(group.key)}"
-          title="Visualizzazione ad albero di ${escapeHtml(label)}"
-          aria-label="Visualizzazione ad albero di ${escapeHtml(label)}"
-        ><i class="fa-solid fa-code-fork" aria-hidden="true"></i>Visualizzazione ad albero</button>
+          title="${escapeHtml(t('production.treeViewOfGroup', { name: label }))}"
+          aria-label="${escapeHtml(t('production.treeViewOfGroup', { name: label }))}"
+        ><i class="fa-solid fa-code-fork" aria-hidden="true"></i>${escapeHtml(t('production.treeViewButton'))}</button>
         <span class="production-step-group-count">${formatDisplayInteger(group.steps.length)}</span>
       </header>
       <div class="production-step-group-body">
@@ -2785,7 +3035,7 @@ function renderProductionStepGroup(group, allSteps = []) {
 
 function renderProductionStepsList(steps = [], allSteps = steps, groupMarks = {}) {
   if (!steps.length) {
-    return '<p class="detail-empty production-schemas-empty">Nessuno schema risorsa. Aggiungi la prima risorsa da produrre.</p>';
+    return `<p class="detail-empty production-schemas-empty">${escapeHtml(t('production.emptyResourceSteps'))}</p>`;
   }
 
   const groups = buildProductionStepGroups(steps, groupMarks);
@@ -2830,7 +3080,7 @@ function renderProductionStep(step, allSteps = []) {
         <div class="production-config-grid">
           <div class="production-config-field">
             <label class="production-config-label" for="production-output-${step.id}">
-              Output (${outputUnit})
+              ${escapeHtml(t('production.configOutput', { unit: outputUnit }))}
             </label>
             <input
               type="${fractionalOutput ? 'text' : 'number'}"
@@ -2851,13 +3101,13 @@ function renderProductionStep(step, allSteps = []) {
               max="${outputSliderMax}"
               step="${outputSliderStep}"
               value="${fractionalOutput ? step.target_output : Math.round(step.target_output)}"
-              aria-label="Regola output"
+              aria-label="${escapeHtml(t('production.adjustOutput'))}"
             />
           </div>
           <div class="production-config-oc-machines">
             <div class="production-config-field">
               <label class="production-config-label" for="production-overclock-${step.id}">
-                Overclock (%)
+                ${escapeHtml(t('production.configOverclock'))}
               </label>
               <input
                 type="number"
@@ -2878,12 +3128,12 @@ function renderProductionStep(step, allSteps = []) {
                 max="${window.ProductionScale.OVERCLOCK_MAX}"
                 step="1"
                 value="${Math.round(step.overclock)}"
-                aria-label="Regola overclock"
+                aria-label="${escapeHtml(t('production.adjustOverclock'))}"
               />
             </div>
             <div class="production-config-field">
               <label class="production-config-label" for="production-machines-${step.id}">
-                Macchine
+                ${escapeHtml(t('production.configMachines'))}
               </label>
               <input
                 type="number"
@@ -2904,13 +3154,13 @@ function renderProductionStep(step, allSteps = []) {
                 max="${machinesSliderMax}"
                 step="1"
                 value="${Math.round(step.machine_count)}"
-                aria-label="Regola numero macchine"
+                aria-label="${escapeHtml(t('production.adjustMachines'))}"
               />
             </div>
           </div>
           <div class="production-config-field">
             <label class="production-config-label" for="production-power-shards-${step.id}">
-              Frammento energetico
+              ${escapeHtml(t('production.configPowerShard'))}
             </label>
             <input
               type="text"
@@ -2944,7 +3194,7 @@ function renderProductionStep(step, allSteps = []) {
           class="production-step-drag-handle"
           role="button"
           tabindex="0"
-          aria-label="Trascina per riordinare"
+              aria-label="${escapeHtml(t('production.dragReorder'))}"
         >${DRAG_ICON}</div>
         ${img}
         <div class="production-step-title">
@@ -2954,8 +3204,8 @@ function renderProductionStep(step, allSteps = []) {
             <div class="production-step-actions">
               <label
                 class="production-step-mark-btn${isMarked ? ' production-step-mark-btn--active' : ''}"
-                title="Evidenzia lo schema con sfondo verde"
-                aria-label="Evidenzia schema"
+                title="${escapeHtml(t('production.highlightStepTitle'))}"
+                aria-label="${escapeHtml(t('production.highlightStep'))}"
               >
                 <input
                   type="checkbox"
@@ -2969,26 +3219,26 @@ function renderProductionStep(step, allSteps = []) {
                 type="button"
                 class="production-step-toggle-btn"
                 data-step-id="${step.id}"
-                aria-label="Comprimi schema"
+                aria-label="${escapeHtml(t('production.collapseStep'))}"
                 aria-expanded="true"
-                title="Comprimi schema"
+                title="${escapeHtml(t('production.collapseStep'))}"
               ><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></button>
               <button
                 type="button"
                 class="production-step-reset-btn"
                 data-step-id="${step.id}"
-                aria-label="Reimposta ${escapeHtml(step.name)}"
-                title="Reimposta valori predefiniti"
+                aria-label="${escapeHtml(t('actions.reset'))} ${escapeHtml(step.name)}"
+                title="${escapeHtml(t('production.resetDefaults'))}"
               >${RESET_ICON}</button>
               <button
                 type="button"
                 class="production-step-delete-btn"
                 data-step-id="${step.id}"
-                aria-label="Elimina ${escapeHtml(step.name)}"
+                aria-label="${escapeHtml(t('production.deleteStep', { name: step.name }))}"
               >${DELETE_ICON}</button>
             </div>
           </div>
-          <p class="production-step-resource">${escapeHtml(item?.name || 'Risorsa')}</p>
+          <p class="production-step-resource">${escapeHtml(item?.name || t('common.resource'))}</p>
         </div>
       </header>
       ${renderCraftSchema(scaledSchema, schema?.is_alternative, {
@@ -3204,7 +3454,7 @@ function updateStepConfigInputs(stepEl, config, step) {
   if (baseHintEl && step?.schema) {
     const primary = window.ProductionScale.getPrimaryOutput(step.schema, step.item);
     const unit = primary?.is_fluid ? 'm³/min' : '/min';
-    baseHintEl.textContent = `Base: ${formatRateWithUnit(config.base_per_min, unit)}`;
+    baseHintEl.textContent = `${t('common.base')}: ${formatRateWithUnit(config.base_per_min, unit)}`;
   }
 
   const inputsPanelEl = stepEl.querySelector('.craft-building-inputs-panel');
@@ -3667,9 +3917,9 @@ async function deleteProductionStep(stepId) {
   if (!step) return;
 
   const confirmed = await showConfirm({
-    title: 'Elimina schema risorsa',
-    message: `Eliminare «${step.name}» da questo schema di produzione?`,
-    confirmLabel: 'Elimina',
+    title: t('confirm.deleteResourceStepTitle'),
+    message: t('confirm.deleteResourceStepMessage', { name: step.name }),
+    confirmLabel: t('actions.delete'),
   });
   if (!confirmed) return;
 
@@ -3776,7 +4026,7 @@ function formatExtractionBuildingConfigContent(extraction, outputUnit) {
 }
 
 function getExtractionDisplayName(extraction, allExtractions = []) {
-  const baseName = extraction.item?.name || 'Minerale';
+  const baseName = extraction.item?.name || t('common.mineral');
   const sameMineral = allExtractions
     .filter((item) => item.item_id === extraction.item_id)
     .sort((a, b) => a.sort_order - b.sort_order || a.id - b.id);
@@ -3821,11 +4071,11 @@ function buildExtractionLinkUi(extraction, allExtractions, allSteps) {
 
   const linkedStatusMessage =
     linkState === 'balanced'
-      ? `<span class="production-link-covered">Usato completamente</span>`
+      ? `<span class="production-link-covered">${escapeHtml(t('production.linkFullyUsed'))}</span>`
       : linkState === 'excess' && unlinkedExcess > LINK_BALANCE_TOLERANCE
-        ? `<span class="production-link-external">Eccedenza: ${formatRateWithUnit(unlinkedExcess, outputUnit)}</span>`
+        ? `<span class="production-link-external">${escapeHtml(t('production.linkExcess', { rate: formatRateWithUnit(unlinkedExcess, outputUnit) }))}</span>`
         : linkState === 'deficit' && linkedShortfall > LINK_BALANCE_TOLERANCE
-          ? `<span class="production-link-deficit">Mancano ${formatRateWithUnit(linkedShortfall, outputUnit)} per gli schemi collegati</span>`
+          ? `<span class="production-link-deficit">${escapeHtml(t('production.linkMissingForLinked', { rate: formatRateWithUnit(linkedShortfall, outputUnit) }))}</span>`
           : '';
 
   const html =
@@ -3851,7 +4101,7 @@ function buildExtractionLinkUi(extraction, allExtractions, allSteps) {
           ${
             consumerCandidates.length > 0
               ? `<div class="production-input-links">
-                  <span class="production-input-links-label">Collega a schema:</span>
+                  <span class="production-input-links-label">${escapeHtml(t('production.linkToStep'))}</span>
                   <div class="production-link-options">
                     ${consumerCandidates
                       .map((consumer) => {
@@ -3936,7 +4186,7 @@ function isLiquidExtraction(extraction) {
 
 function renderProductionExtractionsList(extractions = [], allSteps = []) {
   if (!extractions.length) {
-    return '<p class="detail-empty production-extractions-empty">Nessuna estrazione configurata.</p>';
+    return `<p class="detail-empty production-extractions-empty">${escapeHtml(t('production.emptyExtractions'))}</p>`;
   }
 
   const minerals = extractions.filter((extraction) => !isLiquidExtraction(extraction));
@@ -3957,8 +4207,8 @@ function renderProductionExtractionsList(extractions = [], allSteps = []) {
   };
 
   return `<div class="production-extractions-groups">
-    ${renderGroup(minerals, 'Minerali', 'minerals')}
-    ${renderGroup(liquids, 'Liquidi', 'liquids')}
+    ${renderGroup(minerals, t('production.groupMinerals'), 'minerals')}
+    ${renderGroup(liquids, t('production.groupLiquids'), 'liquids')}
   </div>`;
 }
 
@@ -3995,13 +4245,17 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
     : '<span class="resource-img resource-img--placeholder"></span>';
 
   const defaultBuildingName =
-    kind === 'oil' ? 'Estrattore di petrolio' : kind === 'water' ? "Estrattore d'acqua" : 'Trivella';
+    kind === 'oil'
+      ? t('energy.defaultOilExtractor')
+      : kind === 'water'
+        ? t('energy.defaultWaterExtractor')
+        : t('energy.defaultMiner');
 
   const minerField =
     kind === 'mineral'
       ? `
             <div class="production-config-field production-config-field--select">
-              <span class="production-config-label">Trivella</span>
+              <span class="production-config-label">${escapeHtml(t('production.configMiner'))}</span>
               ${renderThemeSelect({
                 id: `production-extraction-miner-${extraction.id}`,
                 options: MINER_OPTIONS.map((miner) => ({ value: miner.slug, label: miner.label })),
@@ -4015,7 +4269,7 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
     kind !== 'water'
       ? `
             <div class="production-config-field production-config-field--select">
-              <span class="production-config-label">Purezza nodo</span>
+              <span class="production-config-label">${escapeHtml(t('production.configPurity'))}</span>
               ${renderThemeSelect({
                 id: `production-extraction-purity-${extraction.id}`,
                 options: PURITY_OPTIONS.map((purity) => ({
@@ -4028,7 +4282,7 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
             </div>`
       : '';
 
-  const nodesLabel = kind === 'water' ? 'Estrattori' : 'Nodi';
+  const nodesLabel = kind === 'water' ? t('production.configExtractors') : t('production.configNodes');
 
   const { linkStateClass, html: linkedConsumersSection } = buildExtractionLinkUi(
     extraction,
@@ -4051,21 +4305,21 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
                 type="button"
                 class="production-step-reset-btn production-extraction-duplicate-btn"
                 data-item-id="${extraction.item_id}"
-                aria-label="Aggiungi altra estrazione di ${escapeHtml(displayName)}"
-                title="Aggiungi altra estrazione per questa risorsa"
+                aria-label="${escapeHtml(t('production.addAnotherExtractionAria', { name: displayName }))}"
+                title="${escapeHtml(t('production.addAnotherExtraction'))}"
               >${ADD_ICON}</button>
               <button
                 type="button"
                 class="production-step-reset-btn"
                 data-extraction-id="${extraction.id}"
-                aria-label="Reimposta estrazione"
-                title="Reimposta valori predefiniti"
+                aria-label="${escapeHtml(t('production.resetExtraction'))}"
+                title="${escapeHtml(t('production.resetDefaults'))}"
               >${RESET_ICON}</button>
               <button
                 type="button"
                 class="production-step-delete-btn"
                 data-extraction-id="${extraction.id}"
-                aria-label="Elimina estrazione"
+                aria-label="${escapeHtml(t('production.deleteExtraction'))}"
               >${DELETE_ICON}</button>
             </div>
           </header>
@@ -4074,7 +4328,7 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
             ${purityField}
             <div class="production-config-field">
               <label class="production-config-label" for="production-extraction-output-${extraction.id}">
-                Output (${outputUnit})
+                ${escapeHtml(t('production.configOutput', { unit: outputUnit }))}
               </label>
               <input
                 type="text"
@@ -4095,12 +4349,12 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
                 max="${outputSliderMax}"
                 step="${outputSliderStep}"
                 value="${fractionalExtractionOutput ? targetOutput : Math.round(targetOutput)}"
-                aria-label="Regola output estrazione"
+                aria-label="${escapeHtml(t('production.adjustExtractionOutput'))}"
               />
             </div>
             <div class="production-config-field">
               <label class="production-config-label" for="production-extraction-overclock-${extraction.id}">
-                Overclock (%)
+                ${escapeHtml(t('production.configOverclock'))}
               </label>
               <input
                 type="number"
@@ -4121,7 +4375,7 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
                 max="${window.ProductionScale.OVERCLOCK_MAX}"
                 step="1"
                 value="${Math.round(extraction.overclock)}"
-                aria-label="Regola overclock estrazione"
+                aria-label="${escapeHtml(t('production.adjustExtractionOverclock'))}"
               />
             </div>
             <div class="production-config-field">
@@ -4147,12 +4401,12 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
                 max="${nodesSliderMax}"
                 step="1"
                 value="${Math.round(nodeCount)}"
-                aria-label="Regola numero ${nodesLabel.toLowerCase()}"
+                aria-label="${escapeHtml(t('production.adjustNodes', { nodes: nodesLabel.toLowerCase() }))}"
               />
             </div>
             <div class="production-config-field">
               <label class="production-config-label" for="production-extraction-power-${extraction.id}">
-                Frammento energetico
+                ${escapeHtml(t('production.configPowerShard'))}
               </label>
               <input
                 type="text"
@@ -4424,9 +4678,9 @@ async function deleteProductionExtraction(extractionId) {
   );
 
   const confirmed = await showConfirm({
-    title: 'Elimina estrazione',
-    message: `Eliminare l'estrazione «${displayName}»?`,
-    confirmLabel: 'Elimina',
+    title: t('confirm.deleteExtractionTitle'),
+    message: t('confirm.deleteExtractionMessage', { name: displayName }),
+    confirmLabel: t('actions.delete'),
   });
   if (!confirmed) return;
 
@@ -4460,7 +4714,7 @@ function renderProductionDetailContent(detail) {
   disposeProductionGraph();
 
   if (!detail?.chain) {
-    productionDetailBody.innerHTML = '<p class="detail-empty">Schema non trovato.</p>';
+    productionDetailBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('production.notFound'))}</p>`;
     document.getElementById('production-detail-external-summary').innerHTML = '';
     return;
   }
@@ -4470,14 +4724,10 @@ function renderProductionDetailContent(detail) {
 
   document.getElementById('production-detail-heading').textContent = detail.chain.name;
   document.getElementById('production-detail-breadcrumb').textContent = detail.chain.name;
-  document.getElementById('production-detail-meta').textContent =
-    `${extractions.length} estrazione${extractions.length === 1 ? '' : 'i'}, ${steps.length} schema${steps.length === 1 ? '' : ' i'} risorsa${
-      productionDetailViewMode === 'group-tree'
-        ? ' · Albero gruppi'
-        : productionDetailViewMode === 'tree' && productionTreeGroupKey
-          ? ` · Albero: ${getProductionGroupLabel(productionTreeGroupKey)}`
-          : ''
-    }`;
+  document.getElementById('production-detail-meta').textContent = formatProductionDetailMeta(
+    extractions.length,
+    steps.length
+  );
   updateProductionDetailExternalSummary();
   updateProductionGroupTreeButtonVisibility(detail);
   updateProductionTreeButtonState();
@@ -4507,14 +4757,14 @@ function renderProductionDetailContent(detail) {
   productionDetailBody.innerHTML = `
     <div class="production-detail-columns">
       <section class="production-extractions-section">
-        <h3 class="production-section-header">Estrazioni risorse</h3>
+        <h3 class="production-section-header">${escapeHtml(t('production.sectionExtractions'))}</h3>
         ${extractionsHtml}
       </section>
       <section class="production-schemas-section">
         <div class="production-section-header-row">
-          <h3 class="production-section-header">Schemi risorse</h3>
+          <h3 class="production-section-header">${escapeHtml(t('production.sectionResourceSteps'))}</h3>
           <p class="production-group-reorder-hint" hidden>
-            Comprimi tutti i raggruppamenti per riordinarli trascinando l’icona a sinistra.
+            ${escapeHtml(t('production.groupReorderHint'))}
           </p>
         </div>
         ${stepsHtml}
@@ -4770,7 +5020,7 @@ async function handleProductionStepGroupRename(groupKey, newName) {
 
   const normalizedNew = normalizeProductionGroupName(newName);
   if (!normalizedNew) {
-    throw new Error('Il nome del raggruppamento è obbligatorio');
+    throw new Error(t('errors.groupNameRequired'));
   }
 
   activeProductionDetail = await window.satisfactory.renameProductionStepGroup(
@@ -4788,7 +5038,7 @@ async function handleProductionStepGroupChange(stepId, value) {
       kind: 'step-group',
       id: stepId,
       name: '',
-      title: 'Nuovo raggruppamento',
+      title: t('confirm.newGroupTitle'),
     });
     return;
   }
@@ -4887,7 +5137,7 @@ async function openProductionDetail(chainId) {
   productionDetailViewMode = 'editor';
   productionTreeGroupKey = null;
   hydrateProductionUiStateMaps(chainId);
-  productionDetailBody.innerHTML = '<p class="loading">Caricamento…</p>';
+  productionDetailBody.innerHTML = `<p class="loading">${escapeHtml(t('common.loading'))}</p>`;
   document.getElementById('production-detail-heading').textContent = '—';
   document.getElementById('production-detail-breadcrumb').textContent = '—';
   document.getElementById('production-detail-meta').textContent = '';
@@ -4901,8 +5151,7 @@ async function openProductionDetail(chainId) {
     activeProductionDetail = await window.satisfactory.getProductionChainDetail(chainId);
     renderProductionDetailContent(activeProductionDetail);
   } catch (err) {
-    productionDetailBody.innerHTML =
-      '<p class="detail-empty">Errore nel caricamento dello schema.</p>';
+    productionDetailBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('production.errorDetailLoad'))}</p>`;
     console.error('Production detail error:', err);
   }
 }
@@ -4936,11 +5185,11 @@ function renderExtractionPickerList(categories) {
   );
   const total = mineralItems.length + liquidItems.length;
   const countEl = document.getElementById('resource-picker-count');
-  countEl.textContent = `${total} risors${total === 1 ? 'a' : 'e'}`;
+  countEl.textContent = formatUiResourcesCount(total);
 
   if (!total) {
     document.getElementById('resource-picker-list').innerHTML =
-      '<p class="empty-state">Nessuna risorsa estraibile trovata.</p>';
+      `<p class="empty-state">${escapeHtml(t('errors.pickerExtractEmpty'))}</p>`;
     return;
   }
 
@@ -4959,7 +5208,7 @@ function renderExtractionPickerList(categories) {
   if (liquidItems.length) {
     sections.push(`
       <section class="picker-category">
-        <h4>Liquidi</h4>
+        <h4>${escapeHtml(t('production.groupLiquids'))}</h4>
         <div class="picker-grid">
           ${liquidItems.map(renderExtractionPickerItem).join('')}
         </div>
@@ -4988,7 +5237,7 @@ function renderResourcePickerItem(item) {
     >
       ${renderItemImage(item)}
       <span>${escapeHtml(item.name)}</span>
-      ${hasSchemas ? '' : '<span class="picker-item-note">Nessuno schema</span>'}
+      ${hasSchemas ? '' : `<span class="picker-item-note">${escapeHtml(t('modals.pickerNoSchema'))}</span>`}
     </button>`;
 }
 
@@ -4998,7 +5247,7 @@ function renderResourcePickerCategories(categories) {
   countEl.textContent = `${total} risorse`;
 
   if (!total) {
-    return '<p class="empty-state">Nessuna risorsa trovata.</p>';
+    return `<p class="empty-state">${escapeHtml(t('picker.noResources'))}</p>`;
   }
 
   return categories
@@ -5017,10 +5266,10 @@ function renderResourcePickerCategories(categories) {
 
 function renderResourcePickerSearchResults(items) {
   const countEl = document.getElementById('resource-picker-count');
-  countEl.textContent = `${formatDisplayInteger(items.length)} risultat${items.length === 1 ? 'o' : 'i'}`;
+  countEl.textContent = formatUiResultsCount(items.length);
 
   if (!items.length) {
-    return '<p class="empty-state">Nessuna risorsa trovata.</p>';
+    return `<p class="empty-state">${escapeHtml(t('picker.noResources'))}</p>`;
   }
 
   const grouped = items.reduce((acc, item) => {
@@ -5061,11 +5310,11 @@ function renderResourcePickerList(categories) {
 
 async function openExtractionPickerModal() {
   resourcePickerMode = 'extraction';
-  document.getElementById('resource-picker-modal-title').textContent = 'Seleziona risorsa da estrarre';
+  document.getElementById('resource-picker-modal-title').textContent = t('modals.selectResourceExtract');
   document.getElementById('resource-picker-search').value = '';
   document.getElementById('resource-picker-count').textContent = '';
   document.getElementById('resource-picker-list').innerHTML =
-    '<p class="loading">Caricamento risorse…</p>';
+    `<p class="loading">${escapeHtml(t('common.loadingResources'))}</p>`;
   resourcePickerModal.classList.remove('hidden');
   resourcePickerModal.setAttribute('aria-hidden', 'false');
 
@@ -5077,7 +5326,7 @@ async function openExtractionPickerModal() {
     document.getElementById('resource-picker-search').focus();
   } catch (err) {
     document.getElementById('resource-picker-list').innerHTML =
-      '<p class="empty-state">Errore nel caricamento delle risorse.</p>';
+      `<p class="empty-state">${escapeHtml(t('resources.errorLoad'))}</p>`;
     console.error('Extraction picker load error:', err);
   }
 }
@@ -5089,11 +5338,11 @@ async function openMineralPickerModal() {
 async function openResourcePickerModal() {
   pendingInsertAfterStepId = null;
   resourcePickerMode = 'step';
-  document.getElementById('resource-picker-modal-title').textContent = 'Seleziona risorsa';
+  document.getElementById('resource-picker-modal-title').textContent = t('modals.selectResource');
   document.getElementById('resource-picker-search').value = '';
   document.getElementById('resource-picker-count').textContent = '';
   document.getElementById('resource-picker-list').innerHTML =
-    '<p class="loading">Caricamento risorse…</p>';
+    `<p class="loading">${escapeHtml(t('common.loadingResources'))}</p>`;
   resourcePickerModal.classList.remove('hidden');
   resourcePickerModal.setAttribute('aria-hidden', 'false');
 
@@ -5105,7 +5354,7 @@ async function openResourcePickerModal() {
     document.getElementById('resource-picker-search').focus();
   } catch (err) {
     document.getElementById('resource-picker-list').innerHTML =
-      '<p class="empty-state">Errore nel caricamento delle risorse.</p>';
+      `<p class="empty-state">${escapeHtml(t('resources.errorLoad'))}</p>`;
     console.error('Resource picker load error:', err);
   }
 }
@@ -5126,9 +5375,10 @@ function renderSelectableCraftSchema(schema) {
 
 function openSchemaPickerModal(item, schemas) {
   pendingPickerItemId = item.id;
-  document.getElementById('schema-picker-modal-title').textContent = `Schema per ${item.name}`;
-  document.getElementById('schema-picker-item-meta').textContent =
-    'Questa risorsa ha schemi alternativi. Scegli quale usare.';
+  document.getElementById('schema-picker-modal-title').textContent = t('modals.selectSchemaFor', {
+    name: item.name,
+  });
+  document.getElementById('schema-picker-item-meta').textContent = t('modals.selectSchemaAltHint');
 
   const imgEl = document.getElementById('schema-picker-item-image');
   if (item.image) {
@@ -5214,7 +5464,7 @@ async function handleResourceSelection(itemId) {
 
 async function loadProductionChains() {
   const container = document.getElementById('production-container');
-  container.innerHTML = '<p class="loading">Caricamento schemi…</p>';
+  container.innerHTML = `<p class="loading">${escapeHtml(t('common.loadingSchemas'))}</p>`;
 
   try {
     productionChains = await window.satisfactory.getProductionChains();
@@ -5222,7 +5472,7 @@ async function loadProductionChains() {
     renderProductionChains();
   } catch (err) {
     container.innerHTML =
-      '<p class="empty-state">Errore nel caricamento degli schemi di produzione.</p>';
+      `<p class="empty-state">${escapeHtml(t('production.errorLoadList'))}</p>`;
     console.error('Production load error:', err);
   }
 }
@@ -5269,10 +5519,10 @@ function openSchemaRenameModal({ kind, id, name, title, onSaved, groupKey }) {
   document.getElementById('schema-rename-modal-title').textContent =
     title ??
     (kind === 'energy'
-      ? 'Rinomina schema energia'
+      ? t('modals.renameEnergyPlan')
       : kind === 'step-group' || kind === 'rename-step-group'
-        ? 'Raggruppamento'
-        : 'Rinomina schema di produzione');
+        ? t('modals.renameGroup')
+        : t('modals.renameProductionPlan'));
   schemaRenameOnSaved = typeof onSaved === 'function' ? onSaved : null;
   schemaRenameGroupKey = groupKey ?? null;
   schemaRenameModal.classList.remove('hidden');
@@ -5304,7 +5554,7 @@ function setupSchemaRenameModal() {
     const id = Number(document.getElementById('schema-rename-id').value);
     const name = document.getElementById('schema-rename-name').value.trim();
     if (!name) {
-      showSchemaRenameError('Il nome è obbligatorio.');
+      showSchemaRenameError(t('errors.nameRequired'));
       return;
     }
 
@@ -5331,7 +5581,7 @@ function setupSchemaRenameModal() {
       schemaRenameOnSaved?.(updated);
       closeSchemaRenameModal();
     } catch (err) {
-      showSchemaRenameError(err.message || 'Errore durante il salvataggio.');
+      showSchemaRenameError(err.message || t('errors.saveFailed'));
     }
   });
 }
@@ -5360,7 +5610,7 @@ function setupProduction() {
       renderProductionChains();
     } catch (err) {
       console.error('Production import error:', err);
-      window.alert?.(err.message || 'Errore durante l’importazione dello schema.');
+        window.alert?.(err.message || t('errors.importFailed'));
     }
   });
   document.getElementById('production-create-modal-close').addEventListener('click', closeProductionCreateModal);
@@ -5445,9 +5695,9 @@ function setupProduction() {
       if (!chain) return;
 
       const confirmed = await showConfirm({
-        title: 'Elimina schema',
-        message: `Eliminare lo schema «${chain.name}»? L'operazione non può essere annullata.`,
-        confirmLabel: 'Elimina',
+        title: t('confirm.deletePlanTitle'),
+        message: t('confirm.deletePlanMessage', { name: chain.name }),
+        confirmLabel: t('actions.delete'),
       });
       if (!confirmed) return;
 
@@ -5835,7 +6085,7 @@ function setupProduction() {
         id: activeProductionChainId,
         groupKey,
         name: groupKey,
-        title: 'Rinomina raggruppamento',
+        title: t('confirm.renameGroupTitle'),
       });
       return;
     }
@@ -5913,13 +6163,13 @@ function setupProduction() {
           const liquids = results.filter((item) => EXTRACTION_LIQUID_SLUGS.includes(item.slug));
 
           if (!results.length) {
-            listEl.innerHTML = '<p class="empty-state">Nessuna risorsa estraibile trovata.</p>';
+            listEl.innerHTML = `<p class="empty-state">${escapeHtml(t('errors.pickerExtractEmpty'))}</p>`;
           } else {
             const sections = [];
             if (minerals.length) {
               sections.push(`
                 <section class="picker-category">
-                  <h4>Minerali</h4>
+                  <h4>${escapeHtml(t('production.groupMinerals'))}</h4>
                   <div class="picker-grid">
                     ${minerals.map(renderExtractionPickerItem).join('')}
                   </div>
@@ -5928,7 +6178,7 @@ function setupProduction() {
             if (liquids.length) {
               sections.push(`
                 <section class="picker-category">
-                  <h4>Liquidi</h4>
+                  <h4>${escapeHtml(t('production.groupLiquids'))}</h4>
                   <div class="picker-grid">
                     ${liquids.map(renderExtractionPickerItem).join('')}
                   </div>
@@ -5938,7 +6188,7 @@ function setupProduction() {
           }
 
           document.getElementById('resource-picker-count').textContent =
-            `${formatDisplayInteger(results.length)} risultat${results.length === 1 ? 'o' : 'i'}`;
+            `${formatUiResultsCount(results.length)}`;
         } else {
           listEl.innerHTML = renderResourcePickerSearchResults(results);
         }
@@ -5972,7 +6222,7 @@ function setupProduction() {
       await loadProductionChainSummaries();
       renderProductionChains();
     } catch (err) {
-      showProductionCreateError(err.message || 'Errore durante la creazione');
+      showProductionCreateError(err.message || t('errors.createFailed'));
     }
   });
 }
@@ -6237,10 +6487,10 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
             .join('')}
           ${
             linkState === 'balanced'
-              ? `<span class="production-link-covered">Coperto completamente</span>`
+              ? `<span class="production-link-covered">${escapeHtml(t('production.linkFullyCovered'))}</span>`
               : linkState === 'excess'
-                ? `<span class="production-link-external">Eccedenza collegata: ${formatRateWithUnit(linkedExcessRate, unit)}</span>`
-                : `<span class="production-link-deficit">Esterno: ${formatRateWithUnit(externalRate, unit)}</span>`
+                ? `<span class="production-link-external">${escapeHtml(t('production.linkExcessLinked', { rate: formatRateWithUnit(linkedExcessRate, unit) }))}</span>`
+                : `<span class="production-link-deficit">${escapeHtml(t('production.linkExternal', { rate: formatRateWithUnit(externalRate, unit) }))}</span>`
           }
         </div>`
       : '';
@@ -6248,7 +6498,7 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
   const linkSection =
     candidates.length > 0
       ? `<div class="production-input-links">
-          <span class="production-input-links-label">Collega da schema:</span>
+          <span class="production-input-links-label">${escapeHtml(t('production.linkFromProduction'))}</span>
           <div class="production-link-options">
             ${candidates
               .map((producer) => {
@@ -6284,7 +6534,7 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
   const extractionLinkSection =
     extractionCandidates.length > 0
       ? `<div class="production-input-links">
-          <span class="production-input-links-label">Collega da estrazione:</span>
+          <span class="production-input-links-label">${escapeHtml(t('production.linkFromExtraction'))}</span>
           <div class="production-link-options">
             ${extractionCandidates
               .map((extraction) => {
@@ -6324,8 +6574,8 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
         type="button"
         class="production-input-add-trigger"
         data-item-slug="${escapeHtml(itemSlug)}"
-        title="Aggiungi schema risorsa per ${escapeHtml(io.item_name || itemSlug)}"
-        aria-label="Aggiungi schema risorsa per ${escapeHtml(io.item_name || itemSlug)}"
+        title="${escapeHtml(t('production.addResourceStepFor', { name: io.item_name || itemSlug }))}"
+        aria-label="${escapeHtml(t('production.addResourceStepFor', { name: io.item_name || itemSlug }))}"
       >
         ${img}
         <span>${escapeHtml(io.item_name || itemSlug)}</span>
@@ -6369,10 +6619,10 @@ function renderProductionOutputWithLinks(step, io, ioOptions, allSteps) {
             .join('')}
           ${
             linkState === 'balanced'
-              ? `<span class="production-link-covered">Usato completamente</span>`
+              ? `<span class="production-link-covered">${escapeHtml(t('production.linkFullyUsed'))}</span>`
               : linkState === 'excess'
-                ? `<span class="production-link-external">Eccedenza: ${formatRateWithUnit(excessRate, unit)}</span>`
-                : `<span class="production-link-deficit">Insufficiente: ${formatRateWithUnit(deficitRate, unit)}</span>`
+                ? `<span class="production-link-external">${escapeHtml(t('production.linkExcess', { rate: formatRateWithUnit(excessRate, unit) }))}</span>`
+                : `<span class="production-link-deficit">${escapeHtml(t('production.linkInsufficient', { rate: formatRateWithUnit(deficitRate, unit) }))}</span>`
           }
         </div>`
       : '';
@@ -6465,7 +6715,7 @@ function renderBuildingInputsContent(buildingConfig) {
           ${icon}
           <div class="craft-building-input-rates">
             <span class="craft-building-input-current"><strong>${escapeHtml(formatRateWithUnit(input.current_per_min, unit))}</strong></span>
-            <span class="craft-building-input-base">Base: ${escapeHtml(formatRateWithUnit(input.base_per_min, unit))}</span>
+            <span class="craft-building-input-base">${escapeHtml(t('common.base'))}: ${escapeHtml(formatRateWithUnit(input.base_per_min, unit))}</span>
           </div>
         </div>`;
     })
@@ -6473,7 +6723,7 @@ function renderBuildingInputsContent(buildingConfig) {
 
   return `
     <div class="craft-building-inputs">
-      <span class="craft-building-inputs-label">Input / macchina</span>
+      <span class="craft-building-inputs-label">${escapeHtml(t('production.inputsPerMachine'))}</span>
       ${items}
     </div>`;
 }
@@ -6504,7 +6754,7 @@ function renderBuildingPanel(schema, buildingConfig = null) {
   const totalOutputLine = renderBuildingTotalOutput(buildingConfig);
   const baseLine =
     buildingConfig?.base_per_min != null
-      ? `<span class="craft-building-base">Base: ${escapeHtml(formatRateWithUnit(buildingConfig.base_per_min, buildingConfig.output_unit || '/min'))}</span>`
+      ? `<span class="craft-building-base">${escapeHtml(t('common.base'))}: ${escapeHtml(formatRateWithUnit(buildingConfig.base_per_min, buildingConfig.output_unit || '/min'))}</span>`
       : '';
   const inputsPanel = renderBuildingInputsContent(buildingConfig);
 
@@ -6528,7 +6778,7 @@ function renderBuildingPanel(schema, buildingConfig = null) {
         <img
           class="craft-building-image-large"
           src="${escapeHtml(schema.building_image)}"
-          alt="${escapeHtml(schema.building_name || 'Edificio')}"
+          alt="${escapeHtml(schema.building_name || t('common.building'))}"
         />
         <span class="craft-building-name">${escapeHtml(schema.building_name || '—')}</span>
         ${configLine}
@@ -6572,12 +6822,12 @@ function renderCraftSchema(
     ${extraContent}
     <div class="craft-io-grid">
       <div class="craft-io-col craft-io-col--inputs">
-        <h5>Input</h5>
+        <h5>${escapeHtml(t('common.input'))}</h5>
         <div class="craft-io-list">${inputs}</div>
       </div>
       <div class="craft-arrow" aria-hidden="true">→</div>
       <div class="craft-io-col craft-io-col--outputs">
-        <h5>Output</h5>
+        <h5>${escapeHtml(t('common.output'))}</h5>
         <div class="craft-io-list">${outputs}</div>
       </div>
     </div>`;
@@ -6600,17 +6850,17 @@ function renderDetailContent(detail) {
   let html = '';
 
   if (main.length) {
-    html += `<h4 class="detail-section-title">Schema principale</h4>`;
+    html += `<h4 class="detail-section-title">${escapeHtml(t('modals.detailMainSchema'))}</h4>`;
     html += main.map((s) => renderCraftSchema(s, false)).join('');
   }
 
   if (alternatives.length) {
-    html += `<h4 class="detail-section-title alt">Schemi alternativi (${alternatives.length})</h4>`;
+    html += `<h4 class="detail-section-title alt">${escapeHtml(t('modals.detailAltSchemas', { count: alternatives.length }))}</h4>`;
     html += alternatives.map((s) => renderCraftSchema(s, true)).join('');
   }
 
   if (!main.length && !alternatives.length) {
-    html = '<p class="detail-empty">Nessuno schema di produzione registrato per questa risorsa.</p>';
+    html = `<p class="detail-empty">${escapeHtml(t('modals.detailNoSchemas'))}</p>`;
   }
 
   return html;
@@ -6621,14 +6871,14 @@ async function openDetailModal(itemId) {
   const metaEl = document.getElementById('detail-item-meta');
   const imgEl = document.getElementById('detail-item-image');
 
-  detailModalBody.innerHTML = '<p class="loading">Caricamento…</p>';
+  detailModalBody.innerHTML = `<p class="loading">${escapeHtml(t('common.loading'))}</p>`;
   detailModal.classList.remove('hidden');
   detailModal.setAttribute('aria-hidden', 'false');
 
   try {
     const detail = await window.satisfactory.getResourceDetail(itemId);
     if (!detail?.item) {
-      detailModalBody.innerHTML = '<p class="detail-empty">Risorsa non trovata.</p>';
+      detailModalBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('modals.resourceNotFound'))}</p>`;
       return;
     }
 
@@ -6655,7 +6905,7 @@ async function openDetailModal(itemId) {
 
     detailModalBody.innerHTML = renderDetailContent(detail);
   } catch (err) {
-    detailModalBody.innerHTML = '<p class="detail-empty">Errore nel caricamento del dettaglio.</p>';
+    detailModalBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('modals.detailLoadError'))}</p>`;
     console.error('Detail load error:', err);
   }
 }
@@ -6725,7 +6975,7 @@ function setupEditModal() {
       closeEditModal();
       await refreshResourcesView();
     } catch (err) {
-      showFormError(err.message || 'Errore durante il salvataggio');
+      showFormError(err.message || t('errors.saveFailed'));
     }
   });
 }
@@ -6757,9 +7007,9 @@ function setupSearch() {
 }
 
 function formatDateTime(iso) {
-  if (!iso) return 'Mai';
+  if (!iso) return t('common.never');
   try {
-    return new Date(iso).toLocaleString('it-IT');
+    return new Date(iso).toLocaleString(activeLocale || 'it');
   } catch {
     return iso;
   }
@@ -6799,7 +7049,7 @@ function renderSettingsStats(info) {
   document.getElementById('settings-bundled-version').textContent =
     info?.bundledVersion != null ? `v${info.bundledVersion}` : '—';
   document.getElementById('settings-stored-version').textContent =
-    info?.storedVersion != null ? `v${info.storedVersion}` : 'Non impostata';
+    info?.storedVersion != null ? `v${info.storedVersion}` : t('common.notSet');
   document.getElementById('settings-last-reset').textContent = formatDateTime(info?.lastResetAt);
 }
 
@@ -6814,12 +7064,12 @@ async function loadSettings() {
     renderSettingsStats(info);
     renderEnvironmentStats(status);
   } catch (err) {
-    showSettingsFeedback('Errore nel caricamento delle informazioni sui dati.', 'error');
+    showSettingsFeedback(t('settings.errorLoadInfo'), 'error');
     console.error('Settings load error:', err);
   }
 }
 
-function showConfirm({ title, message, confirmLabel = 'Conferma' }) {
+function showConfirm({ title, message, confirmLabel = t('common.confirm') }) {
   return new Promise((resolve) => {
     confirmResolve = resolve;
     document.getElementById('confirm-modal-title').textContent = title;
@@ -6854,11 +7104,9 @@ function setupConfirmModal() {
 
 async function restoreDefaultResources() {
   const confirmed = await showConfirm({
-    title: 'Ripristina dati predefiniti',
-    message:
-      'Ripristinare risorse, strutture e schemi ai valori predefiniti? ' +
-      'Le modifiche manuali a nomi e categorie verranno perse.',
-    confirmLabel: 'Ripristina',
+    title: t('confirm.restoreDefaultsTitle'),
+    message: t('confirm.restoreDefaultsMessage'),
+    confirmLabel: t('confirm.restoreDefaultsConfirm'),
   });
   if (!confirmed) return;
 
@@ -6880,11 +7128,15 @@ async function restoreDefaultResources() {
     const schemas = result.status?.counts?.schemas ?? result.schemas?.count ?? '—';
     const buildings = result.status?.counts?.buildings ?? result.buildings?.count ?? '—';
     showSettingsFeedback(
-      `Ripristino completato: ${formatSettingsCountValue(items)} risorse, ${formatSettingsCountValue(buildings)} strutture, ${formatSettingsCountValue(schemas)} schemi di produzione.`,
+      t('settings.restoreSuccess', {
+        items: formatSettingsCountValue(items),
+        buildings: formatSettingsCountValue(buildings),
+        schemas: formatSettingsCountValue(schemas),
+      }),
       'success'
     );
   } catch (err) {
-    showSettingsFeedback(err.message || 'Errore durante il ripristino.', 'error');
+    showSettingsFeedback(err.message || t('settings.errorRestore'), 'error');
     console.error('Restore error:', err);
   } finally {
     btn.disabled = false;
@@ -6935,6 +7187,8 @@ function setupSchemaFilter() {
 
 async function boot() {
   await initProductionUiStateStore();
+  await initLocaleSelector();
+  setupLocaleSelector();
   setupNavigation();
   setupLegalInfoModal();
   setupSearch();

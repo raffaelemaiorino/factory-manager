@@ -1,5 +1,13 @@
 const { loadSeedData, DATA_VERSION } = require('./seeds/items');
 const { ITEM_METADATA_PATCHES } = require('./seeds/item-metadata');
+const {
+  DEFAULT_LOCALE,
+  ensureI18nTables,
+  upsertItemTranslationsFromSeed,
+  upsertCategoryTranslationsFromSeed,
+  upsertItemTranslation,
+  getAppLocale,
+} = require('./i18n');
 
 /** Oggetti alieni esclusi dalla sezione Risorse */
 const EXCLUDED_ITEM_SLUGS = ['alien-protein', 'alien-dnacapsule'];
@@ -37,12 +45,21 @@ function ensureItemColumns(db) {
 
 function syncItemMetadata(db, persist, { force = false } = {}) {
   ensureItemColumns(db);
+  ensureI18nTables(db);
 
   for (const patch of ITEM_METADATA_PATCHES) {
     db.run(`UPDATE items SET description = ? WHERE game_id = ?`, [
       patch.description,
       patch.game_id,
     ]);
+
+    const item = queryOne(db, 'SELECT id, name FROM items WHERE game_id = ?', [patch.game_id]);
+    if (item) {
+      upsertItemTranslation(db, item.id, DEFAULT_LOCALE, {
+        name: item.name,
+        description: patch.description,
+      });
+    }
   }
 
   persist();
@@ -51,6 +68,7 @@ function syncItemMetadata(db, persist, { force = false } = {}) {
 
 function seedItems(db, persist, { force = false } = {}) {
   ensureItemColumns(db);
+  ensureI18nTables(db);
 
   const versionRow = queryOne(db, 'SELECT version FROM schema_version LIMIT 1');
   const currentVersion = versionRow?.version ?? 0;
@@ -65,6 +83,8 @@ function seedItems(db, persist, { force = false } = {}) {
   db.run('BEGIN TRANSACTION');
 
   try {
+    db.run('DELETE FROM item_translations');
+    db.run('DELETE FROM item_category_translations');
     db.run('DELETE FROM items');
     db.run('DELETE FROM item_categories');
 
@@ -73,6 +93,7 @@ function seedItems(db, persist, { force = false } = {}) {
         `INSERT INTO item_categories (slug, name, sort_order) VALUES (?, ?, ?)`,
         [cat.slug, cat.name, cat.sort_order]
       );
+      upsertCategoryTranslationsFromSeed(db, cat, DEFAULT_LOCALE, 'item');
     }
 
     for (const item of items) {
@@ -87,6 +108,8 @@ function seedItems(db, persist, { force = false } = {}) {
           item.description ?? null,
         ]
       );
+      const itemId = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
+      upsertItemTranslationsFromSeed(db, itemId, item, DEFAULT_LOCALE);
     }
 
     if (versionRow) {
@@ -115,34 +138,46 @@ function queryAll(db, sql, params = []) {
   return rows;
 }
 
+function localizedItemSelect() {
+  return `
+  i.id, i.slug,
+  COALESCE(it.name, i.name) AS name,
+  i.category, i.game_id, i.image,
+  COALESCE(it.description, i.description) AS description,
+  (SELECT COUNT(*) FROM item_schemas s WHERE s.item_id = i.id) AS schema_count
+`;
+}
+
 function getCategories(db) {
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
   const excluded = excludedSlugsPlaceholders();
   return queryAll(
     db,
-    `SELECT c.slug, c.name, c.sort_order, COUNT(i.id) AS item_count
+    `SELECT c.slug, COALESCE(ct.name, c.name) AS name, c.sort_order, COUNT(i.id) AS item_count
      FROM item_categories c
+     LEFT JOIN item_category_translations ct
+       ON ct.category_slug = c.slug AND ct.locale = ?
      LEFT JOIN items i ON i.category = c.slug AND i.slug NOT IN (${excluded})
      GROUP BY c.id
      HAVING item_count > 0
      ORDER BY c.sort_order ASC`,
-    EXCLUDED_ITEM_SLUGS
+    [locale, ...EXCLUDED_ITEM_SLUGS]
   );
 }
 
-const ITEM_SELECT = `
-  i.id, i.slug, i.name, i.category, i.game_id, i.image, i.description,
-  (SELECT COUNT(*) FROM item_schemas s WHERE s.item_id = i.id) AS schema_count
-`;
-
 function getItemsByCategory(db, categorySlug) {
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
   const excluded = excludedSlugsPlaceholders();
   return queryAll(
     db,
-    `SELECT ${ITEM_SELECT}
+    `SELECT ${localizedItemSelect()}
      FROM items i
+     LEFT JOIN item_translations it ON it.item_id = i.id AND it.locale = ?
      WHERE i.category = ? AND i.slug NOT IN (${excluded})
-     ORDER BY i.name ASC`,
-    [categorySlug, ...EXCLUDED_ITEM_SLUGS]
+     ORDER BY COALESCE(it.name, i.name) ASC`,
+    [locale, categorySlug, ...EXCLUDED_ITEM_SLUGS]
   );
 }
 
@@ -155,29 +190,44 @@ function getAllItemsGrouped(db) {
 }
 
 function searchItems(db, query) {
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
   const term = `%${query.trim()}%`;
   const excluded = excludedSlugsPlaceholders();
   return queryAll(
     db,
-    `SELECT ${ITEM_SELECT}, c.name AS category_name
+    `SELECT ${localizedItemSelect()}, COALESCE(ct.name, c.name) AS category_name
      FROM items i
      JOIN item_categories c ON c.slug = i.category
+     LEFT JOIN item_translations it ON it.item_id = i.id AND it.locale = ?
+     LEFT JOIN item_category_translations ct
+       ON ct.category_slug = c.slug AND ct.locale = ?
      WHERE i.slug NOT IN (${excluded})
-       AND (i.name LIKE ? OR i.slug LIKE ? OR i.game_id LIKE ?)
-     ORDER BY c.sort_order ASC, i.name ASC`,
-    [...EXCLUDED_ITEM_SLUGS, term, term, term]
+       AND (
+         COALESCE(it.name, i.name) LIKE ?
+         OR i.slug LIKE ?
+         OR i.game_id LIKE ?
+         OR i.name LIKE ?
+       )
+     ORDER BY c.sort_order ASC, COALESCE(it.name, i.name) ASC`,
+    [locale, locale, ...EXCLUDED_ITEM_SLUGS, term, term, term, term]
   );
 }
 
 function getItemById(db, id) {
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
   const excluded = excludedSlugsPlaceholders();
   return queryOne(
     db,
-    `SELECT ${ITEM_SELECT}, c.name AS category_name
+    `SELECT ${localizedItemSelect()}, COALESCE(ct.name, c.name) AS category_name
      FROM items i
      JOIN item_categories c ON c.slug = i.category
+     LEFT JOIN item_translations it ON it.item_id = i.id AND it.locale = ?
+     LEFT JOIN item_category_translations ct
+       ON ct.category_slug = c.slug AND ct.locale = ?
      WHERE i.id = ? AND i.slug NOT IN (${excluded})`,
-    [id, ...EXCLUDED_ITEM_SLUGS]
+    [locale, locale, id, ...EXCLUDED_ITEM_SLUGS]
   );
 }
 
@@ -200,6 +250,19 @@ function updateItem(db, persist, id, { name, category }) {
   }
 
   db.run('UPDATE items SET name = ?, category = ? WHERE id = ?', [nameTrim, category, id]);
+
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
+  const existingTranslation = queryOne(
+    db,
+    `SELECT description FROM item_translations WHERE item_id = ? AND locale = ?`,
+    [id, locale]
+  );
+  upsertItemTranslation(db, id, locale, {
+    name: nameTrim,
+    description: existingTranslation?.description ?? existing.description ?? null,
+  });
+
   persist();
   return getItemById(db, id);
 }

@@ -1,0 +1,801 @@
+{
+  "dataVersion": 1,
+  "locale": "cs",
+  "source": {
+    "items": "https://satisfactory-calculator.com/cs/items",
+    "buildings": "https://satisfactory-calculator.com/cs/buildings"
+  },
+  "importedAt": "2026-07-20T19:02:14.457Z",
+  "itemCategories": {
+    "minerali": "Rudy",
+    "lingotti": "Ingoty",
+    "materiali": "Minerály",
+    "alieni": "Mimozemšťané",
+    "liquidi": "Tekutiny",
+    "gas": "Plyn",
+    "componenti-standard": "Běžné díly",
+    "componenti-industriali": "Průmyslové díly",
+    "componenti-elettronici": "Elektronika",
+    "comunicazioni": "Komunikace",
+    "tecnologia-quantistica": "Kvantová technologie",
+    "contenitori": "Nádoby",
+    "carburante": "Paliva",
+    "consumato": "Spotřebováno",
+    "munizioni": "Střelivo",
+    "nucleare": "Jaderné",
+    "rifiuti": "Odpad",
+    "speciali": "Speciální"
+  },
+  "buildingCategories": {
+    "estrazione": "Extrakce",
+    "produzione": "Produkce",
+    "generatori": "Generátory",
+    "speciali": "Speciální",
+    "postazioni-di-lavoro": "Pracovní stanice",
+    "deposito": "Skladování",
+    "stazioni-di-attracco": "Dokovací stanice",
+    "torri": "Věže"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "Vápenec",
+      "description": "Používají se na výrobu. Základní zdroj, který se používá především na pevné základy."
+    },
+    "Desc_OreIron_C": {
+      "name": "Železná ruda",
+      "description": "Používají se na výrobu. Nejnutnější základní zdroj."
+    },
+    "Desc_OreCopper_C": {
+      "name": "Měděná ruda",
+      "description": "Používají se na výrobu. Základní zdroj, který se používá především v energetice."
+    },
+    "Desc_OreGold_C": {
+      "name": "Cateriová ruda",
+      "description": "Roztavené na Cateriové ingoty, které jsou primárně použité pro pokročilejší elektroniku."
+    },
+    "Desc_Coal_C": {
+      "name": "Uhlí",
+      "description": "Používá se především jako palivo pro vozidla a uhelné generátory a také při výrobě oceli."
+    },
+    "Desc_RawQuartz_C": {
+      "name": "Surový křemen",
+      "description": "Surový křemen lze přepracovat na křemenné krystaly nebo křemenný písek, přičemž oba nabízí mnoho použití."
+    },
+    "Desc_Sulfur_C": {
+      "name": "Síra",
+      "description": "Převážně využívaná k výrobě střelného prachu."
+    },
+    "Desc_OreBauxite_C": {
+      "name": "Bauxit",
+      "description": "Používá se k výrobě aluminy, která se dá dále rafinovat na hliníkový šrot potřebný pro výrobu hliníkových ingotů."
+    },
+    "Desc_SAM_C": {
+      "name": "ZMK",
+      "description": "Prapodivná mimozemská hmota, obvykle označovaná jako SAM, nevypadá, že by se řídila známými fyzikálními zákony. Našeptává nové možnosti."
+    },
+    "Desc_OreUranium_C": {
+      "name": "Uran",
+      "description": "A radioactive element. Používá se na výrobu uranových článků na uranové jaderné tyče. Varování: Středně radioaktivní."
+    },
+    "Desc_IronIngot_C": {
+      "name": "Železný ingot",
+      "description": "Používá se na výrobu. Jeden z nejzákladnějších dílů."
+    },
+    "Desc_CopperIngot_C": {
+      "name": "Měděný ingot",
+      "description": "Používá se na výrobu. Jeden z nejzákladnějších dílů."
+    },
+    "Desc_GoldIngot_C": {
+      "name": "Cateriový ingot",
+      "description": "Vytaven z Cateriové rudy. Primárně použitý pro pokročilejší elektroniku."
+    },
+    "Desc_SteelIngot_C": {
+      "name": "Ocelový ingot",
+      "description": "Tavený směsí železné rudy a uhlí. Může být zpracován na několik dílů používaných ve stavebnictví."
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "Hliníkový ingot",
+      "description": "Tavené z hliníkového šrotu, který se rafinuje z roztoku aluminy. Využívají se k výrobě specializovaných hliníkových dílů."
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Ficsitinový ingot",
+      "description": "Vzniká rekonstrukcí jiných kovů na molekulární úrovni za pomocí zvláštní mimozemské hmoty. Syntetizováno společností FICSIT jako dokonalý stavební materiál užívaný v nejpokročilejších procesech."
+    },
+    "Desc_Cement_C": {
+      "name": "Beton",
+      "description": "Používá se pro výstavbu. Dobrý pro stabilní základy."
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "Křemenný krystal",
+      "description": "Derivát surového křemene. Používá se při výrobě pokročilé radarové technologie a vysoce kvalitních displejů."
+    },
+    "Desc_Silica_C": {
+      "name": "KřP",
+      "description": "Derivát surového křemene. Nejčastěji se využívá k výrobě skleněných struktur, v pokročilých procesech rafinace a k alternativní výrobě elektroniky."
+    },
+    "Desc_CopperDust_C": {
+      "name": "Měděný prach",
+      "description": "Namleté měděné ingoty. Vysoká přírodní hustota mědi, zkombinovaná se zrnitostí prášku, dělají tento díl způsobilý pro výrobu jaderných těstovin v urychlovači částic."
+    },
+    "Desc_PolymerResin_C": {
+      "name": "Polymerní pryskyřice",
+      "description": "Vedlejší produkt rafinace ropy na palivo. Často se využívá při výrobě plastu a pryže."
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "Ropný koks",
+      "description": "Používají se na výrobu. Materiál bohatý na uhlík destilovaný ze zbytkové těžké ropy. Používáno jako méně efektivní náhražka uhlí."
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "Hliníkový šrot",
+      "description": "Rafinováno z aluminy. Lze přetavit na hliníkové ingoty k průmyslovým účelům."
+    },
+    "Desc_AlienProtein_C": {
+      "name": "Mimozemský protein",
+      "description": "Rozemleté mimozemské ostatky v úhledném balení. Používá se pro zdravotnické účely a výzkum mimozemských organizmů."
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "Kapsle s mimozemským DNA",
+      "description": "Překládá organické chemikálie na srozumitelnou mimozemskou genetickou informaci. Používá se pro výzkum mimozemských organismů. Nevzdávej to a běž ještě dál! Ve znalostech je síla a síla je jen efektivita s dalšími extra kroky. Zasíláním mimozemských DNA kapslí do ÚŽASNÉHO drtiče zajistíš FICSITu vědomosti, a pionýrům kupóny."
+    },
+    "Desc_Water_C": {
+      "name": "Voda",
+      "description": "Prostě voda."
+    },
+    "Desc_LiquidOil_C": {
+      "name": "Ropa",
+      "description": "Zpracováno na celou řadu ropných produktů, jako je třeba palivo nebo plast."
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "Zbytková těžká ropa",
+      "description": "Vedlejší produkt výroby plastu a pryže. Dá se dále rafinovat na palivo nebo na ropný koks."
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "Pal",
+      "description": "Dá se použít pro výrobu elektrické energie nebo zabaleno jako palivo pro vozidla a jetpack."
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "Kapalné biopalivo",
+      "description": "Kapalné biopalivo se dá použít pro výrobu elektrické energie nebo zabaleno jako palivo pro vozidla."
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "Turbopalivo",
+      "description": "Efektivnější alternativa paliva. Dá se použít pro výrobu elektrické energie nebo zabaleno jako palivo pro vozidla."
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "Roztok aluminy",
+      "description": "Rozpuštěná alumina, extrahovaná z bauxitu. Může být dále rafinována na hliníkový šrot pro výrobu hliníkových ingotů."
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "Kyselina sírová",
+      "description": "Vyrobená spojením síry a vody komplexní reakcí. Používá se zejména při rafinačních procesech a výrobě baterií."
+    },
+    "Desc_NitricAcid_C": {
+      "name": "Kyselina dusičná",
+      "description": "Vyrábí se reakcí dusíku a vody. Vysoká žíravost a oxidační vlastnosti ji činí perfektní volbou pro rafinaci a výrobní procesy paliv."
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Rozpuštěný křemenný písek",
+      "description": "Křemenný písek rozpuštěný ve vodě jako součást alternativní rafinace křemene. Pro dokončení procesu rafinace lze křemenný písek z vody extrahovat."
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "Dusík",
+      "description": "Dusík má široké možnosti využití, jako například v hutnictví, chlazení a výrobě kyseliny dusičné. Na Massage-2(AB)b se získává z podzemních zdrojů."
+    },
+    "Desc_RocketFuel_C": {
+      "name": "Raketové palivo",
+      "description": "Vysoce impulzní stlačené plynné palivo. Dá se využít pro napájení palivových generátorů nebo zabaleno jako palivo pro vozidla a jetpack."
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "Ionizované palivo",
+      "description": "Fuel that has been ionized, allowing it to deliver incredible output. Dá se využít pro napájení palivových generátorů nebo zabaleno jako palivo pro vozidla a jetpack."
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Zbytková temná hmota",
+      "description": "Vyráběno jako vedlejší produkt procesů kvantového kódování a alternativně generováno v konvertoru. Různé oblasti vědy stále debatují o povaze a vlastnostech temné hmoty. Mezitím FICSIT pro ni našel uplatnění v manipulaci s prostorem a časem."
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Excitovaná fotonová hmota",
+      "description": "Excitovaná fotonová hmota je nezbytná pro všechny výrobní procesy v kvantovém kodéru. Vzniká v konvertoru vyvoláním intenzivních interakcí fotonů ve vysokoenergetickém prostředí při vystavení SAM."
+    },
+    "Desc_IronRod_C": {
+      "name": "Železná tyč",
+      "description": "Používají se na výrobu. Jeden z nejzákladnějších dílů."
+    },
+    "Desc_IronScrew_C": {
+      "name": "Šroub",
+      "description": "Používají se na výrobu. Jeden z nejzákladnějších dílů."
+    },
+    "Desc_IronPlate_C": {
+      "name": "Železný plát",
+      "description": "Používají se na výrobu. Jeden z nejzákladnějších dílů."
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "Vyztužený železný plát",
+      "description": "Používají se na výrobu. Pevnější a odolnější železný plát."
+    },
+    "Desc_CopperSheet_C": {
+      "name": "Měděný plech",
+      "description": "Používají se na výrobu. Slouží převážně ke stavbě potrubí kvůli své odolnosti vůči korozi."
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "Duralový plech",
+      "description": "Používá se k výrobě produktů, které vyžadují vysokou tepelnou vodivost nebo velkou tržnou délku. Tenký, lehký a vysoce odolný."
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "Hliníková nádoba",
+      "description": "Univerzální nádoba odlitá z hliníkových ingotů."
+    },
+    "Desc_SteelPipe_C": {
+      "name": "Ocelová trubka",
+      "description": "Primárně používané v lehce pokročilejších konstrukcích."
+    },
+    "Desc_SteelPlate_C": {
+      "name": "Ocelový nosník",
+      "description": "Primárně používané v lehce pokročilejších konstrukcích."
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "Vyztužený betonový nosník",
+      "description": "Vyztužené betonové nosníky využívají současně pevnost v tlaku betonu a v tahu oceli. Většinou se používají jako stabilní základ pro stavbu budov."
+    },
+    "Desc_ModularFrame_C": {
+      "name": "Modulární rám",
+      "description": "Používají se na výrobu. Víceúčelový stavební rám."
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "Silný modulární rám",
+      "description": "Robustnější, všestranný rám."
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "Tavený modulární rám",
+      "description": "Nereznoucí, nitridem vytvrzený, vysoce robustní a přesto lehký modulární blok."
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Ficsitinový trigon",
+      "description": "Ficsitový trigon, vyrobený z Ficsitiových ingotů, je dokonale tvarován pro všechny stavební výzvy. Jeho výkon je tak výjimečný, že v podstatě vyřešil stavební inženýrství."
+    },
+    "Desc_Fabric_C": {
+      "name": "Tkanina",
+      "description": "Používá se na výrobu vybavení. Pružná, ale přesto odolná látka."
+    },
+    "Desc_Plastic_C": {
+      "name": "Plast",
+      "description": "Všestranný a snadný na výrobu. Tento materiál má širokou škálu využití."
+    },
+    "Desc_Rubber_C": {
+      "name": "Pryž",
+      "description": "Velmi pružný materiál se spoustou tření."
+    },
+    "Desc_Rotor_C": {
+      "name": "Rotor",
+      "description": "Používají se na výrobu. Pohyblivé části motoru."
+    },
+    "Desc_Stator_C": {
+      "name": "Stator",
+      "description": "Používají se na výrobu. Pevné části motoru."
+    },
+    "Desc_Battery_C": {
+      "name": "Baterie",
+      "description": "Používají se především jako palivo pro drony a vozidla."
+    },
+    "Desc_Motor_C": {
+      "name": "Motor",
+      "description": "Vytváří mechanickou sílu, která se používá k pohánění věcí od strojů až po vozidla."
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "Pasivní chladič",
+      "description": "Používá se k rychlejšímu rozptýlení tepla."
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "Aktivní chladicí systém",
+      "description": "Udržuje a chrání před překročením efektivní teploty pokročilých části a budov."
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "Turbomotor",
+      "description": "Komplexnější a výkonnější verze běžného motoru."
+    },
+    "Desc_Wire_C": {
+      "name": "Drát",
+      "description": "Používají se na výrobu. Jeden z nejzákladnějších dílů."
+    },
+    "Desc_Cable_C": {
+      "name": "Kabel",
+      "description": "Používají se na výrobu. Hlavní použití je při stavbě elektrického vedení."
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "Rychlodrát",
+      "description": "Caterium je vysoce vodivé a odolné korozi, takže je ideální pro drobnou, pokročilou elektroniku."
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "Obvodová deska",
+      "description": "Pokročilá elektronika která má jedno a milion použití."
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "Omezovač AI",
+      "description": "Řídí umělé inteligence a brání jim vyvíjet se škodlivým způsobem. Vysoce pokročilá elektronika."
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "Vysokorychlostní spojka",
+      "description": "Spojuje vícero kabelů a drátu velmi efektivním způsobem. Využívá běžný vzor, tudíž má širokou škálu užití."
+    },
+    "Desc_SAMIngot_C": {
+      "name": "Oživená SAM",
+      "description": "Aktivní a potlačená podoba zvláštní mimozemské hmoty. Je vyžadováno správné elektromagnetické zapouzdření kvůli její schopnosti manipulovat s atomovými vazbami jakékoliv hmoty, se kterou přijde do styku."
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "SAM fluktuátor",
+      "description": "SAM fluktuátor je chopen regulovat a usměrňovat chování oživené SAM elektrickými náboji s proměnnou frekvencí. Tento prvek umožňuje technologie, jako je přeměna hmoty na energii a manipulace s hmotou v časoprostoru."
+    },
+    "Desc_Computer_C": {
+      "name": "Počítač",
+      "description": "Komplexní logický stroj, použitý k ovládání pokročilých funkcí jiných strojů."
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "Superpočítač",
+      "description": "Počítač nové generace."
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "Rádiová řídicí jednotka",
+      "description": "Zesiluje a usměrňuje rádiové signály."
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "Krystalový oscilátor",
+      "description": "Elektronický oscilátor, který využívá mechanické rezonance vibrujícího krystalu k vytvoření elektrického signálu o přesné frekvenci."
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "Superpoziční oscilátor",
+      "description": "Superpoziční oscilátor je oscilační obvod, který využívá mechanickou rezonanci vibrujícího krystalu k vytvoření strunové vibrace o přesné frekvenci. Často se používá v teleportační technologii a pro dimenzionální manipulaci."
+    },
+    "Desc_Diamond_C": {
+      "name": "Diamanty",
+      "description": "Synteticky vytvořené diamanty vznikají vystavením uhlí extrémním tlakům a teplotám. Užívá se k výrobě časových krystalů a krystalů temné hmoty. Spotřeba energie: 250-750 MW (500 MW v průměru)."
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Časový krystal",
+      "description": "Time Crystals are Diamonds that have been reconfigured on a sub-atomic level in the Converter to retain a time-periodic self-organizing structure. This allows them to be used in the development of quantum processing and storage technologies."
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Krystal z temné hmoty",
+      "description": "Koncentrovaný zbytek temné hmoty, který je izolován v krystalické nádobě. Tento způsob uchovávání umožňuje spolehlivé využití temné hmoty v dalších výrobních procesech. Spotřeba energie: 500-1500 MW (1000 MW v průměru)."
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Buňka singularity",
+      "description": "Používá se k narušení prostoru a času. Nezbytný k napájení portálů."
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Neuronový kvantový procesor",
+      "description": "Neuronový kvantový procesor využívá kombinaci architektury neuronových sítí a technik kvantových výpočtů k dosažení mimořádného výkonu. Tato technologie přinesla společnosti FICSIT jedny z největších pokroků v oblasti umělé inteligence a relativistického inženýrství."
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Mimozemská energetická matrice",
+      "description": "Tato složitá matrice kondenzované hmoty se používá ke zvýšení výkonu mimozemského rozšiřovače energie. Původně vyvinutá ve snaze vytvořit lidskou verzi Spinelianu, mimozemská energetická matrice sama o sobě nedokáže udržet mimodimenzionální energetické spojení. Může však efektivně stabilizovat energetický tok Spinelianu."
+    },
+    "Desc_FluidCanister_C": {
+      "name": "Prázdný kanystr",
+      "description": "Používá se pro zabalování tekutin."
+    },
+    "Desc_GasTank_C": {
+      "name": "Prázdná tekutinová lahev",
+      "description": "Slouží k zabalování plynů a těkavých kapalin pro přepravu."
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "Kostka pro přeměnu tlaku",
+      "description": "Přeměňuje odchozí síly ve vnitřní tlak. Potřebná pro pojmutí nestabilní, vysoko-energetické hmoty."
+    },
+    "Desc_PackagedWater_C": {
+      "name": "Zabalená voda",
+      "description": "Voda, zabalena pro alternativní dopravu."
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "Zabalený roztok aluminy",
+      "description": "Roztok aluminy, zabalený pro alternativní dopravu."
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "Zabalená kyselina sírová",
+      "description": "Kyselina sírová, zabalena pro alternativní dopravu."
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "Zabalená kyselina dusičná",
+      "description": "Kyselina dusičná, zabalena pro alternativní dopravu."
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "Zabalený dusík",
+      "description": "Dusík, zabalený pro alternativní dopravu."
+    },
+    "Desc_Leaves_C": {
+      "name": "Listí",
+      "description": "Používá se především jako palivo. Spalovače biomasy a vozidla mohou listí využít jako zdroj energie."
+    },
+    "Desc_Mycelia_C": {
+      "name": "Podhoubí",
+      "description": "Používají se na výrobu. Může pohánět vozidla a spalovače biomasy."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "Okvětní lístky",
+      "description": "Používají se na výrobu. Místní barevné okvětní lístky."
+    },
+    "Desc_Wood_C": {
+      "name": "Dřevo",
+      "description": "Používá se především jako palivo. Spalovače biomasy a vozidla mohou dřevo využít jako zdroj energie."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "Biomasa",
+      "description": "Používá se především jako palivo. Spalovače biomasy a vozidla ji mohou využít jako zdroj energie. Biomasa je mnohem energeticky účinnější než surový biologický materiál."
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "Lisované uhlí",
+      "description": "Mnohem efektivnější alternativa uhlí. Používá se jako palivo pro vozidla a uhelné generátory."
+    },
+    "Desc_PackagedOil_C": {
+      "name": "Zabalená ropa",
+      "description": "Ropa, zabalena pro alternativní dopravu. Dá se použít jako palivo pro vozidla."
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "Zabalená zbytková těžká ropa",
+      "description": "Zbytková těžká ropa, zabalena pro alternativní dopravu. Dá se použít jako palivo pro vozidla."
+    },
+    "Desc_Biofuel_C": {
+      "name": "Pevné biopalivo",
+      "description": "Energeticky nejefektivnější forma pevné biomasy. Dá se použít jako palivo pro motorovou pilu."
+    },
+    "Desc_Fuel_C": {
+      "name": "Zabalené palivo",
+      "description": "Palivo, zabaleno pro alternativní dopravu. Dá se použít jako palivo pro vozidla a jetpack."
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "Zabalené kapalné biopalivo",
+      "description": "Kapalné biopalivo, zabaleno pro alternativní dopravu. Dá se použít jako palivo pro vozidla a jetpack."
+    },
+    "Desc_TurboFuel_C": {
+      "name": "Zabalené turbopalivo",
+      "description": "Turbopalivo, zabaleno pro alternativní dopravu. Dá se použít jako palivo pro vozidla a jetpack."
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "Zabalené raketové palivo",
+      "description": "Raketové palivo, zabaleno pro alternativní dopravu. Dá se použít jako palivo pro vozidla a jetpack."
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Zabalené ionizované palivo",
+      "description": "Ionizované palivo, zabaleno pro alternativní dopravu. Dá se použít jako palivo pro vozidla a jetpack."
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "Uranová palivová tyč",
+      "description": "Používány jako palivo pro jaderné elektrárny. Zdroj energie, jenž dostal FICSIT na mapu. Doslova. Varování: Spalováním vzniká radioaktivní uranový jaderný odpad. Varování: Středně radioaktivní."
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "Plutoniová palivová tyč",
+      "description": "Používány jako palivo pro jaderné elektrárny. Zdroj energie, jenž dostal FICSIT na mapu. Doslova. Varování: Spalováním vzniká radioaktivní plutoniový jaderný odpad. Varování: SILNĚ radioaktivní."
+    },
+    "Desc_Gunpowder_C": {
+      "name": "Střelný prach",
+      "description": "Výbušný prášek, který se běžně používá ve výbušninách a nábojích."
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "Bezdýmný střelný prach",
+      "description": "Výbušný prášek, který se běžně používá k výrobě moderního střeliva."
+    },
+    "Desc_Filter_C": {
+      "name": "Plynový filtr",
+      "description": "Filtruje jedy a nečistoty ze vzduchu. Používá se v plynové masce."
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "Barevná kazeta",
+      "description": "Slouží pro nanášení vzorů na budovy pomocí menu přizpůsobení. (Vzory lze zakoupit v ÚŽASNÉM obchodě)"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "Maják",
+      "description": "OČEKÁVANÉ ODSTRANĚNÍ Tento předmět bude (pravděpodobně) odstraněn v budoucí verzi hry. Momentálně slouží jen jako materiál v alternativním receptu."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "Jódový filtr",
+      "description": "Absorbuje radioaktivní částice. Používá se v hazmat obleku."
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "Železný roxor",
+      "description": "Může být vystřelen z roxorové pistole za účelem sebeobrany."
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "Omračující roxor",
+      "description": "Zasáhne cíl elektrickým proudem a na krátkou dobu jej omráčí. Doba omráčení: 5 sekund"
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "Brokový roxor",
+      "description": "Při výstřelu se rozdělí na smrtící kusy s velkým rozsahem, ale menším dosahem."
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "Výbušný roxor",
+      "description": "Při dopadu vybuchuje s dosti ničivým účinkem."
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "Munice do pušky",
+      "description": "Běžná munice do pušky. Vhodná pro nastavování dominance."
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "Samonaváděcí munice do pušky",
+      "description": "Systém navádění střel zabudovaný do této munice umožňuje přesně zasáhnout jakýkoli cíl v oblasti zaměřování. Zvláště užitečné při řešení nenadálých hrozeb nebo pro pionýry, kteří se nepotřebují obtěžovat mířením."
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "Turbo munice do pušky",
+      "description": "Lehké, kompaktní, ale ne moc přesné. Tato munice poskytuje extrémní kapacitu a rychlost střelby za cenu přesnosti."
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "Nobelisk",
+      "description": "Jednoduchá výbušnina, užitečná na odpalování popraskaných balvanů, vegetace nebo jiných překážek."
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "Plynový Nobelisk",
+      "description": "Místo běžného výbuchu vytváří oblak smrtícího plynu."
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "Tlakový Nobelisk",
+      "description": "Místo běžného výbuchu vytváří silnou tlakovou vlnu."
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "Kazetový Nobelisk",
+      "description": "Rozděluje se na více menších výbuchů. Praktický zvláště pro čištění velkých oblastí od vegetace a dalších nepříjemností."
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "Jaderný Nobelisk",
+      "description": "Používá jadernou štěpnou reakci pro vytvoření obrovské exploze. VAROVÁNÍ: Zajistěte, že veškerý majetek společnosti FICSIT je před explozí mimo oblast výbuchu."
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "Elektromagnetická řídicí tyč",
+      "description": "Regulují výdej energie pomocí elektromagnetismu."
+    },
+    "Desc_UraniumCell_C": {
+      "name": "Uranový článek",
+      "description": "Používá se k výrobě uranových palivových tyčí pro jaderné elektrárny. Varování: Mírně radioaktivní."
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Neštěpitelný uran",
+      "description": "Izotop uran-238 není štěpitelný, což znamená, že se nedá použít pro jaderné štěpné reakce. Může ale být přeměněn na štěpitelné plutonium v urychlovači částic. Varování: Mírně radioaktivní."
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "Plutoniová peleta",
+      "description": "Vyrábí se v urychlovači částic přeměnou neštěpitelného uranu. Slouží pro výrobu plutoniových článků na plutoniové jaderné tyče. Spotřeba energie: 250-750 MW (500 MW v průměru). Varování: Středně radioaktivní."
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "Plutoniový článek",
+      "description": "Plutonium Pellets encased in concrete. Používají se na výrobu plutoniových palivových tyčí pro jadernou energii. Spotřeba energie: 250-750 MW (500 MW v průměru). Caution: Moderately Radioactive."
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Ficsonium",
+      "description": "Používání a výroba tohoto materiálu je na Zemi přísně zakázána. Ve vesmíru ale žádná pravidla nejsou, pouze efektivita. Spotřeba energie: 500-1500 MW (1000 MW v průměru). Varování: Středně radioaktivní."
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Ficsoniová palivová tyč",
+      "description": "Používány jako palivo pro jaderné elektrárny. Zdroj energie, jenž dostal FICSIT na mapu. Doslova. Ten kráter tam pořád je. Varování: Středně radioaktivní."
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "Uranový jaderný odpad",
+      "description": "Vedlejší produkt spalování uranových palivových tyčí v jaderné elektrárně. Je možné z něj extrahovat neštěpitelný uran. Zacházejte s ním opatrně. Neštěpný uran může být extrahován. Zacházejte s opatrností. Varování: SILNĚ radioaktivní."
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "Plutoniový jaderný odpad",
+      "description": "The by-product of consuming Plutonium Fuel Rods in a Nuclear Power Plant. Must be stored in a safe location. Handle with caution. Varování: EXTRÉMNĚ radioaktivní."
+    },
+    "Desc_Crystal_C": {
+      "name": "Modrý energetický slimák",
+      "description": "Zvláštní slimák vyzařující neznámou slabou energii."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "Žlutý energetický slimák",
+      "description": "Zvláštní slimák vyzařující neznámou energii."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "Fialový energetický slimák",
+      "description": "Zvláštní slimák vyzařující neznámou silnou energii."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "Energetický střep",
+      "description": "Power Slug mucus compressed into a solid crystal-like shard. Vyzařuje zvláštní energii."
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "FICSIT kupón",
+      "description": "Speciální bonusový program FICSIT Kupón, který získáte prostřednictvím ÚŽASNÝ Drtič. Lze jej uplatnit v ÚŽASNÝ Obchod za bonusové milníky a odměny."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "Logické pláty",
+      "description": "Project Part #1. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "Univerzální konstrukce",
+      "description": "Project Part #2. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "Automatická kabeláž",
+      "description": "Project Part #3. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "Modulární motor",
+      "description": "Project Part #4. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "Adaptivní řídicí jednotka",
+      "description": "Project Part #5. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "Systém pro řízení výroby",
+      "description": "Project Part #6. Ship via the Space Elevator to complete phases of Project Assembly. Tento velice rychlý a přesný výpočetní systém je specificky uzpůsoben pro řízení fází Projektu Assembly."
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "Generátor magnetického pole",
+      "description": "Project Part #7. Ship via the Space Elevator to complete phases of Project Assembly. Tyto modulární generátory používají supravodivé magnety a velké množství elektřiny, aby vytvořili lehce rozšířitelné a velmi silné magnetické pole."
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "Raketa s termálním pohonem",
+      "description": "Project Part #8. Ship via the Space Elevator to complete phases of Project Assembly. Používá extrémní teploty pro výrobu vysoce natlakované plazmy potřebné k uvedení Projektu Assembly do pohybu."
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "Jaderné těstoviny",
+      "description": "Project Part #9. Ship via the Space Elevator to complete phases of Project Assembly. Spotřeba energie: 500-1500 MW (1000 MW v průměru). Jaderné těstoviny jsou extrémně hustá degenerovaná hmota, která vzniká, když extrémní tlakové síly stlačí protony a elektrony dohromady na neutrony. Je teoretizováno, že se přírodně vyskytuje v kůře neutronových hvězd."
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Biochemická tiskárna",
+      "description": "Project Part #10. Ship via the Space Elevator to complete phases of Project Assembly. Několikaletý náskok před konkurencí. Tato špičková 3D tiskárna se využívá k výrobě syntetických biologických zdrojů."
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Balistický warp pohon",
+      "description": "Project Part #11. Ship via the Space Elevator to complete phases of Project Assembly. K aktivaci nadsvětelných pohonů je potřeba velké množství síly, takže jejich umístění na rakety bylo logickým dalším krokem. Navíc se výsledky výrazně zlepšily, když se pozorovatelé při aktivaci nadsvětelných pohonů vzdálili."
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "Server pro rozšíření AI",
+      "description": "Project Part #12. Ship via the Space Elevator to complete phases of Project Assembly. Power Usage: 0-2000 MW (1000 MW average). Růst je metrikou, podle které měříme úspěch."
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "Důl v.1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "Důl v.2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "Důl v.3"
+    },
+    "Build_OilPump_C": {
+      "name": "Ropný vrt"
+    },
+    "Build_WaterPump_C": {
+      "name": "Vodní čerpadlo"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "Frakovací vrtná pumpa"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "Sběrač frakovacího zdroje"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "Tavicí pec"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "Slévací pec"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "Obráběcí stroj"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "Výrobní stroj"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "Montážní stroj"
+    },
+    "Build_OilRefinery_C": {
+      "name": "Rafinerie"
+    },
+    "Build_Packager_C": {
+      "name": "Balicí stroj"
+    },
+    "Build_Blender_C": {
+      "name": "Míchací stroj"
+    },
+    "Build_HadronCollider_C": {
+      "name": "Urychlovač částic"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "Kvantový kodér"
+    },
+    "Build_Converter_C": {
+      "name": "Konvertor"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "Spalovač biomasy"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Uhelný generátor"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Palivový generátor"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "Geotermální generátor"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "Jaderná elektrárna"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "Energetický kapacitor"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Mimozemský zesilovač energie"
+    },
+    "Build_TradingPost_C": {
+      "name": "HUB"
+    },
+    "Build_Mam_C": {
+      "name": "MAM"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "Vesmírný výtah"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Plánovací studio v.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Plánovací studio v.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "ÚŽASNÝ drtič"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "ÚŽASNÝ obchod"
+    },
+    "Build_WorkBench_C": {
+      "name": "Dílenský ponk"
+    },
+    "Build_Workshop_C": {
+      "name": "Dílna"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "Osobní skříňka"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "Zdravotnická skříňka"
+    },
+    "Build_StorageHazard_C": {
+      "name": "Skříňka pro nebezpečné materiály"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "Skladovací kontejner"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "Zásobník tekutin"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "Průmyslové skladiště tekutin"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Dimenzionální zásobovač"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Basic Shelf Unit"
+    },
+    "Build_TruckStation_C": {
+      "name": "Nákladní stanice"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "Dronový heliport"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "Nákladní nástupiště"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "Tekutinové nákladní nástupiště"
+    },
+    "Build_LookoutTower_C": {
+      "name": "Rozhledna"
+    },
+    "Build_RadarTower_C": {
+      "name": "Radarová věž"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

@@ -7,6 +7,73 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.35.0] - 2026-07-20
+
+### Added
+- Catalogo di gioco in tutte le 25 lingue SCIM (nomi, descrizioni e ricette) importato da satisfactory-calculator.com
+- Pacchetti UI completi per tutte le lingue SCIM in `src/locales/ui/` (oltre IT/EN), con traduzione orientata al senso e parità chiavi
+- Selettore lingua in topbar con tutte le lingue del catalogo; per arabo, ebraico e persiano attiva layout RTL di base
+- Script batch `import:locale:all` (con ripresa) e inventario lingue in `scripts/scim-locales.js`
+
+### Changed
+- Se manca il pack UI di una lingua, i testi dell’interfaccia usano l’inglese come fallback
+- Stringhe residue hardcoded (energia, combustibili, purezza, trivelle, etichette Base) collegate a `t()` / catalogo localizzato
+
+### Fixed
+- Categorie catalogo nelle lingue non-EN risolte dallo slug canonico via `game_id`, non dai breadcrumb localizzati
+
+## [1.34.0] - 2026-07-20
+
+### Added
+- Pacchetti UI completi in tedesco, francese, spagnolo, polacco, portoghese e olandese (`src/locales/ui/de.json`, `fr.json`, `es.json`, `pl.json`, `pt.json`, `nl.json`) con parità di 414 chiavi rispetto a `it.json`, traduzione orientata al senso per il planner Satisfactory
+
+### Changed
+- Script `scripts/build-six-ui-locales.js` e `scripts/apply-ui-flats.js` per rigenerare i JSON da overlay e testi legali localizzati
+
+## [1.33.0] - 2026-07-20
+
+### Added
+- Traduzione completa dell’interfaccia (non solo catalogo): nav, dashboard, risorse, produzione, energia, impostazioni, modali, disclaimer e testi legali
+
+### Changed
+- Selettore lingua IT/EN aggiorna sia i nomi di gioco dal database sia tutti i testi UI, con traduzione inglese orientata al senso (termini di dominio Satisfactory)
+- Testi generati a runtime collegati al catalogo `src/locales/ui` tramite `t()`
+
+## [1.32.1] - 2026-07-20
+
+### Changed
+- Testi statici dell’interfaccia in `index.html` collegati alle chiavi `data-i18n` del catalogo UI (nav, dashboard, risorse, produzione, energia, impostazioni, footer, modali e legale)
+
+## [1.32.0] - 2026-07-20
+
+### Added
+- File UI completi `src/locales/ui/it.json` e `en.json` (413 chiavi ciascuno): testi statici da interfaccia, modale legale, dashboard, produzione, energia, impostazioni e stringhe runtime previste per `app.js` / `energy-ui.js`
+- Helper `src/locales/ui/format.js` con interpolazione `{placeholder}` e utilità per elencare le chiavi; `t()` in `index.js` accetta variabili opzionali
+- Script `scripts/generate-ui-locales.js` per rigenerare i JSON mantenendo parità IT/EN
+
+## [1.31.0] - 2026-07-20
+
+### Added
+- Selettore lingua in topbar (IT/EN), nello stile dei controlli esistenti
+- Catalogo risorse, edifici e ricette localizzato in base alla lingua attiva
+
+### Changed
+- Preferenza lingua salvata in locale e applicata al riavvio
+
+## [1.30.0] - 2026-07-20
+
+### Added
+- Traduzioni inglesi del catalogo (151 item, 50 edifici, categorie e nomi ricette) da Satisfactory Calculator
+- Script `npm run import:locale:en` per rigenerare il pack EN
+- File UI `src/locales/ui/en.json` (base per i testi dell’interfaccia)
+
+## [1.29.0] - 2026-07-20
+
+### Added
+- Fondamenta multilingua nel database: tabelle di traduzione per item, edifici, categorie e ricette, con italiano come lingua di base
+- Preferenza lingua dell’app (`locale`) e API per leggere/impostare le lingue supportate
+- Struttura separata per i testi UI (`src/locales/ui`), distinta dal catalogo di gioco
+
 ## [1.28.1] - 2026-07-20
 
 ### Changed

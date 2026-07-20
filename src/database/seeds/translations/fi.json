@@ -1,0 +1,801 @@
+{
+  "dataVersion": 1,
+  "locale": "fi",
+  "source": {
+    "items": "https://satisfactory-calculator.com/fi/items",
+    "buildings": "https://satisfactory-calculator.com/fi/buildings"
+  },
+  "importedAt": "2026-07-20T19:07:38.706Z",
+  "itemCategories": {
+    "minerali": "Malmit",
+    "lingotti": "Harkot",
+    "materiali": "Mineraalit",
+    "alieni": "Muukalaiset",
+    "liquidi": "Nesteet",
+    "gas": "Kaasu",
+    "componenti-standard": "Standardiosat",
+    "componenti-industriali": "Teolliset osat",
+    "componenti-elettronici": "Elektroniikka",
+    "comunicazioni": "Viestintä",
+    "tecnologia-quantistica": "Kvanttiteknologia",
+    "contenitori": "Varastointi",
+    "carburante": "Polttoaine",
+    "consumato": "Kulutus",
+    "munizioni": "Ammukset",
+    "nucleare": "Ydinvoima",
+    "rifiuti": "Jäte",
+    "speciali": "Spesiaali"
+  },
+  "buildingCategories": {
+    "estrazione": "Otto",
+    "produzione": "Tuotanto",
+    "generatori": "Generaattorit",
+    "speciali": "Spesiaali",
+    "postazioni-di-lavoro": "Työasemat",
+    "deposito": "Varastointi",
+    "stazioni-di-attracco": "Telakointiasemat",
+    "torri": "Tornit"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "Kalkkikivi",
+      "description": "Käytetään valmistamiseen. Perusresurssi, jota käytetään pääosin vakaisiin Perustuksiin."
+    },
+    "Desc_OreIron_C": {
+      "name": "Rautamalmi",
+      "description": "Käytetään valmistamiseen. Välttämätön perusresurssi."
+    },
+    "Desc_OreCopper_C": {
+      "name": "Kuparimalmi",
+      "description": "Käytetään valmistamiseen. Perusresurssi, jota käytetään pääosin sähköistyksiin."
+    },
+    "Desc_OreGold_C": {
+      "name": "Caterium-malmi",
+      "description": "Sulatetaan Cateriumharkoiksi, joita pääosin käytetään kehittyneessä elektroniikassa."
+    },
+    "Desc_Coal_C": {
+      "name": "Hiili",
+      "description": "Käytetään pääasiassa polttoaineena ajoneuvoissa ja hiiligeneraattoreissa sekä teräksen tuottamiseen."
+    },
+    "Desc_RawQuartz_C": {
+      "name": "Raakakvartsi",
+      "description": "Voidaan prosessoida Kvartsikiteiksi ja Piidioksidiksi. Jotka molemmat tarjoavat useita sovelletuksia."
+    },
+    "Desc_Sulfur_C": {
+      "name": "Rikki",
+      "description": "Ensisijaisesti käytetään Mustan Ruudin valmistukseen."
+    },
+    "Desc_OreBauxite_C": {
+      "name": "Bauksiitti",
+      "description": "Bauksiittia käytetään Alumiinioksidin tuottamiseen, joka voidaan jatkojalostaa Alumiiniromuksi jota tarvitaan Alumiiniharkkojen valmistukseen."
+    },
+    "Desc_SAM_C": {
+      "name": "OAM",
+      "description": "Salaperäinen Avaruusmateria, yleisesti kutsutaan nimellä SAM, ei näytä seuraavan tunnettuja fysiikan lakeja. Kuiskaten uusista mahdollisuuksista."
+    },
+    "Desc_OreUranium_C": {
+      "name": "Uraani",
+      "description": "Radioaktiivinen alkuaine. Käytetään Koteloitujen uraanikennojen ja Uraanipolttoainesauvojen valmistukseen. Varoitus: Kohtalaisen radioaktiivinen."
+    },
+    "Desc_IronIngot_C": {
+      "name": "Rautaharkko",
+      "description": "Käytetään perustason osien valmistamiseen."
+    },
+    "Desc_CopperIngot_C": {
+      "name": "Kupariharkko",
+      "description": "Käytetään perustason osien valmistamiseen."
+    },
+    "Desc_GoldIngot_C": {
+      "name": "Caterium-harkko",
+      "description": "Sulatetaan Cateriummalmista. Käytetään ensisijaisesti kehittyneessä elektroniikassa."
+    },
+    "Desc_SteelIngot_C": {
+      "name": "Teräsharkko",
+      "description": "Sulatetaan yhdistämällä Rautamalmia ja Hiiltä. Siitä voidaan valmistaa useita osia rakentamiseen."
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "Alumiiniharkko",
+      "description": "Sulatetaan Alumiinuromusta, joka on ensin jalostettu Alumiiniliuoksesta. Käytetään erikoistuneiden alumiinipohjaisten osien valmistuksessa."
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Ficsiteharkko",
+      "description": "Tuotetaan uudelleenrakentamalla muita metalleja molekyylitasolla Salaperäisen Avaruusmaterian avulla. FICSITin keinotekoisesti valmistama täydelliseksi rakennusmateriaaliksi, ja käytettäväksi huipputason prosesseissa."
+    },
+    "Desc_Cement_C": {
+      "name": "Betoni",
+      "description": "Käytetään rakentamiseen. Hyvä vakaisiin perustuksiin."
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "Kvartsikide",
+      "description": "Saadaan Raakakvartsista. Käytetään kehittyneen tutkateknologian ja korkealaatuisten näyttöjen valmistamiseen."
+    },
+    "Desc_Silica_C": {
+      "name": "Piidioksidi",
+      "description": "Saadaan Raakakvartsista. Käytetään yleisesti lasirakenteisiin, kehittyneisiin jalostusprosesseihin ja vaihtoehtoisiin elektroniikan valmistustapoihin."
+    },
+    "Desc_CopperDust_C": {
+      "name": "Kuparijauhe",
+      "description": "Jauhettuja Kupariharkkoja. Kuparin luonnollisen korkea tiheys, yhdistettynä jauheen hienojakoisuuteen, tekee tästä tuotteesta erinomaista Ydinpastan valmistukseen Hiukkaskiihdyttimessä."
+    },
+    "Desc_PolymerResin_C": {
+      "name": "Polymeerihartsi",
+      "description": "Öljynjalostuksesta Polttoaineeksi syntyvä sivutuote. Käytetään usein Muovin ja Kumin valmistukseen."
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "Öljykoksi",
+      "description": "Käytetään valmistamiseen. Hiilirikas Raskasöljyjäännöksestä tislattu materiaali. Käytetään vähemmän tehokkaana hiilen korvikkeena."
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "Alumiiniromu",
+      "description": "Jalostettu Alumiiniliuoksesta. Voidaan sulattaa Alumiiniharkoiksi teollista käyttöä varten."
+    },
+    "Desc_AlienProtein_C": {
+      "name": "Muukalaisproteiini",
+      "description": "Jauhettuja Muukalaisjäänteitä pienessä sievässä paketissa. Käytetään lääkinnällisiin tarkoituksiin ja vieraiden elämänmuotojen tutkimukseen."
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "Muukalais DNA-Kapseli",
+      "description": "Muuntaa orgaaniset kemikaalit luettavaksi geeni-informaatioksi. Käytetään muukalaiselämänmuotojen tutkimukseen. Veny pidemmälle! Tieto on voimaa, ja voima on vain tehokkuutta vähemmillä askelilla. Muukalais DNA-Kapselien syöttäminen AWESOME-Nieluun tuottaa FICSITille tietoa, ja pioneereille FICSIT Kuponkeja."
+    },
+    "Desc_Water_C": {
+      "name": "Vesi",
+      "description": "Se on vettä."
+    },
+    "Desc_LiquidOil_C": {
+      "name": "Raakaöljy",
+      "description": "Jalostetaan monenlaisiksi öljypohjaisiksi resursseiksi, kuten Polttoaineeksi ja Muoviksi."
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "Raskasöljyjäännös",
+      "description": "Muovin- ja kumintuotannon sivutuote. Voidaan jatkojalostaa polttoaineeksi ja öljykoksiksi."
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "Polttoaine",
+      "description": "Voidaan käyttää sellaisenaan sähköntuotantoon, tai pakata Kanistereihin ajoneuvo- tai Rakettireppukäyttöä varten."
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "Biopolttoneste",
+      "description": "Biopolttonestettä voidaan käyttää sellaisenaan Polttoainegeneraattoreissa, tai pakata kanistereihin ajoneuvo- tai Rakettireppukäyttöä varten."
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "Turbopolttoaine",
+      "description": "Tehokkaampi vaihtoehto Polttoaineelle. Voidaan käyttää sellaisenaan sähköntuotantoon, tai pakata Kanistereihin ajoneuvo- tai Rakettireppukäyttöä varten."
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "Alumiiniliuos",
+      "description": "Alumiinioksidiliuos, eristetty bauksiitista. Voidaan jatkojalostaa Alumiiniromuksi Alumiiniharkkojen valmistamista varten."
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "Rikkihappo",
+      "description": "Vahva happo joka tuotetaan yhdistämällä rikkiä ja vettä monimutkaisessa reaktiossa. Sitä käytetään ensisijaisesti jalostusprosesseissa ja akkutuotannossa."
+    },
+    "Desc_NitricAcid_C": {
+      "name": "Typpihappo",
+      "description": "Typpikaasun ja veden reaktiotuote. Korkeat syövytys- ja hapetusominaisuudet tekevät siitä erinomaisen valinnan jalostus- ja polttoaineentuotantoprosesseihin."
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Liuotettu Piidioksidi",
+      "description": "Veteen liuotettua Piidioksidia, tuotetaan vaihtoehtoisen Kvartsijalostuksen sivutuotteena. Piidioksidi voidaan uuttaa Vedestä jalostusprosessin viimeistelemiseksi."
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "Typpikaasu",
+      "description": "Monia eri käyttötapoja, kuten metallurgia, jäähdytys ja Typpihapon tuotanto. Massage-2(AB)b planeetalla sitä voidaan kerätä maanalaisista kaasulähteistä."
+    },
+    "Desc_RocketFuel_C": {
+      "name": "Rakettipolttoaine",
+      "description": "Suuritehoinen paineistettu kaasupolttoaine. Voidaan käyttää sellaisenaan Polttoainegeneraattoreissa, tai pakata Kaasupulloihin ajoneuvo- tai Rakettireppukäyttöä varten."
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "Ionisoitu Polttoaine",
+      "description": "Polttoaine jota on ionisoitu, uskomattoman tehokasta. Voidaan käyttää sellaisenaan Polttoainegeneraattoreissa, tai pakata Kaasupulloihin ajoneuvo- tai Rakettireppukäyttöä varten."
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Pimeä Ainejäännös",
+      "description": "Kvanttienkooderin prosessien sivutuote tai vaihtoehtoisesti tuotettavissa Muuntimella. Useat tieteenalat vielä väittelevät Pimeän Aineen olemuksesta ja ominaisuuksista. Sillä välin FICSIT on löytänyt useita sovelluksia sille aika-avaruuden manipuloinnissa."
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Virittynyt Fotoninen Aine",
+      "description": "Virittynyt Fotoninen Aine on olennainen osa kaikkiin tuotantoprosseihin Kvanttienkooderissa. Muodostetaan Muuntimessa luomalla voimakkaita fotonivuorovaikutuksia altistaen ne SAM:lle korkeaenergisessä ympäristössä."
+    },
+    "Desc_IronRod_C": {
+      "name": "Rautatanko",
+      "description": "Käytetään valmistamiseen. Yksi perusosista."
+    },
+    "Desc_IronScrew_C": {
+      "name": "Ruuvi",
+      "description": "Käytetään valmistamiseen. Yksi perusosista."
+    },
+    "Desc_IronPlate_C": {
+      "name": "Rautalevy",
+      "description": "Käytetään valmistamiseen. Yksi perusosista."
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "Vahvistettu Rautalevy",
+      "description": "Käytetään valmistamiseen. Vahvempi ja kestävämpi Rautalevy."
+    },
+    "Desc_CopperSheet_C": {
+      "name": "Kuparipelti",
+      "description": "Käytetään valmistamiseen. Käytetään pääasiassa putkistoihin sen korkean korroosionkestävyyden vuoksi."
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "Duralumiinilevy",
+      "description": "Käytetään tuotteissa jotka vaativat suurta lämmönjohtokykyä ja lujuutta. Ohut, kevyt ja kestävä."
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "Alumiinikotelo",
+      "description": "Alumiiniharkoista valettu monipuolinen astia."
+    },
+    "Desc_SteelPipe_C": {
+      "name": "Teräsputki",
+      "description": "Ensisijaisesti käytetään hieman kehittyneempien rakennusten rakentamiseen."
+    },
+    "Desc_SteelPlate_C": {
+      "name": "Teräspalkki",
+      "description": "Ensisijaisesti käytetään hieman kehittyneempien rakennusten rakentamiseen."
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "Koteloitu teollisuuspalkki",
+      "description": "Samanaikaisesti hyödyntää betonin puristus- ja teräksen vetolujuutta. Käytetään eniten vakaisiin perustuksiin rakennuksille."
+    },
+    "Desc_ModularFrame_C": {
+      "name": "Modulaarinen kehys",
+      "description": "Käytetään valmistamiseen. Monikäyttöinen rakennuslohko."
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "Raskas Moduulikehys",
+      "description": "Tukevampi monikäyttökehys."
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "Sulautettu Moduulikehys",
+      "description": "Korroosionkestävä, nitrattu, erittäin tukeva mutta kevyt moduulikehys."
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Ficsite Kolmio",
+      "description": "The Ficsite Trigon, made from Ficsite Ingots, is perfectly shaped for all construction challenges. Its performance is so exceptional, it basically solved structural engineering."
+    },
+    "Desc_Fabric_C": {
+      "name": "Kangas",
+      "description": "Käytetään varusteiden valmistamiseen. Joustava mutta kestävä kangas."
+    },
+    "Desc_Plastic_C": {
+      "name": "Muovi",
+      "description": "Monipuolinen ja helppo valmistaa, laajasti käytetty materiaali."
+    },
+    "Desc_Rubber_C": {
+      "name": "Kumi",
+      "description": "Todella joustava ja suurikitkainen materiaali."
+    },
+    "Desc_Rotor_C": {
+      "name": "Roottori",
+      "description": "Käytetään valmistamiseen. Moottorin liikkuvat osat."
+    },
+    "Desc_Stator_C": {
+      "name": "Staattori",
+      "description": "Käytetään valmistamiseen. Moottorin liikkumattomat osat."
+    },
+    "Desc_Battery_C": {
+      "name": "Akku",
+      "description": "Käytetään pääasiassa polttoaineena lennokeille ja ajoneuvoille."
+    },
+    "Desc_Motor_C": {
+      "name": "Moottori",
+      "description": "Tuottaa mekaanista voimaa liikuttamaan asioita, koneista ajonevoihin."
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "Jäähdytyselementti",
+      "description": "Käytetään hävittämään lämpöä nopeammin."
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "Jäähdytysjärjestelmä",
+      "description": "Estää kehittyneitä osia ja rakennuksia ylittämästä tehokkaan toiminnan lämpötilarajoja."
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "Turbomoottori",
+      "description": "Monimutkaisempi ja tehokkaampi versio tavallisesta Moottorista."
+    },
+    "Desc_Wire_C": {
+      "name": "Johto",
+      "description": "Käytetään valmistamiseen. Yksi perusosista."
+    },
+    "Desc_Cable_C": {
+      "name": "Kaapeli",
+      "description": "Käytetään valmistamiseen. Käytetään pääasiassa sähkölinjojen rakentamiseen."
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "Pikajohto",
+      "description": "Cateriumin korkea sähkönjohtavuus ja korroosionkesto tekevät siitä ihanteellisen pieneen, kehittyneeseen elektroniikkaan."
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "Piirilevy",
+      "description": "Kehittynyttä elektroniikkaa jolla on lukuisia käyttötarkoituksia."
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "Tekoälyn Rajoitin",
+      "description": "Kontrolloi teköälyä ja estää sitä kehittymästä haitalliseksi. Superkehittynyttä elektroniikkaa."
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "Suurnopeusliitin",
+      "description": "Yhdistää useita kaapeleita ja johtoja tehokkaalla tavalla. Käyttää standardijakoa joten sillä on monia vaihtelevia sovelluksia."
+    },
+    "Desc_SAMIngot_C": {
+      "name": "Elvytetty SAM",
+      "description": "Aktiivista Salaperäistä Avaruusmateriaa suljetussa muodossa. Kunnollinen elektromagneettinen eristys vaaditaan, koska se näyttää voivan manipuloida atomien välisiä sidoksia kaikesta materiasta jonka kanssa on kosketuksissa."
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "SAM Värähtelijä",
+      "description": "SAM Värähtelijä pystyy säätämään ja ohjaamaan Elvytetyn SAM:n käyttäytymistä vaihtelevilla sähkövarausten taajuuksilla. Tämä kontrolli helpottaa teknologoita kuten materia-energiamuunnos ja spatiotemporaalinen aineen manipulointi."
+    },
+    "Desc_Computer_C": {
+      "name": "Tietokone",
+      "description": "Monimutkainen logiikkakone, jota käytetään ohjaamaan kehittyneitä toimintoja muissa koneissa."
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "Supertietokone",
+      "description": "Tietokoneen kehittyneempi versio."
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "Radio-ohjaus yksikkö",
+      "description": "Vahvistaa ja ohjaa radiosignaaleja."
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "Kideoskillaattori",
+      "description": "Elektroninen värähtelijäpiiri joka käyttää värähtelevän kristallin mekaanista resonanssia tarkkataajuisen elektronisen signaalin luomiseen."
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "Superpositio-oskillaattori",
+      "description": "Värätelijäpiiri joka käyttää värähtelevän kristallin mekaanista resonanssia luomaan naruvärehtelyä tarkalla taajuudella. Käytetään usein teleportaatioteknologiassa ja ulottuvuuksien manipulointiin."
+    },
+    "Desc_Diamond_C": {
+      "name": "Timantit",
+      "description": "Keinotekoisia Timantteja tuotettuna Hiilestä altistamalla se äärimäiselle kuumuudelle ja paineelle. Käytetään Aikakristallien ja Pimeäainekristallien valmistuksessa. Virrankulutus: 250-750 MW (keskimäärin 500 MW)."
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Aikakristalli",
+      "description": "Aikakristallit ovat Muuntimessa subatomisella tasolla uudelleenkonfiguroituja Timantteja että ne säilyttäisivät aikajaksollisen itsejärjestävän rakenteen. Tämä sallii niiden käytön kvanttiprosesseissa ja varastointiteknologiassa."
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Pimeäainekristalli",
+      "description": "Tiivistettyä Pimeän Aineenjäännöstä eristettynä kristallisäiliöön. Tässä säilöntämuodossa Pimeää Ainetta voidaan käyttää luotettavasti muihin tuotantoprosesseihin. Virrankäyttö: 500-1500 MW (keskimäärin 1000 MW)."
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Singulariteettikenno",
+      "description": "Käytetään aika-avaruuden pilkkomiseen. Tarvitaan Portaalien ylläpitämiseen."
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Kvanttihermoprosessori",
+      "description": "Kvanttihermoprosessori hyödyntää hermoverkkoarkkitehtuurin ja kvanttitietokoneen yhdistelmää saavuttaakseen ennennäkemättömän suorituskyvyn. Tämä teknologia on mahdollistanut FICSITin suurimmat saavutukset tekoälyn käytössä, ja suhteellisuusteoriaa hyödyntävässä suunnittelussa."
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Muukalaisteknologian Tehomatriisi",
+      "description": "Tätä monimutkaista tiivisainematriisia käytetään parantamaan Tehonlisääjän tuottoa. Alunperin kehitetty yrityksissä luoda ihmisen tekemä Somersloop, Muukalaisten Tehomatriisi ei voi ylläpitää yliulotteista energiayhteyttä yksinään. Se voi kuitenkin tehokkaasti stabiloida Somersloopin energiavirran."
+    },
+    "Desc_FluidCanister_C": {
+      "name": "Tyhjä Kanisteri",
+      "description": "Käytetään nesteiden pakkaamiseen kuljetusta varten."
+    },
+    "Desc_GasTank_C": {
+      "name": "Tyhjä Kaasupullo",
+      "description": "Käytetään kaasujen ja epävakaiden nesteiden kuljettamiseen."
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "Paineenmuokkauskuutio",
+      "description": "Muuttaa ulospäin suuntautuvan voiman sisäiseksi paineeksi. Tarvitaan epästabiilin ja korkeaenergisen materian varastointiin."
+    },
+    "Desc_PackagedWater_C": {
+      "name": "Pakattu vesi",
+      "description": "Vettä, pakattuna vaihtoehtoisia kuljetusmuotoja varten."
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "Pakattu alumiiniliuos",
+      "description": "Alumiiniliuosta, pakattuna vaihtoehtoisia kuljetusmuotoja varten."
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "Pakattu rikkihappo",
+      "description": "Rikkihappoa, pakattuna vaihtoehtoisia kuljetusmuotoja varten."
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "Pakattu typpihappo",
+      "description": "Typpihappoa, pakattuna vaihtoehtoisia kuljetusmuotoja varten."
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "Pakattu Typpikaasu",
+      "description": "Typpikaasua, pakattuna vaihtoehtoisia kuljetusmuotoja varten."
+    },
+    "Desc_Leaves_C": {
+      "name": "Lehdet",
+      "description": "Käytetään pääasiassa polttoaineena. Biomassapolttimet ja ajoneuvot voivat käyttää lehtiä polttoaineena."
+    },
+    "Desc_Mycelia_C": {
+      "name": "Sienirihmasto",
+      "description": "Käytetään valmistamiseen. Biomassapolttimet ja ajoneuvot voivat käyttää Sienirihmastoa polttoaineena."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "Kukan terälehdet",
+      "description": "Käytetään valmistamiseen. Paikallisten kukkien värikkäitä terälehtiä."
+    },
+    "Desc_Wood_C": {
+      "name": "Puu",
+      "description": "Käytetään pääasiassa polttoaineena. Biomassapolttimet ja ajoneuvot voivat käyttää Puuta polttoaineena."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "Biomassa",
+      "description": "Käytetään pääasiassa polttoaineena. Biomassapolttimet ja ajoneuvot voivat käyttää sitä energianlähteenä. Biomassa on paljon energiatehokkaampaa kuin jalostamaton biologinen aines."
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "Tiivistetty hiili",
+      "description": "Huomattavasti tehokkaampi vaihtoehto hiilelle. Voidaan käyttää polttoaineena ajoneuvoissa ja hiiligeneraattoreissa."
+    },
+    "Desc_PackagedOil_C": {
+      "name": "Pakattu öljy",
+      "description": "Raakaöljyä pakattuna vaihtoehtoista kuljetusmuotoa varten. Voidaan käyttää polttoaineena ajoneuvoissa."
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "Pakattu raskasöljyjäännös",
+      "description": "Raskasöljyjäännös pakattuna vaihtoehtoiseen kuljetukseen. Voidaan käyttää polttoaineena ajoneuvoissa."
+    },
+    "Desc_Biofuel_C": {
+      "name": "Kiinteä biopolttoaine",
+      "description": "Kiinteän biomassan energiatehokkain muoto. Voidaan käyttää Moottorisahan polttoaineena."
+    },
+    "Desc_Fuel_C": {
+      "name": "Pakattu Polttoaine",
+      "description": "Polttoainetta pakattuna vaihtoehtoista kuljetusmuotoa varten. Voidaan käyttää polttoaineena ajoneuvoissa ja Rakettirepussa."
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "Pakattu biopolttoneste",
+      "description": "Nestemmäistä Biopolttoainetta pakattuna vaihtoehtoista kuljetusmuotoa varten. Voidaan käyttää polttoaineena ajoneuvoissa ja Rakettirepussa."
+    },
+    "Desc_TurboFuel_C": {
+      "name": "Pakattu Turbopolttoaine",
+      "description": "Turbo polttoainetta pakattuna vaihtoehtoista kuljetusmuotoa varten. Voidaan käyttää polttoaineena ajoneuvoissa ja Rakettirepussa."
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "Pakattu Rakettipolttoaine",
+      "description": "Rakettipolttoainetta , pakattuna vaihtoehtoista kuljetusmuotoa varten. Käy polttoaineeksi ajoneuvoihin tai Rakettireppuun."
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Pakattu Ionisoitu Polttoaine",
+      "description": "Ionisoitua Polttoainetta, pakattuna vaihtoehtoista kuljetusmuotoa varten. Käy polttoaineeksi ajoneuvoihin tai Rakettireppuun."
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "Uraanipolttoainesauva",
+      "description": "Käytetään Ydinvoimalan polttoaineena. Ei tuota jätettä. Varoitus: Tuottaa radioaktiivista Uraanijätettä kulutettaessa. Varoitus: Kohtalaisen radioaktiivinen."
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "Plutonium-polttoainesauva",
+      "description": "Käytetään Ydinvoimalan polttoaineena. Ei tuota jätettä. Varoitus: Tuottaa radioaktiivista Plutoniumjätettä kulutettaessa. Varoitus: ERITTÄIN Radioaktiivista."
+    },
+    "Desc_Gunpowder_C": {
+      "name": "Mustaruuti",
+      "description": "Räjähtävää jauhetta jota käytetään yleisesti yksinkertaisien räjähteiden valmistuksessa."
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "Savuton ruuti",
+      "description": "Räjähtävää jauhetta jota käytetään yleisesti nykyaikaisten tuliaseiden valmistuksessa."
+    },
+    "Desc_Filter_C": {
+      "name": "Kaasusuodatin",
+      "description": "Suodattaa myrkyt ja saasteet ilmasta kaasumaskin kanssa käyttäessä."
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "Väripatruuna",
+      "description": "Käytetään kuvioiden maalaamiseen rakenteisiin Muokkaajalla. (Kuvioita voi ostaa AWESOME-kaupasta.)"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "Majakka",
+      "description": "ODOTTAA POISTOA Tämän esine tullaan (todennäköisesti) poistamaan myöhemmässä päivityksessä. Käytetään tällä hetkellä vain yksittäisessä vaihtoehtoisessa reseptissä."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "Jodioitu Suodatin",
+      "description": "Imee radioaktiivisia hiukkasia itseensä Suojapuvun kanssa käytettynä."
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "Rautainen harjateräs",
+      "description": "Voidaan ampua Harjateräsaseella itsepuolustustarkoituksiin."
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "Tainnuttava harjateräs",
+      "description": "Antaa kohteelle sähköiskun osumasta, tainnuttaen lyhyeksi ajaksi. Tainnutusaika: 5 sekuntia"
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "Pirstaleharjateräs",
+      "description": "Murtuu kappaleiksi ammuttaessa, levittäen tappavia sirpaleita laajalle mutta lyhyelle alueelle."
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "Räjähtävä harjateräs",
+      "description": "Räjähtää iskeytyessä aiheuttaen raskasta vahinkoa."
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "Kiväärin ammukset",
+      "description": "Vakiomallisia Kiväärin ammuksia, hyviä hallitsevan aseman luomiseen."
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "Kiväärin Täsmäammukset",
+      "description": "Näihin ammuksiin on sisäänrakennettu hakeutumisominaisuus joka ohjaa luodin mihin tahansa kohteeseen tähtäimen alueella. Erittäin kätevä hoideltaessa ketteriä kohteita, tai Pioneereille jotka eivät viitsi tähdätä kunnolla."
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "Kiväärin Turboammukset",
+      "description": "Kevyitä, kompakteja, ja räjähdysherkkiä. Nämä ammukset tarjoavat äärimmäisen kapasiteetin ja tulinopeuden tarkkuuden kustannuksella."
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "Nobelisk",
+      "description": "Yksinkertainen räjähde joka on kätevä kivien, kasvien ja muiden esteiden raivaamiseen."
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "Kaasu-Nobelisk",
+      "description": "Muodostaa tappavan kaasupilven räjähdyksen sijaan."
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "Pulssi-Nobelisk",
+      "description": "Muodostaa voimakkaan shokkiaallon normaalin räjähdyksen sijään."
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "Rypäle-Nobelisk",
+      "description": "Räjähtää useiksi pienemmiksi räjähdyksiksi. Kätevä raivattaessa kasvillisuutta ja muita epämukavuustekijöitä isoilta aloilta."
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "Atomi-Nobelisk",
+      "description": "Käyttää ydinfissioreaktiota massiivisen räjähdyksen aikaansaamiseksi. VAROITUS: Varmista että kaikki FICSITin omaisuus on pois räjähdysalueelta ennen laukaisua."
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "Sähkömagneettinen Säätösauva",
+      "description": "Säätää tehoa sähkömagnetismin avulla."
+    },
+    "Desc_UraniumCell_C": {
+      "name": "Koteloitu Uraanikenno",
+      "description": "Käytetään Uraanipolttoainesauvojen valmistukseen Ydinvoimalan sähköntuotantoa varten. Tehty Uraanimalmista. Varoitus: Lievästi radioaktiivista."
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Halkeamaton Uraani",
+      "description": "Uraanin isotooppi U-238 on ei-halkeava, eli sitä ei sellaisenaan voida käyttää ydinfissioon. Se voidaan kuitenkin muuntaa halkeavaksi Plutoniumiksi Hiukkaskiihdyttimessä. Varoitus: Lievästi radioaktiivista."
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "Plutoniumpelletti",
+      "description": "Tuotetaan muuntamalla Halkeamatonta Uraania Hiukkaskiihdyttimessä. Käytetään Koteloitujen Plutoniumkennojen valmistamiseen Plutoniumpolttoainesauvoja varten. Käytetään Koteloitujen Plutoniumkennojen valmistamiseen Plutoniumpolttoainesauvoja varten. Virrankulutus: 250-750 MW (keskimäärin 500 MW). Varoitus: Kohtalaisen radioaktiivinen."
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "Koteloitu plutonium-kenno",
+      "description": "Plutoniumpellettejä koteloituna betoniin. Käytetään Plutonium-polttoainesauvojen valmistukseen Ydinvoimalakäyttöön. Virrankulutus: 250-750 MW (keskimäärin 500 MW). Caution: Moderately Radioactive."
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Ficsonium",
+      "description": "Tämän materiaalin käyttö ja valmistus on tiukasti kielletty. Maapallolla siis. Avaruudessa ei ole sääntöjä, vain tehokuutta. Virrankäyttö: 500-1500 MW (keskimäärin 1000 MW). Varoitus: Kohtalaisen radioaktiivinen."
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Ficsoniumpolttoainesauva",
+      "description": "Käytetään Ydinvoimalan polttoaineena. Ei tuota jätettä. Voimanlähde joka asetti FICSITin kartalle. Kirjaimellisesti. Kraateri on vieläkin siellä. Varoitus: Kohtalaisen radioaktiivinen."
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "Uraanijäte",
+      "description": "Uraanipolttoainesauvojen käytöstä Ydinvoimaloissa syntyvä sivutuote. Halkeamatonta uraania voidaan uuttaa. Käsittele varovasti. Varoitus: ERITTÄIN Radioaktiivista."
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "Plutoniumjäte",
+      "description": "Plutoniumpolttoainesauvojen käytöstä Ydinvoimaloissa syntyvä sivutuote. Säilö turvalliseen paikkaan. Käsittele varovasti. Varoitus: ERITTÄIN Radioaktiivisia."
+    },
+    "Desc_Crystal_C": {
+      "name": "Sininen energiaetana",
+      "description": "Heikkoa tuntematonta energiaa säteilevä outo etana."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "Keltainen energiaetana",
+      "description": "Tuntematonta energiaa säteilevä outo etana."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "Violetti Energiaetana",
+      "description": "Voimakasta tuntematonta energiaa säteilevä outo etana."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "Energiasiru",
+      "description": "Energiaetanoista saatava lima tiivistettynä kiinteäksi kristallimaiseksi siruksi. Se säteilee outoa energiaa."
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "FICSIT Kuponki",
+      "description": "Erityinen FICSIT boonusohjelmakuponki, joita saa AWESOME Sinkistä. Voidaan lunastaa AWESOME kaupasta boonus tavoitteita ja palkintoja varten."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "Älypinnoite",
+      "description": "Project Part #1. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "Muuntuva Runkorakenne",
+      "description": "Project Part #2. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "Automaattikaapelointi",
+      "description": "Project Part #3. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "Modulaarinen Moottori",
+      "description": "Project Part #4. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "Muuntuva Ohjausyksikkö",
+      "description": "Project Part #5. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "Kokoamisen Ohjausyksikkö",
+      "description": "Project Part #6. Ship via the Space Elevator to complete phases of Project Assembly. Tämä äärimmäisen nopea ja tarkka laskentayksikkö on erityisesti tarkoitettu ohjaamaan Kokoonpanoprojektin: Kokoonpanovaihetta."
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "Magneettikentänkehitin",
+      "description": "Project Part #7. Ship via the Space Elevator to complete phases of Project Assembly. Nämä modulaariset kehittimet käyttävät suprajohtavia magneetteja ja suuria sähkövirtoja luomaan voimakkaan ja helposti laajennettavan magneettikentän."
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "Lämpövoimaraketti",
+      "description": "Project Part #8. Ship via the Space Elevator to complete phases of Project Assembly. Käyttää äärimmäistä lämpötilaa luomaan korkeapainesta plasmaa Kokoonpanoprojektin liikuttamiseksi."
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "Ydinpasta",
+      "description": "Project Part #9. Ship via the Space Elevator to complete phases of Project Assembly. Virrankäyttö: 500-1500 MW (keskimäärin 1000 MW). Ydinpasta on erittäin tiheää rappeutunutta materiaa, synnytetty pakottamalla protonit ja elektronit yhteen neutroneiksi äärimmäisessä paineessa. On esitetty teoria että luonnossa sitä esiintyy vain neutronitähtien kuorissa."
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Biokemikaalinen veistäjä",
+      "description": "Project Part #10. Ship via the Space Elevator to complete phases of Project Assembly. Vuosia edellä kilpailijoita, tätä lippulaivamallin 3D-tulostinta käytetään synteettisten biologisten resurssien tuotantoon."
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Ballistinen Poimuajomoottori",
+      "description": "Project Part #11. Ship via the Space Elevator to complete phases of Project Assembly. A large amount of force is required for the Warp Drives to activate, so sticking them to rockets was the logical next step. Additionally, results improved immensely when the observers were further removed from the Warp Drives upon activation."
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "Tekoälyn Laajennuspalvelin",
+      "description": "Project Part #12. Ship via the Space Elevator to complete phases of Project Assembly. Power Usage: 0-2000 MW (1000 MW average). Growth is the metric by which we measure success."
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "Louhija Ver.1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "Louhija Ver.2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "Louhija Ver.3"
+    },
+    "Build_OilPump_C": {
+      "name": "Öljypumppu"
+    },
+    "Build_WaterPump_C": {
+      "name": "Vesipumppu"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "Resurssilähteen Paineistaja"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "Resurssilähteen Keräin"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "Sulattamo"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "Valimo"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "Rakentaja"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "Kokoaja"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "Valmistaja"
+    },
+    "Build_OilRefinery_C": {
+      "name": "Jalostamo"
+    },
+    "Build_Packager_C": {
+      "name": "Pakkaaja"
+    },
+    "Build_Blender_C": {
+      "name": "Sekoitin"
+    },
+    "Build_HadronCollider_C": {
+      "name": "Hiukkaskiihdytin"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "Kvanttienkooderi"
+    },
+    "Build_Converter_C": {
+      "name": "Muunnin"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "Biomassapoltin"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Hiiligeneraattori"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Polttoainegeneraattori"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "Maalämpögeneraattori"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "Ydinvoimala"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "Sähkövarasto"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Muukalaisteknologian Tehonvahvistin"
+    },
+    "Build_TradingPost_C": {
+      "name": "KOTI"
+    },
+    "Build_Mam_C": {
+      "name": "MAM"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "Avaruushissi"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Suunnittelija Ver.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Suunnittelija Ver.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "AWESOME Nielu"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "MAHTAVA-kauppa"
+    },
+    "Build_WorkBench_C": {
+      "name": "Työpöytä"
+    },
+    "Build_Workshop_C": {
+      "name": "Varustepaja"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "Henkilökohtainen säilytyslaatikko"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "Lääkelaatikko"
+    },
+    "Build_StorageHazard_C": {
+      "name": "Vaarallistenaineiden laatikko"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "Varastokontti"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "Nestepuskuri"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "Teollinen Nestepuskuri"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Ulottuvuusvaraston Lähetin"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Basic Shelf Unit"
+    },
+    "Build_TruckStation_C": {
+      "name": "Rahtiterminaali"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "Lennokkikenttä"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "Rahtilaituri"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "Nesterahtilaituri"
+    },
+    "Build_LookoutTower_C": {
+      "name": "Näkötorni"
+    },
+    "Build_RadarTower_C": {
+      "name": "Tutkatornit"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

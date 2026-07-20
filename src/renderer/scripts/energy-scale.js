@@ -5,9 +5,9 @@
       basePowerMw: 75,
       waterPerMin: 45,
       fuelOptions: [
-        { slug: 'coal', label: 'Carbone', ratePerMin: 15 },
-        { slug: 'compacted-coal', label: 'Carbone compatto', ratePerMin: 50 / 7 },
-        { slug: 'petroleum-coke', label: 'Coke petrolifero', ratePerMin: 25 },
+        { slug: 'coal', label: 'Coal', ratePerMin: 15 },
+        { slug: 'compacted-coal', label: 'Compacted Coal', ratePerMin: 50 / 7 },
+        { slug: 'petroleum-coke', label: 'Petroleum Coke', ratePerMin: 25 },
       ],
     },
     'generator-fuel': {
@@ -16,11 +16,11 @@
       waterPerMin: 0,
       fuelIsFluid: true,
       fuelOptions: [
-        { slug: 'ionized-fuel', label: 'Carburante ionizzato', ratePerMin: 3 },
-        { slug: 'rocket-fuel', label: 'Carburante per razzi', ratePerMin: 4.17 },
-        { slug: 'liquid-turbo-fuel', label: 'Turbocarburante', ratePerMin: 7.5 },
-        { slug: 'liquid-biofuel', label: 'Biocarburante liquido', ratePerMin: 20 },
-        { slug: 'liquid-fuel', label: 'Carburante', ratePerMin: 20 },
+        { slug: 'ionized-fuel', label: 'Ionized Fuel', ratePerMin: 3 },
+        { slug: 'rocket-fuel', label: 'Rocket Fuel', ratePerMin: 4.17 },
+        { slug: 'liquid-turbo-fuel', label: 'Turbofuel', ratePerMin: 7.5 },
+        { slug: 'liquid-biofuel', label: 'Liquid Biofuel', ratePerMin: 20 },
+        { slug: 'liquid-fuel', label: 'Fuel', ratePerMin: 20 },
       ],
     },
     'generator-nuclear': {
@@ -28,9 +28,9 @@
       basePowerMw: 2500,
       waterPerMin: 240,
       fuelOptions: [
-        { slug: 'plutonium-fuel-rod', label: 'Barra di combustibile di plutonio', ratePerMin: 0.1, wasteSlug: 'plutonium-waste', wasteLabel: 'Scorie di plutonio', wastePerRod: 10 },
-        { slug: 'nuclear-fuel-rod', label: 'Barra di combustibile di uranio', ratePerMin: 0.2, wasteSlug: 'nuclear-waste', wasteLabel: 'Scorie di uranio', wastePerRod: 50 },
-        { slug: 'ficsonium-fuel-rod', label: 'Barra di combustibile di ficsonio', ratePerMin: 1 },
+        { slug: 'plutonium-fuel-rod', label: 'Plutonium Fuel Rod', ratePerMin: 0.1, wasteSlug: 'plutonium-waste', wasteLabel: 'Plutonium Waste', wastePerRod: 10 },
+        { slug: 'nuclear-fuel-rod', label: 'Uranium Fuel Rod', ratePerMin: 0.2, wasteSlug: 'nuclear-waste', wasteLabel: 'Uranium Waste', wastePerRod: 50 },
+        { slug: 'ficsonium-fuel-rod', label: 'Ficsonium Fuel Rod', ratePerMin: 1 },
       ],
     },
   };

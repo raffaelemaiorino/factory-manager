@@ -1,0 +1,801 @@
+{
+  "dataVersion": 1,
+  "locale": "he",
+  "source": {
+    "items": "https://satisfactory-calculator.com/he/items",
+    "buildings": "https://satisfactory-calculator.com/he/buildings"
+  },
+  "importedAt": "2026-07-20T19:09:27.318Z",
+  "itemCategories": {
+    "minerali": "Ores",
+    "lingotti": "מטילים",
+    "materiali": "מינרלים",
+    "alieni": "חייזרים",
+    "liquidi": "נוזלים",
+    "gas": "גז",
+    "componenti-standard": "חלקים רגילים",
+    "componenti-industriali": "חלקים תעשייתיים",
+    "componenti-elettronici": "אלקטרוניקה",
+    "comunicazioni": "תקשורת",
+    "tecnologia-quantistica": "טכנולוגיה קוונטית",
+    "contenitori": "מיכלי אחסון",
+    "carburante": "דלקים",
+    "consumato": "נצרך",
+    "munizioni": "תחמושות",
+    "nucleare": "גרעיני",
+    "rifiuti": "פסולת",
+    "speciali": "מיוחד"
+  },
+  "buildingCategories": {
+    "estrazione": "חציבה",
+    "produzione": "ייצור",
+    "generatori": "גנרטורים",
+    "speciali": "מיוחד",
+    "postazioni-di-lavoro": "תחנות עבודה",
+    "deposito": "אחסון",
+    "stazioni-di-attracco": "תחנות עגינה",
+    "torri": "מגדלים"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "אבן גיר",
+      "description": "בעיקר משמש לדלק. A basic resource primarily used for stable Foundations."
+    },
+    "Desc_OreIron_C": {
+      "name": "עופרת ברזל",
+      "description": "בעיקר משמש לדלק. המשאב הבסיסי הכי נחוץ."
+    },
+    "Desc_OreCopper_C": {
+      "name": "עופרת נחושת",
+      "description": "בעיקר משמש לדלק. A basic resource primarily used for electricity."
+    },
+    "Desc_OreGold_C": {
+      "name": "עופרת קטריום",
+      "description": "Smelted into Caterium Ingots, which are primarily used for advanced electronics."
+    },
+    "Desc_Coal_C": {
+      "name": "פחם",
+      "description": "Mainly used as fuel for vehicles & Coal-Powered Generators, or in Steel production."
+    },
+    "Desc_RawQuartz_C": {
+      "name": "קוורץ גולמי",
+      "description": "Can be processed into Quartz Crystals and Silica, which both offer a variety of applications."
+    },
+    "Desc_Sulfur_C": {
+      "name": "גופרית",
+      "description": "Primarily used to produce Black Powder."
+    },
+    "Desc_OreBauxite_C": {
+      "name": "בוקסיט",
+      "description": "Used to produce Alumina, which can be further refined into the Aluminum Scrap required to produce Aluminum Ingots."
+    },
+    "Desc_SAM_C": {
+      "name": "מתכת חייזרית מוזרה",
+      "description": "Strange Alien Matter, commonly referred to as SAM, doesn't seem to follow the known laws of physics. It whispers of new possibilities."
+    },
+    "Desc_OreUranium_C": {
+      "name": "אורניום",
+      "description": "A radioactive element. משמש בעיקר ליצירת תאי אורניום עטופים עבור מוטות אורניום. זהירות: רדיואקטיבי ברמה בינונית."
+    },
+    "Desc_IronIngot_C": {
+      "name": "מטיל ברזל",
+      "description": "Used for crafting the most basic parts."
+    },
+    "Desc_CopperIngot_C": {
+      "name": "מטיל נחושת",
+      "description": "Used for crafting the most basic parts."
+    },
+    "Desc_GoldIngot_C": {
+      "name": "מטיל קטריום",
+      "description": "Smelted from Caterium Ore. Primarily used for advanced electronics."
+    },
+    "Desc_SteelIngot_C": {
+      "name": "מטיל פלדה",
+      "description": "Smelted from a combination of Iron Ore and Coal. Can be made into several parts used in building construction."
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "מטיל אלומיניום",
+      "description": "Smelted from Aluminum Scrap, which is refined from Alumina Solution. משמשים ליצירת חלקים מיוחדים מבוססי אלומיניום."
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Ficsite Ingot",
+      "description": "Produced by reconstructing other metals on a molecular level using Strange Alien Matter. Synthesized by FICSIT to be the perfect construction material, and used in the most high-end processes."
+    },
+    "Desc_Cement_C": {
+      "name": "בטון",
+      "description": "משמש לבנייה. טוב לפלטפורמות יציבות."
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "קריסטל קוורץ",
+      "description": "נגזר מקוורץ גולמי. משמש בייצור טכנולוגיית מכ\\\"מ מתקדמת ומסכי תצוגה באיכות גבוהה."
+    },
+    "Desc_Silica_C": {
+      "name": "סיליקה",
+      "description": "Derived from Raw Quartz. Commonly used to create glass structures, in advanced refinement processes, and for alternative production of electronics."
+    },
+    "Desc_CopperDust_C": {
+      "name": "אבקת נחושת",
+      "description": "Ground-up Copper Ingots. The high natural density of Copper, combined with the granularity of the powder, makes this part perfect for producing Nuclear Pasta in the Particle Accelerator."
+    },
+    "Desc_PolymerResin_C": {
+      "name": "שרף פולימרי",
+      "description": "A by-product of Crude Oil refinement into Fuel. Commonly used to manufacture Plastic and Rubber."
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "קוק נפט",
+      "description": "בעיקר משמש לדלק. חומר עשיר בפחמן שמופק משאריות נפט כבד. Used as a less efficient coal replacement."
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "שאריות אלומיניום",
+      "description": "Refined from Alumina. Can be smelted into Aluminum Ingots for industrial usage."
+    },
+    "Desc_AlienProtein_C": {
+      "name": "חלבון חייזרים",
+      "description": "Ground-up Alien Remains in a neat little package. משמש למטרות בריאותיות ולמחקר על חייזרים."
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "קפסולת DNA חייזרית",
+      "description": "Translates organic chemicals into readable alien genetic information. משמש למחקר על חייזרים. Go the extra kilometer! Knowledge is power, and power is just efficiency with fewer steps. Depositing Alien DNA Capsules in the AWESOME Sink provides FICSIT with knowledge, and pioneers with Coupons."
+    },
+    "Desc_Water_C": {
+      "name": "מים",
+      "description": "זה מים."
+    },
+    "Desc_LiquidOil_C": {
+      "name": "נפט גולמי",
+      "description": "Refined into all kinds of Oil-based resources, like Fuel and Plastic."
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "שאריות נפט כבד",
+      "description": "תוצר לוואי של ייצור פלסטיק וגומי. ניתן לזקק אותן לדלק ולקוק נפט."
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "דלק",
+      "description": "Can be used as-is to generate power, or packaged to be used as fuel for vehicles or the Jetpack."
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "דלק ביולוגי נוזלי",
+      "description": "Liquid Biofuel can be used as-is to generate power, or packaged to be used as fuel for vehicles."
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "טורבו דלק",
+      "description": "A more efficient alternative to Fuel. Can be used as-is to generate power, or packaged to be used as fuel for vehicles."
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "תמיסת אלומינה",
+      "description": "אלומינה מומסת, שחולצה מבוקסיט. יכולה לשמש להפקת שאריות אלומיניום ליצירת מטילי אלומיניום."
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "חומצת גופרית",
+      "description": "Produced by combining Sulfur and Water in a complex reaction. Primarily used in refinement processes and Battery production."
+    },
+    "Desc_NitricAcid_C": {
+      "name": "חומצת חנקן",
+      "description": "Produced when Nitrogen Gas reacts with Water. Its high corrosiveness and oxidizing properties make it an excellent choice for refinement and fuel production processes."
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Dissolved Silica",
+      "description": "Silica dissolved in Water, produced as part of the alternative refinement of Raw Quartz. The Silica can be extracted from the Water to complete the refinement process."
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "גז חנקן",
+      "description": "Has a variety of uses, including metallurgy, cooling, and Nitric Acid production. On MASSAGE-2 (AB)b, it can be extracted from underground gas wells."
+    },
+    "Desc_RocketFuel_C": {
+      "name": "דלק טילים",
+      "description": "A high-impulse compressed gas fuel. Can be used as-is to power Fuel-Powered Generators, or packaged to be used as fuel for vehicles or the Jetpack."
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "Ionized Fuel",
+      "description": "Fuel that has been ionized, allowing it to deliver incredible output. Can be used as-is to power Fuel-Powered Generators, or packaged to be used as fuel for vehicles or the Jetpack."
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Dark Matter Residue",
+      "description": "Produced as a by-product of Quantum Encoding processes and alternatively generated in the Converter. Various fields of science are still debating the nature and properties of Dark Matter. Meanwhile, FICSIT has found several applications for it in space-time manipulation."
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Excited Photonic Matter",
+      "description": "חומר פוטוני מעורר הינו חיוני לכל תהליכי הייצור במצפין הקוואנטי. מיוצר בממיר על ידי עירור אינטקרציות פוטוניות אינטנסיביות באמצעות חשיפה לחח\\\"מ בסביבה עתירת אנרגיה."
+    },
+    "Desc_IronRod_C": {
+      "name": "מוט ברזל",
+      "description": "בעיקר משמש לדלק. אחד החלקים הכי בסיסיים."
+    },
+    "Desc_IronScrew_C": {
+      "name": "בורג",
+      "description": "בעיקר משמש לדלק. אחד החלקים הכי בסיסיים."
+    },
+    "Desc_IronPlate_C": {
+      "name": "לוח ברזל",
+      "description": "בעיקר משמש לדלק. אחד החלקים הכי בסיסיים."
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "לוח ברזל מחוזק",
+      "description": "בעיקר משמש לדלק. חזק ועמיד יותר מלוח ברזל רגיל."
+    },
+    "Desc_CopperSheet_C": {
+      "name": "גיליון נחושת",
+      "description": "בעיקר משמש לדלק. משמש בעיקר לבניית צינורות בגלל העמידות שלו לחלודה."
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "גיליון אלקלד אלומיניום",
+      "description": "Used to make products that require high heat conduction or a high specific strength. Thin, lightweight, and highly durable."
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "מגש אלומיניום",
+      "description": "מארז שימושי שמיוצר ממטילי אלומיניום."
+    },
+    "Desc_SteelPipe_C": {
+      "name": "צינור פלדה",
+      "description": "Primarily used when constructing slightly more advanced buildings."
+    },
+    "Desc_SteelPlate_C": {
+      "name": "קורת פלדה",
+      "description": "Primarily used when constructing slightly more advanced buildings."
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "קורה תעשייתית עטופה",
+      "description": "Simultaneously utilizes the compressive strength of concrete and the tensile strength of steel. Mostly used as a stable base for constructing buildings."
+    },
+    "Desc_ModularFrame_C": {
+      "name": "מסגרת מודולרית",
+      "description": "בעיקר משמש לדלק. A multipurpose building block."
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "מסגרת מודולרית כבדה",
+      "description": "A more robust multipurpose frame."
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "מסגרת מודולרית מרותכת",
+      "description": "A corrosion-resistant, nitride-hardened, highly-robust-yet-lightweight modular frame."
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Ficsite Trigon",
+      "description": "The Ficsite Trigon, made from Ficsite Ingots, is perfectly shaped for all construction challenges. Its performance is so exceptional, it basically solved structural engineering."
+    },
+    "Desc_Fabric_C": {
+      "name": "בד",
+      "description": "Used to craft equipment. בד גמיש ועמיד."
+    },
+    "Desc_Plastic_C": {
+      "name": "פלסטיק",
+      "description": "Versatile and easy to manufacture, this material has a wide range of uses."
+    },
+    "Desc_Rubber_C": {
+      "name": "גומי",
+      "description": "A very flexible material that has a lot of friction."
+    },
+    "Desc_Rotor_C": {
+      "name": "רוטור",
+      "description": "בעיקר משמש לדלק. החלקים הנעים במנוע."
+    },
+    "Desc_Stator_C": {
+      "name": "סטטור",
+      "description": "בעיקר משמש לדלק. החלקים הקבועים במנוע."
+    },
+    "Desc_Battery_C": {
+      "name": "סוללה",
+      "description": "משמשת בעיקר כדלק לרחפנים ולכלי רכב."
+    },
+    "Desc_Motor_C": {
+      "name": "מנוע",
+      "description": "Creates a mechanical force that is used to move things from machines to vehicles."
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "מפזר חום",
+      "description": "משמש לפיזור חום מהיר."
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "מערכת קירור",
+      "description": "Keeps advanced parts and buildings from exceeding efficient temperature levels."
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "טורבו מנוע",
+      "description": "A more complex and powerful version of the regular Motor."
+    },
+    "Desc_Wire_C": {
+      "name": "חוט",
+      "description": "בעיקר משמש לדלק. אחד החלקים הכי בסיסיים."
+    },
+    "Desc_Cable_C": {
+      "name": "כבל",
+      "description": "בעיקר משמש לדלק. משמש בעיקר לבניית קווי חשמל."
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "חוט מהיר",
+      "description": "Caterium's high conductivity and resistance to corrosion make it ideal for small, advanced electronics."
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "לוח מגעים",
+      "description": "Advanced electronics that have a plethora of different uses."
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "מגביל AI",
+      "description": "Controls AIs and keeps them from evolving in malicious ways. Super advanced electronics."
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "מחבר מהיר",
+      "description": "Connects multiple cables and wires in a very efficient way. Uses a standard pattern, so it has many varied applications."
+    },
+    "Desc_SAMIngot_C": {
+      "name": "Reanimated SAM",
+      "description": "The active and contained form of the Strange Alien Matter. Proper electromagnetic containment is required, as it appears to be able to manipulate the atomic bonds of any matter it comes into contact with."
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "מתנד S.A.M",
+      "description": "The SAM Fluctuator is able to regulate and direct the behavior of Reanimated SAM through the application of electric charges with varying frequencies. This control facilitates technologies such as matter-to-energy conversion and spatiotemporal matter manipulation."
+    },
+    "Desc_Computer_C": {
+      "name": "מחשב",
+      "description": "A complex logic machine that is used to control advanced behavior in other machines."
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "מחשב-על",
+      "description": "הדור הבא של המחשבים."
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "יחידת בקרת רדיו",
+      "description": "משפרת ומכוונת אותות רדיו."
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "מתנד קריסטלי",
+      "description": "An electronic oscillator circuit that uses the mechanical resonance of a vibrating crystal to create an electrical signal with a precise frequency."
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "מתנד סופרפוזיציה",
+      "description": "An oscillator circuit that uses the mechanical resonance of a vibrating crystal to create a string vibration with a precise frequency. Often used in teleportation technology and dimensional manipulation."
+    },
+    "Desc_Diamond_C": {
+      "name": "Diamonds",
+      "description": "Synthetic Diamonds produced by exposing Coal to extreme heat and pressure. Used in the production of Time Crystals and Dark Matter Crystals. עלות חשמל: 250-750 MW (500 MW ממוצע)."
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Time Crystal",
+      "description": "Time Crystals are Diamonds that have been reconfigured on a sub-atomic level in the Converter to retain a time-periodic self-organizing structure. This allows them to be used in the development of quantum processing and storage technologies."
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Dark Matter Crystal",
+      "description": "Concentrated Dark Matter Residue that is isolated within a crystalline vessel. This form of containment allows for utilising Dark Matter reliably in other production processes. Power Usage: 500-1500 MW (1000 MW average)."
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Singularity Cell",
+      "description": "Used to break down space and time. Required to power Portals."
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Neural-Quantum Processor",
+      "description": "The Neural-Quantum Processor utilizes a combination of neural network architecture and quantum computing techniques to achieve unprecedented performance. This technology has enabled some of FICSIT's biggest advancements in artificial intelligence and relativistic engineering."
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Alien Power Matrix",
+      "description": "This intricate condensed-matter matrix is used to enhance the output of the Alien Power Augmenter. Initially developed in efforts to create a human-made Somersloop, the Alien Power Matrix cannot sustain the extra-dimensional energy connection on its own. However, it can effectively stabilize the energy stream of the Somersloop."
+    },
+    "Desc_FluidCanister_C": {
+      "name": "מיכל ריק",
+      "description": "משמש לאריזת נוזלים להובלה."
+    },
+    "Desc_GasTank_C": {
+      "name": "בלון גז ריק",
+      "description": "משמש לאריזת גזים ונוזלים מסוכנים להובלה."
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "קוביית המרת לחץ",
+      "description": "ממירה כוח יוצא ללחץ פנימי. משמשת לאחסון של חומר לא יציב בעל אנרגייה גבוהה."
+    },
+    "Desc_PackagedWater_C": {
+      "name": "מים ארוזים",
+      "description": "מים, ארוזים להובלה חלופית."
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "תמיסת אלומינה ארוזה",
+      "description": "תמיסת אלומינה, ארוזה להובלה חלופית."
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "חומצת גופרית ארוזה",
+      "description": "חומצת גופרית, ארוזה להובלה חלופית."
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "חומצת חנקן ארוזה",
+      "description": "חומצת חנקן, ארוזה להובלה חלופית."
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "גז חנקן ארוז",
+      "description": "גז חנקן, ארוז להובלה חלופית."
+    },
+    "Desc_Leaves_C": {
+      "name": "עלים",
+      "description": "משמשים בעיקר כדלק. Biomass Burners and vehicles can use Leaves for power."
+    },
+    "Desc_Mycelia_C": {
+      "name": "פטריות",
+      "description": "בעיקר משמש לדלק. Biomass Burners and vehicles can also use Mycelia for power."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "עלי כותרת של פרח",
+      "description": "בעיקר משמש לדלק. פרחים צבעוניים."
+    },
+    "Desc_Wood_C": {
+      "name": "עץ",
+      "description": "משמשים בעיקר כדלק. Biomass Burners and vehicles can use Wood for power."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "ביומסה (חומר אורגני)",
+      "description": "משמשים בעיקר כדלק. מבערי ביומסה וכלי רכב יכולים להשתמש בה כספק כוח. ביומסה יעילה הרבה יותר מחומר ביולוגי לא מעובד."
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "פחם דחוס",
+      "description": "A much more efficient alternative to Coal. Used as fuel for vehicles and Coal-Powered Generators."
+    },
+    "Desc_PackagedOil_C": {
+      "name": "נפט ארוז",
+      "description": "נפט גולמי, ארוז להובלה חלופית. משמש גם כדלק לכלי רכב."
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "שאריות נפט כבד ארוזות",
+      "description": "שאריות נפט כבד, ארוזות להובלה חלופית. משמשות גם כדלק לכלי רכב."
+    },
+    "Desc_Biofuel_C": {
+      "name": "דלק ביולוגי מוצק",
+      "description": "הצורה היעילה ביותר של ביומסה מוצקת. יכול לשמש להפעלת מסור חשמלי."
+    },
+    "Desc_Fuel_C": {
+      "name": "דלק ארוז",
+      "description": "דלק, ארוז להובלה חלופית. משמש גם כדלק לכלי רכב ולחליפת הסילון."
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "דלק ביולוגי נוזלי ארוז",
+      "description": "דלק ביולוגי נוזלי, ארוז להובלה חלופית. משמש גם כדלק לכלי רכב ולחליפת הסילון."
+    },
+    "Desc_TurboFuel_C": {
+      "name": "טורבו דלק ארוז",
+      "description": "טורבו דלק, ארוז להובלה חלופית. משמש גם כדלק לכלי רכב ולחליפת הסילון."
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "דלק טילים ארוז",
+      "description": "Rocket Fuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Packaged Ionized Fuel",
+      "description": "Ionized Fuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "מוט דלק אורניום",
+      "description": "Used as fuel for Nuclear Power Plants. זהירות: מייצר פסולת אורניום במהלך השימוש. זהירות: רדיואקטיבי ברמה בינונית."
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "מוט דלק פלוטוניום",
+      "description": "Used as fuel for Nuclear Power Plants. זהירות: מייצר פסולת פלוטוניום במהלך השימוש. זהירות: רדיואקטיבי ברמה גבוהה."
+    },
+    "Desc_Gunpowder_C": {
+      "name": "אבק שריפה",
+      "description": "אבקת שריפה שבעיקר משמשת לייצור פיצוצים פשוטים."
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "אבקה ללא עשן",
+      "description": "אבקה שריפה שבעיקר משמשת לייצור נשקים מודרניים."
+    },
+    "Desc_Filter_C": {
+      "name": "מסנן גז",
+      "description": "Filters out toxins and pollutants from the air when used with a Gas Mask."
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "מחסנית צבע",
+      "description": "משמש לצביעת תבניות על מבנים עם המעצב. (אפשר לקנות תבניות בחנות AWESOME)"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "סמן",
+      "description": "יימחק בקרוב הפריט הזה (כנראה) יימחק בעדכון קרוב. כרגע רק משמש כמרכיב במתכון חלופי."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "Iodine-Infused Filter",
+      "description": "Absorbs radioactive particles when used with the Hazmat Suit."
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "מסמר ברזל",
+      "description": "Can be shot using the Rebar Gun for self-defense purposes."
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "מסמר מחשמל",
+      "description": "מחשמל את המטרה בפגיעה לזמן קצר. זמן חישמול: 5 שניות"
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "מסמר מתנפץ",
+      "description": "Fractures when shot, launching deadly debris with wide spread but limited range."
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "מסמר מתפוצץ",
+      "description": "מתפוצץ במגע, יוצר המון נזק."
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "תחמושת לרובה",
+      "description": "תחמושת לרובה הרגיל, שימושית להשגת שליטה."
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "תחמושת מתבייתת לרובה",
+      "description": "The bullet guidance system built into this ammunition allows it to accurately hit any target within the reticle area. שימושי מאוד כשנלחמים מול מטרות חמקמקות, או בשביל חלוצים שלא מצליחים לכוון במדויק."
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "תחמושת טורבו לרובה",
+      "description": "Lightweight, compact, and volatile. These rounds provide extreme capacity and rate of fire at the cost of accuracy."
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "פצצה",
+      "description": "פיצוץ רגיל, שימושי כדי לפנות סלעים, צמחייה ומכשולים נוספים."
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "פצצת גז",
+      "description": "Creates a deadly gas cloud instead of a regular explosion."
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "פצצת דופק",
+      "description": "Generates a powerful shockwave instead of a regular explosion."
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "פצצת אשכולות",
+      "description": "Detonates into multiple smaller explosions. Practical for clearing out large areas of vegetation and other inconveniences."
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "פצצה אטומית",
+      "description": "Uses a nuclear fission reaction to generate a massive explosion. אזהרה: שימו לב שלא נמצא כל רכוש של FICSIT באזור הפיצוץ."
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "מוט בקרה אלקטרומגנטי",
+      "description": "Regulates power output via electromagnetism."
+    },
+    "Desc_UraniumCell_C": {
+      "name": "תא אורניום עטוף",
+      "description": "Used to produce Uranium Fuel Rods for Nuclear Power production. Made from Uranium Ore. זהירות: רדיואקטיבי ברמה בינונית."
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Non-Fissile Uranium",
+      "description": "The Uranium-238 isotope is non-fissile, meaning it cannot be used for nuclear fission. It can, however, be converted into fissile Plutonium in the Particle Accelerator. זהירות: רדיואקטיבי ברמה בינונית."
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "גלולת אורניום",
+      "description": "מיוצר במאיץ החלקיקים בהמרה של אורניום לא בקיע. משמש לייצור של תאי פלוטוניום עטופים עבור מוטות פלוטוניום. עלות חשמל: 250-750 MW (500 MW ממוצע). זהירות: רדיואקטיבי ברמה בינונית."
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "תא פלוטוניום עטוף",
+      "description": "Plutonium Pellets encased in concrete. משמשים בעיקר ליצירת מוטות פלוטוניום עבור תחנות כוח גרעיניות. עלות חשמל: 250-750 MW (500 MW ממוצע). Caution: Moderately Radioactive."
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Ficsonium",
+      "description": "Usage and production of this material is strictly prohibited. On Earth, that is. There are no rules in space, only efficiency. Power Usage: 500-1500 MW (1000 MW average). זהירות: רדיואקטיבי ברמה בינונית."
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Ficsonium Fuel Rod",
+      "description": "Used as fuel for Nuclear Power Plants. The power source that put FICSIT on the map. Literally. The crater is still there. זהירות: רדיואקטיבי ברמה בינונית."
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "פסולת אורניום",
+      "description": "The by-product of consuming Uranium Fuel Rods in a Nuclear Power Plant. Non-fissile Uranium can be extracted. Handle with caution. זהירות: רדיואקטיבי ברמה גבוהה."
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "פסולת פלוטוניום",
+      "description": "The by-product of consuming Plutonium Fuel Rods in a Nuclear Power Plant. Must be stored in a safe location. Handle with caution. זהירות: רדיואקטיבי ברמה גבוהה מאוד."
+    },
+    "Desc_Crystal_C": {
+      "name": "חשופית כוח כחולה",
+      "description": "A strange slug radiating an unknown weak power."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "חשופית כוח צהובה",
+      "description": "A strange slug radiating an unknown power."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "חשופית כוח סגולה",
+      "description": "A strange slug radiating a powerful unknown power."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "מאיץ",
+      "description": "Power Slug mucus compressed into a solid crystal-like shard. זה מקרין כוח מוזר."
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "קופון FICSIT",
+      "description": "A special FICSIT bonus program Coupon, obtained through the AWESOME Sink. Can be redeemed in the AWESOME Shop for bonus milestones and rewards."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "ציפוי חכם",
+      "description": "Project Part #1. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "מסגרת שימושית",
+      "description": "Project Part #2. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "חיווט אוטומטי",
+      "description": "Project Part #3. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "מנוע מודולרי",
+      "description": "Project Part #4. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "יחידת בקרה חכמה",
+      "description": "Project Part #5. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "מנהל מערכת הרכבה",
+      "description": "Project Part #6. Ship via the Space Elevator to complete phases of Project Assembly. מערכות מחשוב מהירות ומדויקות אלה תוכננו לנהל את שלב ההרכבה בפרוקט ההרכבה."
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "מחולל שדה מגנטי",
+      "description": "Project Part #7. Ship via the Space Elevator to complete phases of Project Assembly. These modular generators use superconducting magnets and vast amounts of electricity to produce a powerful and easily expandable magnetic field."
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "רקטת הנעה תרמית",
+      "description": "Project Part #8. Ship via the Space Elevator to complete phases of Project Assembly. Uses extreme heat to produce the high-pressure plasma required to get Project Assembly into motion."
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "פסטה גרעינית",
+      "description": "Project Part #9. Ship via the Space Elevator to complete phases of Project Assembly. Power Usage: 500-1500 MW (1000 MW average). Nuclear Pasta is extremely dense degenerate matter, formed when extreme pressure forces protons and electrons together into neutrons. It is theorized to exist naturally within the crust of neutron stars."
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Biochemical Sculptor",
+      "description": "Project Part #10. Ship via the Space Elevator to complete phases of Project Assembly. Years ahead of the competition, this top-of-the-line 3D printer is used for the production of synthetic biological resources."
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Ballistic Warp Drive",
+      "description": "Project Part #11. Ship via the Space Elevator to complete phases of Project Assembly. A large amount of force is required for the Warp Drives to activate, so sticking them to rockets was the logical next step. Additionally, results improved immensely when the observers were further removed from the Warp Drives upon activation."
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "AI Expansion Server",
+      "description": "Project Part #12. Ship via the Space Elevator to complete phases of Project Assembly. Power Usage: 0-2000 MW (1000 MW average). Growth is the metric by which we measure success."
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "כורה סימן 1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "כורה סימן 2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "כורה סימן 3"
+    },
+    "Build_OilPump_C": {
+      "name": "משאבת נפט"
+    },
+    "Build_WaterPump_C": {
+      "name": "משאבת מים"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "דוחס לחץ לבאר"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "מחלץ משאבי באר"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "כבשן"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "מפעל יציקה"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "בנאי"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "מרכיב"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "יצרן"
+    },
+    "Build_OilRefinery_C": {
+      "name": "בית זיקוק"
+    },
+    "Build_Packager_C": {
+      "name": "אורז"
+    },
+    "Build_Blender_C": {
+      "name": "מערבל"
+    },
+    "Build_HadronCollider_C": {
+      "name": "מאיץ חלקיקים"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "מצפין קוונטי"
+    },
+    "Build_Converter_C": {
+      "name": "ממיר"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "כבשן ביומסה"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Coal-Powered Generator"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Fuel-Powered Generator"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "גנרטור גיאותרמי"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "תחנת כוח גרעינית"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "אגירת חשמל"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Alien Power Augmenter"
+    },
+    "Build_TradingPost_C": {
+      "name": "את ה-HUB"
+    },
+    "Build_Mam_C": {
+      "name": "מא\\"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "מעלית חלל"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Blueprint Designer Mk.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Blueprint Designer Mk.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "כיור AWESOME"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "חנות AWESOME"
+    },
+    "Build_WorkBench_C": {
+      "name": "Crafting Bench"
+    },
+    "Build_Workshop_C": {
+      "name": "עמדת ציוד"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "תיבת אחסון אישי"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "תיבת אחסון רפואית"
+    },
+    "Build_StorageHazard_C": {
+      "name": "תיבת אחסון לחומרים מסוכנים"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "מיכל אחסון"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "מיכל נוזלים"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "מיכל נוזלים תעשייתי"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Dimensional Depot Uploader"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Basic Shelf Unit"
+    },
+    "Build_TruckStation_C": {
+      "name": "תחנת משאיות"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "משטח רחפן"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "קרון משא"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "קרון מטענים נוזליים"
+    },
+    "Build_LookoutTower_C": {
+      "name": "מגדל תצפית"
+    },
+    "Build_RadarTower_C": {
+      "name": "מגדל מכ\\"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

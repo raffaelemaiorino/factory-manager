@@ -1,0 +1,801 @@
+{
+  "dataVersion": 1,
+  "locale": "fa",
+  "source": {
+    "items": "https://satisfactory-calculator.com/fa/items",
+    "buildings": "https://satisfactory-calculator.com/fa/buildings"
+  },
+  "importedAt": "2026-07-20T19:06:44.710Z",
+  "itemCategories": {
+    "minerali": "سنگ معدن",
+    "lingotti": "شمش ها",
+    "materiali": "مواد معدنی",
+    "alieni": "بیگانگان",
+    "liquidi": "مایع ها",
+    "gas": "گاز",
+    "componenti-standard": "قطعات استاندارد",
+    "componenti-industriali": "قطعات صنعتی",
+    "componenti-elettronici": "الکترونیک ها",
+    "comunicazioni": "ارتباطات",
+    "tecnologia-quantistica": "تکنولوژی کوانتوم",
+    "contenitori": "انباره ها",
+    "carburante": "سوخت",
+    "consumato": "مصرف شده",
+    "munizioni": "مهمات",
+    "nucleare": "هسته ایی",
+    "rifiuti": "ضایعات",
+    "speciali": "ویژه"
+  },
+  "buildingCategories": {
+    "estrazione": "استخراج",
+    "produzione": "تولید کردن",
+    "generatori": "ژنراتور ها",
+    "speciali": "ویژه",
+    "postazioni-di-lavoro": "ایستگاه های کاری",
+    "deposito": "انبار",
+    "stazioni-di-attracco": "ایستگاه های اتصال",
+    "torri": "برج ها"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "سنگ آهک",
+      "description": "برای ساخت و ساز استفاده میشود. A basic resource primarily used for stable Foundations."
+    },
+    "Desc_OreIron_C": {
+      "name": "سنگ آهن",
+      "description": "برای ساخت و ساز استفاده میشود. مهمترین منابع اولیه."
+    },
+    "Desc_OreCopper_C": {
+      "name": "سنگ مس",
+      "description": "برای ساخت و ساز استفاده میشود. A basic resource primarily used for electricity."
+    },
+    "Desc_OreGold_C": {
+      "name": "سنگ کاتریم",
+      "description": "Smelted into Caterium Ingots, which are primarily used for advanced electronics."
+    },
+    "Desc_Coal_C": {
+      "name": "ذغال سنگ",
+      "description": "Mainly used as fuel for vehicles & Coal-Powered Generators, or in Steel production."
+    },
+    "Desc_RawQuartz_C": {
+      "name": "سنگ کوارتز",
+      "description": "Can be processed into Quartz Crystals and Silica, which both offer a variety of applications."
+    },
+    "Desc_Sulfur_C": {
+      "name": "سولفور",
+      "description": "Primarily used to produce Black Powder."
+    },
+    "Desc_OreBauxite_C": {
+      "name": "بایوکسیت",
+      "description": "Used to produce Alumina, which can be further refined into the Aluminum Scrap required to produce Aluminum Ingots."
+    },
+    "Desc_SAM_C": {
+      "name": "SAM",
+      "description": "Strange Alien Matter, commonly referred to as SAM, doesn't seem to follow the known laws of physics. It whispers of new possibilities."
+    },
+    "Desc_OreUranium_C": {
+      "name": "اورانیوم",
+      "description": "A radioactive element. برای ساخت اورانیوم پوشش دار جهت ساخت میله های سوخت اورانیومی استفاده میشود. اخطار: سطح تششع متوسط."
+    },
+    "Desc_IronIngot_C": {
+      "name": "شمش آهن",
+      "description": "Used for crafting the most basic parts."
+    },
+    "Desc_CopperIngot_C": {
+      "name": "شمش مس",
+      "description": "Used for crafting the most basic parts."
+    },
+    "Desc_GoldIngot_C": {
+      "name": "شمش کاتریم",
+      "description": "Smelted from Caterium Ore. Primarily used for advanced electronics."
+    },
+    "Desc_SteelIngot_C": {
+      "name": "شمش فولاد",
+      "description": "Smelted from a combination of Iron Ore and Coal. Can be made into several parts used in building construction."
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "شمش آلومینیوم",
+      "description": "Smelted from Aluminum Scrap, which is refined from Alumina Solution. بیشتر برای تولید قطعات تخصصی مبتنی بر آلومینیوم استفاده می شود."
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Ficsite Ingot",
+      "description": "Produced by reconstructing other metals on a molecular level using Strange Alien Matter. Synthesized by FICSIT to be the perfect construction material, and used in the most high-end processes."
+    },
+    "Desc_Cement_C": {
+      "name": "بتن",
+      "description": "برای ساخت و ساز استفاده میشود. برای ساخت یک فوندانسیون پایدار مناسب است."
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "کریستال کوارتز",
+      "description": "از سنگ کوارتز خام مشتق شده است. برای ساخت فناوری های پیشرفته راداری و صفحات پرکیفیت نمایشگر استفاده میشود."
+    },
+    "Desc_Silica_C": {
+      "name": "سیلیکا",
+      "description": "Derived from Raw Quartz. Commonly used to create glass structures, in advanced refinement processes, and for alternative production of electronics."
+    },
+    "Desc_CopperDust_C": {
+      "name": "پودر مس",
+      "description": "Ground-up Copper Ingots. The high natural density of Copper, combined with the granularity of the powder, makes this part perfect for producing Nuclear Pasta in the Particle Accelerator."
+    },
+    "Desc_PolymerResin_C": {
+      "name": "رزین پلیمر",
+      "description": "A by-product of Crude Oil refinement into Fuel. Commonly used to manufacture Plastic and Rubber."
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "کُک نفت",
+      "description": "برای ساخت و ساز استفاده میشود. یک ماده غنی کربنی که از پسماند های نفت سنگین بدست میاد. بعنوان جایگزین ضعیف تر ذغال سنگ از آن استفاده کرد."
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "ضایعات آلومینیوم",
+      "description": "Refined from Alumina. Can be smelted into Aluminum Ingots for industrial usage."
+    },
+    "Desc_AlienProtein_C": {
+      "name": "پروتئین بیگانه",
+      "description": "Ground-up Alien Remains in a neat little package. جهت مصارف پزشکی و تحقیقاتی بر روی بیگانه ها استفاده میشود."
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "کپسول DNA بیگانه",
+      "description": "Translates organic chemicals into readable alien genetic information. برای تحقیقات پیرامون ارگانیسم های بیگانه استفاده میشود. Go the extra kilometer! Knowledge is power, and power is just efficiency with fewer steps. Depositing Alien DNA Capsules in the AWESOME Sink provides FICSIT with knowledge, and pioneers with Coupons."
+    },
+    "Desc_Water_C": {
+      "name": "آب",
+      "description": "این آبه."
+    },
+    "Desc_LiquidOil_C": {
+      "name": "نفت خام",
+      "description": "Refined into all kinds of Oil-based resources, like Fuel and Plastic."
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "باقی مانده نفت سنگین",
+      "description": "محصول ثانویه تولیدات پلاستیک و چسب. میشه برای تولید سوخت و کوک نفتی ازش استفاده کرد."
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "سوخت",
+      "description": "Can be used as-is to generate power, or packaged to be used as fuel for vehicles or the Jetpack."
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "زیست‌سوخت مایع",
+      "description": "Liquid Biofuel can be used as-is to generate power, or packaged to be used as fuel for vehicles."
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "سوخت توربو",
+      "description": "A more efficient alternative to Fuel. Can be used as-is to generate power, or packaged to be used as fuel for vehicles."
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "محلول آلومینیا",
+      "description": "آلومینیوم حل شده، از بایوکسیت استخراج شده است. میتوان آن را برای ساخت شمش های آلومینیوم به ضایعات آلومینیوم تبدیل کرد."
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "اسید سولفوریک",
+      "description": "Produced by combining Sulfur and Water in a complex reaction. Primarily used in refinement processes and Battery production."
+    },
+    "Desc_NitricAcid_C": {
+      "name": "اسید نیتریک",
+      "description": "Produced when Nitrogen Gas reacts with Water. Its high corrosiveness and oxidizing properties make it an excellent choice for refinement and fuel production processes."
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Dissolved Silica",
+      "description": "Silica dissolved in Water, produced as part of the alternative refinement of Raw Quartz. The Silica can be extracted from the Water to complete the refinement process."
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "گاز نیتروژن",
+      "description": "Has a variety of uses, including metallurgy, cooling, and Nitric Acid production. On MASSAGE-2 (AB)b, it can be extracted from underground gas wells."
+    },
+    "Desc_RocketFuel_C": {
+      "name": "سوخت موشک",
+      "description": "A high-impulse compressed gas fuel. Can be used as-is to power Fuel-Powered Generators, or packaged to be used as fuel for vehicles or the Jetpack."
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "Ionized Fuel",
+      "description": "Fuel that has been ionized, allowing it to deliver incredible output. Can be used as-is to power Fuel-Powered Generators, or packaged to be used as fuel for vehicles or the Jetpack."
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Dark Matter Residue",
+      "description": "Produced as a by-product of Quantum Encoding processes and alternatively generated in the Converter. Various fields of science are still debating the nature and properties of Dark Matter. Meanwhile, FICSIT has found several applications for it in space-time manipulation."
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Excited Photonic Matter",
+      "description": "Excited Photonic Matter is essential for all production processes in the Quantum Encoder. Formed in the Converter by inducing intense photon interactions through exposure to SAM in a high-energy environment."
+    },
+    "Desc_IronRod_C": {
+      "name": "میله آهنی",
+      "description": "برای ساخت و ساز استفاده میشود. یکی از پایه ترین قطعات."
+    },
+    "Desc_IronScrew_C": {
+      "name": "Screws",
+      "description": "برای ساخت و ساز استفاده میشود. یکی از پایه ترین قطعات."
+    },
+    "Desc_IronPlate_C": {
+      "name": "ورق آهن",
+      "description": "برای ساخت و ساز استفاده میشود. یکی از پایه ترین قطعات."
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "ورق آهنی تقویت شده",
+      "description": "برای ساخت و ساز استفاده میشود. نمونه ی قوی تر و منعطف تر صفحه آهنی."
+    },
+    "Desc_CopperSheet_C": {
+      "name": "ورق مسی",
+      "description": "برای ساخت و ساز استفاده میشود. به خاطر خاصیت ضد خورندگی خیلی خوبی که داره عموما برای ساخت لوله استفاده میشه."
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "صفحات آلومینیوم مقاوم",
+      "description": "Used to make products that require high heat conduction or a high specific strength. Thin, lightweight, and highly durable."
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "پوشش کاری آلومینیومی",
+      "description": "یک انباره قالب گیری شده همه کاره که از شمش آلومینیوم ساخته شده."
+    },
+    "Desc_SteelPipe_C": {
+      "name": "لوله فولادی",
+      "description": "Primarily used when constructing slightly more advanced buildings."
+    },
+    "Desc_SteelPlate_C": {
+      "name": "تیر فولادی",
+      "description": "Primarily used when constructing slightly more advanced buildings."
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "تیر آهن با روکش صنعتی",
+      "description": "Simultaneously utilizes the compressive strength of concrete and the tensile strength of steel. Mostly used as a stable base for constructing buildings."
+    },
+    "Desc_ModularFrame_C": {
+      "name": "فریم ماژولار",
+      "description": "برای ساخت و ساز استفاده میشود. A multipurpose building block."
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "فریم ماژولار سنگین",
+      "description": "A more robust multipurpose frame."
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "فریم ماژولار فیوزدرا",
+      "description": "A corrosion-resistant, nitride-hardened, highly-robust-yet-lightweight modular frame."
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Ficsite Trigon",
+      "description": "The Ficsite Trigon, made from Ficsite Ingots, is perfectly shaped for all construction challenges. Its performance is so exceptional, it basically solved structural engineering."
+    },
+    "Desc_Fabric_C": {
+      "name": "پارچه",
+      "description": "Used to craft equipment. پارچه محکم و در عین حال انعطاف پذیر."
+    },
+    "Desc_Plastic_C": {
+      "name": "پلاستیک",
+      "description": "Versatile and easy to manufacture, this material has a wide range of uses."
+    },
+    "Desc_Rubber_C": {
+      "name": "لاستیک",
+      "description": "A very flexible material that has a lot of friction."
+    },
+    "Desc_Rotor_C": {
+      "name": "روتور",
+      "description": "برای ساخت و ساز استفاده میشود. قطعات متحرک موتور."
+    },
+    "Desc_Stator_C": {
+      "name": "استاتور",
+      "description": "برای ساخت و ساز استفاده میشود. قطعات ثابت موتور."
+    },
+    "Desc_Battery_C": {
+      "name": "باتری",
+      "description": "عموما بعنوان سوخت پهپاد ها و وسایل نقلیه استفاده میشود."
+    },
+    "Desc_Motor_C": {
+      "name": "موتور",
+      "description": "Creates a mechanical force that is used to move things from machines to vehicles."
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "هیت سینک",
+      "description": "برای دفع سریعتر حرارت استفاده میشود."
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "سیستم خنک کاری",
+      "description": "Keeps advanced parts and buildings from exceeding efficient temperature levels."
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "توربو موتور",
+      "description": "A more complex and powerful version of the regular Motor."
+    },
+    "Desc_Wire_C": {
+      "name": "سیم",
+      "description": "برای ساخت و ساز استفاده میشود. یکی از پایه ترین قطعات."
+    },
+    "Desc_Cable_C": {
+      "name": "کابل",
+      "description": "برای ساخت و ساز استفاده میشود. عموما برای ساخت خطوط برق استفاده میشود."
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "سیم سرعت بالا",
+      "description": "Caterium's high conductivity and resistance to corrosion make it ideal for small, advanced electronics."
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "برد مدار چاپی",
+      "description": "Advanced electronics that have a plethora of different uses."
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "محدود کننده AI",
+      "description": "Controls AIs and keeps them from evolving in malicious ways. Super advanced electronics."
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "کانکتور با سرعت بالا",
+      "description": "Connects multiple cables and wires in a very efficient way. Uses a standard pattern, so it has many varied applications."
+    },
+    "Desc_SAMIngot_C": {
+      "name": "Reanimated SAM",
+      "description": "The active and contained form of the Strange Alien Matter. Proper electromagnetic containment is required, as it appears to be able to manipulate the atomic bonds of any matter it comes into contact with."
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "نوسانگر SAM",
+      "description": "The SAM Fluctuator is able to regulate and direct the behavior of Reanimated SAM through the application of electric charges with varying frequencies. This control facilitates technologies such as matter-to-energy conversion and spatiotemporal matter manipulation."
+    },
+    "Desc_Computer_C": {
+      "name": "کامپیوتر",
+      "description": "A complex logic machine that is used to control advanced behavior in other machines."
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "سوپر کامپیوتر",
+      "description": "The next-gen version of a Computer."
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "واحد کنترل گر رادیویی",
+      "description": "سیگنال رادیویی مستقیم و تقویت شده."
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "اسیلاتور کریستالی",
+      "description": "An electronic oscillator circuit that uses the mechanical resonance of a vibrating crystal to create an electrical signal with a precise frequency."
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "اسیلاتور سوپر پوزیشن",
+      "description": "An oscillator circuit that uses the mechanical resonance of a vibrating crystal to create a string vibration with a precise frequency. Often used in teleportation technology and dimensional manipulation."
+    },
+    "Desc_Diamond_C": {
+      "name": "Diamonds",
+      "description": "Synthetic Diamonds produced by exposing Coal to extreme heat and pressure. Used in the production of Time Crystals and Dark Matter Crystals. میزان مصرف برق: 250-750 MW (500 MW به صورت میانگین)."
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Time Crystal",
+      "description": "Time Crystals are Diamonds that have been reconfigured on a sub-atomic level in the Converter to retain a time-periodic self-organizing structure. This allows them to be used in the development of quantum processing and storage technologies."
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Dark Matter Crystal",
+      "description": "Concentrated Dark Matter Residue that is isolated within a crystalline vessel. This form of containment allows for utilising Dark Matter reliably in other production processes. میزان مصرف برق: 500-1500 MW (1000 MW به طور میانیگین)."
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Singularity Cell",
+      "description": "Used to break down space and time. Required to power Portals."
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Neural-Quantum Processor",
+      "description": "The Neural-Quantum Processor utilizes a combination of neural network architecture and quantum computing techniques to achieve unprecedented performance. This technology has enabled some of FICSIT's biggest advancements in artificial intelligence and relativistic engineering."
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Alien Power Matrix",
+      "description": "This intricate condensed-matter matrix is used to enhance the output of the Alien Power Augmenter. Initially developed in efforts to create a human-made Somersloop, the Alien Power Matrix cannot sustain the extra-dimensional energy connection on its own. However, it can effectively stabilize the energy stream of the Somersloop."
+    },
+    "Desc_FluidCanister_C": {
+      "name": "مخزن خالی",
+      "description": "برای بسته بندی سیالات جهت حمل و نقل استفاده میشود."
+    },
+    "Desc_GasTank_C": {
+      "name": "مخزن خالی سیال",
+      "description": "برای بسته بندی گاز ها و سایر مایعات فرار جهت حمل و نقل استفاده میشود."
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "مکعب مبدل فشار",
+      "description": "نیروی خارجی را به فشار داخلی تبدیل میکند. باید حاوی ناپایداری باشد. میزان مصرف انرژی بالا."
+    },
+    "Desc_PackagedWater_C": {
+      "name": "آب بسته بندی شده",
+      "description": "آب ، بسته بندی شده برای حمل و نقل جایگزین."
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "محلول آلومینیوم بسته بندی شده",
+      "description": "محلول آلومینیوم،برای حمل و نقل ثانویه بسته بندی شده است."
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "اسید سولفوریک بسته بندی شده",
+      "description": "اسید سولفوریک، بسته بندی شده برای حمل و نقل جایگزین."
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "نیتریک اسید بسته بندی شده",
+      "description": "اسید نیتریک ، بسته بندی شده برای حمل و نقل جایگزین."
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "گاز نیتروژن بسته بندی شده",
+      "description": "گاز نیتروژن ، بسته بندی شده برای حمل و نقل جایگزین."
+    },
+    "Desc_Leaves_C": {
+      "name": "برگ ها",
+      "description": "اصولا بعنوان سوخت استفاده میشود. Biomass Burners and vehicles can use Leaves for power."
+    },
+    "Desc_Mycelia_C": {
+      "name": "میسلیا",
+      "description": "برای ساخت و ساز استفاده میشود. Biomass Burners and vehicles can also use Mycelia for power."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "گلبرگ گل",
+      "description": "برای ساخت و ساز استفاده میشود. گلوله های رنگدانه طبیعی."
+    },
+    "Desc_Wood_C": {
+      "name": "چوب",
+      "description": "اصولا بعنوان سوخت استفاده میشود. Biomass Burners and vehicles can use Wood for power."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "زیست توده",
+      "description": "اصولا بعنوان سوخت استفاده میشود. ژنراتور های زیست توده ایی و وسایل نقلیه میتوانند از آن بعنوان سوخت استفاده نمایند. زیست توده نسبت به مواد ارگانیک گیاهی از میزان بهره وری انرژی خیلی بیشتری برخوردار است."
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "ذغال سنگ فشرده",
+      "description": "A much more efficient alternative to Coal. Used as fuel for vehicles and Coal-Powered Generators."
+    },
+    "Desc_PackagedOil_C": {
+      "name": "نفت بسته بندی شده",
+      "description": "نفت خام، برای حمل و نقلیه ثانویه بسته بندی شده است. میشه ازش بعنوان سوخت برای وسایل نقلیه استفاده کرد."
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "باقی مانده نفت سنگین بسته بندی شده",
+      "description": "پسماند نفت سنگین، برای حمل و نقلیه ثانویه بسته بندی شده است. میشه ازش بعنوان سوخت برای وسایل نقلیه استفاده کرد."
+    },
+    "Desc_Biofuel_C": {
+      "name": "زیست‌سوخت جامد",
+      "description": "بهینه ترین فرم ذخیره سازی انرژی برای زیست توده های جامد. میشه ازش بعنوان سوخت اره برقی استفاده کرد."
+    },
+    "Desc_Fuel_C": {
+      "name": "سوخت بسته بندی شده",
+      "description": "سوخت ، برای حمل و نقلیه ثانویه بسته بندی شده است. میشه ازش بعنوان سوخت برای وسایل نقلیه و یا جت پک استفاده کرد."
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "زیست سوخت مایع بسته بندی شده",
+      "description": "زیست سوخت مایع ، برای حمل و نقلیه ثانویه بسته بندی شده است. میشه ازش بعنوان سوخت برای وسایل نقلیه و یا جت پک استفاده کرد."
+    },
+    "Desc_TurboFuel_C": {
+      "name": "سوخته توربو بسته بندی",
+      "description": "سوخت توربو ، برای حمل و نقلیه ثانویه بسته بندی شده است. میشه ازش بعنوان سوخت برای وسایل نقلیه و یا جت پک استفاده کرد."
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "سوخت راکت بسته بندی شده",
+      "description": "Rocket Fuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Packaged Ionized Fuel",
+      "description": "Ionized Fuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "میله سوخت اورانیومی",
+      "description": "Used as fuel for Nuclear Power Plants. اخطار: وقتی که به مصرف برسد ضایعات اورانیومی رادیواکتیویته ایجاد میکند. اخطار: سطح تششع متوسط."
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "میله سوخت پلوتونیومی",
+      "description": "Used as fuel for Nuclear Power Plants. اخطار: وقتی به مصرف برسد ضایعات پلوتونیومی رادیواکتیویته تولید میکند. اخطار: به شدت رادیواکتیو."
+    },
+    "Desc_Gunpowder_C": {
+      "name": "باروت",
+      "description": "یک پودر قابل انفجار که عموما برای ساخت مواد محترقه ساده استفاده میشود."
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "پودر بی دود",
+      "description": "یک نوع پودر با قابلیت انفجار که به طور عمده در ساخت سلاح های مدرن استفاده میشود."
+    },
+    "Desc_Filter_C": {
+      "name": "فیلتر گاز",
+      "description": "Filters out toxins and pollutants from the air when used with a Gas Mask."
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "کارتریج رنگ",
+      "description": "برای اعمال الگو ها به سازه ها توسط شخصی ساز استفاده میشود. ( میتوان الگو ها را در مغازه باحال خریداری کرد.)"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "چراغ راهنما",
+      "description": "جهت حذف شدن لیست شده است این مورد (احتمالا) در طی اپدیت های آینده حذف خواهد شد. در حال حاضر فقط جهت یک رسید ساخت ثانویه موجود است."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "Iodine-Infused Filter",
+      "description": "Absorbs radioactive particles when used with the Hazmat Suit."
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "میلگرد آهنی",
+      "description": "Can be shot using the Rebar Gun for self-defense purposes."
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "میله گیج کننده",
+      "description": "در محل برخورد به قربانی شوک الکتریکی میدهد و آن را برای مدت محدودی گیج میکند. زمان گیج کنندگی: 5 ثانیه"
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "میله خردشونده",
+      "description": "Fractures when shot, launching deadly debris with wide spread but limited range."
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "میلگرد انفجاری",
+      "description": "در هنگام برخورد منفجر میشود، خسارت سنگینی اعمال میکند."
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "مهمات سلاح",
+      "description": "مهمات استاندارد سلاح اتوماتیک، برای گسترش زور و قدرت مناسب است."
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "مهمات سلاح هومینگ",
+      "description": "مکانیزم خودکار نهادینه شده در این گلوله این امکان را فراهم میکند که اهداف قرار گرفته در محوطه نشانه گیری شده را با دقت کامل مورد هدف قرار دهد. در برابر اهداف ترز و فرز بسیار مناسب است ، یا حتی برای پیشگامانی که دقت شلیکشان در حد جلبک است."
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "مهمات سلاح توربو",
+      "description": "Lightweight, compact, and volatile. These rounds provide extreme capacity and rate of fire at the cost of accuracy."
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "نوبلسیک",
+      "description": "یک ماده محترقه ساده ، برای از بین بردن تخته سنگ ها ، گیاهان و سایر موانع کاربرد دارد."
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "بمب شیمیایی",
+      "description": "Creates a deadly gas cloud instead of a regular explosion."
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "بمب شوکی",
+      "description": "Generates a powerful shockwave instead of a regular explosion."
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "بمب خوشه ایی",
+      "description": "Detonates into multiple smaller explosions. Practical for clearing out large areas of vegetation and other inconveniences."
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "بمب هسته ایی",
+      "description": "Uses a nuclear fission reaction to generate a massive explosion. هشدار: قبل از آنکه منفجر شود مطمئن شوید هیچگونه از دارایی های FICSIT در شعاع انفجار نباشد."
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "میله کنترل الکترومغناطیس",
+      "description": "Regulates power output via electromagnetism."
+    },
+    "Desc_UraniumCell_C": {
+      "name": "سلول اورانیومی پوشیده",
+      "description": "Used to produce Uranium Fuel Rods for Nuclear Power production. Made from Uranium Ore. اخطار: سطح رادیواکتیوی متوسط."
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Non-Fissile Uranium",
+      "description": "The Uranium-238 isotope is non-fissile, meaning it cannot be used for nuclear fission. It can, however, be converted into fissile Plutonium in the Particle Accelerator. اخطار: سطح رادیواکتیوی متوسط."
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "قرص پلوتونیومی",
+      "description": "در شتاب دهنده ذرات با تبدیل کردن اورانیوم شکاف ناپذیر بدست میاید. برای ساخت سلول های پلوتونیومی پوشش دار جهت ساخت میله های سوخت پلوتونیومی استفاده میشود. میزان مصرف برق: 250-750 MW (500 MW به صورت میانگین). اخطار: سطح تششع متوسط."
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "سلول پلوتونیومی پوشیده",
+      "description": "Plutonium Pellets encased in concrete. برای ساخت میله های سوخت پلوتونیومی جهت تولید برق اتمی استفاده میشود. میزان مصرف برق: 250-750 MW (500 MW به صورت میانگین). Caution: Moderately Radioactive."
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Ficsonium",
+      "description": "Usage and production of this material is strictly prohibited. On Earth, that is. There are no rules in space, only efficiency. میزان مصرف برق: 500-1500 MW (1000 MW به طور میانیگین). اخطار: سطح تششع متوسط."
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Ficsonium Fuel Rod",
+      "description": "Used as fuel for Nuclear Power Plants. The power source that put FICSIT on the map. Literally. The crater is still there. اخطار: سطح تششع متوسط."
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "ضایعات اورانیومی",
+      "description": "The by-product of consuming Uranium Fuel Rods in a Nuclear Power Plant. میتوان از آن اورانیوم شکاف نا پذیر بدست آورد. با احتیاط حمل شود. اخطار: به شدت رادیواکتیو."
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "ضایعات پلوتونیوم",
+      "description": "The by-product of consuming Plutonium Fuel Rods in a Nuclear Power Plant. Must be stored in a safe location. Handle with caution. اخطار: شدیدا رادیواکتیو."
+    },
+    "Desc_Crystal_C": {
+      "name": "حلزون توان آبی رنگ",
+      "description": "A strange slug radiating an unknown weak power."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "حلزون زرد رنگ توان",
+      "description": "A strange slug radiating an unknown power."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "حلزون توان بنفش رنگ",
+      "description": "A strange slug radiating a powerful unknown power."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "کاتالیزر نیرو",
+      "description": "Power Slug mucus compressed into a solid crystal-like shard. یک جور نیروی عجیبی رو از خودش ساطع میکنه."
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "کوپن FICSIT",
+      "description": "یک کوپن ویژه از برنامه پاداش فیسیت که از طریق AWESOME Sink به دست آمده است. می‌تواند در فروشگاه AWESOME برای مراحل ویژه و پاداش‌ها بازخرید شود."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "آبکاری هوشمند",
+      "description": "Project Part #1. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "فریم کاری همه کاره",
+      "description": "Project Part #2. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "سیم کشی اتوماتیک شده",
+      "description": "Project Part #3. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "موتور ماژولار",
+      "description": "Project Part #4. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "واحد کنترل انطباقی",
+      "description": "Project Part #5. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "سیستم هدایتگر اسمبلی",
+      "description": "Project Part #6. Ship via the Space Elevator to complete phases of Project Assembly. یک قطعه پردازشی فوق العاده سریع که منحصرا برای کامل کردن پروژه اسمبلی ساخته و طراحی شده است مورد کاربرد: فاز اسمبلی."
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "ژنراتور میدان مغناطیسی",
+      "description": "Project Part #7. Ship via the Space Elevator to complete phases of Project Assembly. These modular generators use superconducting magnets and vast amounts of electricity to produce a powerful and easily expandable magnetic field."
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "موشک انتقالی حرارتی",
+      "description": "Project Part #8. Ship via the Space Elevator to complete phases of Project Assembly. این قطعه برای ایجاد پلاسمای فشار بالا حرارت فوق العاده زیادی تولید میکنه که ادامه دادن فرایند پروژه اسمبلی رو ممکن میسازه."
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "پاستای اتمی",
+      "description": "Project Part #9. Ship via the Space Elevator to complete phases of Project Assembly. میزان مصرف برق: 500-1500 MW (1000 MW به طور میانیگین). پاستای اتمی یک ماده ی شدیدا با چگالی بالا و انحطاط پذیر هست. این ماده وقتی که پروتون ها و الکترون ها تحت فشار بسیار زیاد به نوترون تبدیل میشوند به وجود میاید. از لحاط تئوری این ماده در ستاره های نوترونی به طور طبیعی یافت میشود."
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Biochemical Sculptor",
+      "description": "Project Part #10. Ship via the Space Elevator to complete phases of Project Assembly. Years ahead of the competition, this top-of-the-line 3D printer is used for the production of synthetic biological resources."
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Ballistic Warp Drive",
+      "description": "Project Part #11. Ship via the Space Elevator to complete phases of Project Assembly. A large amount of force is required for the Warp Drives to activate, so sticking them to rockets was the logical next step. Additionally, results improved immensely when the observers were further removed from the Warp Drives upon activation."
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "AI Expansion Server",
+      "description": "Project Part #12. Ship via the Space Elevator to complete phases of Project Assembly. Power Usage: 0-2000 MW (1000 MW average). Growth is the metric by which we measure success."
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "معدن روب مدل 1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "معدن روب مدل 2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "معدن روب مدل 3"
+    },
+    "Build_OilPump_C": {
+      "name": "استخراج گر نفت"
+    },
+    "Build_WaterPump_C": {
+      "name": "استخراج کننده آب"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "فشار دهنده چاه منابع"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "استخراج گر چاه منابع"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "کوره"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "ریخته گری"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "دستگاه سازنده"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "اسمبل کننده"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "تولید کننده"
+    },
+    "Build_OilRefinery_C": {
+      "name": "پالایشگاه"
+    },
+    "Build_Packager_C": {
+      "name": "بسته بندی کننده"
+    },
+    "Build_Blender_C": {
+      "name": "مخلوط کن"
+    },
+    "Build_HadronCollider_C": {
+      "name": "شتاب دهنده ذرات"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "انکودر کوانتومی"
+    },
+    "Build_Converter_C": {
+      "name": "مبدل"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "ژنراتور توده زیستی"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Coal-Powered Generator"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Fuel-Powered Generator"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "ژنراتور زمین حرارتی"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "نیروگاه اتمی"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "ذخیره ساز برق"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Alien Power Augmenter"
+    },
+    "Build_TradingPost_C": {
+      "name": "HUB"
+    },
+    "Build_Mam_C": {
+      "name": "MAM"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "آسانسور فضایی"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Blueprint Designer Mk.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Blueprint Designer Mk.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "سینک باحال"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "مغازه باحال"
+    },
+    "Build_WorkBench_C": {
+      "name": "Crafting Bench"
+    },
+    "Build_Workshop_C": {
+      "name": "میز تجهیزات"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "صندوق شخصی"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "جعبه کمک های اولیه"
+    },
+    "Build_StorageHazard_C": {
+      "name": "جعبه انباره خطرناک"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "کانتینر انبار"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "بافر سیالات"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "بافر صنعتی سیالات"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Dimensional Depot Uploader"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Basic Shelf Unit"
+    },
+    "Build_TruckStation_C": {
+      "name": "ایستگاه کامیون"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "پورت پهپاد"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "سکو واگن باری"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "سکو واگن باری سیالات"
+    },
+    "Build_LookoutTower_C": {
+      "name": "برج مراقبت"
+    },
+    "Build_RadarTower_C": {
+      "name": "برج رادار"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

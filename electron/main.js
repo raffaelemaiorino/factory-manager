@@ -118,7 +118,12 @@ const {
   resetEnergyChainGenerator,
   setEnergyGeneratorInputLinks,
   setEnergyGeneratorProductionLinks,
+  getI18nInfo,
+  getAppLocale,
+  setAppLocale,
+  listAvailableLocales,
 } = require('../src/database');
+const { loadUiMessages } = require('../src/locales/ui');
 
 let mainWindow;
 let userDataPath;
@@ -196,6 +201,11 @@ ipcMain.handle('resources:detail', (_event, id) => getResourceDetail(id));
 ipcMain.handle('resources:update', (_event, id, data) => saveResource(id, data));
 ipcMain.handle('db:restore-default-resources', () => restoreDefaultResources());
 ipcMain.handle('db:resources-info', () => getResourcesDataInfo());
+ipcMain.handle('i18n:info', () => getI18nInfo());
+ipcMain.handle('i18n:get-locale', () => getAppLocale());
+ipcMain.handle('i18n:set-locale', (_event, locale) => setAppLocale(locale));
+ipcMain.handle('i18n:list-locales', () => listAvailableLocales());
+ipcMain.handle('i18n:ui-messages', (_event, locale) => loadUiMessages(locale));
 function sanitizeExportFileName(name) {
   const cleaned = String(name ?? 'schema')
     .trim()

@@ -1,0 +1,801 @@
+{
+  "dataVersion": 1,
+  "locale": "no",
+  "source": {
+    "items": "https://satisfactory-calculator.com/no/items",
+    "buildings": "https://satisfactory-calculator.com/no/buildings"
+  },
+  "importedAt": "2026-07-20T19:13:58.331Z",
+  "itemCategories": {
+    "minerali": "Malmer",
+    "lingotti": "Barrer",
+    "materiali": "Mineraler",
+    "alieni": "Romvesener",
+    "liquidi": "Væsker",
+    "gas": "Gasser",
+    "componenti-standard": "Standard deler",
+    "componenti-industriali": "Industrielle deler",
+    "componenti-elettronici": "Elektronikk",
+    "comunicazioni": "Kommunikasjoner",
+    "tecnologia-quantistica": "Kvanteteknologi",
+    "contenitori": "Lagringsbokser",
+    "carburante": "Drivstoffer",
+    "consumato": "Forbruksvarer",
+    "munizioni": "Ammunisjon",
+    "nucleare": "Kjernekraft",
+    "rifiuti": "Avfall",
+    "speciali": "Spesielle"
+  },
+  "buildingCategories": {
+    "estrazione": "Utvinning",
+    "produzione": "Produksjon",
+    "generatori": "Generatorer",
+    "speciali": "Spesielle",
+    "postazioni-di-lavoro": "Arbeidsstasjoner",
+    "deposito": "Oppevaring",
+    "stazioni-di-attracco": "Stasjoner, plattformer, og terminaler",
+    "torri": "Tårn"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "Kalkstein",
+      "description": "Brukes i fremstilling. Vanlig ressurs brukt for stabile fundamenter."
+    },
+    "Desc_OreIron_C": {
+      "name": "Jernmalm",
+      "description": "Brukes i fremstilling. Det mest essensielle grunnleggende ressursen."
+    },
+    "Desc_OreCopper_C": {
+      "name": "Kobbermalm",
+      "description": "Brukes i fremstilling. En vanlig ressurs hovedsakelig brukt for elektrisitet."
+    },
+    "Desc_OreGold_C": {
+      "name": "Cateriummalm",
+      "description": "Smeltes til cateriumbarrer. Cateriumbarre er for det meste brukt i avansert elektronikk."
+    },
+    "Desc_Coal_C": {
+      "name": "Kull",
+      "description": "Hovedsaklig brukt som drivstoff til kjøretøy og kullgeneratorer, samt til stålproduksjon."
+    },
+    "Desc_RawQuartz_C": {
+      "name": "Rå kvarts",
+      "description": "Kan bli gjort om til kvartskrystaller og silika, som begge tilbyr en rekke applikasjoner."
+    },
+    "Desc_Sulfur_C": {
+      "name": "Svovel",
+      "description": "Primært brukt til å produsere svartkrutt."
+    },
+    "Desc_OreBauxite_C": {
+      "name": "Bauksitt",
+      "description": "Brukes for å produsere aluminiumoksid, noe som kan videre raffineres til aluminiumskrap som trengs for å produsere aluminiumbarrer."
+    },
+    "Desc_SAM_C": {
+      "name": "SAM",
+      "description": "Rart Utenomjordisk Materie, eller vanligvis forkortet til SUP, virker ikke som det følger de kjente fysiske lover. Den hvisker om nye muligheter."
+    },
+    "Desc_OreUranium_C": {
+      "name": "Uran",
+      "description": "Et radioaktivt element. Brukes for å lage innkapslet uranceller for uran brenselstaver. Advarsel: Moderat radioaktivt."
+    },
+    "Desc_IronIngot_C": {
+      "name": "Jernbarre",
+      "description": "Brukes til å lage de mest grunnleggende delene."
+    },
+    "Desc_CopperIngot_C": {
+      "name": "Kobberbarre",
+      "description": "Brukes til å lage de mest grunnleggende delene."
+    },
+    "Desc_GoldIngot_C": {
+      "name": "Cateriumbarre",
+      "description": "Smeltes til cateriumbarrer. Cateriumbarre er for det meste brukt i avansert elektronikk."
+    },
+    "Desc_SteelIngot_C": {
+      "name": "Stålbarre",
+      "description": "Smeltes fra en kombinasjon av jernmalm og kull. De blir brukt til å produsere andre deler for bruk i konstruksjon."
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "Aluminiumbarre",
+      "description": "Smeltet fra aluminiumskrap, som er raffinert fra en løsning av aluminiumoksid. For det meste brukt i produksjon av spesialiserte aluminiumsbaserte deler."
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Ficsittbarre",
+      "description": "Produsert ved å rekonstruere andre metaller på et molekylært nivå ved å bruke rart utenomjordisk materie. Skapt av FICSIT for å være den beste konstruksjons materielt, og brukes i den mest avanserte prosessene."
+    },
+    "Desc_Cement_C": {
+      "name": "Betong",
+      "description": "Brukt til bygging. Godt for en stabil grunnmur."
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "Kvartskrystall",
+      "description": "Utvunnet fra rå kvarts. Brukes vanligvis i avansert radarteknologi og høykvalitets skjermer."
+    },
+    "Desc_Silica_C": {
+      "name": "Silika",
+      "description": "Utvunnet fra rå kvarts. Brukes vanligvis for å skape strukturer av glass, i avanserte raffineringsprosseser, og kan være et alternativ i produksjonen av elektronikk."
+    },
+    "Desc_CopperDust_C": {
+      "name": "Kobberpulver",
+      "description": "Pulverisert kobberbarrer. Den høye naturlige tettheten i kobber, kombinert med pulverets granularitet, gjør dette pulveret egnet til å produsere atompasta i partikkelakseleratoren."
+    },
+    "Desc_PolymerResin_C": {
+      "name": "Polymerharpiks",
+      "description": "Et biprodukt av raffinering av råolje til drivstoff. Oftest brukt til å produsere plastikk og gummi."
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "Petroleumskoks",
+      "description": "Brukes i fremstilling. En karbonrik destillert fra tunge oljerester. Brukt som et mindre effektiv kullerstatning eller for raffinering av aluminium."
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "Aluminiumskrap",
+      "description": "Raffinert fra aluminiumoksid. Kan bli smeltet ned til aluminiumbarrer for industrielt bruk."
+    },
+    "Desc_AlienProtein_C": {
+      "name": "Utenomjordisk protein",
+      "description": "Kvernet utenomjordiske rester i en pen liten pakke. Brukes til medisinske formål og for å forske på fremmede organismer."
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "Utenomjordisk DNA-datakapsel",
+      "description": "Denne datakapselen gjør om organiske kjemikalier om til leselig genetisk informasjon. Brukes for å forske på utenomjordiske organismer. Gå den ekstra mila! Kunnskap er makt, og makt er effektivitet sett fra et annet perspektiv. Det å kverne DNA-kapsler i EKSPERT-kvernen vil gi FICSIT informasjon om faunaen, også vil du få kuponger i retur."
+    },
+    "Desc_Water_C": {
+      "name": "Vann",
+      "description": "Det er vann."
+    },
+    "Desc_LiquidOil_C": {
+      "name": "Råolje",
+      "description": "Raffineres til all slags oljebaserte produkter, slik som brensel og plast."
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "Tunge oljerester",
+      "description": "Et biprodukt av plastikk og gummi produksjon. Kan bli videre raffinert til drivstoff og petroleumskoks."
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "Drivstoff",
+      "description": "Kan bli brukt som den er for å generere strøm, eller bli tappet på kanner for å bli brukt som drivstoff for kjøretøy eller flyvesekken."
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "Flytende biodrivstoff",
+      "description": "Flytende biodrivstoff kan bli brukt som det er til å generere strøm eller bli tappet på kanner for å bli brukt som drivstoff i kjøretøy."
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "Turbodrivstoff",
+      "description": "Ett mer effektivt alternativ til drivstoff. Kan bli brukt som det er til å generere strøm eller bli tappet på kanner for å bli brukt som drivstoff i kjøretøy."
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "Aluminiumoksidløsning",
+      "description": "Oppløst aluminiumoksid, utvunnet fra bauksitt. Kan bli videre foredlet til aluminiumskrap for produksjon av aluminiumbarrer."
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "Svovelsyre",
+      "description": "Produsert ved å kombinere svovel og vann i en kompleks reaksjon til en mineralsyre. Brukes primært i raffinering og batteriproduksjon."
+    },
+    "Desc_NitricAcid_C": {
+      "name": "Salpetersyre",
+      "description": "Produsert når nitrogengass reagerer med vann. Dens høye korrosjonsegenskaper og oksidasjonsegenskaper gjør det til et perfekt valg for raffinering og drivstoffproduksjon."
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Oppløst silika",
+      "description": "Silika oppløst i vann, produsert som et produkt av alternativ foredling av rå kvarts. Silikaen kan trekkes ut av vannet for å fullføre foredlingen."
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "Nitrogengass",
+      "description": "Har en rekke bruksområder, for eksempel metallurgi, kjøling, og salpetersyreproduksjon. På MASSAGE-2(AB)b kan gassen bli hentet ut fra underjordiske gassbrønner."
+    },
+    "Desc_RocketFuel_C": {
+      "name": "Rakettdrivstoff",
+      "description": "Et komprimert høyimpuls drivstoff i gassform. Kan bli brukt som det er til å generere strøm eller bli tappet på kanner for å bli brukt som drivstoff i kjøretøy eller flyvesekken."
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "Ionisert drivstoff",
+      "description": "Drivstoffet har blitt ionisert, noe som muliggjør fantastiske energiutnyttelse. Kan bli brukt som det er til å generere strøm eller bli tappet på kanner for å bli brukt som drivstoff i kjøretøy eller flyvesekken."
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Mørk materierester",
+      "description": "Produsert som et biprodukt av kvantumomkoding og alternativt generert i omvenderen. Flere vitenskapelige felt debatterer ennå metodene og egenskapene til mørk materie. I mellomtiden har FICSIT funnet flere applikasjoner for det for romtidmanipulasjon."
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Eksitert fotonisk materie",
+      "description": "Eksitert fotonisk materie er essensiell for alle produksjonsprosesser i kvantumenkoderen. Skapt i omvenderen ved å introdusere intense fotoninteraksjoner gjennom eksponering for SAM i et miljø med høy energi."
+    },
+    "Desc_IronRod_C": {
+      "name": "Jernstav",
+      "description": "Brukes i fremstilling. Er en av de mest grunnleggende delene."
+    },
+    "Desc_IronScrew_C": {
+      "name": "Skruer",
+      "description": "Brukes i fremstilling. Er en av de mest grunnleggende delene."
+    },
+    "Desc_IronPlate_C": {
+      "name": "Jernplate",
+      "description": "Brukes i fremstilling. Er en av de mest grunnleggende delene."
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "Forsterket jernplate",
+      "description": "Brukes i fremstilling. En kraftigere og mer bestandig jernplate."
+    },
+    "Desc_CopperSheet_C": {
+      "name": "Kobbertynnplate",
+      "description": "Brukes i fremstilling. Brukes primært til rørledninger på grunn av sin høye korrosjonsmotstand."
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "Korrosjonsbestandig aluminiumsplate",
+      "description": "Brukes hovedsakelig for produkter som krever høy varmeledning eller høy spesifikk styrke. Er tynn, lett og svært slitesterk."
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "Aluminiumkabinet",
+      "description": "En allsidig boks støpt av aluminiumbarrer."
+    },
+    "Desc_SteelPipe_C": {
+      "name": "Stålrør",
+      "description": "Brukes primært når man skal konstruere litt mere avanserte bygninger."
+    },
+    "Desc_SteelPlate_C": {
+      "name": "Stålbjelke",
+      "description": "Brukes primært når man skal konstruere litt mere avanserte bygninger."
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "Innkapslet Stålbjelke",
+      "description": "Benytter både trykkstyrken til betong og strekkfastheten til stål. Brukes mest som et stabilt grunnlag for konstruksjon av bygninger."
+    },
+    "Desc_ModularFrame_C": {
+      "name": "Modulær ramme",
+      "description": "Brukes i fremstilling. Er en del av så mangt."
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "Tung modulær ramme",
+      "description": "En mer robust flerbruksramme."
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "Sammensveiset modulær ramme",
+      "description": "En korrosjonsbestandig, nitridherdet, meget robust, men likevel lett modulær ramme."
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Ficsittriangler",
+      "description": "Ficsittrianglet, laget av ficsittbarrer, er en perfekt formet for alle konstruksjonsutfordringer. Dens ytelse er så eksepsjonell at den har egentlig løst konstruksjonsteknikk."
+    },
+    "Desc_Fabric_C": {
+      "name": "Stoff",
+      "description": "Brukes i fremstilling av utstyr. Et fleksibelt, men slitesterkt stoff."
+    },
+    "Desc_Plastic_C": {
+      "name": "Plast",
+      "description": "Allsidig og enkelt å lage. Dette materialet har et bredt spekter av bruksområder."
+    },
+    "Desc_Rubber_C": {
+      "name": "Gummi",
+      "description": "Et veldig fleksibelt material som har mye friksjon."
+    },
+    "Desc_Rotor_C": {
+      "name": "Rotor",
+      "description": "Brukes i fremstilling. Den bevegelige delen i en motor."
+    },
+    "Desc_Stator_C": {
+      "name": "Stator",
+      "description": "Brukes i fremstilling. Den statiske delen i en motor."
+    },
+    "Desc_Battery_C": {
+      "name": "Batteri",
+      "description": "Primert brukt som drivstoff for droner og kjøretøy."
+    },
+    "Desc_Motor_C": {
+      "name": "Motor",
+      "description": "Skaper en mekanisk kraft som brukes til å flytte ting som vi finner i fra maskiner til kjøretøy."
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "Kjøleribbe",
+      "description": "Brukes til å fjerne varme raskere."
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "Kjølesystem",
+      "description": "Holder avanserte deler og bygninger fra å overstige effektive temperaturnivåer."
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "Turbomotor",
+      "description": "En mer kompleks og kraftig versjon av den vanlige motoren."
+    },
+    "Desc_Wire_C": {
+      "name": "Kobbertråd",
+      "description": "Brukes i fremstilling. Er en av de mest grunnleggende delene."
+    },
+    "Desc_Cable_C": {
+      "name": "Kabel",
+      "description": "Brukes i fremstilling. Hovedsakelig brukt til å bygge kraftlinjer."
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "Kvikktråd",
+      "description": "Cateriumens høye ledningsevne og motstandsdyktighet mot korrosjon gjør det ideélt til avansert mindre elektronikk."
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "Kretskort",
+      "description": "Avansert elektronikk som har mange bruksområder."
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "KI-begrense",
+      "description": "Kontrollerer kunstige intelligenser og hindrer dem i å utvikle seg på ondsinnede måter. Super-avansert elektronikk ."
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "Høyhastighetstilkobling",
+      "description": "Samler sammen mange kabler og ledninger på en svært effektiv måte. Bruker et standard mønster slik at bruken av denne blir mangfoldig."
+    },
+    "Desc_SAMIngot_C": {
+      "name": "Reanimert SAM",
+      "description": "Den aktive og innkapslete formen til rart utenomjordisk materie. Riktig elektromagnetisk innkapsling er nødvendig, siden materien ser ut til å være i stand til å manipulere atombindingene til alle stoffer den kommer i kontakt med."
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "SAM-fluktuator",
+      "description": "SAM Fluctuator kan regulere og styre oppførselen til reanimerte SAM ved å bruke elektriske ladninger med varierende frekvenser. Denne kontrollen muliggjør teknologier som materie-til-energi-konvertering og spatiotemporal manipulering av materie."
+    },
+    "Desc_Computer_C": {
+      "name": "Datamaskin",
+      "description": "En komplisert logikkmaskin som brukes for å kontrollere avansert oppførsel i andre maskiner."
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "Superdatamaskin",
+      "description": "Den neste generasjonen av datamaskiner."
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "Radiokontrollenhet",
+      "description": "Forbedrer og dirigerer radiosignaler."
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "Krystalloscillator",
+      "description": "Et oscillerende elektronisk kretskort som bruker den mekaniske resonansen fra en vibrerende krystall for å skape et elektrisk signal med en presis frekvens."
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "Superposisjonær oscillator",
+      "description": "En oscillatorkrets som bruker mekanisk resonanse fra en vibrerende krystall til å lage en kjede av vibrasjoner med en presis frekvens. Brukes ofte i teleporteringsteknologi og dimensjonal manipulering."
+    },
+    "Desc_Diamond_C": {
+      "name": "Diamanter",
+      "description": "Syntetiske diamanter produsert ved å utsette kull for ekstrem varme og trykk. Brukes i produksjonen av tidskrystaller og mørk materiekrystaller. Strømforbruk: 250-750 MW (500 MW i gjennomsnitt)."
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Tidskrystall",
+      "description": "Tidskrystaller er diamanter som har blitt konfigurert på atomnivå i omvandleren for å beholde en tidsperiodisk selvorganiserende struktur. Dette gjør at de kan brukes i utviklingen av kvanteprosesserings- og lagringsteknologier."
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Mørk materiekrystall",
+      "description": "Konsentrert mørk materierester som er isolert i en krystallinsk beholder. Denne formen for inneslutning gjør det mulig å bruke mørk materie pålitelig i andre produksjonsprosesser. Strømforbruk: 500-1500 MW (1000 MW i gjennomsnitt)."
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Singularitetscelle",
+      "description": "Brukes for å bryte ned rom og tid. Nødvendig for at portaler skal fungere."
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Nevral kvanteprosessor",
+      "description": "Den nevrale kvanteprosessoren utnytter en kombinasjon av nevrale nettverksarkitektur og kvanteprosserering for å oppnå enestående ytelse. Denne teknologien har muliggjort noen av FICSITs største fremskritt innen kunstig intelligens og relativitetsvitenskap."
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Romvesenstrøm-matrise",
+      "description": "Denne intrikate matrisen med kondensert materie brukes til å forbedre effekten til den utenomjordiske kraftforsterekeren. Opprinnelig utviklet i forsøk på å lage en menneskeskapt somersløkke, kan den fremmede kraftmatrisen ikke opprettholde den ekstradimensjonale energiforbindelsen på egen hånd. Imidlertid kan det effektivt stabilisere energistrømmen til en somersløkke."
+    },
+    "Desc_FluidCanister_C": {
+      "name": "Tom kanne",
+      "description": "Brukes for å tappe væsker på for transport."
+    },
+    "Desc_GasTank_C": {
+      "name": "Tom flaske",
+      "description": "Brukes for å tappe gasser og flyktige væsker på for transport."
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "Trykkkonverterende kube",
+      "description": "Konverterer utgående kraft til internt trykk. Kreves for å stabilt holde på ustabil materie med høy energi."
+    },
+    "Desc_PackagedWater_C": {
+      "name": "Vann på kanne",
+      "description": "Vann, tappet på kanner for alternativ transport."
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "Aluminiumoksidløsning på kanne",
+      "description": "Aluminiumoksidløsning, tappet på kanner for alternativ transport."
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "Svovelsyre på kanne",
+      "description": "Svovelsyre, tappet på kanner for alternativ transport."
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "Salpetersyre på kanne",
+      "description": "Salpetersyre, tappet på kanner for alternativ transport."
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "Nitrogengass på flaske",
+      "description": "Nitrogengass, tappet på flasker for alternativ transport."
+    },
+    "Desc_Leaves_C": {
+      "name": "Løv",
+      "description": "Hovedsaklig brukt som drivstoff. Biomasse-brennere og kjøretøy kan bruke det som drivstoff."
+    },
+    "Desc_Mycelia_C": {
+      "name": "Mycel",
+      "description": "Brukes i fremstilling. Biomasse-brennere og kjøretøy kan også bruke det som drivstoff."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "Blomsterblader",
+      "description": "Brukes i fremstilling. Fargerike lokale blomsterblader."
+    },
+    "Desc_Wood_C": {
+      "name": "Ved",
+      "description": "Hovedsaklig brukt som drivstoff. Biomasse-brennere og kjøretøy kan bruke det som drivstoff."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "Biomasse",
+      "description": "Hovedsaklig brukt som drivstoff. Biomassebrennere og kjøretøy kan bruke det for kraft. Biomasse er mye mer energieffektivt enn rå biologisk materie."
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "Komprimert kull",
+      "description": "Et langt mer effektivt alternativ til kull. Kan brukes som drivstoff i kjøretøy og kullkraftverk."
+    },
+    "Desc_PackagedOil_C": {
+      "name": "Olje på fat",
+      "description": "Råolje, tappet på fat for alternativ transport. Kan bli brukt som drivstoff til kjøretøy."
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "Tunge oljerester på fat",
+      "description": "Tunge oljerester, tappet på kanne for alternativ transport. Kan bli brukt som drivstoff for kjøretøy."
+    },
+    "Desc_Biofuel_C": {
+      "name": "Fast biodrivstoff",
+      "description": "Den mest energieffektive formen for solid biomasse. Kan bli brukt som drivstoff for motorsager."
+    },
+    "Desc_Fuel_C": {
+      "name": "Drivstoff på kanne",
+      "description": "Drivstoff, tappet på kanner for alternativ transport. Kan bli brukt som drivstoff for kjøretøy og flyvesekken."
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "Flytende biodrivstoff på kanne",
+      "description": "Flytende biodrivstoff, tappet på kanner for alternativ transport. Kan bli brukt som drivstoff for kjøretøy og flyvesekken."
+    },
+    "Desc_TurboFuel_C": {
+      "name": "Turbodrivstoff på kanne",
+      "description": "Turbodrivstoff, tappet på kanner for alternativ transport. Kan bli brukt som drivstoff for kjøretøy og flyvesekken."
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "Rakettdrivstoff på kanne",
+      "description": "Rakketdrivstoff, tappet på kanner for alternativ transport. Kan bli brukt som drivstoff for kjøretøy og flyvesekken."
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Ionisert drivstoff på kanne",
+      "description": "Ionisert drivstoff, tappet på kanner for alternativ transport. Kan bli brukt som drivstoff for kjøretøy og flyvesekken."
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "Uranbrenselstav",
+      "description": "Brukes som drivstoff for atomkraftverk. Advarsel: Produserer uransk atomavfall under forbruk. Advarsel: Moderat radioaktivt."
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "Plutonium-brenselstav",
+      "description": "Brukes som drivstoff for atomkraftverk. Advarsel: Produserer plutoniumavfall under forbruk. Advarsel: MEGET radioaktivt."
+    },
+    "Desc_Gunpowder_C": {
+      "name": "Svartkrutt",
+      "description": "Et eksplosivt pulver som vanligvis brukes til å produsere enkle eksplosiver."
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "Røyksvakt krutt",
+      "description": "Et eksplosivt pulver som vanligvis brukes til å produsere moderne skytevåpen."
+    },
+    "Desc_Filter_C": {
+      "name": "Gassfilter",
+      "description": "Filtrerer ut giftstoffer og forurensninger fra luften når den brukes med en gassmaske."
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "Fargepatron",
+      "description": "Brukes til å skape mønstre på strukturer med tilpasseren. (Mønstre kan kjøpes i EKSPERT-butikken.)"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "Markør",
+      "description": "VENTER PÅ FJERNING Dette elementet vil (sannsynligvis) bli fjernet i en fremtidig oppdatering. Foreløpig kun brukt som ingrediens i en alternativ oppskrift."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "Jodifisert filter",
+      "description": "Absorberer radioaktive partikler når brukt sammen med dekontimeringsdrakten."
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "Armeringsjern",
+      "description": "Kan skytes med armeringspistolen, som selvforsvar."
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "Støtarmering",
+      "description": "Gir elektrisk støt til målet den treffer så det stivner en kort stund. Varighet av stivhet: 5 sekunder"
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "Granat armeringsjern",
+      "description": "Knuses opp i dødelige splinter med bred spredning når det blir avfyrt, men med en begrenset rekkevidde."
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "Eksplosiv armeringsjern",
+      "description": "Eksploderer ved sammenstøt og gjør store skader."
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "Rifleammunisjon",
+      "description": "Standardutgave av rifleammunisjon, nyttig for å etablere dominans."
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "Målsøkende rifleammunisjon",
+      "description": "Kulestyringssystemet som er innebygd i ammunisjonen har et selv-siktende system som av seg selv gjør at det kan treffe ethvert mål nøyaktig innenfor sikteområdet. Særlig nyttig når du må håndtere smidige trusler, eller for pionerer som ikke gidder å sikte ordentlig."
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "Turbo rifleammunisjon",
+      "description": "Lett, kompakt og kvikkt. Disse magasinnene gir ekstrem kapasitet og avfyringshastighet, på bekostning av nøyaktighet."
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "Nobelisk",
+      "description": "En enkel eksplosiv. Nyttig til å sprenge sprukne steinblokker, vegetasjon eller andre sårbare mål."
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "Gassnobelisk",
+      "description": "Skaper en dødelig gassky isteden for en vanlig eksplosjon."
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "Sjokkbølge-nobelisk",
+      "description": "Genererer en kraftig sjokkbølge i stedet for en vanlig eksplosjon."
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "Klasenobelisk",
+      "description": "Detonerer flere små eksplosjoner. Praktisk ved rydding av store områder med vegetasjon og andre hindringer du måtte møte på."
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "Atomnobelisk",
+      "description": "Bruker en kjernefysisk fisjonsreaksjon for å generere en massiv eksplosjon. ADVARSEL: Sørg for at all av FICSIT-eiendom er ute av sprengningssonen før detonasjon."
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "Elektromagnetisk kontrollstav",
+      "description": "Regulerer strømproduksjonen via elektromagnetisme."
+    },
+    "Desc_UraniumCell_C": {
+      "name": "Innkapslet urancelle",
+      "description": "Brukes for å produsere uranbrenselstaver for atomkraftproduksjon. Produsert av uranmalm. Advarsel: Mildt radioaktivt."
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Ikke-splittbar uran",
+      "description": "Isotopen Uran-238 er ikke-splittbar, noe som betyr at den ikke kan brukes til kjernefisjon. Det kan imidlertid konverteres til splittbar plutonium i partikkelakseleratoren Advarsel: Mildt radioaktivt."
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "Plutoniumspellet",
+      "description": "Produsert i partikkelakseleratoren gjennom konvertering av ikke-spaltbar uran. Brukes til å produsere innkapslede plutoniumceller for plutonium drivstoffstaver Strømforbruk: 250-750 MW (500 MW i gjennomsnitt). Advarsel: Moderat radioaktivt."
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "Innkapslet plutoniumcelle",
+      "description": "Plutoniumpellets som er innkapslet i betong. Brukes til å lage drivstoffstaver av plutonium for atomkraftproduksjon. Strømforbruk: 250-750 MW (500 MW i gjennomsnitt). Advarsel: Moderat radioaktiv."
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Ficsitium",
+      "description": "Bruken og produksjonen av dette materialet er strengt forbudt. Men det er på Jorden. Det er ingen regler i rommet, bare effektivitet. Strømforbruk: 500-1500 MW (1000 MW i gjennomsnitt). Advarsel: Moderat radioaktivt."
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Ficsitium-brenselstav",
+      "description": "Brukes som drivstoff for atomkraftverk. Kraftkilden som satte FICSIT på kartet. Bokstavelig. Krateret er ennå der. Advarsel: Moderat radioaktivt."
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "Uransk atomavfall",
+      "description": "Biproduktet fra forbruk av uranbrenselstaver i et kjernekraftverk. Ikke-splittbar uran kan bli produsert. Håndter med forsiktighet. Advarsel: MEGET radioaktivt."
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "Plutonsk atomavfall",
+      "description": "Biproduktet av å konsumere plutonium brenselstaver i atomkraftverket. Må lagres på et trygt sted. Håndter med forsiktighet. Advarsel: EKSTREMT radioaktivt."
+    },
+    "Desc_Crystal_C": {
+      "name": "Blå kraftsnegle",
+      "description": "En merkelig snegle utstråler en merkelig svak kraft."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "Gul kraftsnegle",
+      "description": "En merkelig snegle utstråler en merkelig kraft."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "Lilla kraftsnegle",
+      "description": "En merkelig snegle utstråler en merkelig sterk kraft."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "Kraftskår",
+      "description": "Slim fra kraftsneglene, komprimert til et solid krystallaktig skår. Det utstråler en merkelig kraft."
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "FICSIT-kupong",
+      "description": "En spesiell FICSIT bonus program Kupong, få tak i den gjennom EKSPERT-kvernen. Kan innløses i EKSPERT-butikken for bonus belønninger."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "Smarte plater",
+      "description": "Prosjektdel #1. Sendes via romheisen for å fullføre faser av prosjektmontering."
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "Allsidig rammeverk",
+      "description": "Prosjektdel #2. Sendes via romheisen for å fullføre faser av prosjektmontering."
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "Automatiserte ledninger",
+      "description": "Prosjektdel #3. Sendes via romheisen for å fullføre faser av prosjektmontering."
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "Modulær motor",
+      "description": "Prosjektdel #4. Sendes via romheisen for å fullføre faser av prosjektmontering."
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "Adaptiv kontrollenhet",
+      "description": "Prosjektdel #5. Sendes via romheisen for å fullføre faser av prosjektmontering."
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "Monterings-driversystem",
+      "description": "Prosjektdel #6. Sendes via romheisen for å fullføre faser av prosjektmontering. Dette ekstremt raske og presise databehandlingssystemet er spesielt utviklet for å lede Prosjekt Montering: Monteringsfase."
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "Magnetfeltgenerator",
+      "description": "Prosjektdel #7. Sendes via romheisen for å fullføre faser av prosjektmontering. Disse modulære generatorene bruker superledende magneter og store mengder elektrisitet for å produsere et lett utvidbart og kraftig magnetfelt."
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "Termisk drivrakett",
+      "description": "Prosjektdel #8. Sendes via romheisen for å fullføre faser av prosjektmontering. Bruker ekstrem varme for å produsere høytrykksplasmaet som kreves for å få fart på Prosjekt Montering."
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "Atompasta",
+      "description": "Prosjektdel #9. Sendes via romheisen for å fullføre faser av prosjektmontering. Strømforbruk: 500-1500 MW (1000 MW i gjennomsnitt). Atompasta er ekstremt tett degenerert materie, dannet når ekstremt trykk tvinger protoner og elektroner sammen til nøytroner. Det er teorier om at det finnes naturlig i skorpen til nøytronstjerner."
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Biokjemisk skulptør",
+      "description": "Prosjektdel #10. Sendes via romheisen for å fullføre faser av prosjektmontering. Vi er lysår fremfor konkurrentene med denne førsteklasses 3D-printer for å produsere syntetiske biologiske ressurser."
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Ballistisk warp-enhet",
+      "description": "Prosjektdel #11. Sendes via romheisen for å fullføre faser av prosjektmontering. En stor mengde kraft kreves for at warp-enhetene skal aktiveres, så å feste dem til raketter var det logiske neste trinnet. I tillegg forbedret resultatene seg enormt da observatørene ble fjernet ytterligere fra warp-enhetene ved aktivering."
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "KI utvidelsesserver",
+      "description": "Prosjektdel #12. Sendes via romheisen for å fullføre faser av prosjektmontering. Strømforbruk: 0-2000 MW (1000 MW i gjennomsnitt). Vekst er for oss målestokken vi måler suksess."
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "Borerigg Mk.1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "Borerigg Mk.2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "Borerigg Mk.3"
+    },
+    "Build_OilPump_C": {
+      "name": "Oljeutvinner"
+    },
+    "Build_WaterPump_C": {
+      "name": "Vannsamler"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "Ressursbrønn-trykksetter"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "Ressursbrønnutvinner"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "Smeltere"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "Støperi"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "Konstruktør"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "Montør"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "Produsent"
+    },
+    "Build_OilRefinery_C": {
+      "name": "Raffineri"
+    },
+    "Build_Packager_C": {
+      "name": "Tapper"
+    },
+    "Build_Blender_C": {
+      "name": "Blander"
+    },
+    "Build_HadronCollider_C": {
+      "name": "Partikkelakselerator"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "Kvantumenkoder"
+    },
+    "Build_Converter_C": {
+      "name": "Omvender"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "Biomasse-brenner"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Kullgeneratorer"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Drivstoffgeneratorer"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "Geotermisk generator"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "Atomkraftverk"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "Strømbank"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Utenomjordisk kraftforsterker"
+    },
+    "Build_TradingPost_C": {
+      "name": "HUB-en"
+    },
+    "Build_Mam_C": {
+      "name": "M.A.M."
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "Romheis"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Byggeplanmakeren Mk.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Byggeplanmakeren Mk.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "EKSPERT-kvern"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "EKSPERT-butikk"
+    },
+    "Build_WorkBench_C": {
+      "name": "Arbeidsbenk"
+    },
+    "Build_Workshop_C": {
+      "name": "Utstyrsverksted"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "Personlig oppevaringsboks"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "Medisink oppevaringsboks"
+    },
+    "Build_StorageHazard_C": {
+      "name": "Farliggods-boks"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "Lagringscontainer"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "Væskebuffer"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "Industriell væskebuffer"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Dimensjonale depotopplaster"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Vanlig hylleenhet"
+    },
+    "Build_TruckStation_C": {
+      "name": "Lastebilstasjon"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "Droneplatform"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "Kontainerterminal"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "Tankterminal"
+    },
+    "Build_LookoutTower_C": {
+      "name": "Utkikkstårn"
+    },
+    "Build_RadarTower_C": {
+      "name": "Radartårn"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

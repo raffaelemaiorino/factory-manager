@@ -1,0 +1,801 @@
+{
+  "dataVersion": 1,
+  "locale": "tr",
+  "source": {
+    "items": "https://satisfactory-calculator.com/tr/items",
+    "buildings": "https://satisfactory-calculator.com/tr/buildings"
+  },
+  "importedAt": "2026-07-20T19:20:18.834Z",
+  "itemCategories": {
+    "minerali": "Cevherler",
+    "lingotti": "Külçeler",
+    "materiali": "Mineraller",
+    "alieni": "Uzaylılar",
+    "liquidi": "Sıvı",
+    "gas": "Gaz",
+    "componenti-standard": "Standart Parçalar",
+    "componenti-industriali": "Endüstriyel Parçalar",
+    "componenti-elettronici": "Elektronikler",
+    "comunicazioni": "İletişim",
+    "tecnologia-quantistica": "Kuantum Teknolojisi",
+    "contenitori": "Konteynerler",
+    "carburante": "Yakıtlar",
+    "consumato": "Tüketildi",
+    "munizioni": "Cephaneler",
+    "nucleare": "Nükleer",
+    "rifiuti": "Atık",
+    "speciali": "Özel"
+  },
+  "buildingCategories": {
+    "estrazione": "Çıkarma",
+    "produzione": "Yapım",
+    "generatori": "Jeneratörler",
+    "speciali": "Özel",
+    "postazioni-di-lavoro": "Çalışma Yerleri",
+    "deposito": "Depo",
+    "stazioni-di-attracco": "Yerleştirme İstasyonları",
+    "torri": "Kuleler"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "Kireçtaşı",
+      "description": "Üretim için kullanılır. Öncelikle sabit Temeller için kullanılan temel bir kaynak."
+    },
+    "Desc_OreIron_C": {
+      "name": "Demir Cevheri",
+      "description": "Üretim için kullanılır. En önemli temel kaynaktır."
+    },
+    "Desc_OreCopper_C": {
+      "name": "Bakır Cevheri",
+      "description": "Üretim için kullanılır. Öncelikle elektrik için kullanılan temel bir kaynak."
+    },
+    "Desc_OreGold_C": {
+      "name": "Kateryum Cevheri",
+      "description": "Öncelikle gelişmiş elektronik için kullanılan Kateryum Külçelerine eritilir."
+    },
+    "Desc_Coal_C": {
+      "name": "Kömür",
+      "description": "Esas olarak araçlar ve Kömürle Çalışan Jeneratörler için yakıt olarak veya Çelik üretiminde kullanılır."
+    },
+    "Desc_RawQuartz_C": {
+      "name": "Ham Kuvars",
+      "description": "Her ikisi de çeşitli uygulamalar sunan Kuvars Kristalleri ve Silika olarak işlenebilir."
+    },
+    "Desc_Sulfur_C": {
+      "name": "Sülfür",
+      "description": "Öncelikli olarak Siyah Barut üretmek için kullanılır."
+    },
+    "Desc_OreBauxite_C": {
+      "name": "Boksit",
+      "description": "Alüminyum Külçeler üretmek için gerekli olan Alüminyum Hurdaya daha fazla rafine edilebilen Alümina üretmek için kullanılır."
+    },
+    "Desc_SAM_C": {
+      "name": "TUM",
+      "description": "Genellikle SAM olarak adlandırılan Garip Uzaylı Madde, bilinen fizik kurallarına uymuyor gibi görünüyor. Yeni olasılıkları fısıldıyor."
+    },
+    "Desc_OreUranium_C": {
+      "name": "Uranyum",
+      "description": "Radyoaktif bir element. Uranyum Yakıt Çubukları için Kaplı Uranyum Hücreleri üretmek için kullanılır. Uyarı: Ortalama derecede radyoaktiftir."
+    },
+    "Desc_IronIngot_C": {
+      "name": "Demir Külçesi",
+      "description": "En temel parçaları işlemek için kullanılır."
+    },
+    "Desc_CopperIngot_C": {
+      "name": "Bakır Külçesi",
+      "description": "En temel parçaları işlemek için kullanılır."
+    },
+    "Desc_GoldIngot_C": {
+      "name": "Kateryum Külçesi",
+      "description": "Kateryum Cevherinden eritilir. Öncelikle gelişmiş elektronik için kullanılır."
+    },
+    "Desc_SteelIngot_C": {
+      "name": "Çelik Külçesi",
+      "description": "Demir Cevheri ve Kömür kombinasyonundan eritilir. Bina yapımında kullanılan çeşitli parçalara dönüştürülebilir."
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "Alüminyum Külçesi",
+      "description": "Alümina Çözeltisinden rafine edilen Alüminyum Hurdadan eritilir. Özel alüminyum bazlı parçalar üretmek için kullanılır."
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Ficsite Külçesi",
+      "description": "Garip Uzaylı Madde kullanılarak diğer metallerin moleküler düzeyde yeniden yapılandırılmasıyla üretilmiştir. FICSIT tarafından mükemmel yapı malzemesi olarak sentezlenmiş ve en üst düzey işlemlerde kullanılmıştır."
+    },
+    "Desc_Cement_C": {
+      "name": "Beton",
+      "description": "İnşaat için kullanılır. Sabit temeller için uygundur."
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "Kuvars Kristali",
+      "description": "Ham Kuvars'tan üretilir. Gelişmiş radar teknolojisi ve yüksek kaliteli ekran üretiminde kullanılır."
+    },
+    "Desc_Silica_C": {
+      "name": "Silika",
+      "description": "Ham Kuvars'tan elde edilir. Genellikle cam yapılar oluşturmak için, gelişmiş arıtma işlemlerinde ve alternatif elektronik üretiminde kullanılır."
+    },
+    "Desc_CopperDust_C": {
+      "name": "Bakır Tozu",
+      "description": "Öğütülmüş Bakır Külçeleri. Bakırın yüksek doğal yoğunluğu, tozun tanecikliliği ile birleştiğinde bu parçayı Parçacık Hızlandırıcıda Nükleer Makarna üretmek için mükemmel hale getirir."
+    },
+    "Desc_PolymerResin_C": {
+      "name": "Polimer Reçine",
+      "description": "Ham Petrolün Yakıt olarak rafine edilmesinin bir yan ürünüdür. Genellikle Plastik ve Kauçuk üretiminde kullanılır."
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "Petrol Koku",
+      "description": "Üretim için kullanılır. Ağır Petrol Kalıntısından damıtılan karbon açısından zengin bir malzeme. Daha verimsiz bir kömür alternatifi olarak veya alüminyum rafine ederken kullanılır."
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "Alüminyum Hurda",
+      "description": "Alümina'dan rafine edilmiştir. Endüstriyel kullanım için Alüminyum Külçeler halinde eritilebilir."
+    },
+    "Desc_AlienProtein_C": {
+      "name": "Uzaylı Proteini",
+      "description": "Küçük bir paket içinde öğütülmüş uzaylı kalıntıları. Tıbbi amaçlarla ve uzaylı organizmaları araştırmak için kullanılır."
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "Uzaylı DNA Kapsülü",
+      "description": "Organik kimyasalları okunabilir uzaylı genetik bilgisine çevirir. Yabancı organizmaları araştırmak için kullanılır. Fazladan kilometre yapın! Bilgi güçtür ve güç sadece daha az adımla verimliliktir. Uzaylı DNA Kapsüllerinin AVESOME Parçalayıcı yerleştirilmesi FICSIT'e bilgi, öncülere de Kupon sağlar."
+    },
+    "Desc_Water_C": {
+      "name": "Su",
+      "description": "Su"
+    },
+    "Desc_LiquidOil_C": {
+      "name": "Ham Petrol",
+      "description": "Yakıt ve Plastik gibi her türlü Petrol bazlı kaynağa rafine edilir"
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "Ağır Petrol Kalıntısı",
+      "description": "Plastik ve Kauçuk üretiminin bir yan ürünü. Yakıt ve Petrol Koku üretimi için rafine edilebilir."
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "Yakıt",
+      "description": "Güç üretmek için olduğu gibi kullanılabilir veya araçlar ya da Jetpack için yakıt olarak kullanılmak üzere paketlenebilir."
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "Sıvı Biyoyakıt",
+      "description": "Sıvı Biyoyakıt, enerji üretmek için olduğu gibi kullanılabilir veya araçlarda yakıt olarak kullanılmak üzere paketlenebilir."
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "Turbo Yakıt",
+      "description": "Yakıta daha verimli bir alternatif. Güç üretmek için olduğu gibi kullanılabilir veya araçlar için yakıt olarak kullanılmak üzere paketlenebilir."
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "Alumina Çözeltisi",
+      "description": "Boksitten çıkarılan çözünmüş Alumina. Alüminyum Külçe üretiminde kullanılacak Alüminyum Hurda üretmek için işlenebilir."
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "Sülfürik Asit",
+      "description": "Kükürt ve Suyun karmaşık bir reaksiyonda birleştirilmesiyle üretilir. Öncelikli olarak rafinasyon işlemlerinde ve Pil üretiminde kullanılır."
+    },
+    "Desc_NitricAcid_C": {
+      "name": "Nitrik Asit",
+      "description": "Azot Gazı Su ile reaksiyona girdiğinde üretilir. Yüksek aşındırıcılığı ve oksitleyici özellikleri onu rafinasyon ve yakıt üretim prosesleri için mükemmel bir seçim haline getirir."
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Çözünmüş Silika",
+      "description": "Ham Kuvarsın alternatif arıtımının bir parçası olarak üretilen Suda çözünmüş Silika. Arıtma işlemini tamamlamak için Silika Sudan çıkarılabilir."
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "Nitrojen Gazı",
+      "description": "Metalurji, soğutma ve Nitrik Asit üretimi dahil olmak üzere çeşitli kullanım alanları vardır. MASSAGE-2 (AB)b'de yeraltı gaz kuyularından çıkarılabilir."
+    },
+    "Desc_RocketFuel_C": {
+      "name": "Roket Yakıtı",
+      "description": "Yüksek impulslu sıkıştırılmış gaz yakıtı. Yakıtla Çalışan Jeneratörlere güç sağlamak için olduğu gibi kullanılabilir veya araçlar ya da Sırt Roketi için yakıt olarak kullanılmak üzere paketlenebilir."
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "İyonize Yakıt",
+      "description": "İyonize edilmiş yakıt, inanılmaz bir güç üretmesini sağlar. Yakıtla Çalışan Jeneratörlere güç sağlamak için olduğu gibi kullanılabilir veya araçlar ya da Sırt Roketi için yakıt olarak kullanılmak üzere paketlenebilir."
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Karanlık Madde Kalıntısı",
+      "description": "Kuantum Kodlama süreçlerinin bir yan ürünü olarak üretilir ve alternatif olarak Dönüştürücüde üretilir. Çeşitli bilim dalları halen Karanlık Maddenin doğasını ve özelliklerini tartışmaktadır. Bu arada, FICSIT uzay-zaman manipülasyonunda bunun için çeşitli uygulamalar bulmuştur."
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Uyarılmış Fotonik Madde",
+      "description": "Uyarılmış Fotonik Madde Kuantum Kodlayıcıdaki tüm üretim süreçleri için gereklidir. Yüksek enerjili bir ortamda SAM'e maruz bırakılarak yoğun foton etkileşimlerinin tetiklenmesiyle Dönüştürücüde oluşturulur."
+    },
+    "Desc_IronRod_C": {
+      "name": "Demir Çubuk",
+      "description": "Üretim için kullanılır. En temel parçalardan biridir."
+    },
+    "Desc_IronScrew_C": {
+      "name": "Vida",
+      "description": "Üretim için kullanılır. En temel parçalardan biridir."
+    },
+    "Desc_IronPlate_C": {
+      "name": "Demir Plaka",
+      "description": "Üretim için kullanılır. En temel parçalardan biridir."
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "Güçlendirilmiş Demir Levha",
+      "description": "Üretim için kullanılır. Daha sağlam ve dayanıklı bir Demir Levha."
+    },
+    "Desc_CopperSheet_C": {
+      "name": "Bakır Levha",
+      "description": "Üretim için kullanılır. Korozyona dayanıklılığı nedeniyle genellikle boru hatlarında kullanılır."
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "Alclad Alüminyum Levha",
+      "description": "Yüksek ısı iletimi veya yüksek özgül mukavemet gerektiren ürünlerin yapımında kullanılır. İnce, hafif ve son derece dayanıklıdır."
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "Alüminyum Kaplama",
+      "description": "Alüminyum külçelerden dökülmüş çok amaçlı bir konteyner."
+    },
+    "Desc_SteelPipe_C": {
+      "name": "Çelik Boru",
+      "description": "Öncelikle biraz daha gelişmiş binalar inşa ederken kullanılır."
+    },
+    "Desc_SteelPlate_C": {
+      "name": "Çelik Kiriş",
+      "description": "Öncelikle biraz daha gelişmiş binalar inşa ederken kullanılır."
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "Kaplanmış Endüstriyel Kiriş",
+      "description": "Betonun basınç dayanımını ve çeliğin çekme dayanımını aynı anda kullanır. Çoğunlukla binaların inşası için sağlam bir temel olarak kullanılır."
+    },
+    "Desc_ModularFrame_C": {
+      "name": "Modüler Çerçeve",
+      "description": "Üretim için kullanılır. Çok amaçlı bir yapı taşı."
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "Ağır Modüler Çerçeve",
+      "description": "Daha sağlam ve çok amaçlı bir çerçeve."
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "Lehimlenmiş Modüler Çerçeve",
+      "description": "Korozyona dayanıklı, nitrürle sertleştirilmiş, son derece sağlam ancak hafif bir modüler çerçeve."
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Ficsite Külçesi",
+      "description": "Ficsite Külçelerinden yapılan Ficsite Trigon, tüm inşaat zorlukları için mükemmel bir şekle sahiptir. Performansı o kadar olağanüstüdür ki, temelde yapı mühendisliğini çözmüştür."
+    },
+    "Desc_Fabric_C": {
+      "name": "Kumaş",
+      "description": "Ekipman yapımında kullanılır. Esnek ama dayanıklı kumaş."
+    },
+    "Desc_Plastic_C": {
+      "name": "Plastik",
+      "description": "Çok yönlü ve üretimi kolay olan bu malzeme geniş bir kullanım alanına sahiptir."
+    },
+    "Desc_Rubber_C": {
+      "name": "Kauçuk",
+      "description": "Çok fazla sürtünmeye sahip çok esnek bir malzeme."
+    },
+    "Desc_Rotor_C": {
+      "name": "Mil",
+      "description": "Üretim için kullanılır. Bir motorun hareketli parçaları."
+    },
+    "Desc_Stator_C": {
+      "name": "Statör",
+      "description": "Üretim için kullanılır. Bir motorun sabit parçaları."
+    },
+    "Desc_Battery_C": {
+      "name": "Batarya",
+      "description": "Öncelikle dronlar ve araçlar için yakıt olarak kullanılır."
+    },
+    "Desc_Motor_C": {
+      "name": "Motor",
+      "description": "Makinelerden araçlara kadar her şeyi hareket ettirmek için kullanılan mekanik bir güç oluşturur."
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "Soğutucu Blok",
+      "description": "Isıyı daha hızlı dağıtmak için kullanılır."
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "Soğutma Sistemi",
+      "description": "Gelişmiş parçaların ve binaların verimli sıcaklık seviyelerini aşmasını önler."
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "Turbo Motor",
+      "description": "Normal Motor'un daha karmaşık ve güçlü bir versiyonu."
+    },
+    "Desc_Wire_C": {
+      "name": "Tel",
+      "description": "Üretim için kullanılır. En temel parçalardan biridir."
+    },
+    "Desc_Cable_C": {
+      "name": "Kablo",
+      "description": "Üretim için kullanılır. Genellikle güç hattı inşa etmek için kullanılır."
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "Hızlıtel",
+      "description": "Kateryumun yüksek iletkenliği ve korozyona karşı direnci, onu küçük, gelişmiş elektronikler için ideal kılmaktadır."
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "Devre Kartı",
+      "description": "Çok sayıda farklı kullanıma sahip gelişmiş elektronikler."
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "YZ Sınırlayıcı",
+      "description": "Yapay zekaları kontrol eder ve kötü niyetli yollarla gelişmelerini engeller. Süper gelişmiş elektronikler."
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "Yüksek Hızlı Bağlayıcı",
+      "description": "Birden fazla kabloyu ve teli çok verimli bir şekilde bağlar. Standart bir model kullanır, bu nedenle çok çeşitli uygulamaları vardır."
+    },
+    "Desc_SAMIngot_C": {
+      "name": "Yeniden Canlandırılmış SAM",
+      "description": "Garip Uzaylı Maddenin aktif ve kontrol altında tutulan formu. Temas ettiği herhangi bir maddenin atomik bağlarını manipüle edebiliyor gibi göründüğü için uygun elektromanyetik muhafaza gereklidir."
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "TUM Dalgalandırıcı",
+      "description": "SAM Dalgalandırıcı, değişen frekanslarda elektrik yükleri uygulayarak Yeniden Canlandırılmış SAM'ın davranışını düzenleyebilir ve yönlendirebilir. Bu kontrol, maddeden enerjiye dönüşüm ve uzaysal-zamansal madde manipülasyonu gibi teknolojileri kolaylaştırır."
+    },
+    "Desc_Computer_C": {
+      "name": "Bilgisayar",
+      "description": "Diğer makinelerdeki gelişmiş davranışları kontrol etmek için kullanılan karmaşık bir mantık makinesi."
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "Süper Bilgisayar",
+      "description": "Bilgisayarın yeni nesil versiyonu."
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "Telsiz Kontrol Birimi",
+      "description": "Radyo sinyallerini güçlendirir ve yönlendirir."
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "Kristal Salıngaç",
+      "description": "Hassas bir frekansta elektrik sinyali oluşturmak için titreşen bir kristalin mekanik rezonansını kullanan bir elektronik osilatör devresi."
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "Süperkonum Salıngacı",
+      "description": "Titreşen bir kristalin mekanik rezonansını kullanarak hassas bir frekansa sahip bir tel titreşimi yaratan bir osilatör devresi. Genellikle ışınlanma teknolojisinde ve boyutsal manipülasyonda kullanılır."
+    },
+    "Desc_Diamond_C": {
+      "name": "Elmaslar",
+      "description": "Kömürün aşırı ısı ve basınca maruz bırakılmasıyla üretilen sentetik elmaslar. Zaman Kristalleri ve Karanlık Madde Kristallerinin üretiminde kullanılır. Güç Tüketimi: 250-750 MW (ortalama 500 MW)."
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Zaman Kristali",
+      "description": "Zaman Kristalleri, Dönüştürücü'de zaman-periyodik kendi kendini organize eden bir yapıyı korumak için atom altı düzeyde yeniden yapılandırılmış Elmaslardır. Bu sayede kuantum işleme ve depolama teknolojilerinin geliştirilmesinde kullanılabilirler."
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Karanlık Madde Kristali",
+      "description": "Kristal bir kap içinde izole edilmiş Konsantre Karanlık Madde Kalıntısı. Bu muhafaza şekli Karanlık Maddenin diğer üretim süreçlerinde güvenilir bir şekilde kullanılmasını sağlar. Güç Tüketimi: 500-1500 MW (ortalama 1000 MW)."
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Tekillik Hücresi",
+      "description": "Uzay ve zamanı parçalamak için kullanılır. Portallara güç sağlamak için gereklidir."
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Nöral-Kuantum İşlemci",
+      "description": "Nöral-Kuantum İşlemci, benzeri görülmemiş bir performans elde etmek için nöral ağ mimarisi ve kuantum hesaplama tekniklerinin bir kombinasyonunu kullanır. Bu teknoloji FICSIT'in yapay zeka ve göreceli mühendislik alanındaki en büyük ilerlemelerinden bazılarını mümkün kılmıştır."
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Uzaylı Güç Matrisi",
+      "description": "Bu karmaşık yoğunlaştırılmış madde matrisi Uzaylı Güç Arttırıcısının çıkışını arttırmak için kullanılır. Başlangıçta insan yapımı bir Somersloop yaratma çabalarıyla geliştirilen Uzaylı Güç Matrisi tek başına ekstra boyutlu enerji bağlantısını sürdüremez. Ancak, Somersloop'un enerji akışını etkili bir şekilde dengeleyebilir."
+    },
+    "Desc_FluidCanister_C": {
+      "name": "Boş Kutu",
+      "description": "Sıvıları taşıyabilmek için paketlemede kullanılır."
+    },
+    "Desc_GasTank_C": {
+      "name": "Boş Sıvı Tankı",
+      "description": "Gazları ve uçucu sıvıları taşımak için paketlemede kullanılır."
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "Basınç Dönüştürme Kübü",
+      "description": "Dışa giden kuvveti iç basınca dönüştürür. Kararsız, yüksek enerjili maddelerin depolanmasında kullanılır."
+    },
+    "Desc_PackagedWater_C": {
+      "name": "Paketlenmiş Su",
+      "description": "Alternatif nakliyat için paketlenmiş su."
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "Paketlenmiş Alumina Çözeltisi",
+      "description": "Alternatif nakliyat için paketlenmiş Alumina Çözeltisi."
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "Paketlenmiş Sülfürik Asit",
+      "description": "Alternatif nakliyat için paketlenmiş Sülfürik Asit."
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "PaketlenmiÅŸ Nitrik Asit",
+      "description": "Alternatif nakliyat için paketlenmiş Nitrik Asit."
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "Paketlenmiş Nitrojen Gazı",
+      "description": "Ambalajlanmış Nitrojen Gazı alternatif taşıma yollarıyla taşınabilir."
+    },
+    "Desc_Leaves_C": {
+      "name": "Yaprak",
+      "description": "Genellikle yakıt olarak kullanılır. Biyokütle Brülörleri ve araçlar güç için Yaprakları kullanabilir."
+    },
+    "Desc_Mycelia_C": {
+      "name": "Miselyumlar",
+      "description": "Üretim için kullanılır. Biyokütle Yakıcılar ve araçlar da güç için Misel kullanabilir."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "Çiçek Taç Yaprakları",
+      "description": "Üretim için kullanılır. Renkli yerel çiçek taç yaprakları."
+    },
+    "Desc_Wood_C": {
+      "name": "Odun",
+      "description": "Genellikle yakıt olarak kullanılır. Biyokütle Brülörleri ve araçlar güç için Odun kullanabilir."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "Biyokütle",
+      "description": "Genellikle yakıt olarak kullanılır. Biyokütle yakıcılar ve araçlar güç için kullanabilir. Biyokütle, ham biyolojik maddeden çok daha fazla enerji verimliliğine sahiptir."
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "Sıkıştırılmış Kömür",
+      "description": "Kömüre göre çok daha verimli bir alternatif. Araçlar ve Kömürle Çalışan Jeneratörler için yakıt olarak kullanılır."
+    },
+    "Desc_PackagedOil_C": {
+      "name": "Paketlenmiş Petrol",
+      "description": "Alternatif nakliyat için paketlenmiş Ham Petrol. Araç yakıtı olarak kullanılabilir."
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "Paketlenmiş Ağır Petrol Kalıntısı",
+      "description": "Alternatif nakliyat için paketlenmiş Ağır Petrol Kalıntısı. Araç yakıtı olarak kullanılabilir."
+    },
+    "Desc_Biofuel_C": {
+      "name": "Katı Biyoyakıt",
+      "description": "Katı biyoyakıtın en verimli hali. Testere için yakıt olarak kullanılabilir."
+    },
+    "Desc_Fuel_C": {
+      "name": "Paketlenmiş Yakıt",
+      "description": "Alternatif taşımacılık için paketlenmiş yakıt. Araçlar ve Sırt Roketi için yakıt olarak kullanılabilir."
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "Paketlenmiş Sıvı Biyoyakıt",
+      "description": "Alternatif taşımacılık için paketlenmiş Sıvı Biyoyakıt. Araçlar ve Sırt Roketi için yakıt olarak kullanılabilir."
+    },
+    "Desc_TurboFuel_C": {
+      "name": "Paketlenmiş Turboyakıt",
+      "description": "Alternatif taşımacılık için paketlenmiş Turbo Yakıt. Araçlar ve Sırt Roketi için yakıt olarak kullanılabilir."
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "Paketlenmiş Roket Yakıtı",
+      "description": "Alternatif taşıma için paketlenmiş Roket Yakıtı. Araçlar ve Sırt Roketi için yakıt olarak kullanılabilir."
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Paketlenmiş İyonize Yakıt",
+      "description": "Alternatif taşıma için paketlenmiş İyonize Yakıt. Araçlar ve Sırt Roketi için yakıt olarak kullanılabilir."
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "Uranyum Yakıt Çubuğu",
+      "description": "Nükleer Enerji Santralleri için yakıt olarak kullanılır. Dikkat: Tüketildiğinde radyoaktif Uranyum Atığı üretir. Uyarı: Ortalama derecede radyoaktiftir."
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "Plütonyum Yakıt Çubuğu",
+      "description": "Nükleer Enerji Santralleri için yakıt olarak kullanılır. Dikkat: Tüketildiğinde radyoaktif Plütonyum Atığı üretir. Dikkat: YÜKSEK DERECEDE Radyoaktiftir."
+    },
+    "Desc_Gunpowder_C": {
+      "name": "Barut",
+      "description": "Basit patlayıcıların üretiminde sıklıkla kullanılan patlayıcı barut."
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "Dumansız Barut",
+      "description": "Modern silahların üretiminde sıklıkla kullanılan patlayıcı barut."
+    },
+    "Desc_Filter_C": {
+      "name": "Gaz Filtresi",
+      "description": "Gaz Maskesi ile kullanıldığında havadaki toksinleri ve kirleticileri filtreler."
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "Renk Fişeği",
+      "description": "Kişiselleştirici ile yapılara Desen eklemekte kullanılır. (Desenler AVESOME Mağazasından satın alınabilir.)"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "İşaret Lambası",
+      "description": "YAKINDA KALDIRILACAK Bu eşya (muhtemelen) yakın bir güncelleme ile kaldırılacak. Şu anda sadece alternatif bir tarifte kullanılıyor."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "İyot Yüklü Filtre",
+      "description": "Hazmat Suit ile kullanıldığında radyoaktif partikülleri emer."
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "Demir Mermi",
+      "description": "Kendini savunma amacıyla İnşaat Demiri Tabancası kullanılarak vurulabilir."
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "Sersemleten Demir Mermi",
+      "description": "Çarpma anında hedefe elektrik vererek kısa süreliğine sersemletir. Sersemletme Süresi: 5 saniye"
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "Dağılan Demir Mermi",
+      "description": "Vurulduğunda kırıklar, geniş yayılmış ancak sınırlı menzile sahip ölümcül döküntüler fırlatır."
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "Patlayıcı Demir Mermi",
+      "description": "Vurduğu hedefte patlayarak ağır hasar verir."
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "Tüfek Cephanesi",
+      "description": "Egemenlik kurmakta kullanıma uygun standart Tüfek cephanesi."
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "Güdümlü Tüfek Cephanesi",
+      "description": "Bu mühimmatta bulunan mermi yönlendirme sistemi, nişangah alanı içindeki herhangi bir hedefi doğru bir şekilde vurmasını sağlar. Özellikle çevik tehditlerle uğraşırken veya düzgün nişan alma zahmetine katlanamayan Öncüler için kullanışlıdır."
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "Turbo Tüfek Cephanesi",
+      "description": "Hafif, kompakt ve uçucu. Bu mermiler, isabetlilik pahasına aşırı kapasite ve atış hızı sağlar."
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "Nobelisk",
+      "description": "Kayaları, bitki örtüsünü ve diğer engelleri temizlemek için basit bir patlayıcı."
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "Gaz Nobeliski",
+      "description": "Normal bir patlama yerine ölümcül bir gaz bulutu oluşturur."
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "Darbe Nobeliski",
+      "description": "Normal bir patlama yerine güçlü bir şok dalgası oluşturur."
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "Dağılan Nobelisk",
+      "description": "Birden fazla küçük patlamaya dönüşür. Geniş alanları bitki örtüsünden ve diğer rahatsızlıklardan temizlemek için pratiktir."
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "Nükleer Nobelisk",
+      "description": "Büyük bir patlama oluşturmak için nükleer fisyon reaksiyonu kullanır. UYARI: Patlatmadan önce tüm FICSIT mallarının patlama alanının dışında olduğuna emin olun."
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "Elektromanyetik Kontrol Çubuğu",
+      "description": "Elektromanyetizma yoluyla güç çıkışını düzenler."
+    },
+    "Desc_UraniumCell_C": {
+      "name": "Kaplanmış Uranyum Hücresi",
+      "description": "Nükleer Enerji üretimi için Uranyum Yakıt Çubukları üretmek için kullanılır. Uranyum Cevherinden yapılmıştır. Dikkat: Hafif Radyoaktiftir."
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Fisil Olmayan Uranyum",
+      "description": "Uranyum-238 izotopu fisil değildir, yani nükleer fisyon için kullanılamaz. Ancak Parçacık Hızlandırıcıda bölünebilir Plütonyuma dönüştürülebilir. Dikkat: Hafif Radyoaktiftir."
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "Plütonyum Paketi",
+      "description": "Parçacık Hızlandırıcıda kırılgan olmayan Uranyumun dönüştürülmesi yoluyla üretilir. Plütonyum Yakıt Çubukları için Kaplı Plütonyum Hücreleri üretmek için kullanılır. Güç Tüketimi: 250-750 MW (ortalama 500 MW). Uyarı: Ortalama derecede radyoaktiftir."
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "Kaplanmış Plütonyum Hücresi",
+      "description": "Betonla kaplanmış Plütonyum Peletleri. Nükleer Enerji üretimi için Plütonyum Yakıt Çubukları üretmek için kullanılır. Güç Tüketimi: 250-750 MW (ortalama 500 MW). Caution: Moderately Radioactive."
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Ficsonyum",
+      "description": "Bu materyalin kullanımı ve üretimi kesinlikle yasaktır. Dünya'da yani. Uzayda kural yoktur, sadece verimlilik vardır. Güç Tüketimi: 500-1500 MW (ortalama 1000 MW). Uyarı: Ortalama derecede radyoaktiftir."
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Ficsonium Yakıt Çubuğu",
+      "description": "Nükleer Enerji Santralleri için yakıt olarak kullanılır. FICSIT'i haritaya koyan güç kaynağı. Tam anlamıyla. Krater hala orada. Uyarı: Ortalama derecede radyoaktiftir."
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "Uranyum Atığı",
+      "description": "Bir Nükleer Enerji Santralinde Uranyum Yakıt Çubuklarının tüketilmesinin yan ürünü. Bölünmez Uranyum çıkarılabilir. Dikkatli kullanın. Dikkat: YÜKSEK DERECEDE Radyoaktiftir."
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "Plütonyum Atığı",
+      "description": "Bir Nükleer Enerji Santralinde Plütonyum Yakıt Çubuklarının tüketilmesinin yan ürünü. Güvenli bir yerde saklanmalıdır. Dikkatli kullanın. Dikkat: SON DERECE Radyoaktiftir."
+    },
+    "Desc_Crystal_C": {
+      "name": "Mavi Güç Sümüklüböceği",
+      "description": "Bilinmeyen zayıf bir güç yayan garip bir sümüklü böcek."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "Sarı Güç Sümüklüböceği",
+      "description": "Bilinmeyen bir güç yayan garip bir sümüklü böcek."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "Mor Güç Sümüklüböceği",
+      "description": "Bilinmeyen bir güç yayan garip bir salyangoz."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "Güç Parçası",
+      "description": "Güç salyangozu mukusu katı kristal benzeri bir parçaya sıkıştırılmış. Garip bir güç yayar."
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "FICSIT Kupon",
+      "description": "AWESOME Atık Makinesi'nden alınan özel FICSIT bonus program kuponu. AWESOME Mağaza'da kilometre taşları ve diğer ödülleri almak için kullanılabilir."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "Akıllı Kaplama",
+      "description": "Proje Parçası #1. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin."
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "Çok Amaçlı Çerçeve",
+      "description": "Proje Parçası #2. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin."
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "Otomatik Kablolama",
+      "description": "Proje Parçası #3. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin."
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "Modüler Motor",
+      "description": "Proje Parçası #4. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin."
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "Uyarlanabilir Kontrol Birimi",
+      "description": "Proje Parçası #5. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin."
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "Montaj Yönetim Sistemi",
+      "description": "Proje Parçası #6. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin. Bu son derece hızlı ve hassas bilgi işlem sistemi, Montaj Projesini yönlendirmek için özel olarak tasarlanmıştır: Montaj Aşaması."
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "Manyetik Alan Jeneratörü",
+      "description": "Proje Parçası #7. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin. Bu modüler jeneratörler, güçlü ve kolayca genişletilebilir bir manyetik alan üretmek için süper iletken mıknatıslar ve büyük miktarda elektrik kullanır."
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "Termal İtici Roket",
+      "description": "Proje Parçası #8. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin. Montaj Projesi'ni harekete geçirmek için gereken yüksek basınçlı plazmayı üretmek için aşırı ısı kullanır."
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "Nükleer Makarna",
+      "description": "Proje Parçası #9. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin. Güç Tüketimi: 500-1500 MW (ortalama 1000 MW). Nükleer Makarna, aşırı basınç proton ve elektronları nötronlara dönüştürdüğünde oluşan son derece yoğun dejenere maddedir. Nötron yıldızlarının kabuğunda doğal olarak var olduğu teorize edilmektedir."
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Biyokimyasal Heykeltıraş",
+      "description": "Proje Parçası #10. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin. Rakiplerinin yıllar ötesinde olan bu en üst düzey 3D yazıcı, sentetik biyolojik kaynakların üretimi için kullanılıyor."
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Balistik Warp Sürücüsü",
+      "description": "Proje Parçası #11. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin. Warp Sürücülerinin harekete geçmesi için büyük miktarda güç gerekiyor, bu nedenle onları roketlere bağlamak mantıklı bir sonraki adımdı. Ayrıca, gözlemciler etkinleştirme sırasında Warp Sürücülerinden daha da uzaklaştırıldığında sonuçlar büyük ölçüde iyileşti."
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "YZ Genişleme Sunucusu",
+      "description": "Proje Parçası #12. Proje Montajının aşamalarını tamamlamak için uzay asansörü ile birlikte gönderin. Güç Kullanımı: 0-2000 MW (1000MW ortalama). Büyüme, başarıyı ölçtüğümüz metriktir."
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "Madenci V.1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "Madenci V.2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "Madenci V.3"
+    },
+    "Build_OilPump_C": {
+      "name": "Petrol Çıkarıcı"
+    },
+    "Build_WaterPump_C": {
+      "name": "Su Çıkarıcı"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "Kaynak Kuyusu Basınçlandırıcısı"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "Kaynak Kuyusu Çıkarıcısı"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "Külçe Üretici"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "Dökümhane"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "Üretici"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "Birleştirici"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "İmalatçı"
+    },
+    "Build_OilRefinery_C": {
+      "name": "Rafineri"
+    },
+    "Build_Packager_C": {
+      "name": "Paketleyici"
+    },
+    "Build_Blender_C": {
+      "name": "Karıştırıcı"
+    },
+    "Build_HadronCollider_C": {
+      "name": "Parçacık Hızlandırıcı"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "Kuantum Kodlayıcı"
+    },
+    "Build_Converter_C": {
+      "name": "Dönüştürücü"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "Biyokütle Yakıcı"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Kömür Jeneratörü"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Yakıt Jeneratörü"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "Jeotermal Jeneratör"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "Nükleer Enerji Santrali"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "Güç Depolama Birimi"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Uzaylı Güç Arttırıcı"
+    },
+    "Build_TradingPost_C": {
+      "name": "Merkez"
+    },
+    "Build_Mam_C": {
+      "name": "MAM"
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "Uzay Asansörü"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Plan Izgara Tasarımcısı V.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Plan Izgara Tasarımcısı V.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "AVESOME Parçalayıcı"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "AWESOME Mağaza"
+    },
+    "Build_WorkBench_C": {
+      "name": "Çalışma Tezgahı"
+    },
+    "Build_Workshop_C": {
+      "name": "Ekipman Atölyesi"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "Kişisel Depolama Kutusu"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "Tıbbi Depolama Kutusu"
+    },
+    "Build_StorageHazard_C": {
+      "name": "Tehlikeli Madde Depolama Kutusu"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "Depolama Konteyneri"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "Sıvı Tankı"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "Endüstriyel Sıvı Tankı"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Boyutlararası Depo Yükleyici"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Sade Raf Ünitesi"
+    },
+    "Build_TruckStation_C": {
+      "name": "Kamyon İstasyonu"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "Drone Limanı"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "Yük Platformu"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "Sıvı Yük Platformu"
+    },
+    "Build_LookoutTower_C": {
+      "name": "Gözetleme Kulesi"
+    },
+    "Build_RadarTower_C": {
+      "name": "Radar Kuleleri"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}

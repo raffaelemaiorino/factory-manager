@@ -1,0 +1,1910 @@
+{
+  "dataVersion": 1,
+  "locale": "nl",
+  "source": {
+    "items": "https://satisfactory-calculator.com/nl/items",
+    "buildings": "https://satisfactory-calculator.com/nl/buildings"
+  },
+  "importedAt": "2026-07-20T19:13:03.848Z",
+  "itemCategories": {
+    "minerali": "Erts",
+    "lingotti": "Staven",
+    "materiali": "Mineralen",
+    "alieni": "Aliens",
+    "liquidi": "Vloeistoffen",
+    "gas": "Gas",
+    "componenti-standard": "Standaard onderdelen",
+    "componenti-industriali": "Industriële onderdelen",
+    "componenti-elettronici": "Elektronica",
+    "comunicazioni": "Communicatie",
+    "tecnologia-quantistica": "Kwantumtechnologie",
+    "contenitori": "Containers",
+    "carburante": "Brandstoffen",
+    "consumato": "Verbruikt",
+    "munizioni": "Munitie's",
+    "nucleare": "Nucleair",
+    "rifiuti": "Afval",
+    "speciali": "Speciaal"
+  },
+  "buildingCategories": {
+    "estrazione": "Extractie",
+    "produzione": "Productie",
+    "generatori": "Generatoren",
+    "speciali": "Speciaal",
+    "postazioni-di-lavoro": "Werkstations",
+    "deposito": "Opslag",
+    "stazioni-di-attracco": "Koppel Stations",
+    "torri": "Torens"
+  },
+  "items": {
+    "Desc_Stone_C": {
+      "name": "Kalksteen",
+      "description": "Wordt gebruikt voor vervaardiging. Een standaard grondstof die voornamelijk gebruikt wordt voor stabiele funderingen.",
+      "schemas": [
+        {
+          "name": "Limestone (Sulfur)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|sulfur:2:0::stone:12:0"
+        }
+      ]
+    },
+    "Desc_OreIron_C": {
+      "name": "IJzererts",
+      "description": "Wordt gebruikt voor vervaardiging. De meest essentiële basisgrondstof.",
+      "schemas": [
+        {
+          "name": "Iron Ore (Limestone)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|stone:24:0::ore-iron:12:0"
+        }
+      ]
+    },
+    "Desc_OreCopper_C": {
+      "name": "Kopererts",
+      "description": "Wordt gebruikt voor vervaardiging. Een standaard grondstof die voornamelijk gebruikt wordt voor elektriciteit.",
+      "schemas": [
+        {
+          "name": "Copper Ore (Quartz)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|raw-quartz:10:0::ore-copper:12:0"
+        },
+        {
+          "name": "Copper Ore (Sulfur)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|sulfur:12:0::ore-copper:12:0"
+        }
+      ]
+    },
+    "Desc_OreGold_C": {
+      "name": "Caterium Erts",
+      "description": "Wordt gesmolten tot Caterium baren, die voornamelijk gebruikt worden voor geavanceerde elektronica.",
+      "schemas": [
+        {
+          "name": "Caterium Ore (Copper)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-copper:15:0::ore-gold:12:0"
+        },
+        {
+          "name": "Caterium Ore (Quartz)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|raw-quartz:12:0::ore-gold:12:0"
+        }
+      ]
+    },
+    "Desc_Coal_C": {
+      "name": "Steenkool",
+      "description": "Wordt voornamelijk gebruikt als brandstof voor voertuigen en kolencentrales, of voor in staalproductie.",
+      "schemas": [
+        {
+          "name": "Alternatief: Biokool",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "1::constructor::generic-biomass:5:0::coal:6:0"
+        },
+        {
+          "name": "Alternatief: Houtskool",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "1::constructor::wood:1:0::coal:10:0"
+        },
+        {
+          "name": "Steenkool (ijzer)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 2,
+          "fingerprint": "1::converter::samingot:1:0|ore-iron:18:0::coal:12:0"
+        },
+        {
+          "name": "Steenkool (kalksteen)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 3,
+          "fingerprint": "1::converter::samingot:1:0|stone:36:0::coal:12:0"
+        }
+      ]
+    },
+    "Desc_RawQuartz_C": {
+      "name": "Onbewerkt Kwarts",
+      "description": "Kan verwerkt worden tot Kwarts Kristallen en Silica, welke beide verschillende applicaties hebben.",
+      "schemas": [
+        {
+          "name": "Raw Quartz (Bauxite)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:10:0::raw-quartz:12:0"
+        },
+        {
+          "name": "Raw Quartz (Coal)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|coal:24:0::raw-quartz:12:0"
+        }
+      ]
+    },
+    "Desc_Sulfur_C": {
+      "name": "Zwavel",
+      "description": "Wordt voornamelijk gebruikt om Zwart Poeder te produceren.",
+      "schemas": [
+        {
+          "name": "Sulfur (Coal)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|coal:20:0::sulfur:12:0"
+        },
+        {
+          "name": "Sulfur (Iron)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-iron:30:0::sulfur:12:0"
+        }
+      ]
+    },
+    "Desc_OreBauxite_C": {
+      "name": "Bauxiet",
+      "description": "Used to produce Alumina, which can be further refined into the Aluminum Scrap required to produce Aluminum Ingots.",
+      "schemas": [
+        {
+          "name": "Bauxite (Caterium)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-gold:15:0::ore-bauxite:12:0"
+        },
+        {
+          "name": "Bauxite (Copper)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-copper:18:0::ore-bauxite:12:0"
+        }
+      ]
+    },
+    "Desc_SAM_C": {
+      "name": "VAM",
+      "description": "Strange Alien Matter, commonly referred to as SAM, doesn't seem to follow the known laws of physics. It whispers of new possibilities."
+    },
+    "Desc_OreUranium_C": {
+      "name": "uranium",
+      "description": "Een radioactief element. Gebruikt om Ingekapselde Uranium Cellen voor Uranium Brandstof Stangen te produceren. Waarschuwing: Gemiddeld Radioactief.",
+      "schemas": [
+        {
+          "name": "Uranium Erts (Bauxiet)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:48:0::ore-uranium:12:0"
+        }
+      ]
+    },
+    "Desc_IronIngot_C": {
+      "name": "IJzerstaaf",
+      "description": "Used for crafting the most basic parts.",
+      "schemas": [
+        {
+          "name": "Alternate: Basic Iron Ingot",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "1::foundry::ore-iron:5:0|stone:8:0::iron-ingot:10:0"
+        },
+        {
+          "name": "Alternate: Leached Iron Ingot",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::ore-iron:5:0|sulfuric-acid:1:1::iron-ingot:10:0"
+        },
+        {
+          "name": "Alternatief: ijzerlegeringstaaf",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 2,
+          "fingerprint": "1::foundry::ore-iron:8:0|ore-copper:2:0::iron-ingot:15:0"
+        },
+        {
+          "name": "Alternatief: zuivere ijzerstaaf",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::ore-iron:7:0|water:4:1::iron-ingot:13:0"
+        }
+      ]
+    },
+    "Desc_CopperIngot_C": {
+      "name": "Koperstaaf",
+      "description": "Used for crafting the most basic parts.",
+      "schemas": [
+        {
+          "name": "Alternate: Leached Copper Ingot",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::ore-copper:9:0|sulfuric-acid:5:1::copper-ingot:22:0"
+        },
+        {
+          "name": "Alternate: Tempered Copper Ingot",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::ore-copper:5:0|petroleum-coke:8:0::copper-ingot:12:0"
+        },
+        {
+          "name": "Alternatief: koperlegeringstaaf",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 2,
+          "fingerprint": "1::foundry::ore-copper:5:0|ore-iron:5:0::copper-ingot:10:0"
+        },
+        {
+          "name": "Alternatief: zuivere koperstaaf",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 3,
+          "fingerprint": "1::refinery::ore-copper:6:0|water:4:1::copper-ingot:15:0"
+        }
+      ]
+    },
+    "Desc_GoldIngot_C": {
+      "name": "Cateriumstaaf",
+      "description": "Smelted from Caterium Ore. Primarily used for advanced electronics.",
+      "schemas": [
+        {
+          "name": "Alternate: Leached Caterium Ingot",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::ore-gold:9:0|sulfuric-acid:5:1::gold-ingot:6:0"
+        },
+        {
+          "name": "Alternate: Tempered Caterium Ingot",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::ore-gold:6:0|petroleum-coke:2:0::gold-ingot:3:0"
+        },
+        {
+          "name": "Alternatief: zuivere cateriumstaaf",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::ore-gold:2:0|water:2:1::gold-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_SteelIngot_C": {
+      "name": "Staalstaaf",
+      "description": "Smelted from a combination of Iron Ore and Coal. Can be made into several parts used in building construction.",
+      "schemas": [
+        {
+          "name": "Alternatief: cokestaalstaaf",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "1::foundry::ore-iron:15:0|petroleum-coke:15:0::steel-ingot:20:0"
+        },
+        {
+          "name": "Alternatief: compacte staalstaaf",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::ore-iron:2:0|compacted-coal:1:0::steel-ingot:4:0"
+        },
+        {
+          "name": "Alternatief: massieve staalstaaf",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 2,
+          "fingerprint": "1::foundry::iron-ingot:2:0|coal:2:0::steel-ingot:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumIngot_C": {
+      "name": "Aluminiumstaaf",
+      "description": "Smelted from Aluminum Scrap, which is refined from Alumina Solution. Wordt gebruikt om gespecialiseerde aluminium onderdelen te produceren.",
+      "schemas": [
+        {
+          "name": "Alternatief: zuivere aluminiumstaaf",
+          "is_alternative": 1,
+          "building_slug": "smelter",
+          "sort_order": 0,
+          "fingerprint": "1::smelter::aluminum-scrap:2:0::aluminum-ingot:1:0"
+        }
+      ]
+    },
+    "Desc_FicsiteIngot_C": {
+      "name": "Ficsite Ingot",
+      "description": "Produced by reconstructing other metals on a molecular level using Strange Alien Matter. Synthesized by FICSIT to be the perfect construction material, and used in the most high-end processes."
+    },
+    "Desc_Cement_C": {
+      "name": "Beton",
+      "description": "Wordt gebruikt voor bouwen. Handig voor stabiele funderingen.",
+      "schemas": [
+        {
+          "name": "Alternatief: fijn beton",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::silica:3:0|stone:12:0::cement:10:0"
+        },
+        {
+          "name": "Alternatief: nat beton",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::stone:6:0|water:5:1::cement:4:0"
+        },
+        {
+          "name": "Alternatief: rubberen beton",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::stone:10:0|rubber:2:0::cement:9:0"
+        }
+      ]
+    },
+    "Desc_QuartzCrystal_C": {
+      "name": "Kwartskristal",
+      "description": "Afkomstig van Ruwe Kwarts. Wordt gebruikt in de productie van geavanceerde radartechnologieën en kwalitatief hoogwaardige beeldschermen.",
+      "schemas": [
+        {
+          "name": "Alternate: Fused Quartz Crystal",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "1::foundry::raw-quartz:25:0|coal:12:0::quartz-crystal:18:0"
+        },
+        {
+          "name": "Alternate: Quartz Purification",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::raw-quartz:24:0|nitric-acid:2:1::quartz-crystal:15:0|dissolved-silica:12:1"
+        },
+        {
+          "name": "Alternatief: puur kwartskristal",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 2,
+          "fingerprint": "1::refinery::raw-quartz:9:0|water:5:1::quartz-crystal:7:0"
+        }
+      ]
+    },
+    "Desc_Silica_C": {
+      "name": "Siliciumdioxide",
+      "description": "Derived from Raw Quartz. Commonly used to create glass structures, in advanced refinement processes, and for alternative production of electronics.",
+      "schemas": [
+        {
+          "name": "Alternate: Distilled Silica",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "1::blender::dissolved-silica:12:1|stone:5:0|water:10:1::silica:27:0|water:8:1"
+        },
+        {
+          "name": "Alternatief: goedkope silica",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::raw-quartz:3:0|stone:5:0::silica:7:0"
+        }
+      ]
+    },
+    "Desc_CopperDust_C": {
+      "name": "Koper Poeder",
+      "description": "Ground-up Copper Ingots. The high natural density of Copper, combined with the granularity of the powder, makes this part perfect for producing Nuclear Pasta in the Particle Accelerator."
+    },
+    "Desc_PolymerResin_C": {
+      "name": "Polymeerhars",
+      "description": "A by-product of Crude Oil refinement into Fuel. Commonly used to manufacture Plastic and Rubber.",
+      "schemas": [
+        {
+          "name": "Alternatief: Zwareolieresten",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::liquid-oil:3:1::heavy-oil-residue:4:1|polymer-resin:2:0"
+        },
+        {
+          "name": "Alternatief: polymeerhars",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::liquid-oil:6:1::polymer-resin:13:0|heavy-oil-residue:2:1"
+        }
+      ]
+    },
+    "Desc_PetroleumCoke_C": {
+      "name": "Petroleumcokes",
+      "description": "Wordt gebruikt voor vervaardiging. Een koolstofrijk materiaal gedestilleerd uit zwareolieresten. Wordt gebruikt als een minder efficiënte vervanger van Steenkool."
+    },
+    "Desc_AluminumScrap_C": {
+      "name": "Aluminium Schroot",
+      "description": "Refined from Alumina. Can be smelted into Aluminum Ingots for industrial usage.",
+      "schemas": [
+        {
+          "name": "Alternatief: Aluminiumschroot Elektrode",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::alumina-solution:12:1|petroleum-coke:4:0::aluminum-scrap:20:0|water:7:1"
+        },
+        {
+          "name": "Alternatief: Directe Schroot",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::ore-bauxite:15:0|coal:10:0|sulfuric-acid:5:1|water:6:1::aluminum-scrap:30:0|water:5:1"
+        }
+      ]
+    },
+    "Desc_AlienProtein_C": {
+      "name": "Buitenaards Eiwit",
+      "description": "Ground-up Alien Remains in a neat little package. Gebruikt voor medische doeleinden en om buitenaardse organismen te onderzoeken."
+    },
+    "Desc_AlienDNACapsule_C": {
+      "name": "Buitenaardse DNA capsule",
+      "description": "Translates organic chemicals into readable alien genetic information. Wordt gebruikt om buitenaardse organismen te onderzoeken. Go the extra kilometer! Knowledge is power, and power is just efficiency with fewer steps. Depositing Alien DNA Capsules in the AWESOME Sink provides FICSIT with knowledge, and pioneers with Coupons."
+    },
+    "Desc_Water_C": {
+      "name": "water",
+      "description": "Het is water.",
+      "schemas": [
+        {
+          "name": "Alternate: Distilled Silica",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "1::blender::dissolved-silica:12:1|stone:5:0|water:10:1::silica:27:0|water:8:1"
+        },
+        {
+          "name": "Alternatief: Aluminiumschroot Elektrode",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::alumina-solution:12:1|petroleum-coke:4:0::aluminum-scrap:20:0|water:7:1"
+        },
+        {
+          "name": "Alternatief: Directe Schroot",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 2,
+          "fingerprint": "1::blender::ore-bauxite:15:0|coal:10:0|sulfuric-acid:5:1|water:6:1::aluminum-scrap:30:0|water:5:1"
+        },
+        {
+          "name": "Alternatief: Vruchtbaar Uranium",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 3,
+          "fingerprint": "1::blender::ore-uranium:5:0|nuclear-waste:5:0|nitric-acid:3:1|sulfuric-acid:5:1::non-fissible-uranium:20:0|water:8:1"
+        }
+      ]
+    },
+    "Desc_LiquidOil_C": {
+      "name": "Ruwe olie",
+      "description": "Refined into all kinds of Oil-based resources, like Fuel and Plastic."
+    },
+    "Desc_HeavyOilResidue_C": {
+      "name": "Zwareolieresten",
+      "description": "Een bijproduct van plastic- en rubberproductie. Kan verder worden verfijnd tot brandstof en petroleumcokes.",
+      "schemas": [
+        {
+          "name": "Alternatief: Zwareolieresten",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::liquid-oil:3:1::heavy-oil-residue:4:1|polymer-resin:2:0"
+        },
+        {
+          "name": "Alternatief: polymeerhars",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::liquid-oil:6:1::polymer-resin:13:0|heavy-oil-residue:2:1"
+        }
+      ]
+    },
+    "Desc_LiquidFuel_C": {
+      "name": "Brandstof",
+      "description": "Can be used as-is to generate power, or packaged to be used as fuel for vehicles or the Jetpack.",
+      "schemas": [
+        {
+          "name": "Alternatief: verdunde brandstof",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "1::blender::heavy-oil-residue:5:1|water:10:1::liquid-fuel:10:1"
+        },
+        {
+          "name": "Brandstofresten",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::heavy-oil-residue:6:1::liquid-fuel:4:1"
+        }
+      ]
+    },
+    "Desc_LiquidBiofuel_C": {
+      "name": "Vloeibare Biobrandstof",
+      "description": "Liquid Biofuel can be used as-is to generate power, or packaged to be used as fuel for vehicles."
+    },
+    "Desc_LiquidTurboFuel_C": {
+      "name": "Turbobrandstof",
+      "description": "A more efficient alternative to Fuel. Can be used as-is to generate power, or packaged to be used as fuel for vehicles.",
+      "schemas": [
+        {
+          "name": "Alternatief: Turbobrandstof Gemengd",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "1::blender::liquid-fuel:2:1|heavy-oil-residue:4:1|sulfur:3:0|petroleum-coke:3:0::liquid-turbo-fuel:6:1"
+        },
+        {
+          "name": "Alternatief: turbo zware brandstof",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::heavy-oil-residue:5:1|compacted-coal:4:0::liquid-turbo-fuel:4:1"
+        }
+      ]
+    },
+    "Desc_AluminaSolution_C": {
+      "name": "Aluminiumoplossing",
+      "description": "Opgeloste Aluminiumoxide, gewonnen uit Bauxiet. Kan verder geraffineerd tot Aluminiumschroot voor de productie van Aluminiumstaven.",
+      "schemas": [
+        {
+          "name": "Alternatief: Onzuivere Aluminiumoxide",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::ore-bauxite:10:0|water:10:1::alumina-solution:12:1"
+        }
+      ]
+    },
+    "Desc_SulfuricAcid_C": {
+      "name": "Zwavelzuur",
+      "description": "Produced by combining Sulfur and Water in a complex reaction. Primarily used in refinement processes and Battery production."
+    },
+    "Desc_NitricAcid_C": {
+      "name": "Salpeterzuur",
+      "description": "Produced when Nitrogen Gas reacts with Water. Its high corrosiveness and oxidizing properties make it an excellent choice for refinement and fuel production processes."
+    },
+    "Desc_DissolvedSilica_C": {
+      "name": "Opgeloste Silica",
+      "description": "Silica opgelost in water, geproduceerd als deel van de alternatieve raffinage van Ruwe Kwarts. The Silica can be extracted from the Water to complete the refinement process.",
+      "schemas": [
+        {
+          "name": "Alternate: Quartz Purification",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::raw-quartz:24:0|nitric-acid:2:1::quartz-crystal:15:0|dissolved-silica:12:1"
+        }
+      ]
+    },
+    "Desc_NitrogenGas_C": {
+      "name": "Stikstofgas",
+      "description": "Has a variety of uses, including metallurgy, cooling, and Nitric Acid production. On MASSAGE-2 (AB)b, it can be extracted from underground gas wells.",
+      "schemas": [
+        {
+          "name": "Nitrogen Gas (Bauxite)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::samingot:1:0|ore-bauxite:10:0::nitrogen-gas:12:1"
+        },
+        {
+          "name": "Nitrogen Gas (Caterium)",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 1,
+          "fingerprint": "1::converter::samingot:1:0|ore-gold:12:0::nitrogen-gas:12:1"
+        }
+      ]
+    },
+    "Desc_RocketFuel_C": {
+      "name": "Raketbrandstof",
+      "description": "A high-impulse compressed gas fuel. Can be used as-is to power Fuel-Powered Generators, or packaged to be used as fuel for vehicles or the Jetpack.",
+      "schemas": [
+        {
+          "name": "Alternate: Nitro Rocket Fuel",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "1::blender::liquid-fuel:4:1|nitrogen-gas:3:1|sulfur:4:0|coal:2:0::rocket-fuel:6:1|compacted-coal:1:0"
+        }
+      ]
+    },
+    "Desc_IonizedFuel_C": {
+      "name": "Geïoniseerde Brandstof",
+      "description": "Fuel that has been ionized, allowing it to deliver incredible output. Can be used as-is to power Fuel-Powered Generators, or packaged to be used as fuel for vehicles or the Jetpack.",
+      "schemas": [
+        {
+          "name": "Alternate: Dark-Ion Fuel",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::packaged-rocket-fuel:12:0|dark-matter:4:0::ionized-fuel:10:1|compacted-coal:2:0"
+        }
+      ]
+    },
+    "Desc_DarkEnergy_C": {
+      "name": "Overschot Donkere Materie",
+      "description": "Produced as a by-product of Quantum Encoding processes and alternatively generated in the Converter. Various fields of science are still debating the nature and properties of Dark Matter. Meanwhile, FICSIT has found several applications for it in space-time manipulation."
+    },
+    "Desc_QuantumEnergy_C": {
+      "name": "Geëxciteerde Fotonische Materie",
+      "description": "Geëxciteerde Fotonische Materie is essentieel voor alle productieprocessen in de Kwantum Encoder. Formed in the Converter by inducing intense photon interactions through exposure to SAM in a high-energy environment."
+    },
+    "Desc_IronRod_C": {
+      "name": "IJzeren Stang",
+      "description": "Wordt gebruikt voor vervaardiging. Gebouwd in de meeste basisonderdelen.",
+      "schemas": [
+        {
+          "name": "Alternate: Aluminum Rod",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "1::constructor::aluminum-ingot:1:0::iron-rod:7:0"
+        },
+        {
+          "name": "Alternatief: stalen staaf",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "1::constructor::steel-ingot:1:0::iron-rod:4:0"
+        }
+      ]
+    },
+    "Desc_IronScrew_C": {
+      "name": "Schroef",
+      "description": "Wordt gebruikt voor vervaardiging. Gebouwd in de meeste basisonderdelen.",
+      "schemas": [
+        {
+          "name": "Alternatief: Gegoten Schroef",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "1::constructor::iron-ingot:5:0::iron-screw:20:0"
+        },
+        {
+          "name": "Alternatief: stalen schroef",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "1::constructor::steel-plate:1:0::iron-screw:52:0"
+        }
+      ]
+    },
+    "Desc_IronPlate_C": {
+      "name": "IJzeren plaat",
+      "description": "Wordt gebruikt voor vervaardiging. Gebouwd in de meeste basisonderdelen.",
+      "schemas": [
+        {
+          "name": "Alternate: Steel Cast Plate",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 0,
+          "fingerprint": "1::foundry::iron-ingot:1:0|steel-ingot:1:0::iron-plate:3:0"
+        },
+        {
+          "name": "Alternatief: gecoate ijzeren plaat",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::iron-ingot:5:0|plastic:1:0::iron-plate:10:0"
+        }
+      ]
+    },
+    "Desc_IronPlateReinforced_C": {
+      "name": "Versterkte ijzeren plaat",
+      "description": "Wordt gebruikt voor vervaardiging. Een sterker en duurzamere IJzerplaat.",
+      "schemas": [
+        {
+          "name": "Alternatief: gehechte ijzeren plaat",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::iron-plate:10:0|wire:20:0::iron-plate-reinforced:3:0"
+        },
+        {
+          "name": "Alternatief: gelijmde ijzerplaat",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::iron-plate:3:0|rubber:1:0::iron-plate-reinforced:1:0"
+        },
+        {
+          "name": "Alternatief: geschroefde ijzeren plaat",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::iron-plate:18:0|iron-screw:50:0::iron-plate-reinforced:3:0"
+        }
+      ]
+    },
+    "Desc_CopperSheet_C": {
+      "name": "Koperen plaat",
+      "description": "Wordt gebruikt voor vervaardiging. Hoofdzakelijk gebruikt voor pijpleidingen vanwege zijn corrosiebestendigheid.",
+      "schemas": [
+        {
+          "name": "Alternatief: gestoomde koperplaat",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::copper-ingot:3:0|water:3:1::copper-sheet:3:0"
+        }
+      ]
+    },
+    "Desc_AluminumPlate_C": {
+      "name": "Alcladaluminiumplaat",
+      "description": "Used to make products that require high heat conduction or a high specific strength. Thin, lightweight, and highly durable."
+    },
+    "Desc_AluminumCasing_C": {
+      "name": "Aluminium behuizing",
+      "description": "Een veelzijdige container gegoten uit Aluminiumstaven.",
+      "schemas": [
+        {
+          "name": "Alternatief: alclad behuizing",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::aluminum-ingot:20:0|copper-ingot:10:0::aluminum-casing:15:0"
+        }
+      ]
+    },
+    "Desc_SteelPipe_C": {
+      "name": "Stalen pijp",
+      "description": "Primarily used when constructing slightly more advanced buildings.",
+      "schemas": [
+        {
+          "name": "Alternate: Iron Pipe",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "1::constructor::iron-ingot:20:0::steel-pipe:5:0"
+        },
+        {
+          "name": "Alternate: Molded Steel Pipe",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::steel-ingot:5:0|cement:3:0::steel-pipe:5:0"
+        }
+      ]
+    },
+    "Desc_SteelPlate_C": {
+      "name": "Stalen balk",
+      "description": "Primarily used when constructing slightly more advanced buildings.",
+      "schemas": [
+        {
+          "name": "Alternate: Aluminum Beam",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "1::constructor::aluminum-ingot:3:0::steel-plate:3:0"
+        },
+        {
+          "name": "Alternate: Molded Beam",
+          "is_alternative": 1,
+          "building_slug": "foundry",
+          "sort_order": 1,
+          "fingerprint": "1::foundry::steel-ingot:24:0|cement:16:0::steel-plate:9:0"
+        }
+      ]
+    },
+    "Desc_SteelPlateReinforced_C": {
+      "name": "Gewapend Betonnen Balk",
+      "description": "Simultaneously utilizes the compressive strength of concrete and the tensile strength of steel. Mostly used as a stable base for constructing buildings.",
+      "schemas": [
+        {
+          "name": "Alternatief: omhulde industriële pijp",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::steel-pipe:6:0|cement:5:0::steel-plate-reinforced:1:0"
+        }
+      ]
+    },
+    "Desc_ModularFrame_C": {
+      "name": "Modulair frame",
+      "description": "Wordt gebruikt voor vervaardiging. A multipurpose building block.",
+      "schemas": [
+        {
+          "name": "Alternatief: geschroefd frame",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::iron-plate-reinforced:3:0|iron-screw:56:0::modular-frame:2:0"
+        },
+        {
+          "name": "Alternatief: stalen frame",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::iron-plate-reinforced:2:0|steel-pipe:10:0::modular-frame:3:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameHeavy_C": {
+      "name": "Zwaar modulair frame",
+      "description": "A more robust multipurpose frame.",
+      "schemas": [
+        {
+          "name": "Alternatief: zwaar flexibel frame",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::modular-frame:5:0|steel-plate-reinforced:3:0|rubber:20:0|iron-screw:104:0::modular-frame-heavy:1:0"
+        },
+        {
+          "name": "Alternatief: zwaar omhuld frame",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::modular-frame:8:0|steel-plate-reinforced:10:0|steel-pipe:36:0|cement:22:0::modular-frame-heavy:3:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameFused_C": {
+      "name": "Gefuseerd Modulair Frame",
+      "description": "A corrosion-resistant, nitride-hardened, highly-robust-yet-lightweight modular frame.",
+      "schemas": [
+        {
+          "name": "Alternatief: Hitte Gehard Frame",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "1::blender::modular-frame-heavy:1:0|aluminum-ingot:50:0|nitric-acid:8:1|liquid-fuel:10:1::modular-frame-fused:1:0"
+        }
+      ]
+    },
+    "Desc_FicsiteMesh_C": {
+      "name": "Ficsite Trigon",
+      "description": "The Ficsite Trigon, made from Ficsite Ingots, is perfectly shaped for all construction challenges. Its performance is so exceptional, it basically solved structural engineering."
+    },
+    "Desc_Fabric_C": {
+      "name": "Textiel",
+      "description": "Used to craft equipment. Flexibele maar duurzame stof.",
+      "schemas": [
+        {
+          "name": "Alternatief: polyester stof",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::polymer-resin:1:0|water:1:1::fabric:1:0"
+        }
+      ]
+    },
+    "Desc_Plastic_C": {
+      "name": "Kunststof",
+      "description": "Versatile and easy to manufacture, this material has a wide range of uses.",
+      "schemas": [
+        {
+          "name": "Alternatief: gerecycled plastic",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::rubber:6:0|liquid-fuel:6:1::plastic:12:0"
+        },
+        {
+          "name": "Plasticresten",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::polymer-resin:6:0|water:2:1::plastic:2:0"
+        }
+      ]
+    },
+    "Desc_Rubber_C": {
+      "name": "Rubber",
+      "description": "A very flexible material that has a lot of friction.",
+      "schemas": [
+        {
+          "name": "Alternatief: gerecycled rubber",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::plastic:6:0|liquid-fuel:6:1::rubber:12:0"
+        },
+        {
+          "name": "Rubberresten",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::polymer-resin:4:0|water:4:1::rubber:2:0"
+        }
+      ]
+    },
+    "Desc_Rotor_C": {
+      "name": "rotor",
+      "description": "Wordt gebruikt voor vervaardiging. De bewegende delen van een motor.",
+      "schemas": [
+        {
+          "name": "Alternatief: koperen rotor",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::copper-sheet:6:0|iron-screw:52:0::rotor:3:0"
+        },
+        {
+          "name": "Alternatief: stalen rotor",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::steel-pipe:2:0|wire:6:0::rotor:1:0"
+        }
+      ]
+    },
+    "Desc_Stator_C": {
+      "name": "stator",
+      "description": "Wordt gebruikt voor vervaardiging. Het statische onderdeel van een motor.",
+      "schemas": [
+        {
+          "name": "Alternatief: stator van hogesnelheidsdraad",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::steel-pipe:4:0|high-speed-wire:15:0::stator:2:0"
+        }
+      ]
+    },
+    "Desc_Battery_C": {
+      "name": "Batterij",
+      "description": "Voornamelijk gebruikt as brandstof voor Drones en Voertuigen.",
+      "schemas": [
+        {
+          "name": "Alternatief: klassieke batterij",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::sulfur:6:0|aluminum-plate:7:0|plastic:8:0|wire:12:0::battery:4:0"
+        }
+      ]
+    },
+    "Desc_Motor_C": {
+      "name": "motor",
+      "description": "Creates a mechanical force that is used to move things from machines to vehicles.",
+      "schemas": [
+        {
+          "name": "Alternate: Rigor Motor",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::rotor:3:0|stator:3:0|crystal-oscillator:1:0::motor:6:0"
+        },
+        {
+          "name": "Alternatief: elektromotor",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::electromagnetic-control-rod:1:0|rotor:2:0::motor:2:0"
+        }
+      ]
+    },
+    "Desc_AluminumPlateReinforced_C": {
+      "name": "Koellichaam",
+      "description": "Wordt gebruikt om sneller hitte te verdrijven.",
+      "schemas": [
+        {
+          "name": "Alternatief: warmtewisselaar",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::aluminum-casing:3:0|rubber:3:0::aluminum-plate-reinforced:1:0"
+        }
+      ]
+    },
+    "Desc_CoolingSystem_C": {
+      "name": "Koelsysteem",
+      "description": "Keeps advanced parts and buildings from exceeding efficient temperature levels.",
+      "schemas": [
+        {
+          "name": "Alternatief: Koelapparaat",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "1::blender::aluminum-plate-reinforced:4:0|motor:1:0|nitrogen-gas:24:1::cooling-system:2:0"
+        }
+      ]
+    },
+    "Desc_MotorLightweight_C": {
+      "name": "Turbomotor",
+      "description": "Een complexere en krachtigere versie van de standaard motor.",
+      "schemas": [
+        {
+          "name": "Alternatief: Turbo Drukmotor",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::motor:4:0|pressure-conversion-cube:1:0|packaged-nitrogen-gas:24:0|stator:8:0::motor-lightweight:2:0"
+        },
+        {
+          "name": "Alternatief: Turbo Elektrische Motor",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::motor:7:0|modular-frame-lightweight:9:0|electromagnetic-control-rod:5:0|rotor:7:0::motor-lightweight:3:0"
+        }
+      ]
+    },
+    "Desc_Wire_C": {
+      "name": "Draad",
+      "description": "Wordt gebruikt voor vervaardiging. Gebouwd in de meeste basisonderdelen.",
+      "schemas": [
+        {
+          "name": "Alternatief: cateriumdraad",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 0,
+          "fingerprint": "1::constructor::gold-ingot:1:0::wire:8:0"
+        },
+        {
+          "name": "Alternatief: gefuseerd draad",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::copper-ingot:4:0|gold-ingot:1:0::wire:30:0"
+        },
+        {
+          "name": "Alternatief: ijzerdraad",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 2,
+          "fingerprint": "1::constructor::iron-ingot:5:0::wire:9:0"
+        }
+      ]
+    },
+    "Desc_Cable_C": {
+      "name": "Kabel",
+      "description": "Wordt gebruikt voor vervaardiging. Wordt vooral gebruikt voor het bouwen van spanningskabels.",
+      "schemas": [
+        {
+          "name": "Alternatief: Hogesnelheidskabel",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::high-speed-wire:3:0|rubber:2:0::cable:11:0"
+        },
+        {
+          "name": "Alternatief: gecoate kabel",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 1,
+          "fingerprint": "1::refinery::wire:5:0|heavy-oil-residue:2:1::cable:9:0"
+        },
+        {
+          "name": "Alternatief: geïsoleerde kabel",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::wire:9:0|rubber:6:0::cable:20:0"
+        }
+      ]
+    },
+    "Desc_HighSpeedWire_C": {
+      "name": "Hogesnelheidsdraad",
+      "description": "Caterium's high conductivity and resistance to corrosion make it ideal for small, advanced electronics.",
+      "schemas": [
+        {
+          "name": "Alternatief: gefuseerd hogesnelheidsdraad",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::gold-ingot:1:0|copper-ingot:5:0::high-speed-wire:12:0"
+        }
+      ]
+    },
+    "Desc_CircuitBoard_C": {
+      "name": "Printplaat",
+      "description": "Advanced electronics that have a plethora of different uses.",
+      "schemas": [
+        {
+          "name": "Alternatief: Silicium Printplaat",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::copper-sheet:11:0|silica:11:0::circuit-board:5:0"
+        },
+        {
+          "name": "Alternatief: caterium printplaat",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::plastic:10:0|high-speed-wire:30:0::circuit-board:7:0"
+        },
+        {
+          "name": "Alternatief: elektrode printplaat",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 2,
+          "fingerprint": "1::assembler::rubber:4:0|petroleum-coke:8:0::circuit-board:1:0"
+        }
+      ]
+    },
+    "Desc_CircuitBoardHighSpeed_C": {
+      "name": "AI-begrenzer",
+      "description": "Controls AIs and keeps them from evolving in malicious ways. Super advanced electronics.",
+      "schemas": [
+        {
+          "name": "Alternate: Plastic AI Limiter",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::high-speed-wire:30:0|plastic:7:0::circuit-board-high-speed:2:0"
+        }
+      ]
+    },
+    "Desc_HighSpeedConnector_C": {
+      "name": "Hogesnelheidsverbinding",
+      "description": "Connects multiple cables and wires in a very efficient way. Uses a standard pattern, so it has many varied applications.",
+      "schemas": [
+        {
+          "name": "Alternatief: Silicium hogesnelheidsaansluiting",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::high-speed-wire:60:0|silica:25:0|circuit-board:2:0::high-speed-connector:2:0"
+        }
+      ]
+    },
+    "Desc_SAMIngot_C": {
+      "name": "Reanimated SAM",
+      "description": "The active and contained form of the Strange Alien Matter. Proper electromagnetic containment is required, as it appears to be able to manipulate the atomic bonds of any matter it comes into contact with."
+    },
+    "Desc_SAMFluctuator_C": {
+      "name": "SAM Fluctuator",
+      "description": "The SAM Fluctuator is able to regulate and direct the behavior of Reanimated SAM through the application of electric charges with varying frequencies. This control facilitates technologies such as matter-to-energy conversion and spatiotemporal matter manipulation."
+    },
+    "Desc_Computer_C": {
+      "name": "Computer",
+      "description": "Een complexe logica machine die wordt gebruikt om geavanceerd gedrag in andere machines te bepalen.",
+      "schemas": [
+        {
+          "name": "Alternatief: caterium computer",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::circuit-board:4:0|high-speed-wire:14:0|rubber:6:0::computer:1:0"
+        },
+        {
+          "name": "Alternatief: kristalcomputer",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 1,
+          "fingerprint": "1::assembler::circuit-board:3:0|crystal-oscillator:1:0::computer:2:0"
+        }
+      ]
+    },
+    "Desc_ComputerSuper_C": {
+      "name": "Supercomputer",
+      "description": "De volgende generatie van een Computer.",
+      "schemas": [
+        {
+          "name": "Alternatief: Overklokte Supercomputer",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::modular-frame-lightweight:2:0|cooling-system:2:0::computer-super:1:0"
+        },
+        {
+          "name": "Alternatief: Superstaat Computer",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::computer:3:0|electromagnetic-control-rod:1:0|battery:10:0|wire:25:0::computer-super:1:0"
+        }
+      ]
+    },
+    "Desc_ModularFrameLightweight_C": {
+      "name": "Radiografische controle-eenheid",
+      "description": "Versterkt en stuurt radiosignalen.",
+      "schemas": [
+        {
+          "name": "Alternatief: Radio Verbindingscomponent",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::aluminum-plate-reinforced:4:0|high-speed-connector:2:0|quartz-crystal:12:0::modular-frame-lightweight:1:0"
+        },
+        {
+          "name": "Alternatief: radiografisch controlesysteem",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 1,
+          "fingerprint": "1::manufacturer::crystal-oscillator:1:0|circuit-board:10:0|aluminum-casing:60:0|rubber:30:0::modular-frame-lightweight:3:0"
+        }
+      ]
+    },
+    "Desc_CrystalOscillator_C": {
+      "name": "Kristaloscillator",
+      "description": "Een elektronisch oscillator-circuit dat de mechanische weerklank van een trillend kristal gebruikt om een elektrisch signaal met een precieze frequentie te maken.",
+      "schemas": [
+        {
+          "name": "Alternatief: geïsoleerde kristaloscillator",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::quartz-crystal:10:0|rubber:7:0|circuit-board-high-speed:1:0::crystal-oscillator:1:0"
+        }
+      ]
+    },
+    "Desc_QuantumOscillator_C": {
+      "name": "Superpositie-oscillator",
+      "description": "Een olscillator-circuit dat de mechanische weerklank van een trillend kristal gebruikt om een trillend kristal te maken met een precieze frequentie. Vaak gebruikt in teleportatie technologie en dimensionale manipulatie."
+    },
+    "Desc_Diamond_C": {
+      "name": "Diamanten",
+      "description": "Synthetische Diamanten die geproduceerd worden door kolen bloot te stellen aan extreme warmte en druk. Wordt gebruikt in de productie van Tijd Kristallen en Donkere Materie Kristallen. Stroomgebruik: 250-750 MW (500 MW gemiddeld).",
+      "schemas": [
+        {
+          "name": "Alternate: Cloudy Diamonds",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "1::particle-accelerator::coal:12:0|stone:24:0::diamond:1:0"
+        },
+        {
+          "name": "Alternate: Oil-Based Diamonds",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::liquid-oil:10:1::diamond:2:0"
+        },
+        {
+          "name": "Alternate: Petroleum Diamonds",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 2,
+          "fingerprint": "1::particle-accelerator::petroleum-coke:24:0::diamond:1:0"
+        },
+        {
+          "name": "Alternate: Pink Diamonds",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 3,
+          "fingerprint": "1::converter::coal:8:0|quartz-crystal:3:0::diamond:1:0"
+        },
+        {
+          "name": "Alternate: Turbo Diamonds",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 4,
+          "fingerprint": "1::particle-accelerator::coal:30:0|turbo-fuel:2:0::diamond:3:0"
+        }
+      ]
+    },
+    "Desc_TimeCrystal_C": {
+      "name": "Tijd Kristal",
+      "description": "Tijd Kristallen zijn diamanten die geherconfigureerd zijn op een sub-atomair niveau in de Omvormer om een tijd periodische, zelf georganiseerde structuur te behouden. Dit laat het toe om hen te gebruiken voor de ontwikkeling van kwantum processen en opslag technologieën."
+    },
+    "Desc_DarkMatter_C": {
+      "name": "Donkere Materie Kristallen",
+      "description": "Concentrated Dark Matter Residue that is isolated within a crystalline vessel. This form of containment allows for utilising Dark Matter reliably in other production processes. Stroomgebruik: 500-1500 MW (1000 MW gemiddeld).",
+      "schemas": [
+        {
+          "name": "Alternate: Dark Matter Crystallization",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "1::particle-accelerator::dark-energy:10:1::dark-matter:1:0"
+        },
+        {
+          "name": "Alternate: Dark Matter Trap",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 1,
+          "fingerprint": "1::particle-accelerator::time-crystal:1:0|dark-energy:5:1::dark-matter:2:0"
+        }
+      ]
+    },
+    "Desc_SingularityCell_C": {
+      "name": "Singulariteit cel",
+      "description": "Wordt gebruikt om ruimte en tijd af te breken. Benodigd om Portalen in gang te houden."
+    },
+    "Desc_TemporalProcessor_C": {
+      "name": "Neurale Kwantum Processor",
+      "description": "The Neural-Quantum Processor utilizes a combination of neural network architecture and quantum computing techniques to achieve unprecedented performance. This technology has enabled some of FICSIT's biggest advancements in artificial intelligence and relativistic engineering."
+    },
+    "Desc_AlienPowerFuel_C": {
+      "name": "Alien Power Matrix",
+      "description": "This intricate condensed-matter matrix is used to enhance the output of the Alien Power Augmenter. Initially developed in efforts to create a human-made Somersloop, the Alien Power Matrix cannot sustain the extra-dimensional energy connection on its own. However, it can effectively stabilize the energy stream of the Somersloop."
+    },
+    "Desc_FluidCanister_C": {
+      "name": "Lege Tank",
+      "description": "Gebruikt voor het verpakken van vloeistoffen voor transport.",
+      "schemas": [
+        {
+          "name": "Alternatief: Bedekte IJzeren Bus",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::iron-plate:2:0|copper-sheet:1:0::fluid-canister:4:0"
+        },
+        {
+          "name": "Alternatief: Stalen Bus",
+          "is_alternative": 1,
+          "building_slug": "constructor",
+          "sort_order": 1,
+          "fingerprint": "1::constructor::steel-ingot:4:0::fluid-canister:4:0"
+        }
+      ]
+    },
+    "Desc_GasTank_C": {
+      "name": "Lege Vloeistof Tank",
+      "description": "Wordt gebruikt om gassen en vluchtige vloeistoffen voor het vervoer te verpakken."
+    },
+    "Desc_PressureConversionCube_C": {
+      "name": "Druk Conversie Kubus",
+      "description": "Zet de uitgaande kracht om in interne druk. Nodig om onstabiele en hoge energie materie in te perken."
+    },
+    "Desc_PackagedWater_C": {
+      "name": "Verpakt Water",
+      "description": "Water, verpakt voor alternatief transport."
+    },
+    "Desc_PackagedAlumina_C": {
+      "name": "Verpakt Aluminiumoxide-oplossing",
+      "description": "Aluminiumoxide Oplossing, verpakt voor alternatief transport."
+    },
+    "Desc_PackagedSulfuricAcid_C": {
+      "name": "Verpakt Zwavelzuur",
+      "description": "Zwavelzuur, verpakt voor alternatief transport."
+    },
+    "Desc_PackagedNitricAcid_C": {
+      "name": "Verpakt Salpeterzuur",
+      "description": "Salpeterzuur, verpakt voor alternatief transport."
+    },
+    "Desc_PackagedNitrogenGas_C": {
+      "name": "Verpakt Stikstofgas",
+      "description": "Stikstofgas, verpakt voor alternatief transport."
+    },
+    "Desc_Leaves_C": {
+      "name": "Bladeren",
+      "description": "Voornamelijk gebruikt als brandstof. Biomass Burners and vehicles can use Leaves for power."
+    },
+    "Desc_Mycelia_C": {
+      "name": "Zwamvlokken",
+      "description": "Wordt gebruikt voor vervaardiging. Biomass Burners and vehicles can also use Mycelia for power."
+    },
+    "Desc_FlowerPetals_C": {
+      "name": "Bloemblaadjes",
+      "description": "Wordt gebruikt voor vervaardiging. Kleurrijke inheemse bloemblaadjes."
+    },
+    "Desc_Wood_C": {
+      "name": "Hout",
+      "description": "Voornamelijk gebruikt als brandstof. Biomass Burners and vehicles can use Wood for power."
+    },
+    "Desc_GenericBiomass_C": {
+      "name": "Biomassa",
+      "description": "Voornamelijk gebruikt als brandstof. Biomassabranders en voertuigen kunnen dit gebruiken als brandstof. Biomassa is veel energiezuiniger dan ruwe biologische materialen."
+    },
+    "Desc_CompactedCoal_C": {
+      "name": "Samengeperste steenkool",
+      "description": "A much more efficient alternative to Coal. Used as fuel for vehicles and Coal-Powered Generators.",
+      "schemas": [
+        {
+          "name": "Alternate: Dark-Ion Fuel",
+          "is_alternative": 1,
+          "building_slug": "converter",
+          "sort_order": 0,
+          "fingerprint": "1::converter::packaged-rocket-fuel:12:0|dark-matter:4:0::ionized-fuel:10:1|compacted-coal:2:0"
+        },
+        {
+          "name": "Alternate: Nitro Rocket Fuel",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 1,
+          "fingerprint": "1::blender::liquid-fuel:4:1|nitrogen-gas:3:1|sulfur:4:0|coal:2:0::rocket-fuel:6:1|compacted-coal:1:0"
+        }
+      ]
+    },
+    "Desc_PackagedOil_C": {
+      "name": "Verpakte Olie",
+      "description": "Onbewerkte Olie, ingepakt voor alternatief transport. Kan gebruikt worden als brandstof voor voertuigen."
+    },
+    "Desc_PackagedOilResidue_C": {
+      "name": "Verpakte Zwareolieresten",
+      "description": "Geraffineerde olieresidu, verpakt voor alternatief transport. Kan worden gebruikt als brandstof voor Voertuigen."
+    },
+    "Desc_Biofuel_C": {
+      "name": "Vaste Biobrandstof",
+      "description": "De meest energie-efficiënte vorm van vaste biomassa. Kan worden gebruikt als brandstof voor de Kettingzaag."
+    },
+    "Desc_Fuel_C": {
+      "name": "Verpakte Brandstof",
+      "description": "Brandstof, verpakt voor alternatief transport. Kan worden gebruikt als brandstof voor voertuigen en de Jetpack.",
+      "schemas": [
+        {
+          "name": "Alternatief: verdunde verpakte brandstof",
+          "is_alternative": 1,
+          "building_slug": "refinery",
+          "sort_order": 0,
+          "fingerprint": "1::refinery::heavy-oil-residue:1:1|packaged-water:2:0::fuel:2:0"
+        }
+      ]
+    },
+    "Desc_PackagedBiofuel_C": {
+      "name": "Verpakte vloeibare biobrandstof",
+      "description": "Vloeibare biobrandstof, verpakt voor alternatief transport. Kan worden gebruikt als brandstof voor voertuigen en de Jetpack."
+    },
+    "Desc_TurboFuel_C": {
+      "name": "Verpakte Turbobrandstof",
+      "description": "Turbo brandstof, verpakt voor alternatief transport. Kan worden gebruikt als brandstof voor voertuigen en de Jetpack."
+    },
+    "Desc_PackagedRocketFuel_C": {
+      "name": "Verpakt Raket Brandstof",
+      "description": "Rocket Fuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "Desc_PackagedIonizedFuel_C": {
+      "name": "Verpakt Geïoniseerd Brandstof",
+      "description": "Ionized Fuel, packaged for alternative transport. Can be used as fuel for vehicles and the Jetpack."
+    },
+    "Desc_NuclearFuelRod_C": {
+      "name": "Uranium Brandstofstaaf",
+      "description": "Gebruikt als brandstof in Kerncentrales. Waarschuwing: Produceert radioactief Uranium Kernafval wanneer verbruikt. Waarschuwing: Gemiddeld Radioactief.",
+      "schemas": [
+        {
+          "name": "Alternatief: Uranium Brandstofcomponent",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::uranium-cell:100:0|electromagnetic-control-rod:10:0|crystal-oscillator:3:0|rotor:10:0::nuclear-fuel-rod:3:0"
+        }
+      ]
+    },
+    "Desc_PlutoniumFuelRod_C": {
+      "name": "Plutonium Brandstofstaaf",
+      "description": "Gebruikt als brandstof in Kerncentrales. Waarschuwing: Produceert radioactief Plutonium Kernafval wanneer verbruikt. Waarschuwing: ZEER Radioactief.",
+      "schemas": [
+        {
+          "name": "Alternatief: Plutonium Brandstofcomponent",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::plutonium-cell:20:0|pressure-conversion-cube:1:0::plutonium-fuel-rod:1:0"
+        }
+      ]
+    },
+    "Desc_Gunpowder_C": {
+      "name": "Buskruit",
+      "description": "Een explosief kruit dat vaak wordt gebruikt om eenvoudige explosieven te produceren.",
+      "schemas": [
+        {
+          "name": "Alternatief: fijn buskruit",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::sulfur:1:0|compacted-coal:2:0::gunpowder:6:0"
+        }
+      ]
+    },
+    "Desc_GunpowderMK2_C": {
+      "name": "Rookloos Poeder",
+      "description": "Een explosief kruit dat vaak wordt gebruikt om moderne vuurwapens te produceren."
+    },
+    "Desc_Filter_C": {
+      "name": "Gasfilter",
+      "description": "Filters out toxins and pollutants from the air when used with a Gas Mask."
+    },
+    "Desc_ColorCartridge_C": {
+      "name": "Kleurenpatroon",
+      "description": "Word gebruikt voor het toevoegen van patronen op gebouwen met de Aanpasser. (Patronen kunnen worden gekocht in de AWESOME Shop.)"
+    },
+    "BP_EquipmentDescriptorBeacon_C": {
+      "name": "Baken",
+      "description": "VERWIJDEREN IN BEHANDELING Dit voorwerp zal (waarschijnlijk) worden verwijderd in een toekomstige update. Momenteel enkel gebruikt als ingrediënt in een alternatief recept."
+    },
+    "Desc_HazmatFilter_C": {
+      "name": "Jodium-Geinfuseerde Filter",
+      "description": "Absorbs radioactive particles when used with the Hazmat Suit."
+    },
+    "Desc_SpikedRebar_C": {
+      "name": "IJzeren Bewapening",
+      "description": "Can be shot using the Rebar Gun for self-defense purposes."
+    },
+    "Desc_Rebar_Stunshot_C": {
+      "name": "Schok Bewapening",
+      "description": "Elektrocuteert het doel wanneer geraakt, waardoor deze voor een korte tijd wordt verdoofd. Verdovingsduur: 5 seconden"
+    },
+    "Desc_Rebar_Spreadshot_C": {
+      "name": "Verspreider Rebar",
+      "description": "Fractures when shot, launching deadly debris with wide spread but limited range."
+    },
+    "Desc_Rebar_Explosive_C": {
+      "name": "Explosieve Rebar",
+      "description": "Ontploft bij impact en richt zware schade aan."
+    },
+    "Desc_CartridgeStandard_C": {
+      "name": "Geweer Munitie",
+      "description": "Standaard geweermunitie, handig om dominantie te tonen."
+    },
+    "Desc_CartridgeSmartProjectile_C": {
+      "name": "Zoekende Geweer Munitie",
+      "description": "Dankzij het kogelgeleidingssysteem dat in deze munitie is ingebouwd, raakt het nauwkeurig elk doel dat zich in het vizier bevindt. Vooral handig als je te maken hebt met beweeglijke dreigingen, of voor Pioniers die geen zin hebben om een goed te mikken."
+    },
+    "Desc_CartridgeChaos_C": {
+      "name": "Turbo Geweer Munitie",
+      "description": "Lightweight, compact, and volatile. These rounds provide extreme capacity and rate of fire at the cost of accuracy."
+    },
+    "Desc_NobeliskExplosive_C": {
+      "name": "Nobelisk",
+      "description": "Een simpele explosief, handig voor het verwijderen van rotsen, vegetatie en andere obstakels."
+    },
+    "Desc_NobeliskGas_C": {
+      "name": "Gas Nobelisk",
+      "description": "Creates a deadly gas cloud instead of a regular explosion."
+    },
+    "Desc_NobeliskShockwave_C": {
+      "name": "Puls Nobelisk",
+      "description": "Generates a powerful shockwave instead of a regular explosion."
+    },
+    "Desc_NobeliskCluster_C": {
+      "name": "Cluster Nobelisk",
+      "description": "Detonates into multiple smaller explosions. Practical for clearing out large areas of vegetation and other inconveniences."
+    },
+    "Desc_NobeliskNuke_C": {
+      "name": "Kernbom Nobelisk",
+      "description": "Gebruikt kernsplijting om een enorme explosie te genereren. WAARSCHUWING: Zorg ervoor dat alle eigendommen van FICSIT vóór de ontploffing vrij zijn van de ontploffingszone."
+    },
+    "Desc_ElectromagneticControlRod_C": {
+      "name": "Elektromagnetische Regelstaaf",
+      "description": "Regulates power output via electromagnetism.",
+      "schemas": [
+        {
+          "name": "Alternatief: Elektromagnetische Verbindingsstaaf",
+          "is_alternative": 1,
+          "building_slug": "assembler",
+          "sort_order": 0,
+          "fingerprint": "1::assembler::stator:2:0|high-speed-connector:1:0::electromagnetic-control-rod:2:0"
+        }
+      ]
+    },
+    "Desc_UraniumCell_C": {
+      "name": "Omhulde Uraniumcel",
+      "description": "Used to produce Uranium Fuel Rods for Nuclear Power production. Made from Uranium Ore. Waarschuwing: Licht Radioactief.",
+      "schemas": [
+        {
+          "name": "Alternatief: ingeprente uraniumcel",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::ore-uranium:5:0|silica:3:0|sulfur:5:0|high-speed-wire:15:0::uranium-cell:4:0"
+        }
+      ]
+    },
+    "Desc_NonFissibleUranium_C": {
+      "name": "Niet Splijtbare Uranium",
+      "description": "De Uranium-238 isotoop is niet splijtbaar, wat betekent dat het niet gebruikt kan worden voor kernsplijting. Het kan wel omgevormd worden tot splijtbare Plutonium in de Deeltjesversneller. Waarschuwing: Licht Radioactief.",
+      "schemas": [
+        {
+          "name": "Alternatief: Vruchtbaar Uranium",
+          "is_alternative": 1,
+          "building_slug": "blender",
+          "sort_order": 0,
+          "fingerprint": "1::blender::ore-uranium:5:0|nuclear-waste:5:0|nitric-acid:3:1|sulfuric-acid:5:1::non-fissible-uranium:20:0|water:8:1"
+        }
+      ]
+    },
+    "Desc_PlutoniumPellet_C": {
+      "name": "Plutonium Pellets",
+      "description": "Geproduceerd in de Deeltjesversneller door de omzetting van onsplijtbare Uranium. Gebruikt om Ingekapselde Plutonium Cellen voor Plutonium Brandstof Stangen te produceren. Stroomgebruik: 250-750 MW (500 MW gemiddeld). Waarschuwing: Gemiddeld Radioactief."
+    },
+    "Desc_PlutoniumCell_C": {
+      "name": "Omhulde Plutoniumcel",
+      "description": "Plutonium pellets omhuld door beton. Wordt gebruikt om Uranium Brandstof Stangen te produceren voor de productie van kernenergie. Stroomgebruik: 250-750 MW (500 MW gemiddeld). Caution: Moderately Radioactive.",
+      "schemas": [
+        {
+          "name": "Alternatief Directe Plutoniumcel",
+          "is_alternative": 1,
+          "building_slug": "particle-accelerator",
+          "sort_order": 0,
+          "fingerprint": "1::particle-accelerator::non-fissible-uranium:150:0|aluminum-casing:20:0::plutonium-cell:20:0"
+        }
+      ]
+    },
+    "Desc_Ficsonium_C": {
+      "name": "Ficsonium",
+      "description": "Gebruik en productie van dit materiaal zijn ten strengste verboden. Op aarde is dit toch. Er zijn geen regels in de ruimte, alleen maar efficiëntie. Stroomgebruik: 500-1500 MW (1000 MW gemiddeld). Waarschuwing: Gemiddeld Radioactief."
+    },
+    "Desc_FicsoniumFuelRod_C": {
+      "name": "Ficsonium Splijtstofstaven",
+      "description": "Gebruikt als brandstof in Kerncentrales. De energiebron die FICSIT op de kaart heeft gezet. Letterlijk. De krater is daar nog altijd. Waarschuwing: Gemiddeld Radioactief."
+    },
+    "Desc_NuclearWaste_C": {
+      "name": "Kernafval",
+      "description": "The by-product of consuming Uranium Fuel Rods in a Nuclear Power Plant. Onsplijtbare Uranium kan worden gewonnen. Voorzichtig behandelen. Waarschuwing: ZEER Radioactief."
+    },
+    "Desc_PlutoniumWaste_C": {
+      "name": "Plutonium Afval",
+      "description": "The by-product of consuming Plutonium Fuel Rods in a Nuclear Power Plant. Must be stored in a safe location. Handle with caution. Waarschuwing: ZEER Radioactief."
+    },
+    "Desc_Crystal_C": {
+      "name": "Blauwe Energieslak",
+      "description": "A strange slug radiating an unknown weak power."
+    },
+    "Desc_Crystal_mk2_C": {
+      "name": "Gele Energieslak",
+      "description": "A strange slug radiating an unknown power."
+    },
+    "Desc_Crystal_mk3_C": {
+      "name": "Paarse energieslak",
+      "description": "A strange slug radiating a powerful unknown power."
+    },
+    "Desc_CrystalShard_C": {
+      "name": "Energiefragment",
+      "description": "Power Slug mucus compressed into a solid crystal-like shard. Het straalt een merkwaardige kracht uit."
+    },
+    "Desc_ResourceSinkCoupon_C": {
+      "name": "FICSIT-coupon",
+      "description": "Een speciale FICSIT bonusprogramma Coupon, verkregen via de AWESOME Afvoer. Kan worden ingewisseld in de AWESOME Winkel voor bonusmijlpalen en beloningen."
+    },
+    "Desc_SpaceElevatorPart_1_C": {
+      "name": "Slimme Beplating",
+      "description": "Project Part #1. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "Alternatief: Slimme kunststofbeplating",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::iron-plate-reinforced:1:0|rotor:1:0|plastic:3:0::space-elevator-part-1:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_2_C": {
+      "name": "Veelzijdig raamwerk",
+      "description": "Project Part #2. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "Alternatief: flexibel framewerk",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::modular-frame:1:0|steel-plate:6:0|rubber:8:0::space-elevator-part-2:2:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_3_C": {
+      "name": "Geautomatiseerde bedrading",
+      "description": "Project Part #3. Ship via the Space Elevator to complete phases of Project Assembly.",
+      "schemas": [
+        {
+          "name": "Alternatief: Automatische snelbedrading",
+          "is_alternative": 1,
+          "building_slug": "manufacturer",
+          "sort_order": 0,
+          "fingerprint": "1::manufacturer::stator:2:0|wire:40:0|high-speed-connector:1:0::space-elevator-part-3:4:0"
+        }
+      ]
+    },
+    "Desc_SpaceElevatorPart_4_C": {
+      "name": "Modulaire Motor",
+      "description": "Project Part #4. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_5_C": {
+      "name": "Aangepaste controle-eenheid",
+      "description": "Project Part #5. Ship via the Space Elevator to complete phases of Project Assembly."
+    },
+    "Desc_SpaceElevatorPart_7_C": {
+      "name": "Montagebesturingsysteem",
+      "description": "Project Part #6. Ship via the Space Elevator to complete phases of Project Assembly. Dit extreem snelle en nauwkeurige computersysteem is specifiek ontworpen om de Montagefase van het Montageproject aan te sturen."
+    },
+    "Desc_SpaceElevatorPart_6_C": {
+      "name": "Magnetische Veld Generator",
+      "description": "Project Part #7. Ship via the Space Elevator to complete phases of Project Assembly. These modular generators use superconducting magnets and vast amounts of electricity to produce a powerful and easily expandable magnetic field."
+    },
+    "Desc_SpaceElevatorPart_8_C": {
+      "name": "Thermische Voortstuwingsraket",
+      "description": "Project Part #8. Ship via the Space Elevator to complete phases of Project Assembly. Gebruikt extreme hitte om het hoge druk plasma te produceren dat nodig is om het Montageproject in beweging te brengen."
+    },
+    "Desc_SpaceElevatorPart_9_C": {
+      "name": "Nucleaire Pasta",
+      "description": "Project Part #9. Ship via the Space Elevator to complete phases of Project Assembly. Stroomgebruik: 500-1500 MW (1000 MW gemiddeld). Nucleaire Pasta is een extreem dichte gedegenereerde materie, gevormd wanneer extreme druk protonen en elektronen samen forceert in neutronen. Het is verondersteld dat het natuurlijk in de korst van neutron sterren bestaat."
+    },
+    "Desc_SpaceElevatorPart_10_C": {
+      "name": "Biochemical Sculptor",
+      "description": "Project Part #10. Ship via the Space Elevator to complete phases of Project Assembly. Years ahead of the competition, this top-of-the-line 3D printer is used for the production of synthetic biological resources."
+    },
+    "Desc_SpaceElevatorPart_11_C": {
+      "name": "Ballistic Warp Drive",
+      "description": "Project Part #11. Ship via the Space Elevator to complete phases of Project Assembly. A large amount of force is required for the Warp Drives to activate, so sticking them to rockets was the logical next step. Additionally, results improved immensely when the observers were further removed from the Warp Drives upon activation."
+    },
+    "Desc_SpaceElevatorPart_12_C": {
+      "name": "AI Expansion Server",
+      "description": "Project Part #12. Ship via the Space Elevator to complete phases of Project Assembly. Power Usage: 0-2000 MW (1000 MW average). Growth is the metric by which we measure success."
+    }
+  },
+  "buildings": {
+    "Build_MinerMk1_C": {
+      "name": "Delver Mk.1"
+    },
+    "Build_MinerMk2_C": {
+      "name": "Delver Mk.2"
+    },
+    "Build_MinerMk3_C": {
+      "name": "Delver Mk.3"
+    },
+    "Build_OilPump_C": {
+      "name": "Oliezuiger"
+    },
+    "Build_WaterPump_C": {
+      "name": "Waterpomp"
+    },
+    "Build_FrackingSmasher_C": {
+      "name": "Grondstof Aardbron Drukregelaar"
+    },
+    "Build_FrackingExtractor_C": {
+      "name": "Springbronontginner"
+    },
+    "Build_SmelterMk1_C": {
+      "name": "Smeltoven"
+    },
+    "Build_FoundryMk1_C": {
+      "name": "Metaalgieterij"
+    },
+    "Build_ConstructorMk1_C": {
+      "name": "Samensteller"
+    },
+    "Build_AssemblerMk1_C": {
+      "name": "Assembleerder"
+    },
+    "Build_ManufacturerMk1_C": {
+      "name": "Fabrikator"
+    },
+    "Build_OilRefinery_C": {
+      "name": "Raffinaderij"
+    },
+    "Build_Packager_C": {
+      "name": "Verpakkingsmachine"
+    },
+    "Build_Blender_C": {
+      "name": "mixer"
+    },
+    "Build_HadronCollider_C": {
+      "name": "Deeltjesversneller"
+    },
+    "Build_QuantumEncoder_C": {
+      "name": "Kwantum codeereenheid"
+    },
+    "Build_Converter_C": {
+      "name": "Omvormer"
+    },
+    "Build_GeneratorBiomass_Automated_C": {
+      "name": "Biomassa Generator"
+    },
+    "Build_GeneratorCoal_C": {
+      "name": "Coal-Powered Generator"
+    },
+    "Build_GeneratorFuel_C": {
+      "name": "Fuel-Powered Generator"
+    },
+    "Build_GeneratorGeoThermal_C": {
+      "name": "Geothermische Generator"
+    },
+    "Build_GeneratorNuclear_C": {
+      "name": "Kernreactor"
+    },
+    "Build_PowerStorageMk1_C": {
+      "name": "Energie Opslag"
+    },
+    "Build_AlienPowerBuilding_C": {
+      "name": "Alien Power Augmenter"
+    },
+    "Build_TradingPost_C": {
+      "name": "De HUB"
+    },
+    "Build_Mam_C": {
+      "name": "M.A.M."
+    },
+    "Build_PortalPotty_C": {
+      "name": "SPWN"
+    },
+    "Build_SpaceElevator_C": {
+      "name": "Ruimtelift"
+    },
+    "Build_BlueprintDesigner_C": {
+      "name": "Blueprint Designer Mk.1"
+    },
+    "Build_BlueprintDesigner_MK2_C": {
+      "name": "Blueprint Designer Mk.2"
+    },
+    "Build_ResourceSink_C": {
+      "name": "AWESOME Afvoer"
+    },
+    "Build_ResourceSinkShop_C": {
+      "name": "AWESOME-Winkel"
+    },
+    "Build_WorkBench_C": {
+      "name": "Werkbank"
+    },
+    "Build_Workshop_C": {
+      "name": "Uitrustingswerkplaats"
+    },
+    "Build_StoragePlayer_C": {
+      "name": "Persoonlijke opslag"
+    },
+    "Build_StorageMedkit_C": {
+      "name": "Medische Persoonlijke Opslag"
+    },
+    "Build_StorageHazard_C": {
+      "name": "Gevaar Opslag Box"
+    },
+    "Build_StorageContainerMk1_C": {
+      "name": "Opslagcontainer"
+    },
+    "Build_PipeStorageTank_C": {
+      "name": "Vloeistof Buffer"
+    },
+    "Build_IndustrialTank_C": {
+      "name": "Industriële Vloeistoffenbuffer"
+    },
+    "Build_CentralStorage_C": {
+      "name": "Dimensional Depot Uploader"
+    },
+    "Build_StackableShelf_C": {
+      "name": "Basic Shelf Unit"
+    },
+    "Build_TruckStation_C": {
+      "name": "Vrachtwagenstation"
+    },
+    "Build_FluidTruckStation_C": {
+      "name": "Fluid Truck Station"
+    },
+    "Build_DroneStation_C": {
+      "name": "Drone Landingsplaats"
+    },
+    "Build_TrainDockingStation_C": {
+      "name": "Vrachtperron"
+    },
+    "Build_TrainDockingStationLiquid_C": {
+      "name": "Vloeistof-vrachtperron"
+    },
+    "Build_LookoutTower_C": {
+      "name": "Uitkijktoren"
+    },
+    "Build_RadarTower_C": {
+      "name": "Radartoren"
+    }
+  },
+  "unmatched": {
+    "items": [],
+    "buildings": []
+  }
+}
