@@ -5,6 +5,8 @@ Tutte le modifiche rilevanti del progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/),
 e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
+> English version: see `CHANGELOG.en.md`.
+
 ## [Unreleased]
 
 ## [1.36.0] - 2026-07-25

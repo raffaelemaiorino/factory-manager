@@ -23,6 +23,11 @@ Production data and calculations may contain errors or may not always reflect th
 
 Factory Manager is provided as-is, without warranties of accuracy, availability, or fitness for a particular purpose.
 
+## Changelog
+
+- Italian: [`CHANGELOG.md`](CHANGELOG.md)
+- English: [`CHANGELOG.en.md`](CHANGELOG.en.md)
+
 ## Community
 
 Join the discussion on Facebook: [Factory Manager](https://www.facebook.com/groups/factorymanager)
