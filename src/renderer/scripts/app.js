@@ -37,31 +37,44 @@ const DEFAULT_APP_SETTINGS = {
   maxMachines: 100,
   maxEnergyGenerators: 600,
 };
+const ABSOLUTE_MAX_MACHINES = 10_000;
+const ABSOLUTE_MAX_ENERGY_GENERATORS = 10_000;
 
 let appSettings = { ...DEFAULT_APP_SETTINGS };
 
+function clampConfiguredLimit(value, fallback, max) {
+  const n = Math.round(Number(value) || fallback);
+  if (!Number.isFinite(n) || n < 1) return fallback;
+  return Math.min(max, n);
+}
+
 function getConfiguredMaxMachines() {
-  return Math.max(1, Math.round(Number(appSettings.maxMachines) || DEFAULT_APP_SETTINGS.maxMachines));
+  return clampConfiguredLimit(
+    appSettings.maxMachines,
+    DEFAULT_APP_SETTINGS.maxMachines,
+    ABSOLUTE_MAX_MACHINES
+  );
 }
 
 function getConfiguredMaxEnergyGenerators() {
-  return Math.max(
-    1,
-    Math.round(Number(appSettings.maxEnergyGenerators) || DEFAULT_APP_SETTINGS.maxEnergyGenerators)
+  return clampConfiguredLimit(
+    appSettings.maxEnergyGenerators,
+    DEFAULT_APP_SETTINGS.maxEnergyGenerators,
+    ABSOLUTE_MAX_ENERGY_GENERATORS
   );
 }
 
 function applyAppSettings(settings) {
   appSettings = {
-    maxMachines: Math.max(
-      1,
-      Math.round(Number(settings?.maxMachines) || DEFAULT_APP_SETTINGS.maxMachines)
+    maxMachines: clampConfiguredLimit(
+      settings?.maxMachines,
+      DEFAULT_APP_SETTINGS.maxMachines,
+      ABSOLUTE_MAX_MACHINES
     ),
-    maxEnergyGenerators: Math.max(
-      1,
-      Math.round(
-        Number(settings?.maxEnergyGenerators) || DEFAULT_APP_SETTINGS.maxEnergyGenerators
-      )
+    maxEnergyGenerators: clampConfiguredLimit(
+      settings?.maxEnergyGenerators,
+      DEFAULT_APP_SETTINGS.maxEnergyGenerators,
+      ABSOLUTE_MAX_ENERGY_GENERATORS
     ),
   };
   return appSettings;
@@ -312,7 +325,8 @@ function escapeHtml(text) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function switchView(viewName) {
@@ -679,7 +693,8 @@ function renderEnvironmentStats(status) {
 
   document.getElementById('env-schema').textContent =
     status.schemaVersion != null ? `v${status.schemaVersion}` : '—';
-  document.getElementById('env-db-path').textContent = status.path ?? '—';
+  document.getElementById('env-db-path').textContent =
+    status.pathLabel ?? (status.connected ? 'database locale' : '—');
 }
 
 function computeChainMachineCount(steps = []) {

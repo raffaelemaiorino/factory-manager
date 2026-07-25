@@ -159,8 +159,10 @@ function seedLocales(db) {
 
 function normalizeLocale(locale) {
   if (!locale || typeof locale !== 'string') return DEFAULT_LOCALE;
-  const code = locale.trim().toLowerCase().split(/[_-]/)[0];
-  return code || DEFAULT_LOCALE;
+  const code = locale.trim().toLowerCase().split(/[_-]/)[0] || DEFAULT_LOCALE;
+  // Solo codici ISO a 2 lettere (niente path traversal via locale)
+  if (!/^[a-z]{2}$/.test(code)) return DEFAULT_LOCALE;
+  return code;
 }
 
 function getAppLocale(db) {

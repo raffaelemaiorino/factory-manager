@@ -28,6 +28,23 @@ Factory Manager is provided as-is, without warranties of accuracy, availability,
 - Italian: [`CHANGELOG.md`](CHANGELOG.md)
 - English: [`CHANGELOG.en.md`](CHANGELOG.en.md)
 
+## Build (Windows)
+
+```bash
+npm run build
+```
+
+Produces NSIS installer and portable exe under `dist/`.
+
+### Code signing (optional)
+
+Without a certificate the build is unsigned (SmartScreen may warn). To sign with Authenticode, set env vars before `npm run build`:
+
+- `CSC_LINK` — path to `.pfx` / `.p12` (or `WIN_CSC_LINK`)
+- `CSC_KEY_PASSWORD` — certificate password
+
+electron-builder picks them up automatically; `package.json` already sets SHA-256 hashing and an RFC3161 timestamp server.
+
 ## Community
 
 Join the discussion on Facebook: [Factory Manager](https://www.facebook.com/groups/factorymanager)

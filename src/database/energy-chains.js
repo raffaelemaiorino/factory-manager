@@ -794,10 +794,64 @@ function exportEnergyChain(db, sourceId, getItemById, { appVersion = null } = {}
   };
 }
 
-const ENERGY_SCHEMA_FORMATS = new Set([
-  'factory-manager-energy-schema',
-  'satisfactory-manager-energy-schema',
-]);
+const { sanitizeEnergyImportPayload, throwImportIssues } = require('./schema-import-guard');
+
+function preflightEnergyImport(db, schema, getItemById) {
+  const issues = [];
+  const extractionRefs = new Set();
+  const generatorRefs = new Set();
+
+  for (const [index, extraction] of schema.extractions.entries()) {
+    extractionRefs.add(extraction.ref);
+    if (!extraction.item_slug) {
+      issues.push(`Estrazione #${index + 1}: manca item_slug`);
+      continue;
+    }
+    const item = getItemBySlug(db, extraction.item_slug, getItemById);
+    if (!item) {
+      issues.push(`Estrazione #${index + 1}: risorsa sconosciuta «${extraction.item_slug}»`);
+    }
+  }
+
+  for (const [index, generator] of schema.generators.entries()) {
+    generatorRefs.add(generator.ref);
+    const buildingSlug = String(generator.building_slug ?? '').trim();
+    const definition = getGeneratorDefinition(buildingSlug);
+    if (!definition) {
+      issues.push(`Generatore #${index + 1}: tipo non supportato «${buildingSlug || '(vuoto)'}»`);
+      continue;
+    }
+    const fuelSlug = String(generator.fuel_slug || '').trim();
+    if (fuelSlug) {
+      const exact = definition.fuelOptions?.find((option) => option.slug === fuelSlug);
+      if (!exact) {
+        issues.push(
+          `Generatore #${index + 1}: combustibile «${fuelSlug}» non valido per «${buildingSlug}»`
+        );
+      }
+    }
+  }
+
+  for (const [index, link] of schema.links.entries()) {
+    const consumerRef = String(link.consumer_generator_ref ?? '');
+    const producerRef = String(link.producer_extraction_ref ?? '');
+    if (!consumerRef || !generatorRefs.has(consumerRef)) {
+      issues.push(
+        `Collegamento #${index + 1}: consumer_generator_ref «${consumerRef || '(vuoto)'}» non trovato`
+      );
+    }
+    if (!producerRef || !extractionRefs.has(producerRef)) {
+      issues.push(
+        `Collegamento #${index + 1}: producer_extraction_ref «${producerRef || '(vuoto)'}» non trovato`
+      );
+    }
+    if (!link.item_slug) {
+      issues.push(`Collegamento #${index + 1}: manca item_slug`);
+    }
+  }
+
+  throwImportIssues(issues);
+}
 
 function importEnergyChain(db, persist, payload, getItemById) {
   ensureEnergyChainsTable(db);
@@ -805,27 +859,14 @@ function importEnergyChain(db, persist, payload, getItemById) {
   ensureEnergyGeneratorsTable(db);
   ensureEnergyGeneratorLinksTable(db);
 
-  if (!payload || typeof payload !== 'object') {
-    throw new Error('File schema non valido');
-  }
-  if (!ENERGY_SCHEMA_FORMATS.has(payload.format)) {
-    throw new Error('Formato file non riconosciuto (atteso schema energia)');
-  }
+  const safePayload = sanitizeEnergyImportPayload(payload);
+  const schema = safePayload.schema;
+  preflightEnergyImport(db, schema, getItemById);
+  const name = `${schema.name} (import)`;
 
-  const schema = payload.schema;
-  if (!schema || typeof schema !== 'object') {
-    throw new Error('Contenuto schema mancante');
-  }
-
-  const baseName = String(schema.name ?? '').trim();
-  if (!baseName) {
-    throw new Error('Il nome dello schema è obbligatorio');
-  }
-  const name = `${baseName} (import)`;
-
-  const extractions = Array.isArray(schema.extractions) ? schema.extractions : [];
-  const generators = Array.isArray(schema.generators) ? schema.generators : [];
-  const links = Array.isArray(schema.links) ? schema.links : [];
+  const extractions = schema.extractions;
+  const generators = schema.generators;
+  const links = schema.links;
 
   db.run('BEGIN');
   try {

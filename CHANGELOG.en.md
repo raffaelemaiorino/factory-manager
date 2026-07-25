@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.38.0] - 2026-07-25
+
+### Added
+- Schema import: verifies the JSON is a Factory Manager export (format + version), of the correct kind (production vs energy), and actually importable (resources, recipes, generators, fuels, and links) before writing to the database
+
+### Security
+- Import rejects unknown or cross-type files with a clear message; catalog checks run in a preflight pass without leaving partial data
+
+## [1.37.1] - 2026-07-25
+
+### Security
+- `escapeHtml` also escapes apostrophes (single-quoted HTML attributes)
+- Stronger CSP: `base-uri`, `object-src`, `frame-src`, and `frame-ancestors`
+- Export filenames: block Windows reserved device names (CON, PRN, AUX, …)
+
+## [1.37.0] - 2026-07-25
+
+### Security
+- Electron hardening: sandbox enabled; navigation and popups blocked outside the app
+- UI locale packs: only 2-letter language codes and files confined to the locales folder (no arbitrary paths)
+- Production/energy schema import: 2 MB file limit, caps on elements/strings/numbers, and sanitization before save
+- IPC: requests accepted only from the main window; UI state size limited
+- Settings: absolute cap of 10,000 for machines and generators
+- Absolute database path no longer exposed to the UI (generic “local database” label)
+- Windows build prepared for Authenticode signing via environment variables (`CSC_LINK` / `CSC_KEY_PASSWORD`)
+
 ## [1.36.0] - 2026-07-25
 
 ### Added

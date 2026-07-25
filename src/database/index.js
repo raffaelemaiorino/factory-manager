@@ -249,7 +249,7 @@ function persist() {
 
 function getDbStatus() {
   if (!db) {
-    return { connected: false, path: dbPath ?? null };
+    return { connected: false, path: null, pathLabel: null };
   }
 
   const version = queryOne('SELECT version FROM schema_version LIMIT 1');
@@ -257,7 +257,9 @@ function getDbStatus() {
 
   return {
     connected: true,
-    path: dbPath,
+    // Non esporre il path assoluto al renderer (info disclosure locale)
+    path: null,
+    pathLabel: 'database locale',
     schemaVersion: version?.version ?? 0,
     resources,
     i18n: getI18nInfo(db),

@@ -1380,10 +1380,10 @@ function exportProductionChain(db, sourceId, getItemById, { appVersion = null } 
   };
 }
 
-const PRODUCTION_SCHEMA_FORMATS = new Set([
-  'factory-manager-production-schema',
-  'satisfactory-manager-production-schema',
-]);
+const {
+  sanitizeProductionImportPayload,
+  throwImportIssues,
+} = require('./schema-import-guard');
 
 function resolveItemBySlug(db, slug, getItemById) {
   const trimmed = String(slug ?? '').trim();
@@ -1412,35 +1412,92 @@ function resolveSchemaForImport(db, itemId, stepData) {
   return match ?? schemas[0];
 }
 
+/** Verifica catalogo + collegamenti prima di scrivere nel DB. */
+function preflightProductionImport(db, schema, getItemById) {
+  const issues = [];
+  const extractionRefs = new Set();
+  const stepRefs = new Set();
+
+  for (const [index, extraction] of schema.extractions.entries()) {
+    extractionRefs.add(extraction.ref);
+    if (!extraction.item_slug) {
+      issues.push(`Estrazione #${index + 1}: manca item_slug`);
+      continue;
+    }
+    const item = resolveItemBySlug(db, extraction.item_slug, getItemById);
+    if (!item) {
+      issues.push(`Estrazione #${index + 1}: risorsa sconosciuta «${extraction.item_slug}»`);
+    }
+  }
+
+  for (const [index, step] of schema.steps.entries()) {
+    stepRefs.add(step.ref);
+    if (!step.item_slug) {
+      issues.push(`Schema risorsa #${index + 1}: manca item_slug`);
+      continue;
+    }
+    const item = resolveItemBySlug(db, step.item_slug, getItemById);
+    if (!item) {
+      issues.push(`Schema risorsa #${index + 1}: risorsa sconosciuta «${step.item_slug}»`);
+      continue;
+    }
+    const itemSchema = resolveSchemaForImport(db, item.id, step);
+    if (!itemSchema) {
+      issues.push(`Schema risorsa #${index + 1}: nessuna ricetta per «${item.name || step.item_slug}»`);
+    }
+  }
+
+  for (const [index, link] of schema.links.entries()) {
+    const consumerRef = String(link.consumer_ref ?? '');
+    if (!consumerRef || !stepRefs.has(consumerRef)) {
+      issues.push(`Collegamento #${index + 1}: consumer_ref «${consumerRef || '(vuoto)'}» non trovato`);
+    }
+    if (!link.item_slug) {
+      issues.push(`Collegamento #${index + 1}: manca item_slug`);
+    }
+    const hasProducerStep = Boolean(link.producer_step_ref);
+    const hasProducerExtraction = Boolean(link.producer_extraction_ref);
+    if (!hasProducerStep && !hasProducerExtraction) {
+      issues.push(`Collegamento #${index + 1}: manca produttore (step o estrazione)`);
+      continue;
+    }
+    if (hasProducerStep && !stepRefs.has(String(link.producer_step_ref))) {
+      issues.push(
+        `Collegamento #${index + 1}: producer_step_ref «${link.producer_step_ref}» non trovato`
+      );
+    }
+    if (hasProducerExtraction && !extractionRefs.has(String(link.producer_extraction_ref))) {
+      issues.push(
+        `Collegamento #${index + 1}: producer_extraction_ref «${link.producer_extraction_ref}» non trovato`
+      );
+    }
+  }
+
+  if (schema.target_item_slug) {
+    const target = resolveItemBySlug(db, schema.target_item_slug, getItemById);
+    if (!target) {
+      issues.push(`Obiettivo: risorsa sconosciuta «${schema.target_item_slug}»`);
+    }
+  }
+
+  throwImportIssues(issues);
+}
+
 function importProductionChain(db, persist, payload, getItemById) {
   ensureProductionChainStepsTable(db);
   ensureExtractionsTable(db);
   ensureStepLinksTable(db);
   ensureProductionGroupMarksTable(db);
 
-  if (!payload || typeof payload !== 'object') {
-    throw new Error('File schema non valido');
-  }
-  if (!PRODUCTION_SCHEMA_FORMATS.has(payload.format)) {
-    throw new Error('Formato file non riconosciuto (atteso schema di produzione)');
-  }
+  const safePayload = sanitizeProductionImportPayload(payload);
+  const schema = safePayload.schema;
+  preflightProductionImport(db, schema, getItemById);
+  const name = `${schema.name} (import)`;
 
-  const schema = payload.schema;
-  if (!schema || typeof schema !== 'object') {
-    throw new Error('Contenuto schema mancante');
-  }
-
-  const baseName = String(schema.name ?? '').trim();
-  if (!baseName) {
-    throw new Error('Il nome dello schema è obbligatorio');
-  }
-  const name = `${baseName} (import)`;
-
-  const extractions = Array.isArray(schema.extractions) ? schema.extractions : [];
-  const steps = Array.isArray(schema.steps) ? schema.steps : [];
-  const links = Array.isArray(schema.links) ? schema.links : [];
-  const groupMarks =
-    schema.group_marks && typeof schema.group_marks === 'object' ? schema.group_marks : {};
+  const extractions = schema.extractions;
+  const steps = schema.steps;
+  const links = schema.links;
+  const groupMarks = schema.group_marks;
 
   db.run('BEGIN');
   try {

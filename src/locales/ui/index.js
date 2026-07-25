@@ -8,24 +8,52 @@ const path = require('path');
 const { interpolate, collectStringKeys } = require('./format');
 
 const DEFAULT_LOCALE = 'it';
+const LOCALE_CODE_RE = /^[a-z]{2}$/;
 const cache = new Map();
+const UI_LOCALES_ROOT = path.resolve(__dirname);
+
+function isSafeLocaleCode(code) {
+  return typeof code === 'string' && LOCALE_CODE_RE.test(code);
+}
 
 function normalizeLocale(locale) {
   if (!locale || typeof locale !== 'string') return DEFAULT_LOCALE;
-  return locale.trim().toLowerCase().split(/[_-]/)[0] || DEFAULT_LOCALE;
+  const code = locale.trim().toLowerCase().split(/[_-]/)[0] || DEFAULT_LOCALE;
+  return isSafeLocaleCode(code) ? code : DEFAULT_LOCALE;
+}
+
+/** Path confinato sotto la cartella UI; null se fuori o codice non valido. */
+function resolveUiLocaleFile(code) {
+  if (!isSafeLocaleCode(code)) return null;
+  const filePath = path.resolve(UI_LOCALES_ROOT, `${code}.json`);
+  const relative = path.relative(UI_LOCALES_ROOT, filePath);
+  if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) {
+    return null;
+  }
+  return filePath;
 }
 
 function loadUiMessages(locale = DEFAULT_LOCALE) {
   const code = normalizeLocale(locale);
   if (cache.has(code)) return cache.get(code);
 
-  const filePath = path.join(__dirname, `${code}.json`);
-  const enPath = path.join(__dirname, 'en.json');
-  const fallbackPath = path.join(__dirname, `${DEFAULT_LOCALE}.json`);
+  const candidates = [
+    resolveUiLocaleFile(code),
+    code !== 'en' ? resolveUiLocaleFile('en') : null,
+    resolveUiLocaleFile(DEFAULT_LOCALE),
+  ].filter(Boolean);
 
-  let target = fallbackPath;
-  if (fs.existsSync(filePath)) target = filePath;
-  else if (code !== 'en' && fs.existsSync(enPath)) target = enPath;
+  let target = null;
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      target = candidate;
+      break;
+    }
+  }
+
+  if (!target) {
+    throw new Error('Pacchetti UI locale mancanti');
+  }
 
   const messages = JSON.parse(fs.readFileSync(target, 'utf8'));
   cache.set(code, messages);
@@ -38,7 +66,8 @@ function clearUiMessagesCache() {
 
 function hasUiLocalePack(locale) {
   const code = normalizeLocale(locale);
-  return fs.existsSync(path.join(__dirname, `${code}.json`));
+  const filePath = resolveUiLocaleFile(code);
+  return Boolean(filePath && fs.existsSync(filePath));
 }
 
 function listUiLocalePacks() {
@@ -46,7 +75,7 @@ function listUiLocalePacks() {
     .readdirSync(__dirname)
     .filter((name) => name.endsWith('.json') && name !== 'package.json')
     .map((name) => name.replace(/\.json$/, ''))
-    .filter((code) => code !== '_meta');
+    .filter((code) => code !== '_meta' && isSafeLocaleCode(code));
 }
 
 function getByPath(obj, keyPath) {
@@ -90,6 +119,8 @@ module.exports = {
   clearUiMessagesCache,
   hasUiLocalePack,
   listUiLocalePacks,
+  normalizeLocale,
+  isSafeLocaleCode,
   t,
   interpolate,
   collectStringKeys,
