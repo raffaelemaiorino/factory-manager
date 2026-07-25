@@ -285,6 +285,13 @@
   "settings": {
     "title": "Inställningar",
     "subtitle": "Lokal datahantering och återställning av standardkatalog.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "Basdata",
     "baseDataLead": "Katalog, byggnader och recept följer med appen. På en ny dator fylls de automatiskt vid första start.",
     "statItems": "Resurser i databasen",

@@ -122,6 +122,8 @@ const {
   getAppLocale,
   setAppLocale,
   listAvailableLocales,
+  getAppSettings,
+  setAppSettings,
 } = require('../src/database');
 const { loadUiMessages } = require('../src/locales/ui');
 
@@ -292,6 +294,8 @@ ipcMain.handle('i18n:get-locale', () => getAppLocale());
 ipcMain.handle('i18n:set-locale', (_event, locale) => setAppLocale(locale));
 ipcMain.handle('i18n:list-locales', () => listAvailableLocales());
 ipcMain.handle('i18n:ui-messages', (_event, locale) => loadUiMessages(locale));
+ipcMain.handle('settings:get', () => getAppSettings());
+ipcMain.handle('settings:set', (_event, partial) => setAppSettings(partial));
 function sanitizeExportFileName(name) {
   const cleaned = String(name ?? 'schema')
     .trim()

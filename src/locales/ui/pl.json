@@ -281,6 +281,13 @@
   "settings": {
     "title": "Ustawienia",
     "subtitle": "Zarządzanie danymi lokalnymi i przywracanie domyślnego katalogu.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "Dane bazowe",
     "baseDataLead": "Katalog, budynki i przepisy są w aplikacji. Na nowym PC ładują się przy pierwszym uruchomieniu.",
     "statItems": "Zasoby w bazie",

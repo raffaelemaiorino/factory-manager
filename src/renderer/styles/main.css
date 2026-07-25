@@ -3023,6 +3023,31 @@ select.production-config-input option:checked {
   gap: 1.5rem;
 }
 
+.settings-action--end {
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.settings-config-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.settings-config-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.settings-config-field label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
 .settings-action h4 {
   font-size: 0.95rem;
   margin-bottom: 0.35rem;

@@ -281,6 +281,13 @@
   "settings": {
     "title": "Ajustes",
     "subtitle": "Gestión de datos locales y restauración del catálogo predeterminado.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "Datos base",
     "baseDataLead": "Catálogo, edificios y recetas vienen incluidos. En un PC nuevo se cargan al primer inicio.",
     "statItems": "Recursos en la base de datos",

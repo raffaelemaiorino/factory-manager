@@ -285,6 +285,13 @@
   "settings": {
     "title": "Innstillinger",
     "subtitle": "Lokal datahåndtering og gjenoppretting av standardkatalog.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "Basedata",
     "baseDataLead": "Katalog, bygninger og oppskrifter følger med appen. På ny PC fylles de automatisk ved første oppstart.",
     "statItems": "Ressurser i databasen",

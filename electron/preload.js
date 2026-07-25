@@ -18,6 +18,8 @@ contextBridge.exposeInMainWorld('satisfactory', {
   setAppLocale: (locale) => ipcRenderer.invoke('i18n:set-locale', locale),
   listLocales: () => ipcRenderer.invoke('i18n:list-locales'),
   getUiMessages: (locale) => ipcRenderer.invoke('i18n:ui-messages', locale),
+  getAppSettings: () => ipcRenderer.invoke('settings:get'),
+  setAppSettings: (partial) => ipcRenderer.invoke('settings:set', partial),
   getProductionChains: () => ipcRenderer.invoke('production:all'),
   createProductionChain: (data) => ipcRenderer.invoke('production:create', data),
   updateProductionChain: (id, data) => ipcRenderer.invoke('production:update', id, data),

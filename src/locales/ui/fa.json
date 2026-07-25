@@ -281,6 +281,13 @@
   "settings": {
     "title": "تنظیمات",
     "subtitle": "مدیریت داده محلی و بازیابی فهرست پیش‌فرض منابع.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "داده پایه",
     "baseDataLead": "فهرست اقلام، ساختمان‌ها و دستور تولید با برنامه همراه است. در PC جدید در اولین اجرا خودکار بارگذاری می‌شود.",
     "statItems": "منابع در پایگاه داده",

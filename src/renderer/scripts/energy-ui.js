@@ -195,7 +195,11 @@
 
   function getMachinesSliderMax(generator) {
     const fromValue = Math.round(Number(generator.machine_count) || 1);
-    return Math.max(window.EnergyScale.ENERGY_MACHINE_SLIDER_MAX, fromValue, 1);
+    const configured =
+      typeof window.getConfiguredMaxEnergyGenerators === 'function'
+        ? window.getConfiguredMaxEnergyGenerators()
+        : window.EnergyScale?.ENERGY_MACHINE_SLIDER_MAX ?? 600;
+    return Math.max(configured, fromValue, 1);
   }
 
   function productionUi() {

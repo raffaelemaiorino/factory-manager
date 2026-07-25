@@ -77,6 +77,7 @@ const {
   listLocales,
   listAvailableLocales,
 } = require('./i18n');
+const { getAppSettings, setAppSettings } = require('./app-settings');
 
 const DB_FILE_NAME = 'factory-manager.db';
 const LEGACY_DB_FILE_NAMES = ['satisfactory.db'];
@@ -595,4 +596,6 @@ module.exports = {
   setAppLocale: (locale) => setAppLocale(getDb(), persist, locale),
   listLocales: () => listLocales(getDb()),
   listAvailableLocales: () => listAvailableLocales(getDb()),
+  getAppSettings: () => getAppSettings(getDb()),
+  setAppSettings: (partial) => setAppSettings(getDb(), persist, partial),
 };

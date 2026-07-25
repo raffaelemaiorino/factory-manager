@@ -33,6 +33,53 @@ const PURITY_OPTIONS = [
 let activeLocale = 'it';
 let availableLocales = [];
 
+const DEFAULT_APP_SETTINGS = {
+  maxMachines: 100,
+  maxEnergyGenerators: 600,
+};
+
+let appSettings = { ...DEFAULT_APP_SETTINGS };
+
+function getConfiguredMaxMachines() {
+  return Math.max(1, Math.round(Number(appSettings.maxMachines) || DEFAULT_APP_SETTINGS.maxMachines));
+}
+
+function getConfiguredMaxEnergyGenerators() {
+  return Math.max(
+    1,
+    Math.round(Number(appSettings.maxEnergyGenerators) || DEFAULT_APP_SETTINGS.maxEnergyGenerators)
+  );
+}
+
+function applyAppSettings(settings) {
+  appSettings = {
+    maxMachines: Math.max(
+      1,
+      Math.round(Number(settings?.maxMachines) || DEFAULT_APP_SETTINGS.maxMachines)
+    ),
+    maxEnergyGenerators: Math.max(
+      1,
+      Math.round(
+        Number(settings?.maxEnergyGenerators) || DEFAULT_APP_SETTINGS.maxEnergyGenerators
+      )
+    ),
+  };
+  return appSettings;
+}
+
+async function initAppSettings() {
+  try {
+    const settings = await window.satisfactory.getAppSettings();
+    applyAppSettings(settings);
+  } catch (err) {
+    console.error('App settings init error:', err);
+    applyAppSettings(DEFAULT_APP_SETTINGS);
+  }
+}
+
+window.getConfiguredMaxMachines = getConfiguredMaxMachines;
+window.getConfiguredMaxEnergyGenerators = getConfiguredMaxEnergyGenerators;
+
 function formatUiResultsCount(n) {
   const count = formatDisplayInteger(n);
   return n === 1 ? t('common.resultsOne', { count }) : t('common.resultsMany', { count });
@@ -1578,7 +1625,7 @@ function getProductionOutputSliderStep(step) {
 
 function getMachinesSliderMax(step, currentCount = step.machine_count) {
   const fromValue = Math.round(Number(currentCount) || 1);
-  return Math.max(window.ProductionScale.MACHINE_SLIDER_MAX, fromValue, 1);
+  return Math.max(getConfiguredMaxMachines(), fromValue, 1);
 }
 
 function getNodesSliderMax(nodeCount = 1, extractionOrKind = null) {
@@ -3546,7 +3593,7 @@ function getConfigInputNudgeMax(input, field, candidateValue) {
   }
   if (field === 'energy-machines') {
     const fromValue = Math.round(Number(candidateValue) || 1);
-    return Math.max(window.ProductionScale?.MACHINE_SLIDER_MAX ?? 100, fromValue, 1);
+    return Math.max(getConfiguredMaxEnergyGenerators(), fromValue, 1);
   }
   const max = Number(input.max);
   return Number.isFinite(max) ? max : null;
@@ -7015,17 +7062,57 @@ function formatDateTime(iso) {
   }
 }
 
-function showSettingsFeedback(message, type = 'success') {
-  const el = document.getElementById('settings-feedback');
+function showSettingsFeedback(message, type = 'success', targetId = 'settings-feedback') {
+  const el = document.getElementById(targetId);
+  if (!el) return;
   el.textContent = message;
   el.className = `settings-feedback settings-feedback--${type}`;
   el.classList.remove('hidden');
 }
 
-function hideSettingsFeedback() {
-  const el = document.getElementById('settings-feedback');
+function hideSettingsFeedback(targetId = 'settings-feedback') {
+  const el = document.getElementById(targetId);
+  if (!el) return;
   el.textContent = '';
   el.classList.add('hidden');
+}
+
+function renderAppSettingsForm(settings = appSettings) {
+  const maxMachinesInput = document.getElementById('settings-max-machines');
+  const maxEnergyInput = document.getElementById('settings-max-energy-generators');
+  if (maxMachinesInput) maxMachinesInput.value = String(settings.maxMachines);
+  if (maxEnergyInput) maxEnergyInput.value = String(settings.maxEnergyGenerators);
+}
+
+function readAppSettingsForm() {
+  const maxMachinesInput = document.getElementById('settings-max-machines');
+  const maxEnergyInput = document.getElementById('settings-max-energy-generators');
+  return {
+    maxMachines: Math.round(Number(maxMachinesInput?.value) || 0),
+    maxEnergyGenerators: Math.round(Number(maxEnergyInput?.value) || 0),
+  };
+}
+
+async function saveAppSettingsFromForm() {
+  const btn = document.getElementById('btn-save-app-settings');
+  hideSettingsFeedback('settings-config-feedback');
+  if (btn) btn.disabled = true;
+
+  try {
+    const saved = await window.satisfactory.setAppSettings(readAppSettingsForm());
+    applyAppSettings(saved);
+    renderAppSettingsForm(appSettings);
+    showSettingsFeedback(t('settings.configSaved'), 'success', 'settings-config-feedback');
+  } catch (err) {
+    showSettingsFeedback(
+      err.message || t('settings.errorSaveConfig'),
+      'error',
+      'settings-config-feedback'
+    );
+    console.error('Save app settings error:', err);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 function formatSettingsCountValue(value) {
@@ -7055,12 +7142,16 @@ function renderSettingsStats(info) {
 
 async function loadSettings() {
   hideSettingsFeedback();
+  hideSettingsFeedback('settings-config-feedback');
 
   try {
-    const [info, status] = await Promise.all([
+    const [info, status, settings] = await Promise.all([
       window.satisfactory.getResourcesDataInfo(),
       window.satisfactory.getDbStatus(),
+      window.satisfactory.getAppSettings(),
     ]);
+    applyAppSettings(settings);
+    renderAppSettingsForm(appSettings);
     renderSettingsStats(info);
     renderEnvironmentStats(status);
   } catch (err) {
@@ -7145,6 +7236,7 @@ async function restoreDefaultResources() {
 
 function setupSettings() {
   document.getElementById('btn-restore-resources').addEventListener('click', restoreDefaultResources);
+  document.getElementById('btn-save-app-settings')?.addEventListener('click', saveAppSettingsFromForm);
 }
 
 function setupNumberInputWheelBlock() {
@@ -7188,6 +7280,7 @@ function setupSchemaFilter() {
 async function boot() {
   await initProductionUiStateStore();
   await initLocaleSelector();
+  await initAppSettings();
   setupLocaleSelector();
   setupNavigation();
   setupLegalInfoModal();

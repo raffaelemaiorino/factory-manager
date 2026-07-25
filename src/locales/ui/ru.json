@@ -281,6 +281,13 @@
   "settings": {
     "title": "Настройки",
     "subtitle": "Локальные данные и восстановление каталога по умолчанию.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "Базовые данные",
     "baseDataLead": "Каталог, здания и рецепты встроены в приложение. На новом ПК загружаются при первом запуске.",
     "statItems": "Ресурсы в базе",

@@ -285,6 +285,13 @@
   "settings": {
     "title": "Beállítások",
     "subtitle": "Helyi adatok és az alap katalógus visszaállítása.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "Alapadatok",
     "baseDataLead": "A tárgykatalógus, épületek és receptek az appban vannak. Új PC-n az első indításkor automatikusan feltöltődnek.",
     "statItems": "Erőforrások az adatbázisban",

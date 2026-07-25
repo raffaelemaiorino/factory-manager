@@ -285,6 +285,13 @@
   "settings": {
     "title": "Ayarlar",
     "subtitle": "Yerel veri yönetimi ve varsayılan katalog geri yükleme.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "Temel veriler",
     "baseDataLead": "Öğe kataloğu, binalar ve üretim tarifleri uygulamayla gelir. Yeni PC'de ilk açılışta otomatik dolar.",
     "statItems": "Veritabanındaki kaynaklar",

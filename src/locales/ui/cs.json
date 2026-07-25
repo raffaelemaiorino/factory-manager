@@ -281,6 +281,13 @@
   "settings": {
     "title": "Nastavení",
     "subtitle": "Správa lokálních dat a obnovení výchozího katalogu.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "Základní data",
     "baseDataLead": "Katalog, budovy a recepty jsou součástí aplikace. Na novém PC se načtou při prvním spuštění.",
     "statItems": "Suroviny v databázi",

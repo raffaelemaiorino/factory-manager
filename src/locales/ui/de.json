@@ -281,6 +281,13 @@
   "settings": {
     "title": "Einstellungen",
     "subtitle": "Lokale Datenverwaltung und Wiederherstellung des Standardkatalogs.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "Basisdaten",
     "baseDataLead": "Gegenstandskatalog, Gebäude und Produktionsrezepte sind in der App enthalten. Auf einem neuen PC werden sie beim ersten Start automatisch geladen.",
     "statItems": "Ressourcen in der Datenbank",

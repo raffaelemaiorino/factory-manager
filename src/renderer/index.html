@@ -427,8 +427,52 @@
             </div>
             <h2 data-i18n="settings.title">Impostazioni</h2>
             <p class="page-subtitle" data-i18n="settings.subtitle">
-              Gestione dati locali e ripristino del catalogo risorse predefinito.
+              Parametri personalizzabili, gestione dati locali e ripristino del catalogo risorse.
             </p>
+          </section>
+
+          <section class="card settings-panel">
+            <h3 data-i18n="settings.configTitle">Configurazione</h3>
+            <p class="settings-lead" data-i18n="settings.configLead">
+              Limiti personalizzabili per gli slider di macchine e generatori negli schemi.
+            </p>
+
+            <div class="settings-config-fields">
+              <div class="settings-config-field">
+                <label for="settings-max-machines" data-i18n="settings.maxMachines">
+                  Numero massimo Macchine
+                </label>
+                <input
+                  type="number"
+                  id="settings-max-machines"
+                  class="production-config-input"
+                  min="1"
+                  step="1"
+                  value="100"
+                />
+              </div>
+              <div class="settings-config-field">
+                <label for="settings-max-energy-generators" data-i18n="settings.maxEnergyGenerators">
+                  Numero massimo Generatori Energia
+                </label>
+                <input
+                  type="number"
+                  id="settings-max-energy-generators"
+                  class="production-config-input"
+                  min="1"
+                  step="1"
+                  value="600"
+                />
+              </div>
+            </div>
+
+            <div class="settings-action settings-action--end">
+              <button type="button" class="btn btn-primary" id="btn-save-app-settings" data-i18n="settings.saveConfig">
+                Salva configurazione
+              </button>
+            </div>
+
+            <p class="settings-feedback hidden" id="settings-config-feedback" role="status"></p>
           </section>
 
           <section class="card settings-panel">

@@ -281,6 +281,13 @@
   "settings": {
     "title": "הגדרות",
     "subtitle": "ניהול נתונים מקומי ושחזור קטלוג ברירת המחדל.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "נתוני בסיס",
     "baseDataLead": "קטלוג הפריטים, המבנים ומתכוני הייצור מגיעים עם האפליקציה. במחשב חדש הם נטענים אוטומטית בהפעלה הראשונה.",
     "statItems": "משאבים במסד הנתונים",

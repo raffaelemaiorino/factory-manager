@@ -281,6 +281,13 @@
   "settings": {
     "title": "設定",
     "subtitle": "ローカルデータ管理と既定カタログの復元。",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "基本データ",
     "baseDataLead": "カタログ、建物、レシピはアプリ同梱です。新しい PC では初回起動時に自動投入されます。",
     "statItems": "DB 内リソース",

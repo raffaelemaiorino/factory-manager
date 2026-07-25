@@ -281,6 +281,13 @@
   "settings": {
     "title": "الإعدادات",
     "subtitle": "إدارة البيانات المحلية واستعادة فهرس الموارد الافتراضي.",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "البيانات الأساسية",
     "baseDataLead": "فهرس العناصر والمباني ووصفات الإنتاج مضمّنة في التطبيق. على جهاز جديد تُحمَّل تلقائياً عند أول تشغيل.",
     "statItems": "موارد في قاعدة البيانات",

@@ -281,6 +281,13 @@
   "settings": {
     "title": "设置",
     "subtitle": "本地数据管理与恢复默认资源目录。",
+    "configTitle": "Configuration",
+    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "maxMachines": "Maximum machine count",
+    "maxEnergyGenerators": "Maximum energy generators",
+    "saveConfig": "Save configuration",
+    "configSaved": "Configuration saved.",
+    "errorSaveConfig": "Error saving configuration.",
     "baseData": "基础数据",
     "baseDataLead": "物品目录、建筑与生产配方内置于应用。在新电脑上首次启动时会自动填充。",
     "statItems": "数据库中的资源",

@@ -7,6 +7,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.36.0] - 2026-07-25
+
+### Added
+- Impostazioni → Configurazione: limiti personalizzabili per numero massimo macchine (default 100) e generatori energia (default 600), salvati nel database locale
+
 ## [1.35.1] - 2026-07-25
 
 ### Fixed
