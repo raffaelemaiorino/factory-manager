@@ -38,7 +38,8 @@ function normalizeExtractorSlug(slug, item) {
   const kind = getExtractionKindForItem(item);
   if (kind === 'oil') return 'oil-pump';
   if (kind === 'water') return 'water-pump';
-  return MINER_BASE_RATES[slug] ? slug : 'miner-mk1';
+  const key = String(slug ?? '');
+  return Object.prototype.hasOwnProperty.call(MINER_BASE_RATES, key) ? key : 'miner-mk1';
 }
 
 function normalizePurity(purity, item) {
@@ -46,10 +47,12 @@ function normalizePurity(purity, item) {
   return PURITY_VALUES.includes(purity) ? purity : 'normal';
 }
 
+const NODE_COUNT_MAX = 500;
+
 function normalizeNodeCount(nodeCount) {
   const value = Math.round(Number(nodeCount));
   if (!Number.isFinite(value) || value < 1) return 1;
-  return value;
+  return Math.min(NODE_COUNT_MAX, value);
 }
 
 function getBaseExtractionPerNode(extractorSlug, purity, item = null) {
@@ -65,7 +68,9 @@ function getBaseExtractionPerNode(extractorSlug, purity, item = null) {
     return WATER_PUMP_BASE_RATE;
   }
 
-  return MINER_BASE_RATES[slug]?.[purityValue] ?? 0;
+  return Object.prototype.hasOwnProperty.call(MINER_BASE_RATES, slug)
+    ? MINER_BASE_RATES[slug]?.[purityValue] ?? 0
+    : 0;
 }
 
 function computeMinExtractionOutput(basePerNode, nodeCount) {

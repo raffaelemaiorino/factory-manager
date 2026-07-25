@@ -34,7 +34,7 @@ Factory Manager is provided as-is, without warranties of accuracy, availability,
 npm run build
 ```
 
-Produces NSIS installer and portable exe under `dist/`.
+Produces NSIS installer and portable exe under `dist/` (or `dist-build/` if configured).
 
 ### Code signing (optional)
 
@@ -43,7 +43,7 @@ Without a certificate the build is unsigned (SmartScreen may warn). To sign with
 - `CSC_LINK` — path to `.pfx` / `.p12` (or `WIN_CSC_LINK`)
 - `CSC_KEY_PASSWORD` — certificate password
 
-electron-builder picks them up automatically; `package.json` already sets SHA-256 hashing and an RFC3161 timestamp server.
+electron-builder picks them up automatically.
 
 ## Community
 

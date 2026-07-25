@@ -1,6 +1,5 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
-const { pathToFileURL } = require('url');
 const {
   readFileSync,
   writeFileSync,
@@ -13,10 +12,7 @@ const {
   loadProductionUiState,
   saveProductionUiState,
 } = require('./production-ui-state-store');
-const {
-  assertSchemaFileSize,
-  MAX_UI_STATE_BYTES,
-} = require('../src/database/schema-import-guard');
+const { assertSchemaFileSize } = require('../src/database/schema-import-guard');
 
 const { version: appVersion } = JSON.parse(
   readFileSync(path.join(__dirname, '../package.json'), 'utf8')
@@ -135,43 +131,6 @@ const { loadUiMessages } = require('../src/locales/ui');
 let mainWindow;
 let userDataPath;
 
-const APP_INDEX_HTML = path.join(__dirname, '../src/renderer/index.html');
-
-function assertFromMainWindow(event) {
-  if (!mainWindow || mainWindow.isDestroyed()) {
-    throw new Error('Finestra principale non disponibile');
-  }
-  if (event.sender !== mainWindow.webContents) {
-    throw new Error('Richiesta IPC non autorizzata');
-  }
-}
-
-function withMainWindow(handler) {
-  return (event, ...args) => {
-    assertFromMainWindow(event);
-    return handler(event, ...args);
-  };
-}
-
-function hardenWebContents(contents, { allowAppIndex = false } = {}) {
-  contents.setWindowOpenHandler(() => ({ action: 'deny' }));
-  const allowedIndexUrl = pathToFileURL(APP_INDEX_HTML).href.toLowerCase();
-  contents.on('will-navigate', (event, url) => {
-    if (!allowAppIndex) {
-      event.preventDefault();
-      return;
-    }
-    try {
-      const target = String(url).split('#')[0].split('?')[0].toLowerCase();
-      if (target !== allowedIndexUrl) {
-        event.preventDefault();
-      }
-    } catch {
-      event.preventDefault();
-    }
-  });
-}
-
 function createSplashWindow() {
   const splash = new BrowserWindow({
     width: 440,
@@ -188,11 +147,8 @@ function createSplashWindow() {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: true,
     },
   });
-
-  hardenWebContents(splash.webContents, { allowAppIndex: false });
 
   const html = `<!DOCTYPE html>
 <html lang="it">
@@ -247,12 +203,18 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: true,
     },
   });
 
-  hardenWebContents(mainWindow.webContents, { allowAppIndex: true });
-  mainWindow.loadFile(APP_INDEX_HTML);
+  mainWindow.loadFile(path.join(__dirname, '../src/renderer/index.html'));
+
+  mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    // Solo navigazione locale (file://); blocca http(s) e altri schemi
+    if (!String(url).startsWith('file:')) {
+      event.preventDefault();
+    }
+  });
 
   const reveal = () => {
     if (!mainWindow || mainWindow.isDestroyed() || mainWindow.isVisible()) return;
@@ -313,78 +275,43 @@ app.on('window-all-closed', () => {
   }
 });
 
-ipcMain.handle('app:info', withMainWindow(() => ({
+ipcMain.handle('app:info', () => ({
   electron: process.versions.electron,
   node: process.versions.node,
   version: appVersion,
-})));
+}));
 
 ipcMain.on('production-ui-state:load', (event) => {
-  try {
-    assertFromMainWindow(event);
-    event.returnValue = loadProductionUiState(userDataPath);
-  } catch {
-    event.returnValue = {};
-  }
+  event.returnValue = loadProductionUiState(userDataPath);
 });
 
 ipcMain.on('production-ui-state:save', (event, data) => {
-  try {
-    assertFromMainWindow(event);
-    if (!data || typeof data !== 'object' || Array.isArray(data)) {
-      event.returnValue = false;
-      return;
-    }
-    let serialized;
-    try {
-      serialized = JSON.stringify(data);
-    } catch {
-      event.returnValue = false;
-      return;
-    }
-    if (serialized.length > MAX_UI_STATE_BYTES) {
-      event.returnValue = false;
-      return;
-    }
-    saveProductionUiState(userDataPath, data);
-    event.returnValue = true;
-  } catch {
-    event.returnValue = false;
-  }
+  saveProductionUiState(userDataPath, data);
+  event.returnValue = true;
 });
-ipcMain.handle('db:status', withMainWindow(() => getDbStatus()));
-ipcMain.handle('resources:all', withMainWindow(() => getResourcesGrouped()));
-ipcMain.handle('resources:categories', withMainWindow(() => getResourceCategories()));
-ipcMain.handle('resources:search', withMainWindow((_event, query) => findResources(query)));
-ipcMain.handle('resources:get', withMainWindow((_event, id) => getResourceById(id)));
-ipcMain.handle('resources:detail', withMainWindow((_event, id) => getResourceDetail(id)));
-ipcMain.handle(
-  'resources:update',
-  withMainWindow((_event, id, data) => saveResource(id, data))
-);
-ipcMain.handle(
-  'db:restore-default-resources',
-  withMainWindow(() => restoreDefaultResources())
-);
-ipcMain.handle('db:resources-info', withMainWindow(() => getResourcesDataInfo()));
-ipcMain.handle('i18n:info', withMainWindow(() => getI18nInfo()));
-ipcMain.handle('i18n:get-locale', withMainWindow(() => getAppLocale()));
-ipcMain.handle('i18n:set-locale', withMainWindow((_event, locale) => setAppLocale(locale)));
-ipcMain.handle('i18n:list-locales', withMainWindow(() => listAvailableLocales()));
-ipcMain.handle('i18n:ui-messages', withMainWindow((_event, locale) => loadUiMessages(locale)));
-ipcMain.handle('settings:get', withMainWindow(() => getAppSettings()));
-ipcMain.handle('settings:set', withMainWindow((_event, partial) => setAppSettings(partial)));
+ipcMain.handle('db:status', () => getDbStatus());
+ipcMain.handle('resources:all', () => getResourcesGrouped());
+ipcMain.handle('resources:categories', () => getResourceCategories());
+ipcMain.handle('resources:search', (_event, query) => findResources(query));
+ipcMain.handle('resources:get', (_event, id) => getResourceById(id));
+ipcMain.handle('resources:detail', (_event, id) => getResourceDetail(id));
+ipcMain.handle('resources:update', (_event, id, data) => saveResource(id, data));
+ipcMain.handle('db:restore-default-resources', () => restoreDefaultResources());
+ipcMain.handle('db:resources-info', () => getResourcesDataInfo());
+ipcMain.handle('i18n:info', () => getI18nInfo());
+ipcMain.handle('i18n:get-locale', () => getAppLocale());
+ipcMain.handle('i18n:set-locale', (_event, locale) => setAppLocale(locale));
+ipcMain.handle('i18n:list-locales', () => listAvailableLocales());
+ipcMain.handle('i18n:ui-messages', (_event, locale) => loadUiMessages(locale));
+ipcMain.handle('settings:get', () => getAppSettings());
+ipcMain.handle('settings:set', (_event, partial) => setAppSettings(partial));
 function sanitizeExportFileName(name) {
-  let cleaned = String(name ?? 'schema')
+  const cleaned = String(name ?? 'schema')
     .trim()
     .replace(/[<>:"/\\|?*\u0000-\u001f]/g, '_')
     .replace(/\s+/g, ' ')
     .replace(/[. ]+$/g, '')
     .slice(0, 120);
-  // Nomi dispositivo riservati Windows (CON, PRN, AUX, NUL, COM1…, LPT9…)
-  if (/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(\..*)?$/i.test(cleaned)) {
-    cleaned = `schema_${cleaned}`;
-  }
   return cleaned || 'schema';
 }
 
@@ -426,213 +353,137 @@ async function openSchemaJsonFile(title) {
   }
 
   const filePath = result.filePaths[0];
-  assertSchemaFileSize(filePath);
   let payload;
   try {
+    const size = statSync(filePath).size;
+    assertSchemaFileSize(size);
     payload = JSON.parse(readFileSync(filePath, 'utf8'));
   } catch (err) {
-    if (err && err.message && /troppo grande/i.test(err.message)) throw err;
+    if (err?.message && /troppo grande|max \d+ MB/i.test(err.message)) {
+      throw err;
+    }
     throw new Error('File JSON non valido');
   }
 
   return { canceled: false, filePath, payload };
 }
 
-ipcMain.handle('production:all', withMainWindow(() => getProductionChains()));
-ipcMain.handle(
-  'production:create',
-  withMainWindow((_event, data) => saveProductionChain(data))
+ipcMain.handle('production:all', () => getProductionChains());
+ipcMain.handle('production:create', (_event, data) => saveProductionChain(data));
+ipcMain.handle('production:update', (_event, id, data) => updateProductionChain(id, data));
+ipcMain.handle('production:delete', (_event, id) => removeProductionChain(id));
+ipcMain.handle('production:duplicate', (_event, id) => duplicateProductionChain(id));
+ipcMain.handle('production:export', async (_event, id) => {
+  const payload = exportProductionChain(id, { appVersion });
+  return saveSchemaJsonFile(
+    'Esporta schema di produzione',
+    `${sanitizeExportFileName(payload.schema?.name)}.json`,
+    payload
+  );
+});
+ipcMain.handle('production:import', async () => {
+  const opened = await openSchemaJsonFile('Importa schema di produzione');
+  if (opened.canceled) return { canceled: true };
+  const chain = importProductionChain(opened.payload);
+  return { canceled: false, chain, filePath: opened.filePath };
+});
+ipcMain.handle('production:get', (_event, id) => fetchProductionChainDetail(id));
+ipcMain.handle('production:add-step', (_event, chainId, data) =>
+  addProductionChainStep(chainId, data)
 );
-ipcMain.handle(
-  'production:update',
-  withMainWindow((_event, id, data) => updateProductionChain(id, data))
+ipcMain.handle('production:update-step', (_event, stepId, data) =>
+  updateProductionChainStep(stepId, data)
 );
-ipcMain.handle(
-  'production:delete',
-  withMainWindow((_event, id) => removeProductionChain(id))
+ipcMain.handle('production:set-step-marked', (_event, stepId, marked) =>
+  setProductionStepMarked(stepId, marked)
 );
-ipcMain.handle(
-  'production:duplicate',
-  withMainWindow((_event, id) => duplicateProductionChain(id))
+ipcMain.handle('production:set-group-marked', (_event, chainId, groupName, marked) =>
+  setProductionGroupMarked(chainId, groupName, marked)
 );
-ipcMain.handle(
-  'production:export',
-  withMainWindow(async (_event, id) => {
-    const payload = exportProductionChain(id, { appVersion });
-    return saveSchemaJsonFile(
-      'Esporta schema di produzione',
-      `${sanitizeExportFileName(payload.schema?.name)}.json`,
-      payload
-    );
-  })
+ipcMain.handle('production:reset-step', (_event, stepId) => resetProductionChainStep(stepId));
+ipcMain.handle('production:delete-step', (_event, stepId) => deleteProductionChainStep(stepId));
+ipcMain.handle('production:reorder-steps', (_event, chainId, stepIds) =>
+  reorderProductionChainSteps(chainId, stepIds)
 );
-ipcMain.handle(
-  'production:import',
-  withMainWindow(async () => {
-    const opened = await openSchemaJsonFile('Importa schema di produzione');
-    if (opened.canceled) return { canceled: true };
-    const chain = importProductionChain(opened.payload);
-    return { canceled: false, chain, filePath: opened.filePath };
-  })
+ipcMain.handle('production:reorder-steps-in-group', (_event, chainId, groupName, stepIds) =>
+  reorderProductionChainStepsInGroup(chainId, groupName, stepIds)
 );
-ipcMain.handle(
-  'production:get',
-  withMainWindow((_event, id) => fetchProductionChainDetail(id))
+ipcMain.handle('production:reorder-step-groups', (_event, chainId, groupKeys) =>
+  reorderProductionChainGroups(chainId, groupKeys)
 );
-ipcMain.handle(
-  'production:add-step',
-  withMainWindow((_event, chainId, data) => addProductionChainStep(chainId, data))
+ipcMain.handle('production:set-step-group', (_event, stepId, groupName) =>
+  setProductionStepGroupName(stepId, groupName)
 );
-ipcMain.handle(
-  'production:update-step',
-  withMainWindow((_event, stepId, data) => updateProductionChainStep(stepId, data))
+ipcMain.handle('production:rename-step-group', (_event, chainId, oldGroupName, newGroupName) =>
+  renameProductionStepGroup(chainId, oldGroupName, newGroupName)
 );
-ipcMain.handle(
-  'production:set-step-marked',
-  withMainWindow((_event, stepId, marked) => setProductionStepMarked(stepId, marked))
-);
-ipcMain.handle(
-  'production:set-group-marked',
-  withMainWindow((_event, chainId, groupName, marked) =>
-    setProductionGroupMarked(chainId, groupName, marked)
-  )
-);
-ipcMain.handle(
-  'production:reset-step',
-  withMainWindow((_event, stepId) => resetProductionChainStep(stepId))
-);
-ipcMain.handle(
-  'production:delete-step',
-  withMainWindow((_event, stepId) => deleteProductionChainStep(stepId))
-);
-ipcMain.handle(
-  'production:reorder-steps',
-  withMainWindow((_event, chainId, stepIds) => reorderProductionChainSteps(chainId, stepIds))
-);
-ipcMain.handle(
-  'production:reorder-steps-in-group',
-  withMainWindow((_event, chainId, groupName, stepIds) =>
-    reorderProductionChainStepsInGroup(chainId, groupName, stepIds)
-  )
-);
-ipcMain.handle(
-  'production:reorder-step-groups',
-  withMainWindow((_event, chainId, groupKeys) =>
-    reorderProductionChainGroups(chainId, groupKeys)
-  )
-);
-ipcMain.handle(
-  'production:set-step-group',
-  withMainWindow((_event, stepId, groupName) => setProductionStepGroupName(stepId, groupName))
-);
-ipcMain.handle(
-  'production:rename-step-group',
-  withMainWindow((_event, chainId, oldGroupName, newGroupName) =>
-    renameProductionStepGroup(chainId, oldGroupName, newGroupName)
-  )
-);
-ipcMain.handle(
-  'production:set-step-links',
-  withMainWindow((_event, consumerStepId, itemSlug, producerStepIds) =>
-    setProductionStepInputLinks(consumerStepId, itemSlug, producerStepIds)
-  )
+ipcMain.handle('production:set-step-links', (_event, consumerStepId, itemSlug, producerStepIds) =>
+  setProductionStepInputLinks(consumerStepId, itemSlug, producerStepIds)
 );
 ipcMain.handle(
   'production:set-extraction-links',
-  withMainWindow((_event, consumerStepId, itemSlug, producerExtractionIds) =>
+  (_event, consumerStepId, itemSlug, producerExtractionIds) =>
     setProductionStepExtractionLinks(consumerStepId, itemSlug, producerExtractionIds)
-  )
 );
-ipcMain.handle(
-  'production:add-extraction',
-  withMainWindow((_event, chainId, data) => addMineralExtraction(chainId, data))
+ipcMain.handle('production:add-extraction', (_event, chainId, data) =>
+  addMineralExtraction(chainId, data)
 );
-ipcMain.handle(
-  'production:update-extraction',
-  withMainWindow((_event, extractionId, data) => updateMineralExtraction(extractionId, data))
+ipcMain.handle('production:update-extraction', (_event, extractionId, data) =>
+  updateMineralExtraction(extractionId, data)
 );
-ipcMain.handle(
-  'production:delete-extraction',
-  withMainWindow((_event, extractionId) => deleteMineralExtraction(extractionId))
+ipcMain.handle('production:delete-extraction', (_event, extractionId) =>
+  deleteMineralExtraction(extractionId)
 );
-ipcMain.handle(
-  'production:reset-extraction',
-  withMainWindow((_event, extractionId) => resetMineralExtraction(extractionId))
+ipcMain.handle('production:reset-extraction', (_event, extractionId) =>
+  resetMineralExtraction(extractionId)
 );
-ipcMain.handle('energy:all', withMainWindow(() => getEnergyChains()));
-ipcMain.handle('energy:create', withMainWindow((_event, data) => saveEnergyChain(data)));
-ipcMain.handle(
-  'energy:update',
-  withMainWindow((_event, id, data) => updateEnergyChain(id, data))
+ipcMain.handle('energy:all', () => getEnergyChains());
+ipcMain.handle('energy:create', (_event, data) => saveEnergyChain(data));
+ipcMain.handle('energy:update', (_event, id, data) => updateEnergyChain(id, data));
+ipcMain.handle('energy:delete', (_event, id) => removeEnergyChain(id));
+ipcMain.handle('energy:export', async (_event, id) => {
+  const payload = exportEnergyChain(id, { appVersion });
+  return saveSchemaJsonFile(
+    'Esporta schema energia',
+    `${sanitizeExportFileName(payload.schema?.name)}.json`,
+    payload
+  );
+});
+ipcMain.handle('energy:import', async () => {
+  const opened = await openSchemaJsonFile('Importa schema energia');
+  if (opened.canceled) return { canceled: true };
+  const chain = importEnergyChain(opened.payload);
+  return { canceled: false, chain, filePath: opened.filePath };
+});
+ipcMain.handle('energy:get', (_event, id) => fetchEnergyChainDetail(id));
+ipcMain.handle('energy:generator-catalog', () => fetchEnergyGeneratorCatalog());
+ipcMain.handle('energy:add-extraction', (_event, chainId, data) =>
+  addEnergyChainExtraction(chainId, data)
 );
-ipcMain.handle('energy:delete', withMainWindow((_event, id) => removeEnergyChain(id)));
-ipcMain.handle(
-  'energy:export',
-  withMainWindow(async (_event, id) => {
-    const payload = exportEnergyChain(id, { appVersion });
-    return saveSchemaJsonFile(
-      'Esporta schema energia',
-      `${sanitizeExportFileName(payload.schema?.name)}.json`,
-      payload
-    );
-  })
+ipcMain.handle('energy:update-extraction', (_event, extractionId, data) =>
+  updateEnergyChainExtraction(extractionId, data)
 );
-ipcMain.handle(
-  'energy:import',
-  withMainWindow(async () => {
-    const opened = await openSchemaJsonFile('Importa schema energia');
-    if (opened.canceled) return { canceled: true };
-    const chain = importEnergyChain(opened.payload);
-    return { canceled: false, chain, filePath: opened.filePath };
-  })
+ipcMain.handle('energy:delete-extraction', (_event, extractionId) =>
+  deleteEnergyChainExtraction(extractionId)
 );
-ipcMain.handle('energy:get', withMainWindow((_event, id) => fetchEnergyChainDetail(id)));
-ipcMain.handle('energy:generator-catalog', withMainWindow(() => fetchEnergyGeneratorCatalog()));
-ipcMain.handle(
-  'energy:add-extraction',
-  withMainWindow((_event, chainId, data) => addEnergyChainExtraction(chainId, data))
+ipcMain.handle('energy:reset-extraction', (_event, extractionId) =>
+  resetEnergyChainExtraction(extractionId)
 );
-ipcMain.handle(
-  'energy:update-extraction',
-  withMainWindow((_event, extractionId, data) =>
-    updateEnergyChainExtraction(extractionId, data)
-  )
+ipcMain.handle('energy:add-generator', (_event, chainId, data) =>
+  addEnergyChainGenerator(chainId, data)
 );
-ipcMain.handle(
-  'energy:delete-extraction',
-  withMainWindow((_event, extractionId) => deleteEnergyChainExtraction(extractionId))
+ipcMain.handle('energy:update-generator', (_event, generatorId, data) =>
+  updateEnergyChainGenerator(generatorId, data)
 );
-ipcMain.handle(
-  'energy:reset-extraction',
-  withMainWindow((_event, extractionId) => resetEnergyChainExtraction(extractionId))
+ipcMain.handle('energy:delete-generator', (_event, generatorId) =>
+  deleteEnergyChainGenerator(generatorId)
 );
-ipcMain.handle(
-  'energy:add-generator',
-  withMainWindow((_event, chainId, data) => addEnergyChainGenerator(chainId, data))
+ipcMain.handle('energy:reset-generator', (_event, generatorId) =>
+  resetEnergyChainGenerator(generatorId)
 );
-ipcMain.handle(
-  'energy:update-generator',
-  withMainWindow((_event, generatorId, data) =>
-    updateEnergyChainGenerator(generatorId, data)
-  )
+ipcMain.handle('energy:set-input-links', (_event, generatorId, itemSlug, extractionIds) =>
+  setEnergyGeneratorInputLinks(generatorId, itemSlug, extractionIds)
 );
-ipcMain.handle(
-  'energy:delete-generator',
-  withMainWindow((_event, generatorId) => deleteEnergyChainGenerator(generatorId))
-);
-ipcMain.handle(
-  'energy:reset-generator',
-  withMainWindow((_event, generatorId) => resetEnergyChainGenerator(generatorId))
-);
-ipcMain.handle(
-  'energy:set-input-links',
-  withMainWindow((_event, generatorId, itemSlug, extractionIds) =>
-    setEnergyGeneratorInputLinks(generatorId, itemSlug, extractionIds)
-  )
-);
-ipcMain.handle(
-  'energy:set-production-links',
-  withMainWindow((_event, generatorId, itemSlug, producerStepIds) =>
-    setEnergyGeneratorProductionLinks(generatorId, itemSlug, producerStepIds)
-  )
+ipcMain.handle('energy:set-production-links', (_event, generatorId, itemSlug, producerStepIds) =>
+  setEnergyGeneratorProductionLinks(generatorId, itemSlug, producerStepIds)
 );

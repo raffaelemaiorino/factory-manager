@@ -15,6 +15,7 @@ const {
   DEFAULT_OVERCLOCK,
   DEFAULT_MACHINE_COUNT,
 } = require('./production-scale');
+const { prepareProductionImportSchema } = require('./schema-import-guard');
 
 const STEP_SELECT = `
   id, chain_id, name, item_id, item_schema_id, sort_order, group_name,
@@ -1380,10 +1381,10 @@ function exportProductionChain(db, sourceId, getItemById, { appVersion = null } 
   };
 }
 
-const {
-  sanitizeProductionImportPayload,
-  throwImportIssues,
-} = require('./schema-import-guard');
+const PRODUCTION_SCHEMA_FORMATS = new Set([
+  'factory-manager-production-schema',
+  'satisfactory-manager-production-schema',
+]);
 
 function resolveItemBySlug(db, slug, getItemById) {
   const trimmed = String(slug ?? '').trim();
@@ -1412,92 +1413,22 @@ function resolveSchemaForImport(db, itemId, stepData) {
   return match ?? schemas[0];
 }
 
-/** Verifica catalogo + collegamenti prima di scrivere nel DB. */
-function preflightProductionImport(db, schema, getItemById) {
-  const issues = [];
-  const extractionRefs = new Set();
-  const stepRefs = new Set();
-
-  for (const [index, extraction] of schema.extractions.entries()) {
-    extractionRefs.add(extraction.ref);
-    if (!extraction.item_slug) {
-      issues.push(`Estrazione #${index + 1}: manca item_slug`);
-      continue;
-    }
-    const item = resolveItemBySlug(db, extraction.item_slug, getItemById);
-    if (!item) {
-      issues.push(`Estrazione #${index + 1}: risorsa sconosciuta «${extraction.item_slug}»`);
-    }
-  }
-
-  for (const [index, step] of schema.steps.entries()) {
-    stepRefs.add(step.ref);
-    if (!step.item_slug) {
-      issues.push(`Schema risorsa #${index + 1}: manca item_slug`);
-      continue;
-    }
-    const item = resolveItemBySlug(db, step.item_slug, getItemById);
-    if (!item) {
-      issues.push(`Schema risorsa #${index + 1}: risorsa sconosciuta «${step.item_slug}»`);
-      continue;
-    }
-    const itemSchema = resolveSchemaForImport(db, item.id, step);
-    if (!itemSchema) {
-      issues.push(`Schema risorsa #${index + 1}: nessuna ricetta per «${item.name || step.item_slug}»`);
-    }
-  }
-
-  for (const [index, link] of schema.links.entries()) {
-    const consumerRef = String(link.consumer_ref ?? '');
-    if (!consumerRef || !stepRefs.has(consumerRef)) {
-      issues.push(`Collegamento #${index + 1}: consumer_ref «${consumerRef || '(vuoto)'}» non trovato`);
-    }
-    if (!link.item_slug) {
-      issues.push(`Collegamento #${index + 1}: manca item_slug`);
-    }
-    const hasProducerStep = Boolean(link.producer_step_ref);
-    const hasProducerExtraction = Boolean(link.producer_extraction_ref);
-    if (!hasProducerStep && !hasProducerExtraction) {
-      issues.push(`Collegamento #${index + 1}: manca produttore (step o estrazione)`);
-      continue;
-    }
-    if (hasProducerStep && !stepRefs.has(String(link.producer_step_ref))) {
-      issues.push(
-        `Collegamento #${index + 1}: producer_step_ref «${link.producer_step_ref}» non trovato`
-      );
-    }
-    if (hasProducerExtraction && !extractionRefs.has(String(link.producer_extraction_ref))) {
-      issues.push(
-        `Collegamento #${index + 1}: producer_extraction_ref «${link.producer_extraction_ref}» non trovato`
-      );
-    }
-  }
-
-  if (schema.target_item_slug) {
-    const target = resolveItemBySlug(db, schema.target_item_slug, getItemById);
-    if (!target) {
-      issues.push(`Obiettivo: risorsa sconosciuta «${schema.target_item_slug}»`);
-    }
-  }
-
-  throwImportIssues(issues);
-}
-
 function importProductionChain(db, persist, payload, getItemById) {
   ensureProductionChainStepsTable(db);
   ensureExtractionsTable(db);
   ensureStepLinksTable(db);
   ensureProductionGroupMarksTable(db);
 
-  const safePayload = sanitizeProductionImportPayload(payload);
-  const schema = safePayload.schema;
-  preflightProductionImport(db, schema, getItemById);
-  const name = `${schema.name} (import)`;
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('File schema non valido');
+  }
+  if (!PRODUCTION_SCHEMA_FORMATS.has(payload.format)) {
+    throw new Error('Formato file non riconosciuto (atteso schema di produzione)');
+  }
 
-  const extractions = schema.extractions;
-  const steps = schema.steps;
-  const links = schema.links;
-  const groupMarks = schema.group_marks;
+  const schema = prepareProductionImportSchema(payload);
+  const name = `${schema.name} (import)`;
+  const { extractions, steps, links, group_marks: groupMarks } = schema;
 
   db.run('BEGIN');
   try {
@@ -1515,7 +1446,7 @@ function importProductionChain(db, persist, payload, getItemById) {
         throw new Error(`Risorsa estrazione non trovata: ${extraction.item_slug || '(vuota)'}`);
       }
 
-      const ref = String(extraction.ref ?? `e${index + 1}`);
+      const ref = extraction.ref || `e${index + 1}`;
       db.run(
         `INSERT INTO production_chain_extractions
           (chain_id, item_id, miner_slug, purity, overclock, node_count, target_output, sort_order)
@@ -1523,12 +1454,12 @@ function importProductionChain(db, persist, payload, getItemById) {
         [
           newChainId,
           item.id,
-          extraction.miner_slug ?? 'miner-mk1',
-          extraction.purity ?? 'normal',
-          extraction.overclock ?? DEFAULT_OVERCLOCK,
-          extraction.node_count ?? 1,
-          extraction.target_output ?? null,
-          extraction.sort_order ?? index,
+          extraction.miner_slug,
+          extraction.purity,
+          extraction.overclock,
+          extraction.node_count,
+          extraction.target_output,
+          extraction.sort_order,
         ]
       );
       extractionIdByRef.set(ref, db.exec('SELECT last_insert_rowid()')[0].values[0][0]);
@@ -1546,8 +1477,8 @@ function importProductionChain(db, persist, payload, getItemById) {
         throw new Error(`Nessuna ricetta disponibile per «${item.name}»`);
       }
 
-      const ref = String(step.ref ?? `s${index + 1}`);
-      const stepName = String(step.name ?? '').trim() || `${schemaNameForStep(itemSchema)} #1`;
+      const ref = step.ref || `s${index + 1}`;
+      const stepName = step.name || `${schemaNameForStep(itemSchema)} #1`;
       const groupName = normalizeGroupName(step.group_name);
 
       db.run(
@@ -1560,14 +1491,14 @@ function importProductionChain(db, persist, payload, getItemById) {
           stepName,
           item.id,
           itemSchema.id,
-          step.sort_order ?? index,
+          step.sort_order,
           groupName,
-          step.target_output ?? null,
-          step.machine_count ?? DEFAULT_MACHINE_COUNT,
-          step.overclock ?? DEFAULT_OVERCLOCK,
-          step.somersloop_mask ?? 0,
-          step.oc_machines_linked ? 1 : 0,
-          step.marked ? 1 : 0,
+          step.target_output,
+          step.machine_count,
+          step.overclock,
+          step.somersloop_mask,
+          step.oc_machines_linked,
+          step.marked,
         ]
       );
       stepIdByRef.set(ref, db.exec('SELECT last_insert_rowid()')[0].values[0][0]);

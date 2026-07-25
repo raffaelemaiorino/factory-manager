@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.38.1] - 2026-07-25
+
+### Fixed
+- Stable security-hardening release replacing 1.38.0 (which was not usable)
+
+### Security
+- Schema import: validation and limits (max 5 MB, max 2000 items), numeric clamps, and rejection of invalid generator slugs (including `__proto__`)
+- UI locale packs: only `a-z` language codes (2–3 letters); no path traversal via `getUiMessages`
+- Main window: block `window.open` and non-`file://` navigation
+- Production UI state and settings: sanitized payloads and hard caps (machines 10,000, generators 50,000)
+- `escapeHtml` aligned (including apostrophe); tighter CSP (`object-src` / `base-uri` / `frame-src`)
+
 ## [1.38.0] - 2026-07-25
 
 ### Added

@@ -15,10 +15,12 @@ const {
   scaleGeneratorForUpdate,
   getGeneratorDefinition,
   getSupportedGenerators,
+  isSupportedGeneratorSlug,
   SUPPORTED_GENERATOR_SLUGS,
   DEFAULT_OVERCLOCK,
   DEFAULT_MACHINE_COUNT,
 } = require('./energy-scale');
+const { prepareEnergyImportSchema } = require('./schema-import-guard');
 
 const GENERATOR_SELECT = `
   id, chain_id, building_slug, fuel_slug, machine_count, overclock, target_fuel_input, target_power, sort_order, created_at
@@ -794,64 +796,10 @@ function exportEnergyChain(db, sourceId, getItemById, { appVersion = null } = {}
   };
 }
 
-const { sanitizeEnergyImportPayload, throwImportIssues } = require('./schema-import-guard');
-
-function preflightEnergyImport(db, schema, getItemById) {
-  const issues = [];
-  const extractionRefs = new Set();
-  const generatorRefs = new Set();
-
-  for (const [index, extraction] of schema.extractions.entries()) {
-    extractionRefs.add(extraction.ref);
-    if (!extraction.item_slug) {
-      issues.push(`Estrazione #${index + 1}: manca item_slug`);
-      continue;
-    }
-    const item = getItemBySlug(db, extraction.item_slug, getItemById);
-    if (!item) {
-      issues.push(`Estrazione #${index + 1}: risorsa sconosciuta «${extraction.item_slug}»`);
-    }
-  }
-
-  for (const [index, generator] of schema.generators.entries()) {
-    generatorRefs.add(generator.ref);
-    const buildingSlug = String(generator.building_slug ?? '').trim();
-    const definition = getGeneratorDefinition(buildingSlug);
-    if (!definition) {
-      issues.push(`Generatore #${index + 1}: tipo non supportato «${buildingSlug || '(vuoto)'}»`);
-      continue;
-    }
-    const fuelSlug = String(generator.fuel_slug || '').trim();
-    if (fuelSlug) {
-      const exact = definition.fuelOptions?.find((option) => option.slug === fuelSlug);
-      if (!exact) {
-        issues.push(
-          `Generatore #${index + 1}: combustibile «${fuelSlug}» non valido per «${buildingSlug}»`
-        );
-      }
-    }
-  }
-
-  for (const [index, link] of schema.links.entries()) {
-    const consumerRef = String(link.consumer_generator_ref ?? '');
-    const producerRef = String(link.producer_extraction_ref ?? '');
-    if (!consumerRef || !generatorRefs.has(consumerRef)) {
-      issues.push(
-        `Collegamento #${index + 1}: consumer_generator_ref «${consumerRef || '(vuoto)'}» non trovato`
-      );
-    }
-    if (!producerRef || !extractionRefs.has(producerRef)) {
-      issues.push(
-        `Collegamento #${index + 1}: producer_extraction_ref «${producerRef || '(vuoto)'}» non trovato`
-      );
-    }
-    if (!link.item_slug) {
-      issues.push(`Collegamento #${index + 1}: manca item_slug`);
-    }
-  }
-
-  throwImportIssues(issues);
-}
+const ENERGY_SCHEMA_FORMATS = new Set([
+  'factory-manager-energy-schema',
+  'satisfactory-manager-energy-schema',
+]);
 
 function importEnergyChain(db, persist, payload, getItemById) {
   ensureEnergyChainsTable(db);
@@ -859,14 +807,16 @@ function importEnergyChain(db, persist, payload, getItemById) {
   ensureEnergyGeneratorsTable(db);
   ensureEnergyGeneratorLinksTable(db);
 
-  const safePayload = sanitizeEnergyImportPayload(payload);
-  const schema = safePayload.schema;
-  preflightEnergyImport(db, schema, getItemById);
-  const name = `${schema.name} (import)`;
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('File schema non valido');
+  }
+  if (!ENERGY_SCHEMA_FORMATS.has(payload.format)) {
+    throw new Error('Formato file non riconosciuto (atteso schema energia)');
+  }
 
-  const extractions = schema.extractions;
-  const generators = schema.generators;
-  const links = schema.links;
+  const schema = prepareEnergyImportSchema(payload, isSupportedGeneratorSlug);
+  const name = `${schema.name} (import)`;
+  const { extractions, generators, links } = schema;
 
   db.run('BEGIN');
   try {
@@ -884,7 +834,7 @@ function importEnergyChain(db, persist, payload, getItemById) {
         throw new Error(`Risorsa estrazione non trovata: ${extraction.item_slug || '(vuota)'}`);
       }
 
-      const ref = String(extraction.ref ?? `e${index + 1}`);
+      const ref = extraction.ref || `e${index + 1}`;
       db.run(
         `INSERT INTO energy_chain_extractions
           (chain_id, item_id, miner_slug, purity, overclock, node_count, target_output, sort_order)
@@ -892,12 +842,12 @@ function importEnergyChain(db, persist, payload, getItemById) {
         [
           newChainId,
           item.id,
-          extraction.miner_slug ?? 'miner-mk1',
-          extraction.purity ?? 'normal',
-          extraction.overclock ?? DEFAULT_OVERCLOCK,
-          extraction.node_count ?? 1,
-          extraction.target_output ?? null,
-          extraction.sort_order ?? index,
+          extraction.miner_slug,
+          extraction.purity,
+          extraction.overclock,
+          extraction.node_count,
+          extraction.target_output,
+          extraction.sort_order,
         ]
       );
       extractionIdByRef.set(ref, db.exec('SELECT last_insert_rowid()')[0].values[0][0]);
@@ -905,25 +855,20 @@ function importEnergyChain(db, persist, payload, getItemById) {
 
     const generatorIdByRef = new Map();
     for (const [index, generator] of generators.entries()) {
-      const buildingSlug = String(generator.building_slug ?? '').trim();
-      if (!getGeneratorDefinition(buildingSlug)) {
-        throw new Error(`Generatore non supportato: ${buildingSlug || '(vuoto)'}`);
-      }
-
-      const ref = String(generator.ref ?? `g${index + 1}`);
+      const ref = generator.ref || `g${index + 1}`;
       db.run(
         `INSERT INTO energy_chain_generators
           (chain_id, building_slug, fuel_slug, machine_count, overclock, target_fuel_input, target_power, sort_order)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           newChainId,
-          buildingSlug,
-          generator.fuel_slug ?? 'coal',
-          generator.machine_count ?? DEFAULT_MACHINE_COUNT,
-          generator.overclock ?? DEFAULT_OVERCLOCK,
-          generator.target_fuel_input ?? null,
-          generator.target_power ?? null,
-          generator.sort_order ?? index,
+          generator.building_slug,
+          generator.fuel_slug,
+          generator.machine_count,
+          generator.overclock,
+          generator.target_fuel_input,
+          generator.target_power,
+          generator.sort_order,
         ]
       );
       generatorIdByRef.set(ref, db.exec('SELECT last_insert_rowid()')[0].values[0][0]);

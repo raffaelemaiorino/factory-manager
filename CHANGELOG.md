@@ -9,6 +9,18 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.38.1] - 2026-07-25
+
+### Fixed
+- Rilascio stabile dell’hardening sicurezza al posto della 1.38.0 (che risultava inutilizzabile)
+
+### Security
+- Import schemi: validazione e limiti (max 5 MB, max 2000 elementi), clamp numerici e rifiuto slug generatori non validi (incluso `__proto__`)
+- Lettura pacchetti UI: solo codici lingua `a-z` (2–3 lettere), niente path traversal via `getUiMessages`
+- Finestra principale: blocco `window.open` e navigazione non-`file://`
+- Stato UI produzione e impostazioni: payload sanitizzato e tetti massimi (macchine 10.000, generatori 50.000)
+- `escapeHtml` allineato (anche apostrofo); CSP rafforzata (`object-src` / `base-uri` / `frame-src`)
+
 ## [1.38.0] - 2026-07-25
 
 ### Added

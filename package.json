@@ -1,6 +1,6 @@
 {
   "name": "factory-manager",
-  "version": "1.38.0",
+  "version": "1.38.1",
   "description": "Unofficial fan-made production planner for Satisfactory. Plan chains, machines, rates and layouts locally.",
   "productName": "Factory Manager",
   "main": "electron/main.js",
@@ -50,13 +50,7 @@
           ]
         }
       ],
-      "icon": "src/renderer/assets/icon.ico",
-      "signtoolOptions": {
-        "signingHashAlgorithms": [
-          "sha256"
-        ],
-        "rfc3161TimeStampServer": "http://timestamp.digicert.com"
-      }
+      "icon": "src/renderer/assets/icon.ico"
     },
     "nsis": {
       "oneClick": false,

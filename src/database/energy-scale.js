@@ -50,9 +50,17 @@ const GENERATOR_DEFINITIONS = {
 };
 
 const SUPPORTED_GENERATOR_SLUGS = Object.keys(GENERATOR_DEFINITIONS);
+const GENERATOR_DEFINITIONS_BY_SLUG = new Map(
+  Object.entries(GENERATOR_DEFINITIONS)
+);
 
 function getGeneratorDefinition(buildingSlug) {
-  return GENERATOR_DEFINITIONS[buildingSlug] ?? null;
+  const slug = String(buildingSlug ?? '');
+  return GENERATOR_DEFINITIONS_BY_SLUG.get(slug) ?? null;
+}
+
+function isSupportedGeneratorSlug(buildingSlug) {
+  return GENERATOR_DEFINITIONS_BY_SLUG.has(String(buildingSlug ?? ''));
 }
 
 function getSupportedGenerators() {
@@ -372,6 +380,7 @@ module.exports = {
   GENERATOR_DEFINITIONS,
   SUPPORTED_GENERATOR_SLUGS,
   getGeneratorDefinition,
+  isSupportedGeneratorSlug,
   getSupportedGenerators,
   getFuelOption,
   getDefaultFuelSlug,
