@@ -69,7 +69,14 @@ const {
   deleteEnergyExtraction: removeEnergyExtraction,
   resetEnergyExtraction: resetChainEnergyExtraction,
 } = require('./energy-extraction');
-const { ensureI18n, getI18nInfo, getAppLocale, setAppLocale, listLocales, listAvailableLocales } = require('./i18n');
+const {
+  ensureI18nTables,
+  getI18nInfo,
+  getAppLocale,
+  setAppLocale,
+  listLocales,
+  listAvailableLocales,
+} = require('./i18n');
 
 const DB_FILE_NAME = 'factory-manager.db';
 const LEGACY_DB_FILE_NAMES = ['satisfactory.db'];
@@ -92,6 +99,26 @@ function ensureDbFileFromLegacy(dataDir) {
   return targetPath;
 }
 
+/** Percorso WASM/JS di sql.js: funziona in dev e in asar / asar.unpacked. */
+function resolveSqlJsAsset(file) {
+  const candidates = [
+    path.join(__dirname, '../../node_modules/sql.js/dist', file),
+  ];
+
+  if (process.resourcesPath) {
+    candidates.push(
+      path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', 'sql.js', 'dist', file),
+      path.join(process.resourcesPath, 'node_modules', 'sql.js', 'dist', file)
+    );
+  }
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) return candidate;
+  }
+
+  return candidates[0];
+}
+
 async function initDatabase(userDataPath) {
   const dataDir = path.join(userDataPath, 'data');
   fs.mkdirSync(dataDir, { recursive: true });
@@ -99,8 +126,7 @@ async function initDatabase(userDataPath) {
   dbPath = ensureDbFileFromLegacy(dataDir);
 
   SQL = await initSqlJs({
-    locateFile: (file) =>
-      path.join(__dirname, '../../node_modules/sql.js/dist', file),
+    locateFile: (file) => resolveSqlJsAsset(file),
   });
 
   if (fs.existsSync(dbPath)) {
@@ -180,7 +206,8 @@ function runMigrations() {
   ensureEnergyExtractionsTable(db);
   ensureProductionChainStepsTable(db);
   migrateDropItemsStackSizeColumn(db);
-  ensureI18n(db, null);
+  // Solo schema: il seed traduzioni avviene in ensureDefaultResources (dopo gli item).
+  ensureI18nTables(db);
 
   const versionRow = queryOne('SELECT version FROM schema_version LIMIT 1');
   if (!versionRow) {

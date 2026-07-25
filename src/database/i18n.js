@@ -509,6 +509,31 @@ function applyBundledLocalePacks(db) {
   return packs.map((pack) => applyLocalePack(db, pack));
 }
 
+function countDistinctTranslationLocales(db) {
+  return (
+    queryOne(
+      db,
+      `SELECT COUNT(DISTINCT locale) AS count FROM item_translations`
+    )?.count ?? 0
+  );
+}
+
+/**
+ * True se i pack catalogo sono già in DB alla versione corrente.
+ * Evita di riapplicare 20+ lingue a ogni avvio (bloccava la UI su PC lenti).
+ */
+function isI18nSeedComplete(db, stored) {
+  if (stored < I18N_SEED_VERSION) return false;
+  if (queryCount(db, 'item_translations') === 0) return false;
+
+  const bundledNonDefault = listBundledLocales().filter(
+    (code) => code !== DEFAULT_LOCALE
+  );
+  if (bundledNonDefault.length === 0) return true;
+
+  return countDistinctTranslationLocales(db) >= bundledNonDefault.length;
+}
+
 /**
  * Assicura tabelle i18n + backfill IT + pack locali bundlati.
  */
@@ -520,14 +545,23 @@ function ensureI18n(db, persist, { force = false } = {}) {
   }
 
   const stored = Number(getMeta(db, META_I18N_SEED) || 0);
+  const bundledLocales = listBundledLocales();
+
+  if (!force && isI18nSeedComplete(db, stored)) {
+    return {
+      locale: getAppLocale(db),
+      seedVersion: I18N_SEED_VERSION,
+      counts: getI18nCounts(db),
+      bundledLocales,
+      localePacks: [],
+      skipped: true,
+    };
+  }
+
   const needsBackfill =
     force || stored < I18N_SEED_VERSION || queryCount(db, 'item_translations') === 0;
 
-  const translationLocalesBefore =
-    queryOne(
-      db,
-      `SELECT COUNT(DISTINCT locale) AS count FROM item_translations`
-    )?.count ?? 0;
+  const translationLocalesBefore = countDistinctTranslationLocales(db);
 
   if (needsBackfill) {
     backfillItalianFromCanonical(db);
@@ -535,11 +569,7 @@ function ensureI18n(db, persist, { force = false } = {}) {
 
   const localeResults = applyBundledLocalePacks(db);
 
-  const translationLocalesAfter =
-    queryOne(
-      db,
-      `SELECT COUNT(DISTINCT locale) AS count FROM item_translations`
-    )?.count ?? 0;
+  const translationLocalesAfter = countDistinctTranslationLocales(db);
 
   if (
     needsBackfill ||
@@ -555,8 +585,9 @@ function ensureI18n(db, persist, { force = false } = {}) {
     locale: getAppLocale(db),
     seedVersion: I18N_SEED_VERSION,
     counts: getI18nCounts(db),
-    bundledLocales: listBundledLocales(),
+    bundledLocales,
     localePacks: localeResults,
+    skipped: false,
   };
 }
 

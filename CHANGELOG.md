@@ -7,6 +7,14 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.35.1] - 2026-07-25
+
+### Fixed
+- Avvio su PC lenti: le traduzioni del catalogo non vengono più ricalcolate a ogni apertura (poteva lasciare il processo in Gestione attività senza finestra)
+- Se l’inizializzazione fallisce, compare un messaggio di errore invece di un processo “fantasma”
+- Splash “Preparazione dati…” durante il primo seed; fallback se la finestra principale non appare
+- Caricamento di sql.js più affidabile nelle build packaggiate (file WASM unpack)
+
 ## [1.35.0] - 2026-07-20
 
 ### Added

@@ -128,6 +128,64 @@ const { loadUiMessages } = require('../src/locales/ui');
 let mainWindow;
 let userDataPath;
 
+function createSplashWindow() {
+  const splash = new BrowserWindow({
+    width: 440,
+    height: 200,
+    frame: false,
+    resizable: false,
+    maximizable: false,
+    minimizable: false,
+    fullscreenable: false,
+    alwaysOnTop: true,
+    center: true,
+    backgroundColor: '#0f1419',
+    show: true,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+
+  const html = `<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #0f1419;
+      color: #e8eef5;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .box { text-align: center; padding: 24px; }
+    .title {
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+    .msg { margin: 0; font-size: 13px; opacity: 0.75; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <p class="title">Factory Manager</p>
+    <p class="msg">Preparazione dati in corso…</p>
+  </div>
+</body>
+</html>`;
+
+  splash.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(html)}`);
+  return splash;
+}
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1920,
@@ -147,9 +205,21 @@ function createWindow() {
 
   mainWindow.loadFile(path.join(__dirname, '../src/renderer/index.html'));
 
-  mainWindow.once('ready-to-show', () => {
+  const reveal = () => {
+    if (!mainWindow || mainWindow.isDestroyed() || mainWindow.isVisible()) return;
     mainWindow.maximize();
     mainWindow.show();
+  };
+
+  mainWindow.once('ready-to-show', reveal);
+  // Fallback se ready-to-show non arriva (AV / caricamento lento)
+  setTimeout(reveal, 10000);
+
+  mainWindow.webContents.on('did-fail-load', (_event, code, desc) => {
+    dialog.showErrorBox(
+      'FACTORY MANAGER — errore caricamento',
+      `Impossibile caricare l'interfaccia (${code}): ${desc}`
+    );
   });
 
   if (process.argv.includes('--enable-logging')) {
@@ -161,9 +231,25 @@ app.whenReady().then(async () => {
   app.setName('FACTORY MANAGER');
   Menu.setApplicationMenu(null);
   userDataPath = app.getPath('userData');
-  migrateLegacyUserData(userDataPath);
-  await initDatabase(userDataPath);
+
+  const splash = createSplashWindow();
+
+  try {
+    migrateLegacyUserData(userDataPath);
+    await initDatabase(userDataPath);
+  } catch (err) {
+    if (splash && !splash.isDestroyed()) splash.destroy();
+    const detail = err?.stack || err?.message || String(err);
+    dialog.showErrorBox(
+      'FACTORY MANAGER — errore avvio',
+      `Impossibile inizializzare l'applicazione.\n\n${detail}`
+    );
+    app.quit();
+    return;
+  }
+
   createWindow();
+  if (splash && !splash.isDestroyed()) splash.destroy();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
