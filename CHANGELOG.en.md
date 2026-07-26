@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.39.0] - 2026-07-26
+
+### Added
+- On launch, the app checks GitHub for a newer release and shows a dismissible banner with a download link (no automatic download)
+
+## [1.38.2] - 2026-07-25
+
+### Fixed
+- Settings → Environment: DB path shows “local database” instead of “—” (absolute path stays hidden)
+
 ## [1.38.1] - 2026-07-25
 
 ### Fixed

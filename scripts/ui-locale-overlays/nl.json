@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Geen grondstoffen gevonden.",
   "errors.pickerExtractEmpty": "Geen winbare grondstoffen gevonden.",
   "picker.noResources": "Geen grondstoffen gevonden.",
-  "common.water": "Water"
+  "common.water": "Water",
+  "update.available": "Er is een nieuwe versie beschikbaar: {latest} (je hebt {current}).",
+  "update.download": "Downloaden",
+  "update.dismiss": "Later"
 }

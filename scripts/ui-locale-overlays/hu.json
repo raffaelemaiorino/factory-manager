@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Nem található erőforrás.",
   "errors.pickerExtractEmpty": "Nem található kitermelhető erőforrás.",
   "picker.noResources": "Nem található erőforrás.",
-  "common.water": "Víz"
+  "common.water": "Víz",
+  "update.available": "Új verzió érhető el: {latest} (jelenlegi: {current}).",
+  "update.download": "Letöltés",
+  "update.dismiss": "Később"
 }

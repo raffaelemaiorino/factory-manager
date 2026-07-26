@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Nie znaleziono zasobów.",
   "errors.pickerExtractEmpty": "Nie znaleziono zasobów do wydobycia.",
   "picker.noResources": "Nie znaleziono zasobów.",
-  "common.water": "Woda"
+  "common.water": "Woda",
+  "update.available": "Dostępna jest nowa wersja: {latest} (masz {current}).",
+  "update.download": "Pobierz",
+  "update.dismiss": "Później"
 }

@@ -312,7 +312,8 @@
     "envDbPath": "DB 경로",
     "restoreSuccess": "복원 완료: 자원 {items}, 건물 {buildings}, 레시피 {schemas}.",
     "errorLoadInfo": "데이터 정보 로드 오류.",
-    "errorRestore": "복원 중 오류."
+    "errorRestore": "복원 중 오류.",
+    "envDbLocal": "로컬 데이터베이스"
   },
   "footer": {
     "disclaimer": "Factory Manager는 Satisfactory 생산 계획용 독립 비공식 팬 도구입니다. Coffee Stain Studios와 제휴·후원·승인·공인 관계가 없습니다. Satisfactory, 상표, 로고, 이미지, 아이콘, 자원, 기계, 레시피, 데이터 등은 Coffee Stain Studios AB 및 권리자에게 귀속됩니다. Factory Manager 개발자는 게임 콘텐츠 권리를 주장하지 않습니다."
@@ -476,5 +477,10 @@
   "_meta": {
     "locale": "ko",
     "note": "앱 UI 문자열(Satisfactory 카탈로그 아님). 의역."
+  },
+  "update": {
+    "available": "새 버전이 있습니다: {latest} (현재 {current}).",
+    "download": "다운로드",
+    "dismiss": "나중에"
   }
 }

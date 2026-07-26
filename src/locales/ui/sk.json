@@ -316,7 +316,8 @@
     "envDbPath": "Cesta DB",
     "restoreSuccess": "Obnova dokončená: {items} surovín, {buildings} budov, {schemas} výrobných receptov.",
     "errorLoadInfo": "Chyba pri načítaní informácií o dátach.",
-    "errorRestore": "Chyba počas obnovy."
+    "errorRestore": "Chyba počas obnovy.",
+    "envDbLocal": "lokálna databáza"
   },
   "footer": {
     "disclaimer": "Factory Manager je nezávislý, neoficiálny fan nástroj na plánovanie výroby v Satisfactory. Nie je prepojený so, sponzorovaný ani schválený Coffee Stain Studios. Satisfactory, ochranné známky, logá, obrázky, ikony, suroviny, stroje, recepty, dáta a ďalší obsah patria Coffee Stain Studios AB a/alebo príslušným vlastníkom. Vývojári Factory Manager si nenárokujú práva na herný obsah."
@@ -476,5 +477,10 @@
   },
   "picker": {
     "noResources": "Nenašli sa suroviny."
+  },
+  "update": {
+    "available": "Je dostupná nová verzia: {latest} (máte {current}).",
+    "download": "Stiahnuť",
+    "dismiss": "Neskôr"
   }
 }

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const {
   readFileSync,
@@ -13,6 +13,7 @@ const {
   saveProductionUiState,
 } = require('./production-ui-state-store');
 const { assertSchemaFileSize } = require('../src/database/schema-import-guard');
+const { checkForAppUpdate, isAllowedReleaseUrl } = require('./update-check');
 
 const { version: appVersion } = JSON.parse(
   readFileSync(path.join(__dirname, '../package.json'), 'utf8')
@@ -280,6 +281,16 @@ ipcMain.handle('app:info', () => ({
   node: process.versions.node,
   version: appVersion,
 }));
+
+ipcMain.handle('app:check-update', () => checkForAppUpdate(appVersion));
+
+ipcMain.handle('shell:open-external', async (_event, url) => {
+  if (!isAllowedReleaseUrl(url)) {
+    return { ok: false, reason: 'url_not_allowed' };
+  }
+  await shell.openExternal(String(url));
+  return { ok: true };
+});
 
 ipcMain.on('production-ui-state:load', (event) => {
   event.returnValue = loadProductionUiState(userDataPath);

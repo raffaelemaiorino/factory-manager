@@ -312,7 +312,8 @@
     "envDbPath": "DB パス",
     "restoreSuccess": "復元完了: リソース {items}、建物 {buildings}、レシピ {schemas}。",
     "errorLoadInfo": "データ情報の読み込みエラー。",
-    "errorRestore": "復元中のエラー。"
+    "errorRestore": "復元中のエラー。",
+    "envDbLocal": "ローカルデータベース"
   },
   "footer": {
     "disclaimer": "Factory Manager は Satisfactory 生産計画用の独立した非公式ファンツールです。Coffee Stain Studios と提携・スポンサー・承認・公認の関係はありません。Satisfactory、商標、ロゴ、画像、アイコン、リソース、機械、レシピ、データ等は Coffee Stain Studios AB および権利者に帰属します。Factory Manager 開発者はゲームコンテンツの権利を主張しません。"
@@ -476,5 +477,10 @@
   "_meta": {
     "locale": "ja",
     "note": "アプリUI文言（Satisfactoryカタログではありません）。意訳。"
+  },
+  "update": {
+    "available": "新しいバージョンがあります: {latest}（現在 {current}）。",
+    "download": "ダウンロード",
+    "dismiss": "後で"
   }
 }

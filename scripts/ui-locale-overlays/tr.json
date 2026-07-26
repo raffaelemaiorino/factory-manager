@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Kaynak bulunamadı.",
   "errors.pickerExtractEmpty": "Çıkarılabilir kaynak bulunamadı.",
   "picker.noResources": "Kaynak bulunamadı.",
-  "common.water": "Su"
+  "common.water": "Su",
+  "update.available": "Yeni bir sürüm mevcut: {latest} (sizin sürümünüz {current}).",
+  "update.download": "İndir",
+  "update.dismiss": "Sonra"
 }

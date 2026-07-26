@@ -316,10 +316,16 @@
     "envDbPath": "Percorso DB",
     "restoreSuccess": "Ripristino completato: {items} risorse, {buildings} strutture, {schemas} schemi di produzione.",
     "errorLoadInfo": "Errore nel caricamento delle informazioni sui dati.",
-    "errorRestore": "Errore durante il ripristino."
+    "errorRestore": "Errore durante il ripristino.",
+    "envDbLocal": "database locale"
   },
   "footer": {
     "disclaimer": "Factory Manager è uno strumento fan-made indipendente e non ufficiale per la pianificazione delle produzioni in Satisfactory. Factory Manager non è affiliato, sponsorizzato, approvato, supportato o autorizzato da Coffee Stain Studios. Satisfactory, i relativi marchi, loghi, immagini, icone, risorse, macchinari, ricette, dati e altri contenuti appartengono a Coffee Stain Studios AB e/o ai rispettivi titolari. Gli sviluppatori di Factory Manager non rivendicano alcun diritto sui contenuti appartenenti al gioco."
+  },
+  "update": {
+    "available": "È disponibile una nuova versione: {latest} (hai la {current}).",
+    "download": "Scarica",
+    "dismiss": "Dopo"
   },
   "modals": {
     "productionCreateTitle": "Nuovo schema di produzione",

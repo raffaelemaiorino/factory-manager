@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Nebyly nalezeny suroviny.",
   "errors.pickerExtractEmpty": "Nebyly nalezeny suroviny k těžbě.",
   "picker.noResources": "Nebyly nalezeny suroviny.",
-  "common.water": "Voda"
+  "common.water": "Voda",
+  "update.available": "Je dostupná nová verze: {latest} (máte {current}).",
+  "update.download": "Stáhnout",
+  "update.dismiss": "Později"
 }

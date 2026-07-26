@@ -9,6 +9,16 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.39.0] - 2026-07-26
+
+### Added
+- All’avvio l’app controlla su GitHub se esiste una release più recente e mostra un banner con link al download (chiudibile; non scarica in automatico)
+
+## [1.38.2] - 2026-07-25
+
+### Fixed
+- Impostazioni → Ambiente: il percorso DB mostra «database locale» invece di «—» (il path assoluto resta nascosto)
+
 ## [1.38.1] - 2026-07-25
 
 ### Fixed

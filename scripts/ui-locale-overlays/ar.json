@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "لم يُعثر على موارد.",
   "errors.pickerExtractEmpty": "لم يُعثر على موارد قابلة للاستخراج.",
   "picker.noResources": "لا موارد.",
-  "common.water": "ماء"
+  "common.water": "ماء",
+  "update.available": "يتوفر إصدار جديد: {latest} (لديك {current}).",
+  "update.download": "تنزيل",
+  "update.dismiss": "لاحقاً"
 }

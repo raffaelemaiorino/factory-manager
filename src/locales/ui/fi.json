@@ -316,7 +316,8 @@
     "envDbPath": "Tietokannan polku",
     "restoreSuccess": "Palautus valmis: {items} resurssia, {buildings} rakennusta, {schemas} tuotantoreseptiä.",
     "errorLoadInfo": "Virhe datatietojen latauksessa.",
-    "errorRestore": "Virhe palautuksessa."
+    "errorRestore": "Virhe palautuksessa.",
+    "envDbLocal": "paikallinen tietokanta"
   },
   "footer": {
     "disclaimer": "Factory Manager on riippumaton, epävirallinen fan-työkalu Satisfactory-tuotannon suunnitteluun. Se ei liity Coffee Stain Studiosiin eikä ole sen sponsoroima, hyväksymä tai valtuuttama. Satisfactory, tavaramerkit, logot, kuvat, kuvakkeet, resurssit, koneet, reseptit, tiedot ja muu sisältö kuuluvat Coffee Stain Studios AB:lle ja/tai oikeudenhaltijoille. Factory Managerin kehittäjät eivät vaadi oikeuksia pelisisältöön."
@@ -476,5 +477,10 @@
   },
   "picker": {
     "noResources": "Resursseja ei löytynyt."
+  },
+  "update": {
+    "available": "Uusi versio on saatavilla: {latest} (sinulla on {current}).",
+    "download": "Lataa",
+    "dismiss": "Myöhemmin"
   }
 }

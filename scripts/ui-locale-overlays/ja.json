@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "リソースが見つかりません。",
   "errors.pickerExtractEmpty": "採掘可能なリソースが見つかりません。",
   "picker.noResources": "リソースが見つかりません。",
-  "common.water": "水"
+  "common.water": "水",
+  "update.available": "新しいバージョンがあります: {latest}（現在 {current}）。",
+  "update.download": "ダウンロード",
+  "update.dismiss": "後で"
 }

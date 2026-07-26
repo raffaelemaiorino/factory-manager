@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Nenašli sa suroviny.",
   "errors.pickerExtractEmpty": "Nenašli sa ťažiteľné suroviny.",
   "picker.noResources": "Nenašli sa suroviny.",
-  "common.water": "Voda"
+  "common.water": "Voda",
+  "update.available": "Je dostupná nová verzia: {latest} (máte {current}).",
+  "update.download": "Stiahnuť",
+  "update.dismiss": "Neskôr"
 }

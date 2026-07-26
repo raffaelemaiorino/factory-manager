@@ -312,7 +312,8 @@
     "envDbPath": "Chemin BD",
     "restoreSuccess": "Restauration terminée : {items} ressources, {buildings} bâtiments, {schemas} recettes.",
     "errorLoadInfo": "Erreur de chargement des infos données.",
-    "errorRestore": "Erreur lors de la restauration."
+    "errorRestore": "Erreur lors de la restauration.",
+    "envDbLocal": "base de données locale"
   },
   "footer": {
     "disclaimer": "Factory Manager est un outil fan-made indépendant et non officiel pour planifier la production dans Satisfactory. Il n'est ni affilié, sponsorisé, approuvé ni autorisé par Coffee Stain Studios. Satisfactory, marques, logos, images, icônes, ressources, machines, recettes, données et autres contenus appartiennent à Coffee Stain Studios AB et/ou à leurs titulaires. Les développeurs de Factory Manager ne revendiquent aucun droit sur le contenu du jeu."
@@ -476,5 +477,10 @@
   "_meta": {
     "locale": "fr",
     "note": "Textes UI (pas le catalogue Satisfactory). Traduction orientée sens."
+  },
+  "update": {
+    "available": "Une nouvelle version est disponible : {latest} (vous avez la {current}).",
+    "download": "Télécharger",
+    "dismiss": "Plus tard"
   }
 }

@@ -316,7 +316,8 @@
     "envDbPath": "DB-sti",
     "restoreSuccess": "Gjenoppretting fullført: {items} ressurser, {buildings} bygninger, {schemas} produksjonsoppskrifter.",
     "errorLoadInfo": "Feil ved lasting av datainfo.",
-    "errorRestore": "Feil under gjenoppretting."
+    "errorRestore": "Feil under gjenoppretting.",
+    "envDbLocal": "lokal database"
   },
   "footer": {
     "disclaimer": "Factory Manager er et uavhengig, uoffisielt fan-verktøy for Satisfactory-planlegging. Det er ikke tilknyttet, sponset eller godkjent av Coffee Stain Studios. Satisfactory, varemerker, logoer, bilder, ikoner, ressurser, maskiner, oppskrifter, data og annet innhold tilhører Coffee Stain Studios AB og/eller rettighetshavere. Factory Manager-utviklerne gjør ikke krav på spillinnhold."
@@ -476,5 +477,10 @@
   },
   "picker": {
     "noResources": "Ingen ressurser funnet."
+  },
+  "update": {
+    "available": "En ny versjon er tilgjengelig: {latest} (du har {current}).",
+    "download": "Last ned",
+    "dismiss": "Senere"
   }
 }

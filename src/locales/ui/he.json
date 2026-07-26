@@ -312,7 +312,8 @@
     "envDbPath": "נתיב DB",
     "restoreSuccess": "השחזור הושלם: {items} משאבים, {buildings} מבנים, {schemas} מתכונים.",
     "errorLoadInfo": "שגיאה בטעינת מידע הנתונים.",
-    "errorRestore": "שגיאה במהלך השחזור."
+    "errorRestore": "שגיאה במהלך השחזור.",
+    "envDbLocal": "מסד נתונים מקומי"
   },
   "footer": {
     "disclaimer": "Factory Manager הוא כלי fan-made לא רשמי לתכנון ייצור ב-Satisfactory. לא קשור או מאושר על ידי Coffee Stain Studios. תוכן Satisfactory שייך ל-Coffee Stain Studios AB ו/או לבעליהם."
@@ -476,5 +477,10 @@
   "_meta": {
     "locale": "he",
     "note": "מחרוזות ממשק (לא קטלוג Satisfactory). תרגום לפי משמעות."
+  },
+  "update": {
+    "available": "גרסה חדשה זמינה: {latest} (יש לך {current}).",
+    "download": "הורדה",
+    "dismiss": "מאוחר יותר"
   }
 }

@@ -312,7 +312,8 @@
     "envDbPath": "Cesta DB",
     "restoreSuccess": "Obnovení dokončeno: {items} surovin, {buildings} budov, {schemas} receptů.",
     "errorLoadInfo": "Chyba načítání informací o datech.",
-    "errorRestore": "Chyba při obnovení."
+    "errorRestore": "Chyba při obnovení.",
+    "envDbLocal": "lokální databáze"
   },
   "footer": {
     "disclaimer": "Factory Manager je nezávislý neoficiální fan nástroj pro plánování výroby v Satisfactory. Není spojen, sponzorován ani schválen společností Coffee Stain Studios. Satisfactory, ochranné známky, loga, obrázky, ikony, suroviny, stroje, recepty, data a další obsah patří Coffee Stain Studios AB a/nebo příslušným vlastníkům. Vývojáři Factory Manager si nečiní nárok na herní obsah."
@@ -476,5 +477,10 @@
   "_meta": {
     "locale": "cs",
     "note": "Texty UI (ne katalog Satisfactory). Překlad podle smyslu."
+  },
+  "update": {
+    "available": "Je dostupná nová verze: {latest} (máte {current}).",
+    "download": "Stáhnout",
+    "dismiss": "Později"
   }
 }

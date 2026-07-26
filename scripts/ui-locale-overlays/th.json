@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "ไม่พบทรัพยากร",
   "errors.pickerExtractEmpty": "ไม่พบทรัพยากรที่ขุดได้",
   "picker.noResources": "ไม่พบทรัพยากร",
-  "common.water": "น้ำ"
+  "common.water": "น้ำ",
+  "update.available": "มีเวอร์ชันใหม่: {latest} (คุณมี {current})",
+  "update.download": "ดาวน์โหลด",
+  "update.dismiss": "ภายหลัง"
 }

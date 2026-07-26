@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "未找到资源。",
   "errors.pickerExtractEmpty": "未找到可开采的资源。",
   "picker.noResources": "未找到资源。",
-  "common.water": "水"
+  "common.water": "水",
+  "update.available": "有新版本可用：{latest}（当前 {current}）。",
+  "update.download": "下载",
+  "update.dismiss": "稍后"
 }

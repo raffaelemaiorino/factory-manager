@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "자원을 찾을 수 없습니다.",
   "errors.pickerExtractEmpty": "채굴 가능한 자원을 찾을 수 없습니다.",
   "picker.noResources": "자원을 찾을 수 없습니다.",
-  "common.water": "물"
+  "common.water": "물",
+  "update.available": "새 버전이 있습니다: {latest} (현재 {current}).",
+  "update.download": "다운로드",
+  "update.dismiss": "나중에"
 }

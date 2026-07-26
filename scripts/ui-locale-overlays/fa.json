@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "منبعی یافت نشد.",
   "errors.pickerExtractEmpty": "منبع قابل استخراج یافت نشد.",
   "picker.noResources": "منبعی یافت نشد.",
-  "common.water": "آب"
+  "common.water": "آب",
+  "update.available": "نسخه جدید موجود است: {latest} (نسخه شما {current}).",
+  "update.download": "دانلود",
+  "update.dismiss": "بعداً"
 }

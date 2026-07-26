@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "No se encontraron recursos.",
   "errors.pickerExtractEmpty": "No se encontraron recursos extraíbles.",
   "picker.noResources": "No se encontraron recursos.",
-  "common.water": "Agua"
+  "common.water": "Agua",
+  "update.available": "Hay una nueva versión disponible: {latest} (tienes la {current}).",
+  "update.download": "Descargar",
+  "update.dismiss": "Más tarde"
 }

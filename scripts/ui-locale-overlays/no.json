@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Ingen ressurser funnet.",
   "errors.pickerExtractEmpty": "Ingen utvinnbare ressurser funnet.",
   "picker.noResources": "Ingen ressurser funnet.",
-  "common.water": "Vann"
+  "common.water": "Vann",
+  "update.available": "En ny versjon er tilgjengelig: {latest} (du har {current}).",
+  "update.download": "Last ned",
+  "update.dismiss": "Senere"
 }

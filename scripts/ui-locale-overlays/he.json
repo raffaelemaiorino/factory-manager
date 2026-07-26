@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "לא נמצאו משאבים.",
   "errors.pickerExtractEmpty": "לא נמצאו משאבים לכרייה.",
   "picker.noResources": "לא נמצאו משאבים.",
-  "common.water": "מים"
+  "common.water": "מים",
+  "update.available": "גרסה חדשה זמינה: {latest} (יש לך {current}).",
+  "update.download": "הורדה",
+  "update.dismiss": "מאוחר יותר"
 }

@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Inga resurser hittades.",
   "errors.pickerExtractEmpty": "Inga utvinningsbara resurser hittades.",
   "picker.noResources": "Inga resurser hittades.",
-  "common.water": "Vatten"
+  "common.water": "Vatten",
+  "update.available": "En ny version finns tillgänglig: {latest} (du har {current}).",
+  "update.download": "Ladda ner",
+  "update.dismiss": "Senare"
 }

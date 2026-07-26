@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Keine Ressourcen gefunden.",
   "errors.pickerExtractEmpty": "Keine abbaufähigen Ressourcen gefunden.",
   "picker.noResources": "Keine Ressourcen gefunden.",
-  "common.water": "Wasser"
+  "common.water": "Wasser",
+  "update.available": "Eine neue Version ist verfügbar: {latest} (aktuell {current}).",
+  "update.download": "Herunterladen",
+  "update.dismiss": "Später"
 }

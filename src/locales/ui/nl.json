@@ -312,7 +312,8 @@
     "envDbPath": "DB-pad",
     "restoreSuccess": "Herstel voltooid: {items} grondstoffen, {buildings} gebouwen, {schemas} productierecepten.",
     "errorLoadInfo": "Fout bij laden datainfo.",
-    "errorRestore": "Fout tijdens herstel."
+    "errorRestore": "Fout tijdens herstel.",
+    "envDbLocal": "lokale database"
   },
   "footer": {
     "disclaimer": "Factory Manager is een onafhankelijke, niet-officiële fan-tool voor Satisfactory-productieplanning. Niet gelieerd aan, gesponsord of goedgekeurd door Coffee Stain Studios. Satisfactory, merken, logo's, afbeeldingen, iconen, grondstoffen, machines, recepten, data en overige inhoud behoren toe aan Coffee Stain Studios AB en/of rechthebbenden. De ontwikkelaars van Factory Manager claimen geen rechten op game-inhoud."
@@ -476,5 +477,10 @@
   "_meta": {
     "locale": "nl",
     "note": "UI-teksten (geen Satisfactory-catalogus). Vertaling op betekenis."
+  },
+  "update": {
+    "available": "Er is een nieuwe versie beschikbaar: {latest} (je hebt {current}).",
+    "download": "Downloaden",
+    "dismiss": "Later"
   }
 }

@@ -312,7 +312,8 @@
     "envDbPath": "مسار DB",
     "restoreSuccess": "اكتملت الاستعادة: {items} موارد، {buildings} مباني، {schemas} وصفات.",
     "errorLoadInfo": "خطأ في تحميل معلومات البيانات.",
-    "errorRestore": "خطأ أثناء الاستعادة."
+    "errorRestore": "خطأ أثناء الاستعادة.",
+    "envDbLocal": "قاعدة بيانات محلية"
   },
   "footer": {
     "disclaimer": "Factory Manager أداة fan-made غير رسمية لتخطيط الإنتاج في Satisfactory. غير تابعة ولا مصرّح بها من Coffee Stain Studios. محتوى Satisfactory وعلاماته وموارده ملك Coffee Stain Studios AB و/أو أصحابها."
@@ -476,5 +477,10 @@
   "_meta": {
     "locale": "ar",
     "note": "نصوص واجهة التطبيق (ليست فهرس Satisfactory). ترجمة حسب المعنى."
+  },
+  "update": {
+    "available": "يتوفر إصدار جديد: {latest} (لديك {current}).",
+    "download": "تنزيل",
+    "dismiss": "لاحقاً"
   }
 }

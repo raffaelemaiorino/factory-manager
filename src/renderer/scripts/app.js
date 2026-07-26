@@ -680,7 +680,9 @@ function renderEnvironmentStats(status) {
 
   document.getElementById('env-schema').textContent =
     status.schemaVersion != null ? `v${status.schemaVersion}` : '—';
-  document.getElementById('env-db-path').textContent = status.path ?? '—';
+  document.getElementById('env-db-path').textContent = status.connected
+    ? t('settings.envDbLocal')
+    : '—';
 }
 
 function computeChainMachineCount(steps = []) {
@@ -890,6 +892,87 @@ function syncLocaleDependentLabels() {
     'generator-fuel': t('generators.fuel'),
     'generator-nuclear': t('generators.nuclear'),
   });
+
+  refreshUpdateBannerText();
+}
+
+const UPDATE_DISMISS_KEY = 'factory-manager:update-dismissed-version';
+let pendingUpdateInfo = null;
+
+function getDismissedUpdateVersion() {
+  try {
+    return localStorage.getItem(UPDATE_DISMISS_KEY) || '';
+  } catch {
+    return '';
+  }
+}
+
+function setDismissedUpdateVersion(version) {
+  try {
+    localStorage.setItem(UPDATE_DISMISS_KEY, String(version || ''));
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
+function refreshUpdateBannerText() {
+  const textEl = document.getElementById('update-banner-text');
+  if (!textEl || !pendingUpdateInfo?.updateAvailable) return;
+  textEl.textContent = t('update.available', {
+    latest: pendingUpdateInfo.latestVersion,
+    current: pendingUpdateInfo.currentVersion,
+  });
+}
+
+function hideUpdateBanner() {
+  const banner = document.getElementById('update-banner');
+  if (!banner) return;
+  banner.classList.add('hidden');
+  banner.hidden = true;
+}
+
+function showUpdateBanner(info) {
+  const banner = document.getElementById('update-banner');
+  if (!banner || !info?.updateAvailable || !info.htmlUrl) return;
+
+  pendingUpdateInfo = info;
+  refreshUpdateBannerText();
+  banner.classList.remove('hidden');
+  banner.hidden = false;
+}
+
+function setupUpdateBanner() {
+  const downloadBtn = document.getElementById('update-banner-download');
+  const dismissBtn = document.getElementById('update-banner-dismiss');
+
+  downloadBtn?.addEventListener('click', async () => {
+    const url = pendingUpdateInfo?.htmlUrl;
+    if (!url) return;
+    try {
+      await window.satisfactory.openExternal(url);
+    } catch (err) {
+      console.error('Open release page error:', err);
+    }
+  });
+
+  dismissBtn?.addEventListener('click', () => {
+    if (pendingUpdateInfo?.latestVersion) {
+      setDismissedUpdateVersion(pendingUpdateInfo.latestVersion);
+    }
+    hideUpdateBanner();
+  });
+}
+
+async function checkAppUpdateOnBoot() {
+  if (typeof window.satisfactory?.checkForUpdate !== 'function') return;
+  try {
+    const info = await window.satisfactory.checkForUpdate();
+    if (!info?.updateAvailable) return;
+    if (getDismissedUpdateVersion() === info.latestVersion) return;
+    showUpdateBanner(info);
+  } catch (err) {
+    console.error('Update check error:', err);
+  }
 }
 
 const DASHBOARD_GENERATOR_ICONS = {
@@ -7297,6 +7380,8 @@ async function boot() {
   setupEditModal();
   setupDetailModal();
   setupDashboard();
+  setupUpdateBanner();
+  checkAppUpdateOnBoot();
 }
 
 boot();

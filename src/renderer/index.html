@@ -61,6 +61,27 @@
         </div>
       </header>
 
+      <div
+        id="update-banner"
+        class="update-banner hidden"
+        role="status"
+        aria-live="polite"
+        hidden
+      >
+        <div class="update-banner-body">
+          <i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i>
+          <span id="update-banner-text"></span>
+        </div>
+        <div class="update-banner-actions">
+          <button type="button" class="btn btn-primary" id="update-banner-download" data-i18n="update.download">
+            Scarica
+          </button>
+          <button type="button" class="btn btn-ghost" id="update-banner-dismiss" data-i18n="update.dismiss">
+            Dopo
+          </button>
+        </div>
+      </div>
+
       <main class="content">
         <!-- Dashboard -->
         <div class="view view-active" id="view-dashboard">

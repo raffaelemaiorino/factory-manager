@@ -312,7 +312,8 @@
     "envDbPath": "พาธ DB",
     "restoreSuccess": "คืนค่าแล้ว: {items} ทรัพยากร {buildings} อาคาร {schemas} สูตร",
     "errorLoadInfo": "โหลดข้อมูลไม่สำเร็จ",
-    "errorRestore": "คืนค่าไม่สำเร็จ"
+    "errorRestore": "คืนค่าไม่สำเร็จ",
+    "envDbLocal": "ฐานข้อมูลในเครื่อง"
   },
   "footer": {
     "disclaimer": "Factory Manager เป็นเครื่องมือแฟนเมดที่ไม่เป็นทางการสำหรับวางแผนการผลิตใน Satisfactory ไม่เกี่ยวข้องหรือได้รับอนุญาตจาก Coffee Stain Studios Satisfactory เครื่องหมาย โลโก้ รูป ไอคอน ทรัพยากร เครื่องจักร สูตร ข้อมูล และเนื้อหาอื่นเป็นของ Coffee Stain Studios AB และ/หรือเจ้าของสิทธิ์ ผู้พัฒนา Factory Manager ไม่อ้างสิทธิ์ในเนื้อหาเกม"
@@ -476,5 +477,10 @@
   "_meta": {
     "locale": "th",
     "note": "ข้อความ UI ของแอป (ไม่ใช่แคตตาล็อก Satisfactory) แปลตามความหมาย"
+  },
+  "update": {
+    "available": "มีเวอร์ชันใหม่: {latest} (คุณมี {current})",
+    "download": "ดาวน์โหลด",
+    "dismiss": "ภายหลัง"
   }
 }

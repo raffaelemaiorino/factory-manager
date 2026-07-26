@@ -316,7 +316,8 @@
     "envDbPath": "DB yolu",
     "restoreSuccess": "Geri yükleme tamam: {items} kaynak, {buildings} bina, {schemas} üretim tarifi.",
     "errorLoadInfo": "Veri bilgisi yüklenirken hata.",
-    "errorRestore": "Geri yükleme sırasında hata."
+    "errorRestore": "Geri yükleme sırasında hata.",
+    "envDbLocal": "yerel veritabanı"
   },
   "footer": {
     "disclaimer": "Factory Manager, Satisfactory üretim planlaması için bağımsız, resmi olmayan bir hayran aracıdır. Coffee Stain Studios ile bağlantılı değildir; onaylı veya sponsorlu değildir. Satisfactory, markalar, logolar, görseller, simgeler, kaynaklar, makineler, tarifler, veriler ve diğer içerik Coffee Stain Studios AB ve/veya hak sahiplerine aittir. Factory Manager geliştiricileri oyun içeriği üzerinde hak iddia etmez."
@@ -476,5 +477,10 @@
   },
   "picker": {
     "noResources": "Kaynak bulunamadı."
+  },
+  "update": {
+    "available": "Yeni bir sürüm mevcut: {latest} (sizin sürümünüz {current}).",
+    "download": "İndir",
+    "dismiss": "Sonra"
   }
 }

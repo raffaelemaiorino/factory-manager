@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Ресурсів не знайдено.",
   "errors.pickerExtractEmpty": "Немає ресурсів для видобутку.",
   "picker.noResources": "Ресурсів не знайдено.",
-  "common.water": "Вода"
+  "common.water": "Вода",
+  "update.available": "Доступна нова версія: {latest} (у вас {current}).",
+  "update.download": "Завантажити",
+  "update.dismiss": "Пізніше"
 }

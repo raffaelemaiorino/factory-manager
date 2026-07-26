@@ -129,6 +129,45 @@ a:hover {
   justify-content: flex-end;
 }
 
+/* Banner aggiornamento (GitHub Releases) */
+.update-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, rgba(255, 140, 0, 0.16) 0%, rgba(21, 28, 36, 0.95) 55%);
+  border-bottom: 1px solid rgba(255, 140, 0, 0.35);
+}
+
+.update-banner.hidden {
+  display: none;
+}
+
+.update-banner-body {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.update-banner-body .fa-cloud-arrow-down {
+  color: var(--accent-bright);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.update-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
 .topbar-actions {
   display: flex;
   align-items: center;

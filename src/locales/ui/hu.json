@@ -316,7 +316,8 @@
     "envDbPath": "DB útvonal",
     "restoreSuccess": "Visszaállítás kész: {items} erőforrás, {buildings} épület, {schemas} termelési recept.",
     "errorLoadInfo": "Hiba az adat-információ betöltésekor.",
-    "errorRestore": "Hiba a visszaállítás során."
+    "errorRestore": "Hiba a visszaállítás során.",
+    "envDbLocal": "helyi adatbázis"
   },
   "footer": {
     "disclaimer": "A Factory Manager független, nem hivatalos fan-eszköz Satisfactory-termelés tervezéséhez. Nem kapcsolódik a Coffee Stain Studioshoz, és az nem szponzorálja, hagyja jóvá vagy engedélyezi. A Satisfactory, védjegyei, logói, képei, ikonjai, erőforrásai, gépei, receptjei, adatai és egyéb tartalma a Coffee Stain Studios AB és/vagy jogosultjaik tulajdona. A Factory Manager fejlesztői nem követelnek jogot játéktartalomra."
@@ -476,5 +477,10 @@
   },
   "picker": {
     "noResources": "Nem található erőforrás."
+  },
+  "update": {
+    "available": "Új verzió érhető el: {latest} (jelenlegi: {current}).",
+    "download": "Letöltés",
+    "dismiss": "Később"
   }
 }

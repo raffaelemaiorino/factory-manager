@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Resursseja ei löytynyt.",
   "errors.pickerExtractEmpty": "Louhittavia resursseja ei löytynyt.",
   "picker.noResources": "Resursseja ei löytynyt.",
-  "common.water": "Vesi"
+  "common.water": "Vesi",
+  "update.available": "Uusi versio on saatavilla: {latest} (sinulla on {current}).",
+  "update.download": "Lataa",
+  "update.dismiss": "Myöhemmin"
 }

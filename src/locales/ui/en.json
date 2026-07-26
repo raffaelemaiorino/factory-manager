@@ -316,10 +316,16 @@
     "envDbPath": "DB path",
     "restoreSuccess": "Restore complete: {items} resources, {buildings} buildings, {schemas} production recipes.",
     "errorLoadInfo": "Error loading data information.",
-    "errorRestore": "Error during restore."
+    "errorRestore": "Error during restore.",
+    "envDbLocal": "local database"
   },
   "footer": {
     "disclaimer": "Factory Manager is an independent, unofficial fan-made tool for planning Satisfactory production. Factory Manager is not affiliated with, sponsored, approved, supported, or authorized by Coffee Stain Studios. Satisfactory, its trademarks, logos, images, icons, resources, machines, recipes, data, and other content belong to Coffee Stain Studios AB and/or their respective owners. The Factory Manager developers claim no rights to game content."
+  },
+  "update": {
+    "available": "A new version is available: {latest} (you have {current}).",
+    "download": "Download",
+    "dismiss": "Later"
   },
   "modals": {
     "productionCreateTitle": "New production plan",

@@ -358,5 +358,8 @@
   "errors.pickerEmpty": "Ingen ressourcer fundet.",
   "errors.pickerExtractEmpty": "Ingen udvindelige ressourcer fundet.",
   "picker.noResources": "Ingen ressourcer fundet.",
-  "common.water": "Vand"
+  "common.water": "Vand",
+  "update.available": "En ny version er tilgængelig: {latest} (du har {current}).",
+  "update.download": "Download",
+  "update.dismiss": "Senere"
 }

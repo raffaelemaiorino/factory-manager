@@ -312,7 +312,8 @@
     "envDbPath": "مسیر DB",
     "restoreSuccess": "بازیابی انجام شد: {items} منبع، {buildings} ساختمان، {schemas} دستور.",
     "errorLoadInfo": "خطا در بارگذاری اطلاعات داده.",
-    "errorRestore": "خطا هنگام بازیابی."
+    "errorRestore": "خطا هنگام بازیابی.",
+    "envDbLocal": "پایگاه داده محلی"
   },
   "footer": {
     "disclaimer": "Factory Manager ابزار fan-made غیررسمی برای برنامه‌ریزی تولید Satisfactory است. وابسته یا مجاز Coffee Stain Studios نیست. محتوای Satisfactory متعلق به Coffee Stain Studios AB و/یا دارندگان حق است."
@@ -476,5 +477,10 @@
   "_meta": {
     "locale": "fa",
     "note": "متن‌های رابط (فهرس Satisfactory نیست). ترجمه بر اساس معنا."
+  },
+  "update": {
+    "available": "نسخه جدید موجود است: {latest} (نسخه شما {current}).",
+    "download": "دانلود",
+    "dismiss": "بعداً"
   }
 }
