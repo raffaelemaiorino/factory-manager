@@ -14,6 +14,7 @@ const EXPORT_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12
 const DELETE_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`;
 const RESET_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>`;
 const ADD_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>`;
+const POWER_SHARD_IMAGE = 'assets/items/Desc_CrystalShard_C.png';
 const DRAG_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h2v2H9V5zm0 6h2v2H9v-2zm0 6h2v2H9v-2zm4-12h2v2h-2V5zm0 6h2v2h-2v-2zm0 6h2v2h-2v-2z"/></svg>`;
 
 const EXTRACTION_LIQUID_SLUGS = ['liquid-oil', 'water'];
@@ -363,6 +364,7 @@ window.ProductionUI = {
   renderItemImage,
   renderThemeSelect,
   renderBuildingPanel,
+  renderBuildingPowerShards,
   formatProductionValue,
   formatDisplayInteger,
   formatRateWithUnit,
@@ -375,6 +377,8 @@ window.ProductionUI = {
   formatOverclockInputValue,
   formatMachineCountInput,
   computeTotalPowerShards,
+  computeDetailPowerShards,
+  renderPowerShardsSummary,
   formatExtractionBuildingConfigContent,
   getExtractionOutputUnit,
   getExtractionSubtitle,
@@ -694,6 +698,18 @@ function computeChainPowerShards(steps = []) {
     (sum, step) => sum + computeTotalPowerShards(step.overclock, step.machine_count),
     0
   );
+}
+
+function computeExtractionsPowerShards(extractions = []) {
+  return extractions.reduce(
+    (sum, extraction) =>
+      sum + computeTotalPowerShards(extraction.overclock, extraction.node_count ?? 1),
+    0
+  );
+}
+
+function computeDetailPowerShards(machines = [], extractions = []) {
+  return computeChainPowerShards(machines) + computeExtractionsPowerShards(extractions);
 }
 
 function computeChainNodeCount(extractions = []) {
@@ -2928,14 +2944,46 @@ function renderProductionObjectivesSummary(steps = []) {
     </div>`;
 }
 
+function renderPowerShardsSummary(total) {
+  return `
+    <div class="production-external-summary-inner production-external-summary-inner--power-shards">
+      <table class="production-external-table">
+        <thead>
+          <tr>
+            <th>${escapeHtml(t('production.summaryInfo'))}</th>
+            <th class="production-external-rate">${escapeHtml(t('production.summaryCount'))}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="production-external-resource">
+              <img class="production-external-icon" src="${POWER_SHARD_IMAGE}" alt="" />
+              <span>${escapeHtml(t('production.totalPowerShards'))}</span>
+            </td>
+            <td class="production-external-rate">${formatDisplayInteger(total)}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>`;
+}
+
 function renderProductionExternalSummary(steps, extractions = []) {
   const nodesHtml = renderProductionNodesSummary(extractions);
   const mineralsHtml = renderProductionMineralsSummary(steps, extractions);
   const objectivesHtml = steps.length ? renderProductionObjectivesSummary(steps) : '';
+  const powerShardsHtml =
+    steps.length || extractions.length
+      ? renderPowerShardsSummary(computeDetailPowerShards(steps, extractions))
+      : '';
 
-  if (!nodesHtml && !mineralsHtml && !objectivesHtml) return '';
+  if (!nodesHtml && !mineralsHtml && !objectivesHtml && !powerShardsHtml) return '';
 
-  return `<div class="production-external-summary-stack">${objectivesHtml}${nodesHtml}${mineralsHtml}</div>`;
+  const leadColumnHtml =
+    objectivesHtml || powerShardsHtml
+      ? `<div class="production-external-summary-lead">${objectivesHtml}${powerShardsHtml}</div>`
+      : '';
+
+  return `<div class="production-external-summary-stack">${leadColumnHtml}${nodesHtml}${mineralsHtml}</div>`;
 }
 
 function updateProductionDetailExternalSummary() {
@@ -3595,6 +3643,11 @@ function updateStepConfigInputs(stepEl, config, step) {
       scaled_inputs: step.scaled_inputs,
       machine_count: config.machine_count,
     });
+  }
+
+  const buildingAside = stepEl.querySelector('.craft-schema-building');
+  if (buildingAside) {
+    updateBuildingPowerShardsEl(buildingAside, config.overclock, config.machine_count);
   }
 
   const totalOutputEl = stepEl.querySelector('.craft-building-total-output');
@@ -4556,6 +4609,7 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
           <span class="production-extraction-building-name">${escapeHtml(extraction.building_name || defaultBuildingName)}</span>
           <span class="production-extraction-building-config">${formatExtractionBuildingConfigContent(extraction, outputUnit)}</span>
           <span class="production-extraction-output">${formatRateWithUnit(outputRate, outputUnit)}</span>
+          ${renderBuildingPowerShards(extraction.overclock, nodeCount)}
         </aside>
       </div>
     </article>`;
@@ -4656,6 +4710,11 @@ function updateExtractionConfigDisplay(extractionEl, extraction) {
   }
   if (powerShards) {
     powerShards.value = String(computeTotalPowerShards(extraction.overclock, nodeCount));
+  }
+
+  const extractionBuilding = extractionEl.querySelector('.production-extraction-building');
+  if (extractionBuilding) {
+    updateBuildingPowerShardsEl(extractionBuilding, extraction.overclock, nodeCount);
   }
 
   updateExtractionThemeSelects(extractionEl, extraction);
@@ -6535,6 +6594,36 @@ function computeTotalPowerShards(overclock, machineCount) {
   return computePowerShardsPerMachine(overclock) * machines;
 }
 
+function renderBuildingPowerShards(overclock, machineCount) {
+  const count = formatDisplayInteger(computeTotalPowerShards(overclock, machineCount));
+  const [before = '', after = ''] = t('production.powerShardsRequired', { count: '\u0000' }).split(
+    '\u0000'
+  );
+  return `
+    <div class="craft-building-power-shards">
+      <img class="craft-building-power-shards-icon" src="${POWER_SHARD_IMAGE}" alt="" />
+      <span class="craft-building-power-shards-label">${escapeHtml(before)}<strong>${escapeHtml(
+        count
+      )}</strong>${escapeHtml(after)}</span>
+    </div>`;
+}
+
+function updateBuildingPowerShardsEl(container, overclock, machineCount) {
+  if (!container) return;
+  const existing = container.querySelector('.craft-building-power-shards');
+  const html = renderBuildingPowerShards(overclock, machineCount);
+  if (existing) {
+    existing.outerHTML = html;
+    return;
+  }
+  const inputsPanel = container.querySelector('.craft-building-inputs-panel');
+  if (inputsPanel) {
+    inputsPanel.insertAdjacentHTML('afterend', html);
+    return;
+  }
+  container.insertAdjacentHTML('beforeend', html);
+}
+
 function renderSomersloopCheckboxes(step) {
   const slots = window.ProductionScale.getSomersloopSlots(step.schema);
   if (!slots) {
@@ -6888,6 +6977,10 @@ function renderBuildingPanel(schema, buildingConfig = null) {
       ? `<span class="craft-building-base">${escapeHtml(t('common.base'))}: ${escapeHtml(formatRateWithUnit(buildingConfig.base_per_min, buildingConfig.output_unit || '/min'))}</span>`
       : '';
   const inputsPanel = renderBuildingInputsContent(buildingConfig);
+  const powerShards =
+    buildingConfig != null
+      ? renderBuildingPowerShards(buildingConfig.overclock, buildingConfig.machine_count)
+      : '';
 
   if (!schema?.building_image) {
     return `
@@ -6898,6 +6991,7 @@ function renderBuildingPanel(schema, buildingConfig = null) {
           ${configLine}
           ${baseLine}
           <div class="craft-building-inputs-panel">${inputsPanel}</div>
+          ${powerShards}
         </div>
       </aside>`;
   }
@@ -6915,6 +7009,7 @@ function renderBuildingPanel(schema, buildingConfig = null) {
         ${configLine}
         ${baseLine}
         <div class="craft-building-inputs-panel">${inputsPanel}</div>
+        ${powerShards}
       </div>
     </aside>`;
 }

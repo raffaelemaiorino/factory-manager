@@ -649,8 +649,14 @@
         </tr>`);
     }
 
-    if (!rows.length) return '';
-    return `
+    const powerShardsHtml =
+      UI.renderPowerShardsSummary?.(UI.computeDetailPowerShards?.(generators, extractions) ?? 0) ??
+      '';
+
+    if (!rows.length && !powerShardsHtml) return '';
+
+    const mineralsHtml = rows.length
+      ? `
       <div class="production-external-summary-inner production-external-summary-inner--minerals">
         <table class="production-external-table production-external-table--resources">
           <thead>
@@ -663,7 +669,10 @@
           </thead>
           <tbody>${rows.join('')}</tbody>
         </table>
-      </div>`;
+      </div>`
+      : '';
+
+    return `<div class="production-external-summary-stack">${powerShardsHtml}${mineralsHtml}</div>`;
   }
 
   function renderEnergyChains() {
@@ -883,6 +892,7 @@
             <span class="production-extraction-building-name">${escapeHtml(extraction.building_name || defaultBuildingName)}</span>
             <span class="production-extraction-building-config">${UI.formatExtractionBuildingConfigContent?.(extraction, outputUnit) ?? ''}</span>
             <span class="production-extraction-output">${(UI.formatRateWithUnit ?? formatProductionValue)(outputRate, outputUnit)}</span>
+            ${UI.renderBuildingPowerShards?.(extraction.overclock, nodeCount) ?? ''}
           </aside>
         </div>
       </article>`;

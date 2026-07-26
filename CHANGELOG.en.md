@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.41.1] - 2026-07-26
+
+### Changed
+- Production: Info box (Power Shards) sits under the Objectives box
+
+## [1.41.0] - 2026-07-26
+
+### Added
+- Info box in plan summary: table with Total Power Shards (extractions + machines/generators)
+
+## [1.40.1] - 2026-07-26
+
+### Changed
+- Power Shards summary: icon size fixed on extractions; only the count stays orange bold, surrounding text is muted
+
+## [1.40.0] - 2026-07-26
+
+### Added
+- Side summary on production steps, extractions, and generators: required Power Shards (icon + total from overclock × machines)
+
 ## [1.39.0] - 2026-07-26
 
 ### Added

@@ -9,6 +9,26 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.41.1] - 2026-07-26
+
+### Changed
+- Produzione: il box Info (Frammenti Energetici) è sotto il box Obiettivo
+
+## [1.41.0] - 2026-07-26
+
+### Added
+- Box Info in riepilogo schema: tabella con Totale Frammenti Energetici (estrazioni + macchine/generatori)
+
+## [1.40.1] - 2026-07-26
+
+### Changed
+- Riepilogo frammenti energetici: icona allineata nelle estrazioni; solo il numero in arancione bold, testo in grigio
+
+## [1.40.0] - 2026-07-26
+
+### Added
+- Nel riepilogo laterale di schemi, estrazioni e generatori: frammenti energetici necessari (icona + totale da overclock × macchine)
+
 ## [1.39.0] - 2026-07-26
 
 ### Added

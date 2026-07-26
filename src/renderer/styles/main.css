@@ -1265,6 +1265,16 @@ a:hover {
   font-weight: 700;
 }
 
+.production-extraction-building .craft-building-power-shards {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.production-extraction-building .craft-building-power-shards-icon {
+  width: 22px;
+  height: 22px;
+}
+
 .production-extraction-output {
   font-size: 0.78rem;
   font-weight: 600;
@@ -1294,6 +1304,21 @@ a:hover {
   gap: 0.5rem;
   width: max-content;
   max-width: 100%;
+}
+
+.production-external-summary-lead {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+  min-width: 300px;
+}
+
+.production-external-summary-lead .production-external-summary-inner {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .production-external-summary-inner {
@@ -1408,6 +1433,10 @@ a:hover {
 
 .production-external-summary-inner--objectives {
   min-width: 300px;
+}
+
+.production-external-summary-inner--power-shards {
+  min-width: 220px;
 }
 
 .production-external-table--objectives th.production-external-rate,
@@ -3346,6 +3375,37 @@ select.production-config-input option:checked {
   color: var(--text-muted);
 }
 
+.craft-building-power-shards {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+  margin-top: 0.15rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--border);
+}
+
+.craft-building-power-shards-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.craft-building-power-shards-label {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.3;
+  text-align: left;
+  min-width: 0;
+}
+
+.craft-building-power-shards-label strong {
+  font-weight: 700;
+  color: var(--accent);
+}
+
 .craft-schema.alt {
   border-color: var(--border-accent);
 }
@@ -4046,6 +4106,11 @@ select.production-config-input option:checked {
   .production-external-summary-stack {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .production-external-summary-lead {
+    min-width: 0;
+    width: 100%;
   }
 
   .production-card-body {
