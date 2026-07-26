@@ -119,6 +119,34 @@ function computeSomersloopMultiplier(slots, mask) {
   return 1 + checked / slots;
 }
 
+/** Esponente ufficiale Satisfactory: log2(2.5) ≈ 1.321928 */
+const POWER_CLOCK_EXPONENT = 1.321928;
+
+/**
+ * Consumo MW di macchine di produzione/estrazione (non generatori).
+ * MW = base × (clock/100)^1.321928 × (moltiplicatore Somersloop)^2 × macchine
+ */
+function computeMachinePowerMw(
+  baseMw,
+  overclock,
+  machineCount = 1,
+  somersloopMult = 1
+) {
+  const base = Number(baseMw);
+  if (!Number.isFinite(base) || base <= 0) return 0;
+  const oc = clampOverclock(overclock) / 100;
+  const machines = clampMachineCount(machineCount);
+  const amp = Number(somersloopMult);
+  const ampFactor = Number.isFinite(amp) && amp > 0 ? amp * amp : 1;
+  return base * Math.pow(oc, POWER_CLOCK_EXPONENT) * ampFactor * machines;
+}
+
+function roundPowerMw(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n <= 0) return 0;
+  return Math.round(n * 1000) / 1000;
+}
+
 function computeMinTargetOutput(basePerMin, machineCount, somersloopMask = 0, schema = null) {
   const base = Number(basePerMin);
   const machines = clampMachineCount(machineCount);
@@ -444,6 +472,8 @@ module.exports = {
   normalizeSomersloopMask,
   countSomersloopChecked,
   computeSomersloopMultiplier,
+  computeMachinePowerMw,
+  roundPowerMw,
   computeMaxTargetOutput,
   computeOverclock,
   computeTargetOutput,
@@ -458,4 +488,5 @@ module.exports = {
   DEFAULT_MACHINE_COUNT,
   PRODUCTION_DECIMALS,
   MACHINE_SLIDER_MAX,
+  POWER_CLOCK_EXPONENT,
 };

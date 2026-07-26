@@ -73,14 +73,17 @@ function seedBuildings(db, persist, { force = false } = {}) {
 
   for (const building of buildings) {
     const somersloopSlots = getSomersloopSlotsForBuilding(building);
+    const powerConsumption = Number(building.power_consumption);
+    const powerMw = Number.isFinite(powerConsumption) ? powerConsumption : 0;
     db.run(
-      `INSERT INTO buildings (slug, name, category, game_id, image, somersloop_slots)
-       VALUES (?, ?, ?, ?, ?, ?)
+      `INSERT INTO buildings (slug, name, category, game_id, image, power_consumption, somersloop_slots)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(slug) DO UPDATE SET
          name = excluded.name,
          category = excluded.category,
          game_id = excluded.game_id,
          image = excluded.image,
+         power_consumption = excluded.power_consumption,
          somersloop_slots = excluded.somersloop_slots`,
       [
         building.slug,
@@ -88,6 +91,7 @@ function seedBuildings(db, persist, { force = false } = {}) {
         building.category,
         building.game_id,
         building.image,
+        powerMw,
         somersloopSlots,
       ]
     );

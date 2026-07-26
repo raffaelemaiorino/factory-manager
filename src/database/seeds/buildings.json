@@ -1,7 +1,7 @@
 {
-  "dataVersion": 3,
+  "dataVersion": 4,
   "source": "https://satisfactory-calculator.com/it/buildings",
-  "importedAt": "2026-07-04T08:47:06.657Z",
+  "importedAt": "2026-07-26T07:03:20.519Z",
   "categories": [
     {
       "slug": "estrazione",
@@ -50,49 +50,56 @@
       "slug": "miner-mk1",
       "name": "Trivella Mk.1",
       "category": "estrazione",
-      "image": "assets/buildings/Build_MinerMk1_C.png"
+      "image": "assets/buildings/Build_MinerMk1_C.png",
+      "power_consumption": 5
     },
     {
       "game_id": "Build_MinerMk2_C",
       "slug": "miner-mk2",
       "name": "Trivella Mk.2",
       "category": "estrazione",
-      "image": "assets/buildings/Build_MinerMk2_C.png"
+      "image": "assets/buildings/Build_MinerMk2_C.png",
+      "power_consumption": 15
     },
     {
       "game_id": "Build_MinerMk3_C",
       "slug": "miner-mk3",
       "name": "Trivella Mk.3",
       "category": "estrazione",
-      "image": "assets/buildings/Build_MinerMk3_C.png"
+      "image": "assets/buildings/Build_MinerMk3_C.png",
+      "power_consumption": 45
     },
     {
       "game_id": "Build_OilPump_C",
       "slug": "oil-pump",
       "name": "Estrattore di petrolio",
       "category": "estrazione",
-      "image": "assets/buildings/Build_OilPump_C.png"
+      "image": "assets/buildings/Build_OilPump_C.png",
+      "power_consumption": 40
     },
     {
       "game_id": "Build_WaterPump_C",
       "slug": "water-pump",
       "name": "Estrattore d'acqua",
       "category": "estrazione",
-      "image": "assets/buildings/Build_WaterPump_C.png"
+      "image": "assets/buildings/Build_WaterPump_C.png",
+      "power_consumption": 20
     },
     {
       "game_id": "Build_FrackingSmasher_C",
       "slug": "fracking-smasher",
       "name": "Pressurizzatore per pozzi di risorse",
       "category": "estrazione",
-      "image": "assets/buildings/Build_FrackingSmasher_C.png"
+      "image": "assets/buildings/Build_FrackingSmasher_C.png",
+      "power_consumption": 150
     },
     {
       "game_id": "Build_FrackingExtractor_C",
       "slug": "fracking-extractor",
       "name": "Estrattore per pozzo di risorse",
       "category": "estrazione",
-      "image": "assets/buildings/Build_FrackingExtractor_C.png"
+      "image": "assets/buildings/Build_FrackingExtractor_C.png",
+      "power_consumption": 0
     },
     {
       "game_id": "Build_SmelterMk1_C",
@@ -100,7 +107,8 @@
       "name": "Fonderia",
       "category": "produzione",
       "somersloop_slots": 1,
-      "image": "assets/buildings/Build_SmelterMk1_C.png"
+      "image": "assets/buildings/Build_SmelterMk1_C.png",
+      "power_consumption": 4
     },
     {
       "game_id": "Build_FoundryMk1_C",
@@ -108,7 +116,8 @@
       "name": "Fucina",
       "category": "produzione",
       "somersloop_slots": 2,
-      "image": "assets/buildings/Build_FoundryMk1_C.png"
+      "image": "assets/buildings/Build_FoundryMk1_C.png",
+      "power_consumption": 16
     },
     {
       "game_id": "Build_ConstructorMk1_C",
@@ -116,7 +125,8 @@
       "name": "Costruttore",
       "category": "produzione",
       "somersloop_slots": 1,
-      "image": "assets/buildings/Build_ConstructorMk1_C.png"
+      "image": "assets/buildings/Build_ConstructorMk1_C.png",
+      "power_consumption": 4
     },
     {
       "game_id": "Build_AssemblerMk1_C",
@@ -124,7 +134,8 @@
       "name": "Assemblatore",
       "category": "produzione",
       "somersloop_slots": 2,
-      "image": "assets/buildings/Build_AssemblerMk1_C.png"
+      "image": "assets/buildings/Build_AssemblerMk1_C.png",
+      "power_consumption": 15
     },
     {
       "game_id": "Build_ManufacturerMk1_C",
@@ -132,7 +143,8 @@
       "name": "Produttore",
       "category": "produzione",
       "somersloop_slots": 4,
-      "image": "assets/buildings/Build_ManufacturerMk1_C.png"
+      "image": "assets/buildings/Build_ManufacturerMk1_C.png",
+      "power_consumption": 55
     },
     {
       "game_id": "Build_OilRefinery_C",
@@ -140,14 +152,16 @@
       "name": "Raffineria",
       "category": "produzione",
       "somersloop_slots": 2,
-      "image": "assets/buildings/Build_OilRefinery_C.png"
+      "image": "assets/buildings/Build_OilRefinery_C.png",
+      "power_consumption": 30
     },
     {
       "game_id": "Build_Packager_C",
       "slug": "packager",
       "name": "Imballatrice",
       "category": "produzione",
-      "image": "assets/buildings/Build_Packager_C.png"
+      "image": "assets/buildings/Build_Packager_C.png",
+      "power_consumption": 10
     },
     {
       "game_id": "Build_Blender_C",
@@ -155,7 +169,8 @@
       "name": "Miscelatore",
       "category": "produzione",
       "somersloop_slots": 4,
-      "image": "assets/buildings/Build_Blender_C.png"
+      "image": "assets/buildings/Build_Blender_C.png",
+      "power_consumption": 75
     },
     {
       "game_id": "Build_HadronCollider_C",

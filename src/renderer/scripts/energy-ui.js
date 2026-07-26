@@ -650,7 +650,10 @@
     }
 
     const powerShardsHtml =
-      UI.renderPowerShardsSummary?.(UI.computeDetailPowerShards?.(generators, extractions) ?? 0) ??
+      UI.renderPowerShardsSummary?.(
+        UI.computeDetailPowerShards?.(generators, extractions) ?? 0,
+        UI.computeExtractionsPowerMw?.(extractions) ?? 0
+      ) ??
       '';
 
     if (!rows.length && !powerShardsHtml) return '';
@@ -885,6 +888,10 @@
                 <label class="production-config-label" for="energy-extraction-power-${extraction.id}">${escapeHtml(t('production.configPowerShard'))}</label>
                 <input type="text" class="production-config-input production-config-readonly production-extraction-power-shards" id="energy-extraction-power-${extraction.id}" readonly tabindex="-1" value="${UI.computeTotalPowerShards?.(extraction.overclock, nodeCount) ?? 0}" />
               </div>
+              <div class="production-config-field">
+                <label class="production-config-label" for="energy-extraction-power-mw-${extraction.id}">${escapeHtml(t('production.configPowerConsumption'))}</label>
+                <input type="text" class="production-config-input production-config-readonly production-extraction-power-mw" id="energy-extraction-power-mw-${extraction.id}" readonly tabindex="-1" value="${(UI.formatRateWithUnit ?? ((v, u) => `${v} ${u}`))(window.ProductionScale.roundPowerMw(window.ProductionScale.computeMachinePowerMw(Number(extraction.power_consumption) || 0, extraction.overclock, nodeCount, 1)), 'MW')}" />
+              </div>
             </div>
           </div>
           <aside class="production-extraction-building">
@@ -892,7 +899,13 @@
             <span class="production-extraction-building-name">${escapeHtml(extraction.building_name || defaultBuildingName)}</span>
             <span class="production-extraction-building-config">${UI.formatExtractionBuildingConfigContent?.(extraction, outputUnit) ?? ''}</span>
             <span class="production-extraction-output">${(UI.formatRateWithUnit ?? formatProductionValue)(outputRate, outputUnit)}</span>
-            ${UI.renderBuildingPowerShards?.(extraction.overclock, nodeCount) ?? ''}
+            ${
+              UI.renderBuildingPowerShards?.({
+                overclock: extraction.overclock,
+                machine_count: nodeCount,
+                power_consumption: extraction.power_consumption,
+              }) ?? ''
+            }
           </aside>
         </div>
       </article>`;

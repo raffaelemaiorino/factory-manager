@@ -9,6 +9,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.50.1] - 2026-07-26
+
+### Changed
+- Dashboard: KPI boxes laid out in 4 columns
+
+## [1.50.0] - 2026-07-26
+
+### Changed
+- Sticky top menu bar: stays visible while scrolling (including page-level horizontal scroll)
+
+## [1.44.1] - 2026-07-26
+
+### Added
+- Dashboard: explicit power coverage status (Covered / Deficit / Uncovered) with output vs use comparison and surplus or shortfall MW
+
+## [1.44.0] - 2026-07-26
+
+### Added
+- Dashboard: power-use and balance KPIs, Output vs Use chart with top consuming chains, and an alert when use exceeds output
+
+## [1.43.1] - 2026-07-26
+
+### Changed
+- Info box: lightning icon next to total power use (aligned with Power Shards)
+
+## [1.43.0] - 2026-07-26
+
+### Added
+- Calculated power use (MW) on production steps and extractions from overclock and Somersloop; total in the Info box (not on generators)
+
+## [1.42.0] - 2026-07-26
+
+### Added
+- Base power consumption (MW) in the default building catalog for extractors and production machines (excluding generators and variable-power buildings)
+
 ## [1.41.1] - 2026-07-26
 
 ### Changed

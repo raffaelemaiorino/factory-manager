@@ -41,6 +41,7 @@
 
 html {
   height: 100%;
+  overflow-x: clip;
 }
 
 html,
@@ -53,6 +54,8 @@ body {
 body {
   min-height: 100%;
   background-color: var(--bg-main);
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body::before {
@@ -82,8 +85,18 @@ a:hover {
   flex-direction: column;
 }
 
-/* Top bar — stile SCIM */
+.app-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Top bar — stile SCIM; resta fissa in cima anche con scroll */
 .topbar {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -405,10 +418,10 @@ a:hover {
 }
 
 .dashboard-kpi-grid {
-  grid-template-columns: repeat(3, 1fr);
-  min-width: 360px;
+  grid-template-columns: repeat(4, 1fr);
+  min-width: 420px;
   flex: 1;
-  max-width: 520px;
+  max-width: 640px;
 }
 
 .stat-value--compact {
@@ -592,7 +605,7 @@ a:hover {
 
 .dashboard-charts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -740,6 +753,67 @@ a:hover {
 
 .dashboard-bar-fill--power {
   background: linear-gradient(90deg, rgba(59, 130, 246, 0.85), #60a5fa);
+}
+
+.dashboard-bar-fill--produced {
+  background: linear-gradient(90deg, #2f9e44, #51cf66);
+}
+
+.dashboard-bar-fill--consumed {
+  background: linear-gradient(90deg, #e8590c, var(--accent));
+}
+
+.dashboard-chart-section-label {
+  margin: 0.35rem 0 0.1rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.dashboard-power-coverage {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.65rem 0.75rem;
+  margin-bottom: 0.35rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-main);
+}
+
+.dashboard-power-coverage--ok {
+  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.06);
+}
+
+.dashboard-power-coverage--deficit {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.dashboard-power-coverage-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.dashboard-power-coverage-text strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dashboard-power-coverage--ok .dashboard-power-coverage-text strong {
+  color: var(--success);
+}
+
+.dashboard-power-coverage--deficit .dashboard-power-coverage-text strong {
+  color: #f87171;
 }
 
 .dashboard-bar-value {
@@ -1384,6 +1458,16 @@ a:hover {
   height: 24px;
   object-fit: contain;
   flex-shrink: 0;
+}
+
+.production-external-icon--bolt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--accent);
+  object-fit: unset;
 }
 
 .production-external-rate {
@@ -3404,6 +3488,40 @@ select.production-config-input option:checked {
 .craft-building-power-shards-label strong {
   font-weight: 700;
   color: var(--accent);
+}
+
+.craft-building-power-consumption {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.craft-building-power-consumption-icon {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.craft-building-power-consumption-label {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.3;
+  text-align: left;
+  min-width: 0;
+}
+
+.craft-building-power-consumption-label strong {
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .craft-schema.alt {

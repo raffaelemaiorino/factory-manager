@@ -378,6 +378,8 @@ window.ProductionUI = {
   formatMachineCountInput,
   computeTotalPowerShards,
   computeDetailPowerShards,
+  computeDetailPowerMw,
+  computeExtractionsPowerMw,
   renderPowerShardsSummary,
   formatExtractionBuildingConfigContent,
   getExtractionOutputUnit,
@@ -663,6 +665,8 @@ async function initDashboard() {
       `<p class="dashboard-empty">${escapeHtml(t('dashboard.errorCharts'))}</p>`;
     document.getElementById('dashboard-chart-objectives').innerHTML = '';
     document.getElementById('dashboard-chart-power').innerHTML = '';
+    const balanceChart = document.getElementById('dashboard-chart-balance');
+    if (balanceChart) balanceChart.innerHTML = '';
   }
 }
 
@@ -697,6 +701,60 @@ function computeChainPowerShards(steps = []) {
   return steps.reduce(
     (sum, step) => sum + computeTotalPowerShards(step.overclock, step.machine_count),
     0
+  );
+}
+
+function getStepPowerBaseMw(step) {
+  return (
+    Number(step?.schema?.power_consumption) ||
+    Number(step?.power_consumption) ||
+    0
+  );
+}
+
+function getStepSomersloopMult(step) {
+  const schema = step?.schema;
+  const slots = window.ProductionScale.getSomersloopSlots(schema);
+  return window.ProductionScale.computeSomersloopMultiplier(slots, step?.somersloop_mask ?? 0);
+}
+
+function computeStepPowerMw(step) {
+  return window.ProductionScale.roundPowerMw(
+    window.ProductionScale.computeMachinePowerMw(
+      getStepPowerBaseMw(step),
+      step?.overclock,
+      step?.machine_count,
+      getStepSomersloopMult(step)
+    )
+  );
+}
+
+function computeExtractionPowerMw(extraction) {
+  return window.ProductionScale.roundPowerMw(
+    window.ProductionScale.computeMachinePowerMw(
+      Number(extraction?.power_consumption) || 0,
+      extraction?.overclock,
+      extraction?.node_count ?? 1,
+      1
+    )
+  );
+}
+
+function computeChainPowerMw(steps = []) {
+  return window.ProductionScale.roundPowerMw(
+    steps.reduce((sum, step) => sum + computeStepPowerMw(step), 0)
+  );
+}
+
+function computeExtractionsPowerMw(extractions = []) {
+  return window.ProductionScale.roundPowerMw(
+    extractions.reduce((sum, extraction) => sum + computeExtractionPowerMw(extraction), 0)
+  );
+}
+
+function computeDetailPowerMw(machines = [], extractions = []) {
+  return window.ProductionScale.roundPowerMw(
+    computeChainPowerMw(machines) + computeExtractionsPowerMw(extractions)
   );
 }
 
@@ -788,12 +846,16 @@ function buildProductionProjectSummary(chain, detail) {
   const health = getProductionChainHealth(steps, extractions);
   const machines = computeChainMachineCount(steps);
   const nodes = computeChainNodeCount(extractions);
-  const powerShards = computeChainPowerShards(steps);
+  const powerShards = computeDetailPowerShards(steps, extractions);
+  const powerMw = computeDetailPowerMw(steps, extractions);
 
   const metrics = [];
   if (machines > 0) metrics.push(t('dashboard.metricsMachines', { count: machines }));
   if (nodes > 0) metrics.push(t('dashboard.metricsNodes', { count: nodes }));
   if (powerShards > 0) metrics.push(t('dashboard.metricsPowerShards', { count: powerShards }));
+  if (powerMw > 0) {
+    metrics.push(t('dashboard.metricsMw', { value: formatProductionValue(powerMw) }));
+  }
 
   return {
     id: chain.id,
@@ -833,6 +895,21 @@ function buildEnergyProjectSummary(chain, detail) {
 
 function collectDashboardAlerts(projects) {
   const alerts = [];
+  const powerTotals = computeDashboardPowerTotals(projects);
+
+  if (powerTotals.consumedMw > 0 && powerTotals.balanceMw < -0.001) {
+    const shortfall = window.ProductionScale.roundPowerMw(Math.abs(powerTotals.balanceMw));
+    alerts.push({
+      projectId: null,
+      projectType: null,
+      projectName: t('dashboard.alertPowerBalanceProject'),
+      itemName: t('dashboard.alertPowerShortfall'),
+      missing: shortfall,
+      missingText: formatRateWithUnit(shortfall, 'MW'),
+      sortValue: shortfall,
+      kind: 'power',
+    });
+  }
 
   for (const project of projects) {
     if (project.type === 'production') {
@@ -1218,10 +1295,165 @@ function renderDashboardPowerChart(mix) {
     .join('');
 }
 
+function computeDashboardPowerTotals(projects) {
+  let producedMw = 0;
+  let consumedMw = 0;
+  const consumptionByProject = [];
+
+  for (const project of projects) {
+    if (project.type === 'production') {
+      const steps = project.detail?.steps ?? [];
+      const extractions = project.detail?.extractions ?? [];
+      const mw = computeDetailPowerMw(steps, extractions);
+      consumedMw += mw;
+      if (mw > 0) {
+        consumptionByProject.push({
+          projectId: project.id,
+          projectName: project.name,
+          mw,
+        });
+      }
+      continue;
+    }
+
+    const generators = project.detail?.generators ?? [];
+    const extractions = project.detail?.extractions ?? [];
+    producedMw += generators.reduce((sum, gen) => sum + (gen.power_output_mw ?? 0), 0);
+    consumedMw += computeExtractionsPowerMw(extractions);
+  }
+
+  return {
+    producedMw: window.ProductionScale.roundPowerMw(producedMw),
+    consumedMw: window.ProductionScale.roundPowerMw(consumedMw),
+    balanceMw: window.ProductionScale.roundPowerMw(producedMw - consumedMw),
+    consumptionByProject: consumptionByProject.sort((a, b) => b.mw - a.mw).slice(0, 5),
+  };
+}
+
+function getDashboardPowerCoverage(totals) {
+  const producedMw = Number(totals?.producedMw) || 0;
+  const consumedMw = Number(totals?.consumedMw) || 0;
+  const balanceMw = Number(totals?.balanceMw) || 0;
+
+  if (producedMw <= 0 && consumedMw <= 0) {
+    return {
+      status: 'empty',
+      label: '—',
+      summary: '',
+      kpiText: '—',
+    };
+  }
+
+  if (producedMw <= 0 && consumedMw > 0) {
+    return {
+      status: 'deficit',
+      label: t('dashboard.powerUncovered'),
+      summary: t('dashboard.powerCoverageShortfall', {
+        mw: formatRateWithUnit(consumedMw, 'MW'),
+      }),
+      kpiText: t('dashboard.powerUncovered'),
+    };
+  }
+
+  if (balanceMw >= -0.001) {
+    const margin = balanceMw > 0.001 ? balanceMw : 0;
+    return {
+      status: 'ok',
+      label: t('dashboard.powerCovered'),
+      summary:
+        margin > 0
+          ? t('dashboard.powerCoverageSurplus', {
+              mw: formatRateWithUnit(margin, 'MW'),
+            })
+          : t('dashboard.powerCoverageExact'),
+      kpiText: t('dashboard.powerCovered'),
+    };
+  }
+
+  const shortfall = window.ProductionScale.roundPowerMw(Math.abs(balanceMw));
+  return {
+    status: 'deficit',
+    label: t('dashboard.powerDeficit'),
+    summary: t('dashboard.powerCoverageShortfall', {
+      mw: formatRateWithUnit(shortfall, 'MW'),
+    }),
+    kpiText: t('dashboard.powerDeficit'),
+  };
+}
+
+function renderDashboardBalanceChart(projects) {
+  const container = document.getElementById('dashboard-chart-balance');
+  if (!container) return;
+
+  const totals = computeDashboardPowerTotals(projects);
+  if (totals.producedMw <= 0 && totals.consumedMw <= 0) {
+    container.innerHTML = `<p class="dashboard-empty">${escapeHtml(t('dashboard.emptyNoPowerBalance'))}</p>`;
+    return;
+  }
+
+  const coverage = getDashboardPowerCoverage(totals);
+  const coverageHtml = `
+    <div class="dashboard-power-coverage dashboard-power-coverage--${coverage.status}">
+      <span class="dashboard-badge dashboard-badge--${
+        coverage.status === 'ok' ? 'ok' : 'error'
+      }">${escapeHtml(coverage.label)}</span>
+      <span class="dashboard-power-coverage-text">
+        <span>${escapeHtml(
+          t('dashboard.powerCoverageCompare', {
+            produced: formatRateWithUnit(totals.producedMw, 'MW'),
+            consumed: formatRateWithUnit(totals.consumedMw, 'MW'),
+          })
+        )}</span>
+        <strong>${escapeHtml(coverage.summary)}</strong>
+      </span>
+    </div>`;
+
+  const max = Math.max(totals.producedMw, totals.consumedMw, 0.001);
+  const summaryRows = [
+    renderDashboardBarRow({
+      label: t('dashboard.balanceProduced'),
+      value: totals.producedMw,
+      max,
+      valueText: formatRateWithUnit(totals.producedMw, 'MW'),
+      iconClass: 'fa-bolt',
+      fillClass: 'dashboard-bar-fill--produced',
+    }),
+    renderDashboardBarRow({
+      label: t('dashboard.balanceConsumed'),
+      value: totals.consumedMw,
+      max,
+      valueText: formatRateWithUnit(totals.consumedMw, 'MW'),
+      iconClass: 'fa-bolt',
+      fillClass: 'dashboard-bar-fill--consumed',
+    }),
+  ];
+
+  const projectRows = totals.consumptionByProject.length
+    ? `<p class="dashboard-chart-section-label">${escapeHtml(t('dashboard.balanceTopConsumers'))}</p>${totals.consumptionByProject
+        .map((entry) =>
+          renderDashboardBarRow({
+            label: entry.projectName,
+            value: entry.mw,
+            max: totals.consumptionByProject[0].mw,
+            valueText: formatRateWithUnit(entry.mw, 'MW'),
+            iconClass: 'fa-link',
+            fillClass: 'dashboard-bar-fill--consumed',
+            interactive: true,
+            projectType: 'production',
+            projectId: entry.projectId,
+          })
+        )
+        .join('')}`
+    : '';
+
+  container.innerHTML = `${coverageHtml}${summaryRows.join('')}${projectRows}`;
+}
+
 function renderDashboardCharts(projects) {
   renderDashboardDeficitsChart(collectTopDeficits(projects));
   renderDashboardObjectivesChart(collectProductionObjectivesChart(projects));
   renderDashboardPowerChart(collectGeneratorMwMix(projects));
+  renderDashboardBalanceChart(projects);
 }
 
 function renderDashboardKpis(status, projects) {
@@ -1232,7 +1464,6 @@ function renderDashboardKpis(status, projects) {
   let totalGenerators = 0;
   let totalNodes = 0;
   let totalPowerShards = 0;
-  let totalEnergyMw = 0;
 
   for (const project of projects) {
     if (project.type === 'production') {
@@ -1240,25 +1471,55 @@ function renderDashboardKpis(status, projects) {
       const extractions = project.detail?.extractions ?? [];
       totalProductionMachines += computeChainMachineCount(steps);
       totalNodes += computeChainNodeCount(extractions);
-      totalPowerShards += computeChainPowerShards(steps);
+      totalPowerShards += computeDetailPowerShards(steps, extractions);
     } else {
       const generators = project.detail?.generators ?? [];
+      const extractions = project.detail?.extractions ?? [];
       totalGenerators += generators.reduce(
         (sum, gen) => sum + Math.max(0, Math.round(Number(gen.machine_count) || 0)),
         0
       );
-      totalEnergyMw += generators.reduce((sum, gen) => sum + (gen.power_output_mw ?? 0), 0);
+      totalPowerShards += computeDetailPowerShards(generators, extractions);
     }
   }
 
+  const powerTotals = computeDashboardPowerTotals(projects);
   const deficitCount = collectDashboardAlerts(projects).length;
 
   document.getElementById('kpi-production-chains').textContent = formatDisplayInteger(productionCount);
   document.getElementById('kpi-energy-chains').textContent = formatDisplayInteger(energyCount);
 
   const energyMwEl = document.getElementById('kpi-energy-mw');
-  energyMwEl.textContent = totalEnergyMw > 0 ? formatRateWithUnit(totalEnergyMw, 'MW') : '—';
-  energyMwEl.classList.toggle('ok', totalEnergyMw > 0);
+  energyMwEl.textContent =
+    powerTotals.producedMw > 0 ? formatRateWithUnit(powerTotals.producedMw, 'MW') : '—';
+  energyMwEl.classList.toggle('ok', powerTotals.producedMw > 0);
+
+  const consumptionEl = document.getElementById('kpi-consumption-mw');
+  if (consumptionEl) {
+    consumptionEl.textContent =
+      powerTotals.consumedMw > 0 ? formatRateWithUnit(powerTotals.consumedMw, 'MW') : '—';
+    consumptionEl.classList.toggle('ok', powerTotals.consumedMw > 0);
+  }
+
+  const balanceEl = document.getElementById('kpi-power-balance');
+  if (balanceEl) {
+    const coverage = getDashboardPowerCoverage(powerTotals);
+    if (coverage.status === 'empty') {
+      balanceEl.textContent = '—';
+      balanceEl.classList.remove('ok', 'warn');
+      balanceEl.title = '';
+    } else {
+      const sign = powerTotals.balanceMw > 0 ? '+' : '';
+      const delta = `${sign}${formatRateWithUnit(powerTotals.balanceMw, 'MW')}`;
+      balanceEl.textContent = `${coverage.kpiText} · ${delta}`;
+      balanceEl.classList.toggle('ok', coverage.status === 'ok');
+      balanceEl.classList.toggle('warn', coverage.status === 'deficit');
+      balanceEl.title = t('dashboard.powerCoverageCompare', {
+        produced: formatRateWithUnit(powerTotals.producedMw, 'MW'),
+        consumed: formatRateWithUnit(powerTotals.consumedMw, 'MW'),
+      });
+    }
+  }
 
   document.getElementById('kpi-machines').textContent = formatDisplayInteger(totalProductionMachines);
   document.getElementById('kpi-generators').textContent = formatDisplayInteger(totalGenerators);
@@ -1334,16 +1595,20 @@ function renderDashboardAlertsList(alerts) {
 
   container.innerHTML = alerts
     .slice(0, 12)
-    .map(
-      (alert) => `
+    .map((alert) => {
+      const isPower = alert.kind === 'power';
+      const attrs = isPower
+        ? `data-dashboard-action="energy"`
+        : `data-project-type="${alert.projectType}" data-project-id="${alert.projectId}"`;
+      const icon = isPower ? 'fa-bolt' : 'fa-triangle-exclamation';
+      return `
         <button
           type="button"
           class="dashboard-alert-row"
-          data-project-type="${alert.projectType}"
-          data-project-id="${alert.projectId}"
+          ${attrs}
         >
           <span class="dashboard-alert-icon" aria-hidden="true">
-            <i class="fa-solid fa-triangle-exclamation"></i>
+            <i class="fa-solid ${icon}"></i>
           </span>
           <span class="dashboard-alert-body">
             <span class="dashboard-alert-title">
@@ -1352,8 +1617,8 @@ function renderDashboardAlertsList(alerts) {
             </span>
             <span class="dashboard-alert-project">${escapeHtml(alert.projectName)}</span>
           </span>
-        </button>`
-    )
+        </button>`;
+    })
     .join('');
 }
 
@@ -1417,8 +1682,14 @@ function setupDashboard() {
   const projectsEl = document.getElementById('dashboard-projects');
   const alertsEl = document.getElementById('dashboard-alerts');
   const objectivesChartEl = document.getElementById('dashboard-chart-objectives');
+  const balanceChartEl = document.getElementById('dashboard-chart-balance');
 
   const handleProjectClick = (event) => {
+    const energyAction = event.target.closest('[data-dashboard-action="energy"]');
+    if (energyAction) {
+      switchView('energy');
+      return;
+    }
     const row = event.target.closest('[data-project-type][data-project-id]');
     if (!row) return;
     openDashboardProject(row.dataset.projectType, Number(row.dataset.projectId));
@@ -1427,6 +1698,7 @@ function setupDashboard() {
   projectsEl?.addEventListener('click', handleProjectClick);
   alertsEl?.addEventListener('click', handleProjectClick);
   objectivesChartEl?.addEventListener('click', handleProjectClick);
+  balanceChartEl?.addEventListener('click', handleProjectClick);
 }
 
 function itemHasSchemas(item) {
@@ -2944,7 +3216,20 @@ function renderProductionObjectivesSummary(steps = []) {
     </div>`;
 }
 
-function renderPowerShardsSummary(total) {
+function renderPowerShardsSummary(totalShards, totalMw = 0) {
+  const mw = Number(totalMw) || 0;
+  const mwRow =
+    mw > 0
+      ? `
+          <tr>
+            <td class="production-external-resource">
+              <i class="fa-solid fa-bolt production-external-icon production-external-icon--bolt" aria-hidden="true"></i>
+              <span>${escapeHtml(t('production.totalPowerConsumption'))}</span>
+            </td>
+            <td class="production-external-rate">${escapeHtml(formatRateWithUnit(mw, 'MW'))}</td>
+          </tr>`
+      : '';
+
   return `
     <div class="production-external-summary-inner production-external-summary-inner--power-shards">
       <table class="production-external-table">
@@ -2960,8 +3245,9 @@ function renderPowerShardsSummary(total) {
               <img class="production-external-icon" src="${POWER_SHARD_IMAGE}" alt="" />
               <span>${escapeHtml(t('production.totalPowerShards'))}</span>
             </td>
-            <td class="production-external-rate">${formatDisplayInteger(total)}</td>
+            <td class="production-external-rate">${formatDisplayInteger(totalShards)}</td>
           </tr>
+          ${mwRow}
         </tbody>
       </table>
     </div>`;
@@ -2973,7 +3259,10 @@ function renderProductionExternalSummary(steps, extractions = []) {
   const objectivesHtml = steps.length ? renderProductionObjectivesSummary(steps) : '';
   const powerShardsHtml =
     steps.length || extractions.length
-      ? renderPowerShardsSummary(computeDetailPowerShards(steps, extractions))
+      ? renderPowerShardsSummary(
+          computeDetailPowerShards(steps, extractions),
+          computeDetailPowerMw(steps, extractions)
+        )
       : '';
 
   if (!nodesHtml && !mineralsHtml && !objectivesHtml && !powerShardsHtml) return '';
@@ -3337,18 +3626,33 @@ function renderProductionStep(step, allSteps = []) {
               />
             </div>
           </div>
-          <div class="production-config-field">
-            <label class="production-config-label" for="production-power-shards-${step.id}">
-              ${escapeHtml(t('production.configPowerShard'))}
-            </label>
-            <input
-              type="text"
-              class="production-config-input production-config-readonly production-power-shards"
-              id="production-power-shards-${step.id}"
-              readonly
-              tabindex="-1"
-              value="${computeTotalPowerShards(step.overclock, step.machine_count)}"
-            />
+          <div class="production-config-oc-machines">
+            <div class="production-config-field">
+              <label class="production-config-label" for="production-power-shards-${step.id}">
+                ${escapeHtml(t('production.configPowerShard'))}
+              </label>
+              <input
+                type="text"
+                class="production-config-input production-config-readonly production-power-shards"
+                id="production-power-shards-${step.id}"
+                readonly
+                tabindex="-1"
+                value="${computeTotalPowerShards(step.overclock, step.machine_count)}"
+              />
+            </div>
+            <div class="production-config-field">
+              <label class="production-config-label" for="production-power-mw-${step.id}">
+                ${escapeHtml(t('production.configPowerConsumption'))}
+              </label>
+              <input
+                type="text"
+                class="production-config-input production-config-readonly production-power-mw"
+                id="production-power-mw-${step.id}"
+                readonly
+                tabindex="-1"
+                value="${formatRateWithUnit(computeStepPowerMw(step), 'MW')}"
+              />
+            </div>
           </div>
           <div class="production-config-field production-somersloop-field">
             <label class="production-config-label">Somersloop</label>
@@ -3432,6 +3736,8 @@ function renderProductionStep(step, allSteps = []) {
           output_unit: outputUnit,
           schema,
           scaled_inputs: scaledInputs,
+          somersloop_mask: step.somersloop_mask,
+          power_consumption: schema?.power_consumption,
         },
         hideSchemaHeader: true,
         inputItemRenderer: (io) =>
@@ -3629,6 +3935,19 @@ function updateStepConfigInputs(stepEl, config, step) {
     powerShardsInput.value = String(computeTotalPowerShards(config.overclock, config.machine_count));
   }
 
+  const powerMwInput = stepEl.querySelector('.production-power-mw');
+  if (powerMwInput && step) {
+    powerMwInput.value = formatRateWithUnit(
+      computeStepPowerMw({
+        ...step,
+        overclock: config.overclock,
+        machine_count: config.machine_count,
+        somersloop_mask: config.somersloop_mask ?? step.somersloop_mask,
+      }),
+      'MW'
+    );
+  }
+
   const baseHintEl = stepEl.querySelector('.craft-building-base');
   if (baseHintEl && step?.schema) {
     const primary = window.ProductionScale.getPrimaryOutput(step.schema, step.item);
@@ -3647,7 +3966,13 @@ function updateStepConfigInputs(stepEl, config, step) {
 
   const buildingAside = stepEl.querySelector('.craft-schema-building');
   if (buildingAside) {
-    updateBuildingPowerShardsEl(buildingAside, config.overclock, config.machine_count);
+    updateBuildingPowerShardsEl(buildingAside, {
+      overclock: config.overclock,
+      machine_count: config.machine_count,
+      power_consumption: getStepPowerBaseMw(step),
+      somersloop_mask: config.somersloop_mask ?? step?.somersloop_mask,
+      schema: step?.schema,
+    });
   }
 
   const totalOutputEl = stepEl.querySelector('.craft-building-total-output');
@@ -4601,6 +4926,19 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
                 value="${computeTotalPowerShards(extraction.overclock, nodeCount)}"
               />
             </div>
+            <div class="production-config-field">
+              <label class="production-config-label" for="production-extraction-power-mw-${extraction.id}">
+                ${escapeHtml(t('production.configPowerConsumption'))}
+              </label>
+              <input
+                type="text"
+                class="production-config-input production-config-readonly production-extraction-power-mw"
+                id="production-extraction-power-mw-${extraction.id}"
+                readonly
+                tabindex="-1"
+                value="${formatRateWithUnit(computeExtractionPowerMw(extraction), 'MW')}"
+              />
+            </div>
           </div>
           ${linkedConsumersSection}
         </div>
@@ -4609,7 +4947,11 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
           <span class="production-extraction-building-name">${escapeHtml(extraction.building_name || defaultBuildingName)}</span>
           <span class="production-extraction-building-config">${formatExtractionBuildingConfigContent(extraction, outputUnit)}</span>
           <span class="production-extraction-output">${formatRateWithUnit(outputRate, outputUnit)}</span>
-          ${renderBuildingPowerShards(extraction.overclock, nodeCount)}
+          ${renderBuildingPowerShards({
+            overclock: extraction.overclock,
+            machine_count: nodeCount,
+            power_consumption: extraction.power_consumption,
+          })}
         </aside>
       </div>
     </article>`;
@@ -4712,9 +5054,18 @@ function updateExtractionConfigDisplay(extractionEl, extraction) {
     powerShards.value = String(computeTotalPowerShards(extraction.overclock, nodeCount));
   }
 
+  const powerMw = extractionEl.querySelector('.production-extraction-power-mw');
+  if (powerMw) {
+    powerMw.value = formatRateWithUnit(computeExtractionPowerMw(extraction), 'MW');
+  }
+
   const extractionBuilding = extractionEl.querySelector('.production-extraction-building');
   if (extractionBuilding) {
-    updateBuildingPowerShardsEl(extractionBuilding, extraction.overclock, nodeCount);
+    updateBuildingPowerShardsEl(extractionBuilding, {
+      overclock: extraction.overclock,
+      machine_count: nodeCount,
+      power_consumption: extraction.power_consumption,
+    });
   }
 
   updateExtractionThemeSelects(extractionEl, extraction);
@@ -6594,26 +6945,66 @@ function computeTotalPowerShards(overclock, machineCount) {
   return computePowerShardsPerMachine(overclock) * machines;
 }
 
-function renderBuildingPowerShards(overclock, machineCount) {
-  const count = formatDisplayInteger(computeTotalPowerShards(overclock, machineCount));
+function renderBuildingPowerShards(overclockOrConfig, machineCount) {
+  const config =
+    overclockOrConfig != null && typeof overclockOrConfig === 'object'
+      ? overclockOrConfig
+      : { overclock: overclockOrConfig, machine_count: machineCount };
+
+  const overclock = config.overclock;
+  const machines = config.machine_count ?? 1;
+  const count = formatDisplayInteger(computeTotalPowerShards(overclock, machines));
   const [before = '', after = ''] = t('production.powerShardsRequired', { count: '\u0000' }).split(
     '\u0000'
   );
+
+  const slots = window.ProductionScale.getSomersloopSlots(config.schema);
+  const somersloopMult = window.ProductionScale.computeSomersloopMultiplier(
+    slots,
+    config.somersloop_mask ?? 0
+  );
+  const powerMw = window.ProductionScale.roundPowerMw(
+    window.ProductionScale.computeMachinePowerMw(
+      Number(config.power_consumption) || Number(config.schema?.power_consumption) || 0,
+      overclock,
+      machines,
+      somersloopMult
+    )
+  );
+  const powerLine =
+    powerMw > 0
+      ? (() => {
+          const mwText = formatRateWithUnit(powerMw, 'MW');
+          const [mwBefore = '', mwAfter = ''] = t('production.powerConsumptionRequired', {
+            mw: '\u0000',
+          }).split('\u0000');
+          return `<div class="craft-building-power-consumption">
+      <i class="fa-solid fa-bolt craft-building-power-consumption-icon" aria-hidden="true"></i>
+      <span class="craft-building-power-consumption-label">${escapeHtml(mwBefore)}<strong>${escapeHtml(
+            mwText
+          )}</strong>${escapeHtml(mwAfter)}</span>
+    </div>`;
+        })()
+      : '';
+
   return `
     <div class="craft-building-power-shards">
       <img class="craft-building-power-shards-icon" src="${POWER_SHARD_IMAGE}" alt="" />
       <span class="craft-building-power-shards-label">${escapeHtml(before)}<strong>${escapeHtml(
         count
       )}</strong>${escapeHtml(after)}</span>
-    </div>`;
+    </div>
+    ${powerLine}`;
 }
 
-function updateBuildingPowerShardsEl(container, overclock, machineCount) {
+function updateBuildingPowerShardsEl(container, overclockOrConfig, machineCount) {
   if (!container) return;
-  const existing = container.querySelector('.craft-building-power-shards');
-  const html = renderBuildingPowerShards(overclock, machineCount);
-  if (existing) {
-    existing.outerHTML = html;
+  const existingShards = container.querySelector('.craft-building-power-shards');
+  const existingPower = container.querySelector('.craft-building-power-consumption');
+  const html = renderBuildingPowerShards(overclockOrConfig, machineCount);
+  existingPower?.remove();
+  if (existingShards) {
+    existingShards.outerHTML = html;
     return;
   }
   const inputsPanel = container.querySelector('.craft-building-inputs-panel');
@@ -6979,7 +7370,14 @@ function renderBuildingPanel(schema, buildingConfig = null) {
   const inputsPanel = renderBuildingInputsContent(buildingConfig);
   const powerShards =
     buildingConfig != null
-      ? renderBuildingPowerShards(buildingConfig.overclock, buildingConfig.machine_count)
+      ? renderBuildingPowerShards({
+          overclock: buildingConfig.overclock,
+          machine_count: buildingConfig.machine_count,
+          power_consumption:
+            buildingConfig.power_consumption ?? buildingConfig.schema?.power_consumption,
+          somersloop_mask: buildingConfig.somersloop_mask,
+          schema: buildingConfig.schema,
+        })
       : '';
 
   if (!schema?.building_image) {

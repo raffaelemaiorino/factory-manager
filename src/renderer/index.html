@@ -15,6 +15,7 @@
   </head>
   <body>
     <div class="app" id="app" data-view="dashboard">
+      <div class="app-chrome">
       <header class="topbar">
         <div class="brand brand--compact">
           <img class="brand-logo brand-logo--compact" src="assets/logo.png" alt="FACTORY MANAGER" data-i18n-alt="app.brandAlt" />
@@ -81,6 +82,7 @@
           </button>
         </div>
       </div>
+      </div>
 
       <main class="content">
         <!-- Dashboard -->
@@ -127,6 +129,14 @@
               <div class="stat">
                 <span class="stat-label" data-i18n="dashboard.kpiEnergyMw">Produzione energia</span>
                 <span class="stat-value stat-value--compact" id="kpi-energy-mw">—</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label" data-i18n="dashboard.kpiConsumptionMw">Consumo energia</span>
+                <span class="stat-value stat-value--compact" id="kpi-consumption-mw">—</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label" data-i18n="dashboard.kpiPowerBalance">Bilancio energia</span>
+                <span class="stat-value stat-value--compact" id="kpi-power-balance">—</span>
               </div>
               <div class="stat">
                 <span class="stat-label" data-i18n="dashboard.kpiMachines">Macchine</span>
@@ -204,6 +214,16 @@
                 <p class="dashboard-panel-subtitle" data-i18n="dashboard.chartPowerSub">Potenza per tipo</p>
               </header>
               <div id="dashboard-chart-power" class="dashboard-chart-body">
+                <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
+              </div>
+            </article>
+
+            <article class="card dashboard-chart-panel">
+              <header class="dashboard-panel-header">
+                <h3 data-i18n="dashboard.chartBalance">Bilancio potenza</h3>
+                <p class="dashboard-panel-subtitle" data-i18n="dashboard.chartBalanceSub">Produzione vs consumo aggregato</p>
+              </header>
+              <div id="dashboard-chart-balance" class="dashboard-chart-body">
                 <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
               </div>
             </article>

@@ -9,6 +9,41 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.50.1] - 2026-07-26
+
+### Changed
+- Dashboard: i box KPI sono disposti su 4 colonne
+
+## [1.50.0] - 2026-07-26
+
+### Changed
+- Barra di menu sticky in cima: resta visibile durante lo scroll (anche laterale della pagina)
+
+## [1.44.1] - 2026-07-26
+
+### Added
+- Dashboard: stato copertura energia esplicito (Coperta / Deficit / Non coperta) con confronto produzione vs consumo e margine o MW mancanti
+
+## [1.44.0] - 2026-07-26
+
+### Added
+- Dashboard: KPI consumo e bilancio energia, grafico Produzione vs Consumo con top catene e avviso se il consumo supera la produzione
+
+## [1.43.1] - 2026-07-26
+
+### Changed
+- Box Info: icona fulmine accanto al consumo totale (allineata ai Frammenti Energetici)
+
+## [1.43.0] - 2026-07-26
+
+### Added
+- Consumo elettrico calcolato (MW) su schemi ed estrazioni in base a overclock e Somersloop; totale nel box Info (non sui generatori)
+
+## [1.42.0] - 2026-07-26
+
+### Added
+- Consumo elettrico base (MW) nel catalogo edifici di default per estrattori e macchine di produzione (esclusi generatori e edifici a potenza variabile)
+
 ## [1.41.1] - 2026-07-26
 
 ### Changed

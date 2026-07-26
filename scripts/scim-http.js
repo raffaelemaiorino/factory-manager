@@ -44,4 +44,15 @@ function buildItemDetailUrl(gameId, name, locale = 'it') {
   return `https://satisfactory-calculator.com/${lang}/items/detail/id/${gameId}/name/${slugifyItemName(name)}`;
 }
 
-module.exports = { fetchUrl, fetchBinary, slugifyItemName, buildItemDetailUrl };
+function buildBuildingDetailUrl(gameId, name, locale = 'it') {
+  const lang = String(locale || 'it').toLowerCase();
+  return `https://satisfactory-calculator.com/${lang}/buildings/detail/id/${gameId}/name/${slugifyItemName(name)}`;
+}
+
+module.exports = {
+  fetchUrl,
+  fetchBinary,
+  slugifyItemName,
+  buildItemDetailUrl,
+  buildBuildingDetailUrl,
+};

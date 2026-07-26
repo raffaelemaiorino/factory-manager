@@ -177,6 +177,7 @@ function attachBuildingMeta(db, schema) {
     building_name: building?.name ?? schema.building_name,
     building_image: building?.image ?? null,
     somersloop_slots: building?.somersloop_slots ?? 0,
+    power_consumption: Number(building?.power_consumption) || 0,
   };
 }
 

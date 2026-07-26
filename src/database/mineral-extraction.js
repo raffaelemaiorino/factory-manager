@@ -137,6 +137,7 @@ function mapExtraction(row, item, db) {
     item,
     building_name: building?.name ?? resolved.miner_slug,
     building_image: building?.image ?? null,
+    power_consumption: Number(building?.power_consumption) || 0,
   };
 }
 
