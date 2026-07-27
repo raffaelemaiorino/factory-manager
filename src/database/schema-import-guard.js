@@ -19,6 +19,24 @@ const MAX_IMPORT_MACHINES = 10_000;
 const MAX_IMPORT_NODES = 500;
 const MAX_IMPORT_SORT = 1_000_000;
 
+const PRODUCTION_SCHEMA_FORMATS = new Set([
+  'factory-manager-production-schema',
+  'satisfactory-manager-production-schema',
+]);
+
+const ENERGY_SCHEMA_FORMATS = new Set([
+  'factory-manager-energy-schema',
+  'satisfactory-manager-energy-schema',
+]);
+
+/** @returns {'production' | 'energy' | null} */
+function detectSchemaFormatKind(payload) {
+  const format = payload?.format;
+  if (PRODUCTION_SCHEMA_FORMATS.has(format)) return 'production';
+  if (ENERGY_SCHEMA_FORMATS.has(format)) return 'energy';
+  return null;
+}
+
 const ALLOWED_MINER_SLUGS = new Set([
   'miner-mk1',
   'miner-mk2',
@@ -279,6 +297,9 @@ function prepareEnergyImportSchema(payload, isSupportedBuildingSlug) {
 module.exports = {
   MAX_SCHEMA_JSON_BYTES,
   MAX_IMPORT_ARRAY_ITEMS,
+  PRODUCTION_SCHEMA_FORMATS,
+  ENERGY_SCHEMA_FORMATS,
+  detectSchemaFormatKind,
   assertSchemaFileSize,
   assertImportArrayBudget,
   sanitizeImportString,

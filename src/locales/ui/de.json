@@ -342,7 +342,8 @@
     "detailAltSchemas": "Alternative Rezepte ({count})",
     "detailNoSchemas": "Keine Produktionsrezepte für diese Ressource hinterlegt.",
     "resourceNotFound": "Ressource nicht gefunden.",
-    "detailLoadError": "Fehler beim Laden der Details."
+    "detailLoadError": "Fehler beim Laden der Details.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Rechtliche Hinweise, Attributionen und Haftungsausschluss",
@@ -469,7 +470,10 @@
     "createFailed": "Fehler beim Erstellen.",
     "importFailed": "Fehler beim Importieren des Plans.",
     "pickerEmpty": "Keine Ressourcen gefunden.",
-    "pickerExtractEmpty": "Keine abbaufähigen Ressourcen gefunden."
+    "pickerExtractEmpty": "Keine abbaufähigen Ressourcen gefunden.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Keine Ressourcen gefunden."

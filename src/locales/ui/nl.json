@@ -342,7 +342,8 @@
     "detailAltSchemas": "Alternatieve recepten ({count})",
     "detailNoSchemas": "Geen productierecepten geregistreerd voor deze grondstof.",
     "resourceNotFound": "Grondstof niet gevonden.",
-    "detailLoadError": "Fout bij laden details."
+    "detailLoadError": "Fout bij laden details.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Juridische informatie, attributies en disclaimer",
@@ -469,7 +470,10 @@
     "createFailed": "Fout bij aanmaken.",
     "importFailed": "Fout bij importeren plan.",
     "pickerEmpty": "Geen grondstoffen gevonden.",
-    "pickerExtractEmpty": "Geen winbare grondstoffen gevonden."
+    "pickerExtractEmpty": "Geen winbare grondstoffen gevonden.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Geen grondstoffen gevonden."

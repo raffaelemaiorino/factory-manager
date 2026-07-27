@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.51.0] - 2026-07-27
+
+### Changed
+- Schema import: importing an Energy plan in Production (or vice versa) now shows an in-app popup instead of the system alert, with a clear explanation
+
 ## [1.50.1] - 2026-07-26
 
 ### Changed

@@ -342,7 +342,8 @@
     "detailAltSchemas": "代替レシピ ({count})",
     "detailNoSchemas": "このリソースに登録された生産レシピはありません。",
     "resourceNotFound": "リソースが見つかりません。",
-    "detailLoadError": "詳細の読み込みエラー。"
+    "detailLoadError": "詳細の読み込みエラー。",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "法的情報、帰属、免責事項",
@@ -469,7 +470,10 @@
     "createFailed": "作成中にエラー。",
     "importFailed": "プランのインポート中にエラー。",
     "pickerEmpty": "リソースが見つかりません。",
-    "pickerExtractEmpty": "採掘可能なリソースが見つかりません。"
+    "pickerExtractEmpty": "採掘可能なリソースが見つかりません。",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "リソースが見つかりません。"

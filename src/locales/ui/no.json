@@ -346,7 +346,8 @@
     "detailAltSchemas": "Alternative oppskrifter ({count})",
     "detailNoSchemas": "Ingen produksjonsoppskrifter registrert for denne ressursen.",
     "resourceNotFound": "Ressurs ikke funnet.",
-    "detailLoadError": "Feil ved lasting av detaljer."
+    "detailLoadError": "Feil ved lasting av detaljer.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Juridisk informasjon, attribusjon og ansvarsfraskrivelse",
@@ -473,7 +474,10 @@
     "createFailed": "Feil ved opprettelse.",
     "importFailed": "Feil ved import av plan.",
     "pickerEmpty": "Ingen ressurser funnet.",
-    "pickerExtractEmpty": "Ingen utvinnbare ressurser funnet."
+    "pickerExtractEmpty": "Ingen utvinnbare ressurser funnet.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Ingen ressurser funnet."

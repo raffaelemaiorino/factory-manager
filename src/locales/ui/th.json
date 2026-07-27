@@ -342,7 +342,8 @@
     "detailAltSchemas": "สูตรทางเลือก ({count})",
     "detailNoSchemas": "ไม่มีสูตรการผลิตสำหรับทรัพยากรนี้",
     "resourceNotFound": "ไม่พบทรัพยากร",
-    "detailLoadError": "โหลดรายละเอียดไม่สำเร็จ"
+    "detailLoadError": "โหลดรายละเอียดไม่สำเร็จ",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "ข้อมูลทางกฎหมาย การระบุที่มา และข้อจำกัดความรับผิด",
@@ -469,7 +470,10 @@
     "createFailed": "สร้างไม่สำเร็จ",
     "importFailed": "นำเข้าแผนไม่สำเร็จ",
     "pickerEmpty": "ไม่พบทรัพยากร",
-    "pickerExtractEmpty": "ไม่พบทรัพยากรที่ขุดได้"
+    "pickerExtractEmpty": "ไม่พบทรัพยากรที่ขุดได้",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "ไม่พบทรัพยากร"

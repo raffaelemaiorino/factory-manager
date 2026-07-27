@@ -15,7 +15,11 @@ const {
   DEFAULT_OVERCLOCK,
   DEFAULT_MACHINE_COUNT,
 } = require('./production-scale');
-const { prepareProductionImportSchema } = require('./schema-import-guard');
+const {
+  PRODUCTION_SCHEMA_FORMATS,
+  ENERGY_SCHEMA_FORMATS,
+  prepareProductionImportSchema,
+} = require('./schema-import-guard');
 
 const STEP_SELECT = `
   id, chain_id, name, item_id, item_schema_id, sort_order, group_name,
@@ -1381,11 +1385,6 @@ function exportProductionChain(db, sourceId, getItemById, { appVersion = null } 
   };
 }
 
-const PRODUCTION_SCHEMA_FORMATS = new Set([
-  'factory-manager-production-schema',
-  'satisfactory-manager-production-schema',
-]);
-
 function resolveItemBySlug(db, slug, getItemById) {
   const trimmed = String(slug ?? '').trim();
   if (!trimmed) return null;
@@ -1423,6 +1422,9 @@ function importProductionChain(db, persist, payload, getItemById) {
     throw new Error('File schema non valido');
   }
   if (!PRODUCTION_SCHEMA_FORMATS.has(payload.format)) {
+    if (ENERGY_SCHEMA_FORMATS.has(payload.format)) {
+      throw new Error('SCHEMA_TYPE_MISMATCH:energy');
+    }
     throw new Error('Formato file non riconosciuto (atteso schema di produzione)');
   }
 

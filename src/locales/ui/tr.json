@@ -346,7 +346,8 @@
     "detailAltSchemas": "Alternatif tarifler ({count})",
     "detailNoSchemas": "Bu kaynak için üretim tarifi kayıtlı değil.",
     "resourceNotFound": "Kaynak bulunamadı.",
-    "detailLoadError": "Ayrıntılar yüklenirken hata."
+    "detailLoadError": "Ayrıntılar yüklenirken hata.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Yasal bilgiler, atıflar ve sorumluluk reddi",
@@ -473,7 +474,10 @@
     "createFailed": "Oluştururken hata.",
     "importFailed": "Plan içe aktarılırken hata.",
     "pickerEmpty": "Kaynak bulunamadı.",
-    "pickerExtractEmpty": "Çıkarılabilir kaynak bulunamadı."
+    "pickerExtractEmpty": "Çıkarılabilir kaynak bulunamadı.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Kaynak bulunamadı."

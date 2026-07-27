@@ -524,6 +524,7 @@ const it = {
     editResource: 'Modifica risorsa',
     resourceDetail: 'Dettaglio risorsa',
     confirmTitle: 'Conferma',
+    alertTitle: 'Avviso',
     detailMainSchema: 'Schema principale',
     detailAltSchemas: 'Schemi alternativi ({count})',
     detailNoSchemas: 'Nessuno schema di produzione registrato per questa risorsa.',
@@ -587,6 +588,11 @@ const it = {
     saveFailed: 'Errore durante il salvataggio.',
     createFailed: 'Errore durante la creazione.',
     importFailed: "Errore durante l'importazione dello schema.",
+    importTypeMismatchTitle: 'Schema non compatibile',
+    importEnergyIntoProduction:
+      'Stai cercando di importare uno Schema Energia nella sezione Schema di Produzione. Apri la sezione Energia e riprova.',
+    importProductionIntoEnergy:
+      'Stai cercando di importare uno Schema di Produzione nella sezione Schema Energia. Apri la sezione Produzione e riprova.',
     pickerEmpty: 'Nessuna risorsa trovata.',
     pickerExtractEmpty: 'Nessuna risorsa estraibile trovata.',
   },
@@ -942,6 +948,7 @@ en.modals = {
   editResource: 'Edit resource',
   resourceDetail: 'Resource details',
   confirmTitle: 'Confirm',
+  alertTitle: 'Notice',
   detailMainSchema: 'Main recipe',
   detailAltSchemas: 'Alternate recipes ({count})',
   detailNoSchemas: 'No production recipes registered for this resource.',
@@ -1005,6 +1012,11 @@ en.errors = {
   saveFailed: 'Error while saving.',
   createFailed: 'Error while creating.',
   importFailed: 'Error while importing the plan.',
+  importTypeMismatchTitle: 'Incompatible plan',
+  importEnergyIntoProduction:
+    'You are trying to import an Energy plan into the Production plans section. Open Energy and try again.',
+  importProductionIntoEnergy:
+    'You are trying to import a Production plan into the Energy plans section. Open Production and try again.',
   pickerEmpty: 'No resources found.',
   pickerExtractEmpty: 'No extractable resources found.',
 };

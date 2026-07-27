@@ -342,7 +342,8 @@
     "detailAltSchemas": "Alternativní recepty ({count})",
     "detailNoSchemas": "Pro tuto surovinu nejsou zapsány výrobní recepty.",
     "resourceNotFound": "Surovina nenalezena.",
-    "detailLoadError": "Chyba načítání detailu."
+    "detailLoadError": "Chyba načítání detailu.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Právní informace, atribuce a vyloučení odpovědnosti",
@@ -469,7 +470,10 @@
     "createFailed": "Chyba při vytváření.",
     "importFailed": "Chyba při importu plánu.",
     "pickerEmpty": "Nebyly nalezeny suroviny.",
-    "pickerExtractEmpty": "Nebyly nalezeny suroviny k těžbě."
+    "pickerExtractEmpty": "Nebyly nalezeny suroviny k těžbě.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Nebyly nalezeny suroviny."

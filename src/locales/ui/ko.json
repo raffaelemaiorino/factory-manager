@@ -342,7 +342,8 @@
     "detailAltSchemas": "대체 레시피 ({count})",
     "detailNoSchemas": "이 자원에 등록된 생산 레시피가 없습니다.",
     "resourceNotFound": "자원을 찾을 수 없습니다.",
-    "detailLoadError": "상세 로드 오류."
+    "detailLoadError": "상세 로드 오류.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "법적 정보, 귀속 및 면책 조항",
@@ -469,7 +470,10 @@
     "createFailed": "만들기 중 오류.",
     "importFailed": "계획 가져오기 중 오류.",
     "pickerEmpty": "자원을 찾을 수 없습니다.",
-    "pickerExtractEmpty": "채굴 가능한 자원을 찾을 수 없습니다."
+    "pickerExtractEmpty": "채굴 가능한 자원을 찾을 수 없습니다.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "자원을 찾을 수 없습니다."

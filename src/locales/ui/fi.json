@@ -346,7 +346,8 @@
     "detailAltSchemas": "Vaihtoehtoiset reseptit ({count})",
     "detailNoSchemas": "Tälle resurssille ei ole tuotantoreseptejä.",
     "resourceNotFound": "Resurssia ei löytynyt.",
-    "detailLoadError": "Virhe tietojen latauksessa."
+    "detailLoadError": "Virhe tietojen latauksessa.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Oikeudelliset tiedot, attribuutiot ja vastuuvapauslauseke",
@@ -473,7 +474,10 @@
     "createFailed": "Virhe luonnissa.",
     "importFailed": "Virhe suunnitelman tuonnissa.",
     "pickerEmpty": "Resursseja ei löytynyt.",
-    "pickerExtractEmpty": "Louhittavia resursseja ei löytynyt."
+    "pickerExtractEmpty": "Louhittavia resursseja ei löytynyt.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Resursseja ei löytynyt."

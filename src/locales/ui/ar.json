@@ -342,7 +342,8 @@
     "detailAltSchemas": "وصفات بديلة ({count})",
     "detailNoSchemas": "لا وصفات إنتاج مسجّلة لهذا المورد.",
     "resourceNotFound": "المورد غير موجود.",
-    "detailLoadError": "خطأ في تحميل التفاصيل."
+    "detailLoadError": "خطأ في تحميل التفاصيل.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "معلومات قانونية وإسنادات وإخلاء مسؤولية",
@@ -469,7 +470,10 @@
     "createFailed": "خطأ أثناء الإنشاء.",
     "importFailed": "خطأ أثناء استيراد المخطط.",
     "pickerEmpty": "لم يُعثر على موارد.",
-    "pickerExtractEmpty": "لم يُعثر على موارد قابلة للاستخراج."
+    "pickerExtractEmpty": "لم يُعثر على موارد قابلة للاستخراج.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "لا موارد."

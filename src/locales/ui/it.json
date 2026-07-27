@@ -67,9 +67,7 @@
     "resultsMany": "{count} risultati",
     "resourcesOne": "{count} risorsa",
     "resourcesMany": "{count} risorse",
-    "somersloop": "Somersloop",
-    "category": "Categoria",
-    "water": "Acqua"
+    "somersloop": "Somersloop"
   },
   "health": {
     "deficitOne": "1 deficit",
@@ -308,14 +306,7 @@
   },
   "settings": {
     "title": "Impostazioni",
-    "subtitle": "Parametri personalizzabili, gestione dati locali e ripristino del catalogo risorse.",
-    "configTitle": "Configurazione",
-    "configLead": "Limiti personalizzabili per gli slider di macchine e generatori negli schemi.",
-    "maxMachines": "Numero massimo Macchine",
-    "maxEnergyGenerators": "Numero massimo Generatori Energia",
-    "saveConfig": "Salva configurazione",
-    "configSaved": "Configurazione salvata.",
-    "errorSaveConfig": "Errore durante il salvataggio della configurazione.",
+    "subtitle": "Gestione dati locali e ripristino del catalogo risorse predefinito.",
     "baseData": "Dati base",
     "baseDataLead": "Il catalogo oggetti, le strutture e gli schemi di produzione sono inclusi nell'applicazione. Su un PC nuovo vengono popolati automaticamente al primo avvio.",
     "statItems": "Risorse nel database",
@@ -340,16 +331,10 @@
     "envDbPath": "Percorso DB",
     "restoreSuccess": "Ripristino completato: {items} risorse, {buildings} strutture, {schemas} schemi di produzione.",
     "errorLoadInfo": "Errore nel caricamento delle informazioni sui dati.",
-    "errorRestore": "Errore durante il ripristino.",
-    "envDbLocal": "database locale"
+    "errorRestore": "Errore durante il ripristino."
   },
   "footer": {
     "disclaimer": "Factory Manager è uno strumento fan-made indipendente e non ufficiale per la pianificazione delle produzioni in Satisfactory. Factory Manager non è affiliato, sponsorizzato, approvato, supportato o autorizzato da Coffee Stain Studios. Satisfactory, i relativi marchi, loghi, immagini, icone, risorse, macchinari, ricette, dati e altri contenuti appartengono a Coffee Stain Studios AB e/o ai rispettivi titolari. Gli sviluppatori di Factory Manager non rivendicano alcun diritto sui contenuti appartenenti al gioco."
-  },
-  "update": {
-    "available": "È disponibile una nuova versione: {latest} (hai la {current}).",
-    "download": "Scarica",
-    "dismiss": "Dopo"
   },
   "modals": {
     "productionCreateTitle": "Nuovo schema di produzione",
@@ -371,6 +356,7 @@
     "editResource": "Modifica risorsa",
     "resourceDetail": "Dettaglio risorsa",
     "confirmTitle": "Conferma",
+    "alertTitle": "Avviso",
     "detailMainSchema": "Schema principale",
     "detailAltSchemas": "Schemi alternativi ({count})",
     "detailNoSchemas": "Nessuno schema di produzione registrato per questa risorsa.",
@@ -501,6 +487,9 @@
     "saveFailed": "Errore durante il salvataggio.",
     "createFailed": "Errore durante la creazione.",
     "importFailed": "Errore durante l'importazione dello schema.",
+    "importTypeMismatchTitle": "Schema non compatibile",
+    "importEnergyIntoProduction": "Stai cercando di importare uno Schema Energia nella sezione Schema di Produzione. Apri la sezione Energia e riprova.",
+    "importProductionIntoEnergy": "Stai cercando di importare uno Schema di Produzione nella sezione Schema Energia. Apri la sezione Produzione e riprova.",
     "pickerEmpty": "Nessuna risorsa trovata.",
     "pickerExtractEmpty": "Nessuna risorsa estraibile trovata."
   },

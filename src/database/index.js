@@ -1,6 +1,7 @@
 const initSqlJs = require('sql.js');
 const fs = require('fs');
 const path = require('path');
+const { detectSchemaFormatKind } = require('./schema-import-guard');
 const {
   getCategories,
   getItemsByCategory,
@@ -541,6 +542,7 @@ module.exports = {
   getDbStatus,
   getDb,
   persist,
+  detectSchemaFormatKind,
   getResourcesGrouped,
   getResourceCategories,
   getResourcesByCategory,

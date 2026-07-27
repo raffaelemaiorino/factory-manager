@@ -342,7 +342,8 @@
     "detailAltSchemas": "Przepisy alternatywne ({count})",
     "detailNoSchemas": "Brak zarejestrowanych przepisów produkcji dla tego zasobu.",
     "resourceNotFound": "Nie znaleziono zasobu.",
-    "detailLoadError": "Błąd ładowania szczegółów."
+    "detailLoadError": "Błąd ładowania szczegółów.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Informacje prawne, atrybucje i wyłączenie odpowiedzialności",
@@ -469,7 +470,10 @@
     "createFailed": "Błąd podczas tworzenia.",
     "importFailed": "Błąd podczas importu planu.",
     "pickerEmpty": "Nie znaleziono zasobów.",
-    "pickerExtractEmpty": "Nie znaleziono zasobów do wydobycia."
+    "pickerExtractEmpty": "Nie znaleziono zasobów do wydobycia.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Nie znaleziono zasobów."

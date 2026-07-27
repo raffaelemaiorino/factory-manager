@@ -346,7 +346,8 @@
     "detailAltSchemas": "Alternatív receptek ({count})",
     "detailNoSchemas": "Nincs termelési recept ehhez az erőforráshoz.",
     "resourceNotFound": "Az erőforrás nem található.",
-    "detailLoadError": "Hiba a részletek betöltésekor."
+    "detailLoadError": "Hiba a részletek betöltésekor.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Jogi információk, attribúciók és felelősségkizárás",
@@ -473,7 +474,10 @@
     "createFailed": "Hiba létrehozás közben.",
     "importFailed": "Hiba a terv importálásakor.",
     "pickerEmpty": "Nem található erőforrás.",
-    "pickerExtractEmpty": "Nem található kitermelhető erőforrás."
+    "pickerExtractEmpty": "Nem található kitermelhető erőforrás.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Nem található erőforrás."

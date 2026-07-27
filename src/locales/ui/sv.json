@@ -346,7 +346,8 @@
     "detailAltSchemas": "Alternativa recept ({count})",
     "detailNoSchemas": "Inga produktionsrecept registrerade för denna resurs.",
     "resourceNotFound": "Resurs hittades inte.",
-    "detailLoadError": "Fel vid laddning av detaljer."
+    "detailLoadError": "Fel vid laddning av detaljer.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Juridisk information, attribution och ansvarsfriskrivning",
@@ -473,7 +474,10 @@
     "createFailed": "Fel vid skapande.",
     "importFailed": "Fel vid import av plan.",
     "pickerEmpty": "Inga resurser hittades.",
-    "pickerExtractEmpty": "Inga utvinningsbara resurser hittades."
+    "pickerExtractEmpty": "Inga utvinningsbara resurser hittades.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Inga resurser hittades."

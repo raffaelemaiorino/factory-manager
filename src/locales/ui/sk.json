@@ -346,7 +346,8 @@
     "detailAltSchemas": "Alternatívne recepty ({count})",
     "detailNoSchemas": "Pre túto surovinu nie sú zadané výrobné recepty.",
     "resourceNotFound": "Surovina sa nenašla.",
-    "detailLoadError": "Chyba pri načítaní detailu."
+    "detailLoadError": "Chyba pri načítaní detailu.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Právne informácie, atribúcie a zrieknutie sa zodpovednosti",
@@ -473,7 +474,10 @@
     "createFailed": "Chyba pri vytváraní.",
     "importFailed": "Chyba pri importe plánu.",
     "pickerEmpty": "Nenašli sa suroviny.",
-    "pickerExtractEmpty": "Nenašli sa ťažiteľné suroviny."
+    "pickerExtractEmpty": "Nenašli sa ťažiteľné suroviny.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Nenašli sa suroviny."

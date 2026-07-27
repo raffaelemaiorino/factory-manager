@@ -84,6 +84,7 @@ const {
   duplicateProductionChain,
   exportProductionChain,
   importProductionChain,
+  detectSchemaFormatKind,
   fetchProductionChainDetail,
   addProductionChainStep,
   updateProductionChainStep,
@@ -395,6 +396,13 @@ ipcMain.handle('production:export', async (_event, id) => {
 ipcMain.handle('production:import', async () => {
   const opened = await openSchemaJsonFile('Importa schema di produzione');
   if (opened.canceled) return { canceled: true };
+  const actualKind = detectSchemaFormatKind(opened.payload);
+  if (actualKind && actualKind !== 'production') {
+    return {
+      canceled: false,
+      typeMismatch: { expected: 'production', actual: actualKind },
+    };
+  }
   const chain = importProductionChain(opened.payload);
   return { canceled: false, chain, filePath: opened.filePath };
 });
@@ -463,6 +471,13 @@ ipcMain.handle('energy:export', async (_event, id) => {
 ipcMain.handle('energy:import', async () => {
   const opened = await openSchemaJsonFile('Importa schema energia');
   if (opened.canceled) return { canceled: true };
+  const actualKind = detectSchemaFormatKind(opened.payload);
+  if (actualKind && actualKind !== 'energy') {
+    return {
+      canceled: false,
+      typeMismatch: { expected: 'energy', actual: actualKind },
+    };
+  }
   const chain = importEnergyChain(opened.payload);
   return { canceled: false, chain, filePath: opened.filePath };
 });

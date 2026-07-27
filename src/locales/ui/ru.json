@@ -342,7 +342,8 @@
     "detailAltSchemas": "Альтернативные рецепты ({count})",
     "detailNoSchemas": "Для этого ресурса нет зарегистрированных производственных рецептов.",
     "resourceNotFound": "Ресурс не найден.",
-    "detailLoadError": "Ошибка загрузки сведений."
+    "detailLoadError": "Ошибка загрузки сведений.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Правовая информация, атрибуция и отказ от ответственности",
@@ -469,7 +470,10 @@
     "createFailed": "Ошибка при создании.",
     "importFailed": "Ошибка при импорте плана.",
     "pickerEmpty": "Ресурсы не найдены.",
-    "pickerExtractEmpty": "Нет ресурсов для добычи."
+    "pickerExtractEmpty": "Нет ресурсов для добычи.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Ресурсы не найдены."

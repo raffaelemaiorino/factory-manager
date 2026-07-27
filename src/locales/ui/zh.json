@@ -342,7 +342,8 @@
     "detailAltSchemas": "替代配方 ({count})",
     "detailNoSchemas": "该资源未登记生产配方。",
     "resourceNotFound": "未找到资源。",
-    "detailLoadError": "加载详情失败。"
+    "detailLoadError": "加载详情失败。",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "法律信息、归属与免责声明",
@@ -469,7 +470,10 @@
     "createFailed": "创建时出错。",
     "importFailed": "导入方案时出错。",
     "pickerEmpty": "未找到资源。",
-    "pickerExtractEmpty": "未找到可开采的资源。"
+    "pickerExtractEmpty": "未找到可开采的资源。",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "未找到资源。"

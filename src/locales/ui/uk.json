@@ -342,7 +342,8 @@
     "detailAltSchemas": "Альтернативні рецепти ({count})",
     "detailNoSchemas": "Для цього ресурсу немає зареєстрованих рецептів.",
     "resourceNotFound": "Ресурс не знайдено.",
-    "detailLoadError": "Помилка завантаження деталей."
+    "detailLoadError": "Помилка завантаження деталей.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Правова інформація, атрибуція та відмова від відповідальності",
@@ -469,7 +470,10 @@
     "createFailed": "Помилка створення.",
     "importFailed": "Помилка імпорту схеми.",
     "pickerEmpty": "Ресурсів не знайдено.",
-    "pickerExtractEmpty": "Немає ресурсів для видобутку."
+    "pickerExtractEmpty": "Немає ресурсів для видобутку.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "Ресурсів не знайдено."

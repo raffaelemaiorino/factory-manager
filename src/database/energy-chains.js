@@ -20,7 +20,11 @@ const {
   DEFAULT_OVERCLOCK,
   DEFAULT_MACHINE_COUNT,
 } = require('./energy-scale');
-const { prepareEnergyImportSchema } = require('./schema-import-guard');
+const {
+  ENERGY_SCHEMA_FORMATS,
+  PRODUCTION_SCHEMA_FORMATS,
+  prepareEnergyImportSchema,
+} = require('./schema-import-guard');
 
 const GENERATOR_SELECT = `
   id, chain_id, building_slug, fuel_slug, machine_count, overclock, target_fuel_input, target_power, sort_order, created_at
@@ -796,11 +800,6 @@ function exportEnergyChain(db, sourceId, getItemById, { appVersion = null } = {}
   };
 }
 
-const ENERGY_SCHEMA_FORMATS = new Set([
-  'factory-manager-energy-schema',
-  'satisfactory-manager-energy-schema',
-]);
-
 function importEnergyChain(db, persist, payload, getItemById) {
   ensureEnergyChainsTable(db);
   ensureEnergyExtractionsTable(db);
@@ -811,6 +810,9 @@ function importEnergyChain(db, persist, payload, getItemById) {
     throw new Error('File schema non valido');
   }
   if (!ENERGY_SCHEMA_FORMATS.has(payload.format)) {
+    if (PRODUCTION_SCHEMA_FORMATS.has(payload.format)) {
+      throw new Error('SCHEMA_TYPE_MISMATCH:production');
+    }
     throw new Error('Formato file non riconosciuto (atteso schema energia)');
   }
 

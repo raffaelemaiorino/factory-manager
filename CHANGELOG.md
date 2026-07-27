@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.51.0] - 2026-07-27
+
+### Changed
+- Import schema: in caso di file Energia nella sezione Produzione (o viceversa) compare un popup dell’app al posto dell’avviso di sistema, con spiegazione chiara
+
 ## [1.50.1] - 2026-07-26
 
 ### Changed

@@ -67,9 +67,7 @@
     "resultsMany": "{count} results",
     "resourcesOne": "{count} resource",
     "resourcesMany": "{count} resources",
-    "somersloop": "Somersloop",
-    "category": "Category",
-    "water": "Water"
+    "somersloop": "Somersloop"
   },
   "health": {
     "deficitOne": "1 deficit",
@@ -308,14 +306,7 @@
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Customizable parameters, local data management, and default catalog restore.",
-    "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
-    "maxMachines": "Maximum machine count",
-    "maxEnergyGenerators": "Maximum energy generators",
-    "saveConfig": "Save configuration",
-    "configSaved": "Configuration saved.",
-    "errorSaveConfig": "Error saving configuration.",
+    "subtitle": "Local data management and restore of the default resource catalog.",
     "baseData": "Base data",
     "baseDataLead": "The item catalog, buildings, and production recipes are bundled with the app. On a new PC they are populated automatically on first launch.",
     "statItems": "Resources in database",
@@ -340,16 +331,10 @@
     "envDbPath": "DB path",
     "restoreSuccess": "Restore complete: {items} resources, {buildings} buildings, {schemas} production recipes.",
     "errorLoadInfo": "Error loading data information.",
-    "errorRestore": "Error during restore.",
-    "envDbLocal": "local database"
+    "errorRestore": "Error during restore."
   },
   "footer": {
     "disclaimer": "Factory Manager is an independent, unofficial fan-made tool for planning Satisfactory production. Factory Manager is not affiliated with, sponsored, approved, supported, or authorized by Coffee Stain Studios. Satisfactory, its trademarks, logos, images, icons, resources, machines, recipes, data, and other content belong to Coffee Stain Studios AB and/or their respective owners. The Factory Manager developers claim no rights to game content."
-  },
-  "update": {
-    "available": "A new version is available: {latest} (you have {current}).",
-    "download": "Download",
-    "dismiss": "Later"
   },
   "modals": {
     "productionCreateTitle": "New production plan",
@@ -371,6 +356,7 @@
     "editResource": "Edit resource",
     "resourceDetail": "Resource details",
     "confirmTitle": "Confirm",
+    "alertTitle": "Notice",
     "detailMainSchema": "Main recipe",
     "detailAltSchemas": "Alternate recipes ({count})",
     "detailNoSchemas": "No production recipes registered for this resource.",
@@ -501,6 +487,9 @@
     "saveFailed": "Error while saving.",
     "createFailed": "Error while creating.",
     "importFailed": "Error while importing the plan.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again.",
     "pickerEmpty": "No resources found.",
     "pickerExtractEmpty": "No extractable resources found."
   },

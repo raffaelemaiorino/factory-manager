@@ -342,7 +342,8 @@
     "detailAltSchemas": "מתכונים חלופיים ({count})",
     "detailNoSchemas": "אין מתכוני ייצור רשומים למשאב זה.",
     "resourceNotFound": "המשאב לא נמצא.",
-    "detailLoadError": "שגיאה בטעינת הפרטים."
+    "detailLoadError": "שגיאה בטעינת הפרטים.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "מידע משפטי, ייחוסים והצהרת אחריות",
@@ -469,7 +470,10 @@
     "createFailed": "שגיאה ביצירה.",
     "importFailed": "שגיאה בייבוא התוכנית.",
     "pickerEmpty": "לא נמצאו משאבים.",
-    "pickerExtractEmpty": "לא נמצאו משאבים לכרייה."
+    "pickerExtractEmpty": "לא נמצאו משאבים לכרייה.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "לא נמצאו משאבים."

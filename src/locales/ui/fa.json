@@ -342,7 +342,8 @@
     "detailAltSchemas": "دستور جایگزین ({count})",
     "detailNoSchemas": "دستور تولیدی برای این منبع ثبت نشده.",
     "resourceNotFound": "منبع پیدا نشد.",
-    "detailLoadError": "خطا در بارگذاری جزئیات."
+    "detailLoadError": "خطا در بارگذاری جزئیات.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "اطلاعات حقوقی، منبع‌یابی و سلب مسئولیت",
@@ -469,7 +470,10 @@
     "createFailed": "خطا هنگام ایجاد.",
     "importFailed": "خطا هنگام ورود طرح.",
     "pickerEmpty": "منبعی یافت نشد.",
-    "pickerExtractEmpty": "منبع قابل استخراج یافت نشد."
+    "pickerExtractEmpty": "منبع قابل استخراج یافت نشد.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "منبعی یافت نشد."

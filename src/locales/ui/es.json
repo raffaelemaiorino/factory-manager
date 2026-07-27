@@ -342,7 +342,8 @@
     "detailAltSchemas": "Recetas alternativas ({count})",
     "detailNoSchemas": "No hay recetas de producción registradas para este recurso.",
     "resourceNotFound": "Recurso no encontrado.",
-    "detailLoadError": "Error al cargar el detalle."
+    "detailLoadError": "Error al cargar el detalle.",
+    "alertTitle": "Notice"
   },
   "legal": {
     "title": "Información legal, atribuciones y descargo de responsabilidad",
@@ -469,7 +470,10 @@
     "createFailed": "Error al crear.",
     "importFailed": "Error al importar el plan.",
     "pickerEmpty": "No se encontraron recursos.",
-    "pickerExtractEmpty": "No se encontraron recursos extraíbles."
+    "pickerExtractEmpty": "No se encontraron recursos extraíbles.",
+    "importTypeMismatchTitle": "Incompatible plan",
+    "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
   },
   "picker": {
     "noResources": "No se encontraron recursos."

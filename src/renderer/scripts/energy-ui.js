@@ -148,6 +148,28 @@
     return Promise.resolve(window.confirm(message));
   }
 
+  function showAlert({ title, message, okLabel = t('common.close') }) {
+    if (typeof window.showAlert === 'function') {
+      return window.showAlert({ title, message, okLabel });
+    }
+    window.alert?.(message);
+    return Promise.resolve();
+  }
+
+  function showImportTypeMismatchAlert(typeMismatch) {
+    const { expected, actual } = typeMismatch || {};
+    let messageKey = 'errors.importFailed';
+    if (expected === 'production' && actual === 'energy') {
+      messageKey = 'errors.importEnergyIntoProduction';
+    } else if (expected === 'energy' && actual === 'production') {
+      messageKey = 'errors.importProductionIntoEnergy';
+    }
+    return showAlert({
+      title: t('errors.importTypeMismatchTitle'),
+      message: t(messageKey),
+    });
+  }
+
   function getExtractionKind(extraction) {
     return extraction.extraction_kind ?? (extraction.item?.slug === 'water' ? 'water' : 'coal');
   }
@@ -1659,13 +1681,21 @@
     document.getElementById('btn-import-energy').addEventListener('click', async () => {
       try {
         const result = await window.satisfactory.importEnergyChain();
-        if (result?.canceled || !result?.chain) return;
+        if (result?.canceled) return;
+        if (result?.typeMismatch) {
+          await showImportTypeMismatchAlert(result.typeMismatch);
+          return;
+        }
+        if (!result?.chain) return;
         energyChains = [result.chain, ...energyChains.filter((item) => item.id !== result.chain.id)];
         await loadEnergyChainSummaries();
         renderEnergyChains();
       } catch (err) {
         console.error('Energy import error:', err);
-        window.alert?.(err.message || t('errors.importFailed'));
+        await showAlert({
+          title: t('errors.importFailed'),
+          message: err.message || t('errors.importFailed'),
+        });
       }
     });
     document.getElementById('energy-create-modal-close').addEventListener('click', closeEnergyCreateModal);

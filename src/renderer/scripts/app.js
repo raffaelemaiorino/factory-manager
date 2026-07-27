@@ -294,6 +294,7 @@ const editFormError = document.getElementById('edit-form-error');
 const detailModal = document.getElementById('detail-modal');
 const detailModalBody = document.getElementById('detail-modal-body');
 const confirmModal = document.getElementById('confirm-modal');
+const alertModal = document.getElementById('alert-modal');
 const productionCreateModal = document.getElementById('production-create-modal');
 const productionCreateForm = document.getElementById('production-create-form');
 const productionCreateError = document.getElementById('production-create-error');
@@ -305,6 +306,7 @@ const resourcePickerModal = document.getElementById('resource-picker-modal');
 const schemaPickerModal = document.getElementById('schema-picker-modal');
 
 let confirmResolve = null;
+let alertResolve = null;
 let schemaRenameOnSaved = null;
 let schemaRenameGroupKey = null;
 
@@ -416,6 +418,7 @@ window.ProductionUI = {
 };
 
 window.showConfirm = showConfirm;
+window.showAlert = showAlert;
 
 function setupNavigation() {
   document.getElementById('main-nav').addEventListener('click', (e) => {
@@ -6145,13 +6148,21 @@ function setupProduction() {
   document.getElementById('btn-import-production').addEventListener('click', async () => {
     try {
       const result = await window.satisfactory.importProductionChain();
-      if (result?.canceled || !result?.chain) return;
+      if (result?.canceled) return;
+      if (result?.typeMismatch) {
+        await showImportTypeMismatchAlert(result.typeMismatch);
+        return;
+      }
+      if (!result?.chain) return;
       productionChains = [result.chain, ...productionChains.filter((item) => item.id !== result.chain.id)];
       await loadProductionChainSummaries();
       renderProductionChains();
     } catch (err) {
       console.error('Production import error:', err);
-        window.alert?.(err.message || t('errors.importFailed'));
+      await showAlert({
+        title: t('errors.importFailed'),
+        message: err.message || t('errors.importFailed'),
+      });
     }
   });
   document.getElementById('production-create-modal-close').addEventListener('click', closeProductionCreateModal);
@@ -7758,6 +7769,41 @@ function closeConfirm(result) {
   }
 }
 
+function showAlert({ title, message, okLabel = t('common.close') }) {
+  return new Promise((resolve) => {
+    alertResolve = resolve;
+    document.getElementById('alert-modal-title').textContent = title;
+    document.getElementById('alert-modal-message').textContent = message;
+    document.getElementById('alert-modal-ok').textContent = okLabel;
+    alertModal.classList.remove('hidden');
+    alertModal.setAttribute('aria-hidden', 'false');
+    document.getElementById('alert-modal-ok').focus();
+  });
+}
+
+function closeAlert() {
+  alertModal.classList.add('hidden');
+  alertModal.setAttribute('aria-hidden', 'true');
+  if (alertResolve) {
+    alertResolve();
+    alertResolve = null;
+  }
+}
+
+function showImportTypeMismatchAlert(typeMismatch) {
+  const { expected, actual } = typeMismatch || {};
+  let messageKey = 'errors.importFailed';
+  if (expected === 'production' && actual === 'energy') {
+    messageKey = 'errors.importEnergyIntoProduction';
+  } else if (expected === 'energy' && actual === 'production') {
+    messageKey = 'errors.importProductionIntoEnergy';
+  }
+  return showAlert({
+    title: t('errors.importTypeMismatchTitle'),
+    message: t(messageKey),
+  });
+}
+
 function setupConfirmModal() {
   document.getElementById('confirm-modal-cancel').addEventListener('click', () => {
     closeConfirm(false);
@@ -7767,6 +7813,15 @@ function setupConfirmModal() {
   });
   confirmModal.addEventListener('click', (e) => {
     if (e.target === confirmModal) closeConfirm(false);
+  });
+}
+
+function setupAlertModal() {
+  document.getElementById('alert-modal-ok')?.addEventListener('click', () => {
+    closeAlert();
+  });
+  alertModal?.addEventListener('click', (e) => {
+    if (e.target === alertModal) closeAlert();
   });
 }
 
@@ -7865,6 +7920,7 @@ async function boot() {
   setupSchemaFilter();
   setupNumberInputWheelBlock();
   setupConfirmModal();
+  setupAlertModal();
   setupSchemaRenameModal();
   setupSettings();
   setupProductionUiStatePersistence();
