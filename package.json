@@ -3,6 +3,7 @@
   "version": "1.51.0",
   "description": "Unofficial fan-made production planner for Satisfactory. Plan chains, machines, rates and layouts locally.",
   "productName": "Factory Manager",
+  "desktopName": "factory-manager.desktop",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
@@ -18,6 +19,7 @@
     "build": "electron-builder --win",
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
     "build:dir": "electron-builder --win --dir"
   },
   "build": {
@@ -83,6 +85,15 @@
           "path": "/Applications"
         }
       ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "src/renderer/assets/app-icon.png",
+      "category": "Utility",
+      "synopsis": "Unofficial fan-made production planner for Satisfactory",
+      "syncDesktopName": true
     }
   },
   "keywords": [

@@ -9,7 +9,13 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+### Aggiunto
+- Target di build Linux (`npm run build:linux`, produce un AppImage) accanto alle build Windows e macOS già esistenti.
+
 ### Modificato
+- Corretti gli asset icona e logo (`app-icon.png`, `logo.png`): erano in realtà dati JPEG etichettati con estensione `.png`, il che rompeva la generazione dell'icona su Linux. Risalvati come PNG genuini, nessuna differenza visiva.
+- L'icona della finestra principale ora usa il formato corretto in base alla piattaforma (`icon.ico` su Windows, `app-icon.png` altrove) — prima usava sempre `icon.ico`, che il loader immagini di Electron non riesce a leggere su Linux/macOS (tornava silenziosamente all'icona di default di Electron).
+- README: le istruzioni di build ora coprono tutte e tre le piattaforme, più una sezione "Avvio da sorgente" e note su notarizzazione macOS / FUSE su Linux.
 - Interno: `src/renderer/scripts/app.js` (7.957 righe, il file più grande del codebase) suddiviso in 11 file per area di responsabilità (`app-core.js`, `locale-legal-nav.js`, `dashboard.js`, `resources-catalog.js`, `production-chain-core.js`, `extraction-management.js`, `production-detail-view.js`, `production-setup-wiring.js`, `resource-detail-view.js`, `settings-and-modals.js`, `boot.js`), seguendo lo schema già usato per `production-graph.js`/`energy-ui.js`/ecc. Nessun cambio di comportamento — vedi `boot.js` per l'unico punto in cui l'ordine delle istruzioni è cambiato (un export di namespace che funzionava prima solo grazie all'hoisting delle funzioni sull'intero file).
 
 ### Rimosso

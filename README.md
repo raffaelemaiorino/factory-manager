@@ -28,22 +28,42 @@ Factory Manager is provided as-is, without warranties of accuracy, availability,
 - Italian: [`CHANGELOG.md`](CHANGELOG.md)
 - English: [`CHANGELOG.en.md`](CHANGELOG.en.md)
 
-## Build (Windows)
+## Run from source
 
 ```bash
-npm run build
+npm install
+npm start          # or: npm run dev (adds --enable-logging for DevTools console output)
 ```
 
-Produces NSIS installer and portable exe under `dist/` (or `dist-build/` if configured).
+Works the same on Windows, macOS, and Linux — the app is a standard Electron app with no OS-specific setup required.
 
-### Code signing (optional)
+## Build
 
-Without a certificate the build is unsigned (SmartScreen may warn). To sign with Authenticode, set env vars before `npm run build`:
+```bash
+npm install
+npm run build:win     # NSIS installer + portable exe
+npm run build:mac     # .dmg
+npm run build:linux   # AppImage
+```
+
+Artifacts land under `dist/`. `npm run build` (no suffix) is an alias for `npm run build:win`, kept for backward compatibility.
+
+### Windows code signing (optional)
+
+Without a certificate the Windows build is unsigned (SmartScreen may warn). To sign with Authenticode, set env vars before `npm run build:win`:
 
 - `CSC_LINK` — path to `.pfx` / `.p12` (or `WIN_CSC_LINK`)
 - `CSC_KEY_PASSWORD` — certificate password
 
 electron-builder picks them up automatically.
+
+### macOS notarization
+
+The macOS build has `hardenedRuntime` enabled but is not notarized by Apple, so Gatekeeper will warn on first launch ("unidentified developer") unless you notarize it yourself (requires an Apple Developer account) or the user right-clicks → Open to bypass the warning once.
+
+### Linux
+
+Produces a single-file `AppImage` (`chmod +x` it and run, or use an AppImage launcher — no installation needed). Requires `libfuse2` on the host to run directly; without it, extract first with `./Factory*.AppImage --appimage-extract` and run `./squashfs-root/factory-manager`.
 
 ## Community
 
