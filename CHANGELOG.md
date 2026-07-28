@@ -9,6 +9,9 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+### Rimosso
+- Tabelle database inutilizzate `recipes` / `recipe_ingredients`: create a ogni avvio ma mai popolate (i dati delle ricette vivono nella tabella `item_schemas`). I nuovi database non le creano più; i database esistenti mantengono le tabelle vuote invariate (nessuna migrazione distruttiva).
+
 ## [1.51.0] - 2026-07-27
 
 ### Changed

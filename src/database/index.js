@@ -175,24 +175,6 @@ function runMigrations() {
       created_at TEXT DEFAULT (datetime('now'))
     );
 
-    CREATE TABLE IF NOT EXISTS recipes (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      slug TEXT NOT NULL UNIQUE,
-      name TEXT NOT NULL,
-      building_slug TEXT,
-      duration REAL NOT NULL DEFAULT 1,
-      created_at TEXT DEFAULT (datetime('now'))
-    );
-
-    CREATE TABLE IF NOT EXISTS recipe_ingredients (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      recipe_id INTEGER NOT NULL,
-      item_slug TEXT NOT NULL,
-      amount REAL NOT NULL,
-      is_output INTEGER NOT NULL DEFAULT 0,
-      FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
-    );
-
     CREATE TABLE IF NOT EXISTS production_chains (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -268,7 +250,6 @@ function getDbStatus() {
       items: resources.counts.items,
       schemas: resources.counts.schemas,
       buildings: queryCount('buildings'),
-      recipes: queryCount('recipes'),
       chains: queryCount('production_chains'),
       energyChains: queryCount('energy_chains'),
     },

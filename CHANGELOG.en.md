@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- Unused `recipes` / `recipe_ingredients` database tables: created on every startup but never written to (actual recipe data lives in the `item_schemas` table). New databases no longer create them; existing databases keep the empty tables untouched (no destructive migration).
+
 ## [1.51.0] - 2026-07-27
 
 ### Changed
