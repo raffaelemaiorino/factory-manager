@@ -199,7 +199,14 @@ function createWindow() {
     minHeight: 660,
     title: 'FACTORY MANAGER',
     backgroundColor: '#0f1419',
-    icon: path.join(__dirname, '../src/renderer/assets/icon.ico'),
+    // .ico is Windows-only; Electron's native image loader can't read it on
+    // Linux/Mac (silently fails, window falls back to Electron's default icon).
+    icon: path.join(
+      __dirname,
+      process.platform === 'win32'
+        ? '../src/renderer/assets/icon.ico'
+        : '../src/renderer/assets/app-icon.png'
+    ),
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
