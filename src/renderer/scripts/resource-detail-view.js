@@ -288,7 +288,7 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
 
   const linkedProducers = getLinkedProducersForInput(step, itemSlug, allSteps);
   const linkedExtractions = getLinkedExtractionsForInput(step, itemSlug, allExtractions, allSteps);
-  const candidates = getProducerCandidates(allSteps, step.id, itemSlug);
+  const candidates = getProducerCandidates(allSteps, step.id, itemSlug, allExtractions);
   const extractionCandidates = isExternalSummarySlug(itemSlug)
     ? getExtractionCandidates(allExtractions, step.id, itemSlug, allSteps)
     : [];

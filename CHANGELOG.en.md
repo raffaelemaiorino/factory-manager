@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.54.1] - 2026-07-28
+
+### Fixed
+- Resource schemas: when an input is already "Fully covered", no additional extractions or schemas are offered for linking
+
 ## [1.54.0] - 2026-07-28
 
 ### Added

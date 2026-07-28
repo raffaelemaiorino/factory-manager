@@ -38,7 +38,7 @@ function buildExtractionLinkUi(extraction, allExtractions, allSteps) {
       : [];
   const consumerCandidates =
     itemSlug && isExternalSummarySlug(itemSlug)
-      ? getExtractionConsumerCandidates(extraction, allSteps)
+      ? getExtractionConsumerCandidates(extraction, allSteps, allExtractions)
       : [];
   const totalLinkedNeed =
     itemSlug && isExternalSummarySlug(itemSlug)

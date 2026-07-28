@@ -277,7 +277,44 @@ function getProducerOutputSurplus(producer, itemSlug, allSteps) {
   return normalizeLinkDelta(outputRate - totalDemand, outputRate);
 }
 
-function isProducerAvailableForLink(producer, consumerStepId, itemSlug, allSteps) {
+function getConsumerLinkedInputRate(consumer, itemSlug, allSteps, allExtractions = []) {
+  if (!consumer) return 0;
+
+  let total = 0;
+  for (const link of consumer.input_links?.[itemSlug] ?? []) {
+    if (link.producer_step_id) {
+      const producer = allSteps.find(
+        (step) => Number(step.id) === Number(link.producer_step_id)
+      );
+      if (producer) {
+        total += getProducerAttributedDemand(producer, consumer, itemSlug, allSteps);
+      }
+      continue;
+    }
+
+    if (link.producer_extraction_id) {
+      const extraction = allExtractions.find(
+        (candidate) => Number(candidate.id) === Number(link.producer_extraction_id)
+      );
+      if (extraction) {
+        total += getExtractionAttributedDemand(extraction, consumer, itemSlug, allSteps);
+      } else {
+        total += Number(link.producer_rate) || 0;
+      }
+    }
+  }
+
+  return window.ProductionScale.roundProduction(total);
+}
+
+function isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions = []) {
+  const required = getStepInputRateForItem(consumer, itemSlug);
+  if (required <= LINK_BALANCE_TOLERANCE) return true;
+  const linked = getConsumerLinkedInputRate(consumer, itemSlug, allSteps, allExtractions);
+  return linked + LINK_BALANCE_TOLERANCE >= required;
+}
+
+function isProducerAvailableForLink(producer, consumerStepId, itemSlug, allSteps, allExtractions = []) {
   if (Number(producer.id) === Number(consumerStepId)) return false;
   if (!(producer.scaled_outputs ?? []).some((output) => output.item_slug === itemSlug)) {
     return false;
@@ -285,6 +322,7 @@ function isProducerAvailableForLink(producer, consumerStepId, itemSlug, allSteps
 
   const consumer = allSteps.find((step) => Number(step.id) === Number(consumerStepId));
   if (isProducerLinkedToConsumer(consumer, producer.id, itemSlug)) return true;
+  if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
 
   return getProducerOutputSurplus(producer, itemSlug, allSteps) > 0;
 }
@@ -305,9 +343,9 @@ function formatProducerLinkOptionRate(producer, consumerStepId, itemSlug, allSte
   return formatRateWithUnit(outputRate, unit);
 }
 
-function getProducerCandidates(allSteps, consumerStepId, itemSlug) {
+function getProducerCandidates(allSteps, consumerStepId, itemSlug, allExtractions = []) {
   return allSteps.filter((candidate) =>
-    isProducerAvailableForLink(candidate, consumerStepId, itemSlug, allSteps)
+    isProducerAvailableForLink(candidate, consumerStepId, itemSlug, allSteps, allExtractions)
   );
 }
 
@@ -378,11 +416,18 @@ function getExtractionOutputSurplus(extraction, itemSlug, allSteps) {
   return normalizeLinkDelta(outputRate - demand, outputRate);
 }
 
-function isExtractionAvailableForLink(extraction, consumerStepId, itemSlug, allSteps) {
+function isExtractionAvailableForLink(
+  extraction,
+  consumerStepId,
+  itemSlug,
+  allSteps,
+  allExtractions = []
+) {
   if (extraction.item?.slug !== itemSlug || !isExternalSummarySlug(itemSlug)) return false;
 
   const consumer = allSteps.find((step) => Number(step.id) === Number(consumerStepId));
   if (isExtractionLinkedToConsumer(consumer, extraction.id, itemSlug)) return true;
+  if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
 
   const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
   return surplus > LINK_BALANCE_TOLERANCE;
@@ -410,7 +455,7 @@ function formatExtractionLinkOptionRate(extraction, consumerStepId, itemSlug, al
 
 function getExtractionCandidates(allExtractions, consumerStepId, itemSlug, allSteps) {
   return allExtractions.filter((candidate) =>
-    isExtractionAvailableForLink(candidate, consumerStepId, itemSlug, allSteps)
+    isExtractionAvailableForLink(candidate, consumerStepId, itemSlug, allSteps, allExtractions)
   );
 }
 
@@ -430,18 +475,31 @@ function getLinkedConsumersForExtraction(extraction, allSteps) {
     }));
 }
 
-function getExtractionConsumerCandidates(extraction, allSteps) {
+function getExtractionConsumerCandidates(extraction, allSteps, allExtractions = []) {
   const itemSlug = extraction.item?.slug;
   if (!itemSlug || !isExternalSummarySlug(itemSlug)) return [];
 
   return allSteps.filter((consumer) =>
-    isExtractionConsumerAvailableForLink(consumer, extraction, itemSlug, allSteps)
+    isExtractionConsumerAvailableForLink(
+      consumer,
+      extraction,
+      itemSlug,
+      allSteps,
+      allExtractions
+    )
   );
 }
 
-function isExtractionConsumerAvailableForLink(consumer, extraction, itemSlug, allSteps) {
+function isExtractionConsumerAvailableForLink(
+  consumer,
+  extraction,
+  itemSlug,
+  allSteps,
+  allExtractions = []
+) {
   if (!(consumer.scaled_inputs ?? []).some((io) => io.item_slug === itemSlug)) return false;
   if (isExtractionLinkedToConsumer(consumer, extraction.id, itemSlug)) return true;
+  if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
 
   const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
   return surplus > LINK_BALANCE_TOLERANCE;

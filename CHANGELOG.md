@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.54.1] - 2026-07-28
+
+### Fixed
+- Schemi risorsa: se un input è già «Coperto completamente», non vengono più proposte altre estrazioni o schemi da collegare
+
 ## [1.54.0] - 2026-07-28
 
 ### Added
