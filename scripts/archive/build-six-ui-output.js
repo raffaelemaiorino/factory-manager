@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { collectStringKeys } = require('../src/locales/ui/format');
+const { collectStringKeys } = require('../../src/locales/ui/format');
 const { flatToNested } = require('./apply-ui-flats');
 const enFlat = require('./_en-flat.json');
 const it = JSON.parse(
