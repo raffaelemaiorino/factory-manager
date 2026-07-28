@@ -1,15 +1,60 @@
 # Factory Manager
 
+> Italiano: [`README.it.md`](README.it.md)
+
 A local desktop app for planning Satisfactory factories.
 
 I built it because working out production chains by hand (machines, rates, power, extractions) gets messy fast. Factory Manager keeps an item catalog, production plans, and power plans on your PC — no account, no cloud, not affiliated with Coffee Stain.
 
-What you can do with it:
+Plan chains, machines, rates, and layouts locally. Fan-made. Independent. Not affiliated with Coffee Stain.
 
-- browse game items and recipes
-- plan production chains (inputs, outputs, machine counts, rates)
-- set up extractions and power (generators + fuel)
-- save projects and reopen them later
+## What’s in the app
+
+### Production and power plans
+
+- Browse the game item catalog and recipes
+- Plan production chains: inputs, outputs, machine counts, rates, overclock, Somersloop
+- Set up extractions and power (generators + fuel)
+- Save projects and reopen them later
+
+### Share and restore plans
+
+Export and import JSON for both production and power (extractions, generators, links). One file = a backup or something you can send a friend. Imports are labeled `(import)` so they don’t get mixed up with your originals. The importer checks that the file is really a Factory Manager export before writing to the database.
+
+### Clearer production tree
+
+When several links run between the same nodes, labels and curves no longer sit on top of each other. More space, less clutter when the factory gets big.
+
+### Power and power shards
+
+- Base MW use in the catalog for extractors and production machines
+- Calculated use on plans and extractions (overclock + Somersloop)
+- Power shards needed in the side summary, plus a total in Info
+- Dashboard KPIs for use / balance, production vs use chart, top chains, and a warning if you burn more than you produce
+- Clear status: Covered / Deficit / Uncovered, with MW of headroom or shortfall
+
+### Languages
+
+Italian and English first, then the full SCIM catalog set (German, French, Spanish, Polish, Portuguese, Dutch, and more) — UI strings plus resource, building, and recipe names. Your language choice is kept across restarts. Arabic, Hebrew, and Persian get basic RTL layout. If a UI string is missing, it falls back to English without breaking the app.
+
+### Desktop app, data on your PC
+
+Windows: NSIS installer or portable build. macOS and Linux builds are available too when published. Data stays local (AppData on Windows), with automatic migration if you used an older path. Fully offline.
+
+Footer shows the Coffee Stain disclaimer and attribution. Custom window chrome (no native Windows menu bar), updated logo, and a clearer Info popup.
+
+### Everyday comfort
+
+- More reliable startup on slow PCs (no leftover “ghost” process)
+- Splash (“Preparing data…”) on first catalog seed
+- Sticky menu while you scroll
+- Dashboard KPIs in a four-column layout
+- Settings: raise the caps for machines and generators
+- Electron hardening, sandbox, file limits
+
+### Update check
+
+On launch the app can check GitHub for a newer release. If there is one, you get a dismissible banner with a download link — no forced download.
 
 Data can be wrong or out of date after a game patch. Double-check important numbers in-game if it matters.
 
