@@ -5950,10 +5950,17 @@ function closeSchemaPickerModal() {
 async function refreshProductionDetail() {
   if (!activeProductionChainId) return;
 
-  activeProductionDetail = await window.satisfactory.getProductionChainDetail(
-    activeProductionChainId
-  );
-  renderProductionDetailContent(activeProductionDetail);
+  try {
+    activeProductionDetail = await window.satisfactory.getProductionChainDetail(
+      activeProductionChainId
+    );
+    renderProductionDetailContent(activeProductionDetail);
+  } catch (err) {
+    // Several callers invoke this as a bare recovery step from inside their
+    // own catch block (e.g. after a failed reorder) - without this try/catch,
+    // a second failure here would be an unhandled rejection.
+    console.error('Refresh production detail error:', err);
+  }
 }
 
 async function addProductionStep(itemId, schemaId) {
@@ -7564,7 +7571,7 @@ function setupResourceActions() {
     if (editBtn) {
       e.preventDefault();
       e.stopPropagation();
-      openEditModal(Number(editBtn.dataset.id));
+      openEditModal(Number(editBtn.dataset.id)).catch(console.error);
       return;
     }
 
@@ -7910,27 +7917,41 @@ function setupSchemaFilter() {
 }
 
 async function boot() {
-  await initProductionUiStateStore();
-  await initLocaleSelector();
-  await initAppSettings();
-  setupLocaleSelector();
-  setupNavigation();
-  setupLegalInfoModal();
-  setupSearch();
-  setupSchemaFilter();
-  setupNumberInputWheelBlock();
-  setupConfirmModal();
+  // Wired first, synchronously, so the alert modal is usable even if the
+  // async init below throws before reaching its normal position in the list.
   setupAlertModal();
-  setupSchemaRenameModal();
-  setupSettings();
-  setupProductionUiStatePersistence();
-  setupProduction();
-  setupResourceActions();
-  setupEditModal();
-  setupDetailModal();
-  setupDashboard();
-  setupUpdateBanner();
-  checkAppUpdateOnBoot();
+
+  try {
+    await initProductionUiStateStore();
+    await initLocaleSelector();
+    await initAppSettings();
+    setupLocaleSelector();
+    setupNavigation();
+    setupLegalInfoModal();
+    setupSearch();
+    setupSchemaFilter();
+    setupNumberInputWheelBlock();
+    setupConfirmModal();
+    setupSchemaRenameModal();
+    setupSettings();
+    setupProductionUiStatePersistence();
+    setupProduction();
+    setupResourceActions();
+    setupEditModal();
+    setupDetailModal();
+    setupDashboard();
+    setupUpdateBanner();
+    checkAppUpdateOnBoot();
+  } catch (err) {
+    // Without this, a rejection anywhere above is an unhandled promise
+    // rejection and the app silently never finishes starting up.
+    console.error('Factory Manager failed to start:', err);
+    showAlert({
+      title: 'Factory Manager failed to start',
+      message: err && err.message ? err.message : String(err),
+      okLabel: 'Close',
+    });
+  }
 }
 
 boot();
