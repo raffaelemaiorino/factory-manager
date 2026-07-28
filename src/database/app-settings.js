@@ -1,10 +1,14 @@
 const META_MAX_MACHINES = 'config_max_machines';
 const META_MAX_ENERGY_GENERATORS = 'config_max_energy_generators';
+const META_NUMBER_FORMAT = 'config_number_format';
 
 const DEFAULT_MAX_MACHINES = 100;
 const DEFAULT_MAX_ENERGY_GENERATORS = 600;
+const DEFAULT_NUMBER_FORMAT = 'it';
 const ABS_MAX_MACHINES = 10_000;
 const ABS_MAX_ENERGY_GENERATORS = 50_000;
+
+const ALLOWED_NUMBER_FORMATS = new Set(['it', 'en-US']);
 
 function queryOne(db, sql, params = []) {
   const stmt = db.prepare(sql);
@@ -49,6 +53,13 @@ function parsePositiveInt(value, fallback, max) {
   return n;
 }
 
+function parseNumberFormat(value, fallback = DEFAULT_NUMBER_FORMAT) {
+  const raw = String(value ?? '').trim();
+  if (raw === 'en' || raw === 'en_US' || raw === 'en-us') return 'en-US';
+  if (ALLOWED_NUMBER_FORMATS.has(raw)) return raw;
+  return fallback;
+}
+
 function getAppSettings(db) {
   return {
     maxMachines: parsePositiveInt(
@@ -61,6 +72,7 @@ function getAppSettings(db) {
       DEFAULT_MAX_ENERGY_GENERATORS,
       ABS_MAX_ENERGY_GENERATORS
     ),
+    numberFormat: parseNumberFormat(getMeta(db, META_NUMBER_FORMAT), DEFAULT_NUMBER_FORMAT),
   };
 }
 
@@ -79,10 +91,15 @@ function setAppSettings(db, persist, partial = {}) {
             ABS_MAX_ENERGY_GENERATORS
           )
         : current.maxEnergyGenerators,
+    numberFormat:
+      partial.numberFormat != null
+        ? parseNumberFormat(partial.numberFormat, current.numberFormat)
+        : current.numberFormat,
   };
 
   setMeta(db, META_MAX_MACHINES, next.maxMachines);
   setMeta(db, META_MAX_ENERGY_GENERATORS, next.maxEnergyGenerators);
+  setMeta(db, META_NUMBER_FORMAT, next.numberFormat);
   if (persist) persist();
   return next;
 }
@@ -90,6 +107,7 @@ function setAppSettings(db, persist, partial = {}) {
 module.exports = {
   DEFAULT_MAX_MACHINES,
   DEFAULT_MAX_ENERGY_GENERATORS,
+  DEFAULT_NUMBER_FORMAT,
   ABS_MAX_MACHINES,
   ABS_MAX_ENERGY_GENERATORS,
   getAppSettings,

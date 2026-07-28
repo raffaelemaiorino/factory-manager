@@ -282,7 +282,7 @@
     "title": "Indstillinger",
     "subtitle": "Lokal dataadministration og gendannelse af standardkatalog.",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -313,7 +313,10 @@
     "restoreSuccess": "Gendannelse fuldført: {items} ressourcer, {buildings} bygninger, {schemas} opskrifter.",
     "errorLoadInfo": "Fejl ved indlæsning af datainfo.",
     "errorRestore": "Fejl under gendannelse.",
-    "envDbLocal": "lokal database"
+    "envDbLocal": "lokal database",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager er et uafhængigt, uofficielt fan-værktøj til Satisfactory-produktionsplanlægning. Det er ikke tilknyttet, sponsoreret eller godkendt af Coffee Stain Studios. Satisfactory, varemærker, logoer, billeder, ikoner, ressourcer, maskiner, opskrifter, data og andet indhold tilhører Coffee Stain Studios AB og/eller rettighedshavere. Factory Manager-udviklerne gør ikke krav på spilindhold."

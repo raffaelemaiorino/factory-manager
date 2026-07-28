@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.54.0] - 2026-07-28
+
+### Added
+- Impostazioni → Configurazione: preferenza formato numeri indipendente dalla lingua UI — Italiano (`1.234,56`) o Inglese USA (`1,234.56`), usata in dashboard, produzione, energia e calcolatrice
+
 ## [1.53.5] - 2026-07-28
 
 ### Fixed

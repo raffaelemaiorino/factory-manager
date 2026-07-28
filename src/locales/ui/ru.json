@@ -282,7 +282,7 @@
     "title": "Настройки",
     "subtitle": "Локальные данные и восстановление каталога по умолчанию.",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -313,7 +313,10 @@
     "restoreSuccess": "Восстановление завершено: {items} ресурсов, {buildings} зданий, {schemas} рецептов.",
     "errorLoadInfo": "Ошибка загрузки сведений о данных.",
     "errorRestore": "Ошибка при восстановлении.",
-    "envDbLocal": "локальная база данных"
+    "envDbLocal": "локальная база данных",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager — независимый неофициальный fan-инструмент для планирования производства в Satisfactory. Не связан, не спонсируется и не одобрен Coffee Stain Studios. Satisfactory, товарные знаки, логотипы, изображения, иконки, ресурсы, машины, рецепты, данные и прочий контент принадлежат Coffee Stain Studios AB и/или правообладателям. Разработчики Factory Manager не претендуют на права на игровой контент."

@@ -116,16 +116,23 @@ function hideSettingsFeedback(targetId = 'settings-feedback') {
 function renderAppSettingsForm(settings = appSettings) {
   const maxMachinesInput = document.getElementById('settings-max-machines');
   const maxEnergyInput = document.getElementById('settings-max-energy-generators');
+  const numberFormatSelect = document.getElementById('settings-number-format');
   if (maxMachinesInput) maxMachinesInput.value = String(settings.maxMachines);
   if (maxEnergyInput) maxEnergyInput.value = String(settings.maxEnergyGenerators);
+  if (numberFormatSelect) {
+    numberFormatSelect.value =
+      window.NumberFormat?.normalizeFormat?.(settings.numberFormat) || 'it';
+  }
 }
 
 function readAppSettingsForm() {
   const maxMachinesInput = document.getElementById('settings-max-machines');
   const maxEnergyInput = document.getElementById('settings-max-energy-generators');
+  const numberFormatSelect = document.getElementById('settings-number-format');
   return {
     maxMachines: Math.round(Number(maxMachinesInput?.value) || 0),
     maxEnergyGenerators: Math.round(Number(maxEnergyInput?.value) || 0),
+    numberFormat: numberFormatSelect?.value || 'it',
   };
 }
 

@@ -282,7 +282,7 @@
     "title": "Paramètres",
     "subtitle": "Gestion des données locales et restauration du catalogue par défaut.",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -313,7 +313,10 @@
     "restoreSuccess": "Restauration terminée : {items} ressources, {buildings} bâtiments, {schemas} recettes.",
     "errorLoadInfo": "Erreur de chargement des infos données.",
     "errorRestore": "Erreur lors de la restauration.",
-    "envDbLocal": "base de données locale"
+    "envDbLocal": "base de données locale",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager est un outil fan-made indépendant et non officiel pour planifier la production dans Satisfactory. Il n'est ni affilié, sponsorisé, approuvé ni autorisé par Coffee Stain Studios. Satisfactory, marques, logos, images, icônes, ressources, machines, recettes, données et autres contenus appartiennent à Coffee Stain Studios AB et/ou à leurs titulaires. Les développeurs de Factory Manager ne revendiquent aucun droit sur le contenu du jeu."

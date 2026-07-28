@@ -37,6 +37,7 @@ let availableLocales = [];
 const DEFAULT_APP_SETTINGS = {
   maxMachines: 100,
   maxEnergyGenerators: 600,
+  numberFormat: 'it',
 };
 
 let appSettings = { ...DEFAULT_APP_SETTINGS };
@@ -53,6 +54,9 @@ function getConfiguredMaxEnergyGenerators() {
 }
 
 function applyAppSettings(settings) {
+  const numberFormat =
+    window.NumberFormat?.normalizeFormat?.(settings?.numberFormat) ||
+    DEFAULT_APP_SETTINGS.numberFormat;
   appSettings = {
     maxMachines: Math.max(
       1,
@@ -64,7 +68,10 @@ function applyAppSettings(settings) {
         Number(settings?.maxEnergyGenerators) || DEFAULT_APP_SETTINGS.maxEnergyGenerators
       )
     ),
+    numberFormat,
   };
+  window.NumberFormat?.setFormat?.(numberFormat);
+  window.Calculator?.syncNumberFormat?.();
   return appSettings;
 }
 

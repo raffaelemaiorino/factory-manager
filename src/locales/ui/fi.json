@@ -286,7 +286,7 @@
     "title": "Asetukset",
     "subtitle": "Paikallinen data ja oletuskatalogin palautus.",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -317,7 +317,10 @@
     "restoreSuccess": "Palautus valmis: {items} resurssia, {buildings} rakennusta, {schemas} tuotantoreseptiä.",
     "errorLoadInfo": "Virhe datatietojen latauksessa.",
     "errorRestore": "Virhe palautuksessa.",
-    "envDbLocal": "paikallinen tietokanta"
+    "envDbLocal": "paikallinen tietokanta",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager on riippumaton, epävirallinen fan-työkalu Satisfactory-tuotannon suunnitteluun. Se ei liity Coffee Stain Studiosiin eikä ole sen sponsoroima, hyväksymä tai valtuuttama. Satisfactory, tavaramerkit, logot, kuvat, kuvakkeet, resurssit, koneet, reseptit, tiedot ja muu sisältö kuuluvat Coffee Stain Studios AB:lle ja/tai oikeudenhaltijoille. Factory Managerin kehittäjät eivät vaadi oikeuksia pelisisältöön."

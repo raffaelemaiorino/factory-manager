@@ -286,7 +286,7 @@
     "title": "Nastavenia",
     "subtitle": "Správa lokálnych dát a obnova predvoleného katalógu.",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -317,7 +317,10 @@
     "restoreSuccess": "Obnova dokončená: {items} surovín, {buildings} budov, {schemas} výrobných receptov.",
     "errorLoadInfo": "Chyba pri načítaní informácií o dátach.",
     "errorRestore": "Chyba počas obnovy.",
-    "envDbLocal": "lokálna databáza"
+    "envDbLocal": "lokálna databáza",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager je nezávislý, neoficiálny fan nástroj na plánovanie výroby v Satisfactory. Nie je prepojený so, sponzorovaný ani schválený Coffee Stain Studios. Satisfactory, ochranné známky, logá, obrázky, ikony, suroviny, stroje, recepty, dáta a ďalší obsah patria Coffee Stain Studios AB a/alebo príslušným vlastníkom. Vývojári Factory Manager si nenárokujú práva na herný obsah."

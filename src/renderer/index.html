@@ -488,7 +488,7 @@
           <section class="card settings-panel">
             <h3 data-i18n="settings.configTitle">Configurazione</h3>
             <p class="settings-lead" data-i18n="settings.configLead">
-              Limiti personalizzabili per gli slider di macchine e generatori negli schemi.
+              Limiti personalizzabili per gli slider di macchine e generatori negli schemi, e formato dei numeri visualizzati.
             </p>
 
             <div class="settings-config-fields">
@@ -517,6 +517,15 @@
                   step="1"
                   value="600"
                 />
+              </div>
+              <div class="settings-config-field">
+                <label for="settings-number-format" data-i18n="settings.numberFormat">
+                  Formato numeri
+                </label>
+                <select id="settings-number-format" class="production-config-input">
+                  <option value="it" data-i18n="settings.numberFormatIt">Italiano (1.234,56)</option>
+                  <option value="en-US" data-i18n="settings.numberFormatEn">Inglese USA (1,234.56)</option>
+                </select>
               </div>
             </div>
 

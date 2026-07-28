@@ -20,11 +20,30 @@
     if (raw === 'Error') return 'Error';
     const negative = raw.startsWith('-');
     const abs = negative ? raw.slice(1) : raw;
-    const [intPart, decPart] = abs.split('.');
-    const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    let out = decPart != null ? `${formattedInt},${decPart}` : formattedInt;
+    const parts = abs.split('.');
+    const intPart = parts[0];
+    const hasDecimal = parts.length > 1;
+    let out;
+    if (window.NumberFormat?.formatThousandsFromParts) {
+      out = hasDecimal
+        ? window.NumberFormat.formatThousandsFromParts(intPart, parts[1])
+        : window.NumberFormat.formatThousandsFromParts(intPart);
+    } else {
+      const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      out = hasDecimal ? `${formattedInt},${parts[1]}` : formattedInt;
+    }
     if (negative) out = `−${out}`;
     return out;
+  }
+
+  function syncNumberFormat() {
+    const decimalBtn = panelEl?.querySelector('[data-calc="decimal"]');
+    if (decimalBtn) {
+      decimalBtn.textContent = window.NumberFormat?.getDecimalSeparator?.() || ',';
+    }
+    if (displayEl && !state.error) {
+      displayEl.textContent = formatDisplay(state.display);
+    }
   }
 
   function currentValue() {
@@ -281,6 +300,9 @@
     s = s.replace(/[.,]+$/, '');
     if (!s || s === '-') return NaN;
 
+    if (window.NumberFormat?.parseLocalizedNumber) {
+      return window.NumberFormat.parseLocalizedNumber(s);
+    }
     if (typeof parseConfigNumberInput === 'function') {
       return parseConfigNumberInput(s);
     }
@@ -598,6 +620,7 @@
 
     setDisplay('0');
     updateMemoryIndicator();
+    syncNumberFormat();
 
     toggleBtn.addEventListener('click', togglePanel);
     document.getElementById('calculator-panel-close')?.addEventListener('click', closePanel);
@@ -621,4 +644,7 @@
   }
 
   window.setupCalculator = setupCalculator;
+  window.Calculator = {
+    syncNumberFormat,
+  };
 })();

@@ -89,6 +89,9 @@ function formatRateWithUnit(value, unit) {
 }
 
 function parseConfigNumberInput(raw) {
+  if (window.NumberFormat?.parseLocalizedNumber) {
+    return window.NumberFormat.parseLocalizedNumber(raw);
+  }
   if (raw == null || raw === '') return NaN;
   if (typeof raw === 'number') return raw;
   let s = String(raw).trim().replace(/\s/g, '');
@@ -131,6 +134,9 @@ function formatOutputInputValue(value, overclock = null) {
     return String(Math.round(n));
   }
   const formatted = String(window.ProductionScale.roundProduction(n));
+  if (window.NumberFormat?.formatPlainDecimal) {
+    return window.NumberFormat.formatPlainDecimal(formatted);
+  }
   return formatted.includes('.') ? formatted.replace('.', ',') : formatted;
 }
 
