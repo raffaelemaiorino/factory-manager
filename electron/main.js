@@ -269,6 +269,16 @@ app.whenReady().then(async () => {
       createWindow();
     }
   });
+}).catch((err) => {
+  // Safety net for anything outside the try/catch above (e.g. createWindow()
+  // itself, or setup before the DB init try block) - without this, a failure
+  // here is an unhandled rejection with no dialog shown to the user at all.
+  const detail = err?.stack || err?.message || String(err);
+  dialog.showErrorBox(
+    'FACTORY MANAGER — errore avvio',
+    `Errore imprevisto durante l'avvio.\n\n${detail}`
+  );
+  app.quit();
 });
 
 app.on('window-all-closed', () => {

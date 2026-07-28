@@ -9,6 +9,13 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+### Corretto
+- Avvio app (`boot()`): un errore durante l'inizializzazione (lingua, impostazioni app o una qualsiasi `setup*()`) viene ora intercettato e mostrato in un messaggio di errore invece di lasciare l'app a metà avvio senza alcun feedback.
+- Processo principale Electron: un errore dopo l'inizializzazione del database (es. durante la creazione della finestra principale) viene ora intercettato e segnalato con un messaggio di errore e una chiusura pulita, invece di diventare un rifiuto di promessa non gestito senza errore visibile all'utente.
+- Riordino delle catene di produzione: se l'aggiornamento del dettaglio catena come passo di recupero (dopo un riordino di gruppi/step fallito) fallisce a sua volta, l'errore viene ora registrato invece di diventare un secondo rifiuto non gestito.
+- Modale modifica risorsa: aprirla dall'elenco risorse non rischia più un rifiuto di promessa non gestito se il caricamento della risorsa o delle sue categorie fallisce.
+- Content Security Policy: consentite le immagini `data:` così le icone a freccia dei menu a tendina `<select>` vengono visualizzate correttamente (prima bloccate silenziosamente da `img-src 'self'`, con una violazione CSP in console su ogni schermata con un menu a tendina).
+
 ## [1.51.0] - 2026-07-27
 
 ### Changed

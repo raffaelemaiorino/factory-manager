@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- App startup (`boot()`): a rejection anywhere during initialization (locale, app settings, or any `setup*()` call) is now caught and shown in an error dialog instead of silently leaving the app half-started with no feedback.
+- Electron main process: a failure after database initialization (e.g. while creating the main window) is now caught and reported via an error dialog and a clean quit, instead of becoming an unhandled promise rejection with no user-visible error.
+- Production chain reordering: if refreshing the chain detail view as a recovery step (after a failed group/step reorder) itself fails, the error is now logged instead of becoming a second unhandled rejection.
+- Resource edit modal: opening it from the resources list no longer risks an unhandled promise rejection if loading the resource or its categories fails.
+- Content Security Policy: allowed `data:` image sources so the dropdown-arrow icons on `<select>` elements actually render (previously silently blocked by `img-src 'self'`, console showed a CSP violation on every screen with a dropdown).
+
 ## [1.51.0] - 2026-07-27
 
 ### Changed
