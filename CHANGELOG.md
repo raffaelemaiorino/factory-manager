@@ -9,6 +9,9 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+### Modificato
+- Interno: `src/renderer/scripts/app.js` (7.957 righe, il file più grande del codebase) suddiviso in 11 file per area di responsabilità (`app-core.js`, `locale-legal-nav.js`, `dashboard.js`, `resources-catalog.js`, `production-chain-core.js`, `extraction-management.js`, `production-detail-view.js`, `production-setup-wiring.js`, `resource-detail-view.js`, `settings-and-modals.js`, `boot.js`), seguendo lo schema già usato per `production-graph.js`/`energy-ui.js`/ecc. Nessun cambio di comportamento — vedi `boot.js` per l'unico punto in cui l'ordine delle istruzioni è cambiato (un export di namespace che funzionava prima solo grazie all'hoisting delle funzioni sull'intero file).
+
 ### Rimosso
 - Tabelle database inutilizzate `recipes` / `recipe_ingredients`: create a ogni avvio ma mai popolate (i dati delle ricette vivono nella tabella `item_schemas`). I nuovi database non le creano più; i database esistenti mantengono le tabelle vuote invariate (nessuna migrazione distruttiva).
 
