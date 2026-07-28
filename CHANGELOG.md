@@ -9,26 +9,30 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
-### Aggiunto
-- Target di build Linux (`npm run build:linux`, produce un AppImage e un `.deb`) accanto alle build Windows e macOS già esistenti. Il `.deb` usa un'email maintainer segnaposto in `package.json` (`build.linux.maintainer`) — da sostituire con una reale prima di pubblicare quell'artefatto; vedi `TODO.md`.
-- `TODO.md`: follow-up noti (build macOS non testata, build `.deb` non testata + email maintainer segnaposto, nessuna matrice CI, nessun test automatico) così restano tracciati invece di essere dimenticati.
-- README: sezione Architettura che descrive la separazione processo principale/renderer/livello dati e la struttura file attuale, con nota sull'assenza di una suite di test automatica.
+## [1.52.0] - 2026-07-28
 
-### Modificato
-- Corretti gli asset icona e logo (`app-icon.png`, `logo.png`): erano in realtà dati JPEG etichettati con estensione `.png`, il che rompeva la generazione dell'icona su Linux. Risalvati come PNG genuini, nessuna differenza visiva.
-- L'icona della finestra principale ora usa il formato corretto in base alla piattaforma (`icon.ico` su Windows, `app-icon.png` altrove) — prima usava sempre `icon.ico`, che il loader immagini di Electron non riesce a leggere su Linux/macOS (tornava silenziosamente all'icona di default di Electron).
-- README: le istruzioni di build ora coprono tutte e tre le piattaforme, più una sezione "Avvio da sorgente" e note su notarizzazione macOS / FUSE su Linux.
-- Interno: `src/renderer/scripts/app.js` (7.957 righe, il file più grande del codebase) suddiviso in 11 file per area di responsabilità (`app-core.js`, `locale-legal-nav.js`, `dashboard.js`, `resources-catalog.js`, `production-chain-core.js`, `extraction-management.js`, `production-detail-view.js`, `production-setup-wiring.js`, `resource-detail-view.js`, `settings-and-modals.js`, `boot.js`), seguendo lo schema già usato per `production-graph.js`/`energy-ui.js`/ecc. Nessun cambio di comportamento — vedi `boot.js` per l'unico punto in cui l'ordine delle istruzioni è cambiato (un export di namespace che funzionava prima solo grazie all'hoisting delle funzioni sull'intero file).
+### Added
+- Target di build Linux (`npm run build:linux`, produce un AppImage e un `.deb`) accanto alle build Windows e macOS già esistenti
+- `TODO.md`: follow-up noti (build macOS non testata, build `.deb` non testata, nessuna matrice CI, nessun test automatico)
+- README: sezione Architettura che descrive la separazione processo principale/renderer/livello dati e la struttura file attuale, con nota sull'assenza di una suite di test automatica
 
-### Rimosso
-- Tabelle database inutilizzate `recipes` / `recipe_ingredients`: create a ogni avvio ma mai popolate (i dati delle ricette vivono nella tabella `item_schemas`). I nuovi database non le creano più; i database esistenti mantengono le tabelle vuote invariate (nessuna migrazione distruttiva).
+### Changed
+- Corretti gli asset icona e logo (`app-icon.png`, `logo.png`): erano in realtà dati JPEG etichettati con estensione `.png`, il che rompeva la generazione dell'icona su Linux. Risalvati come PNG genuini, nessuna differenza visiva
+- L'icona della finestra principale ora usa il formato corretto in base alla piattaforma (`icon.ico` su Windows, `app-icon.png` altrove)
+- README: le istruzioni di build ora coprono tutte e tre le piattaforme, più una sezione "Avvio da sorgente" e note su notarizzazione macOS / FUSE su Linux
+- Interno: `src/renderer/scripts/app.js` suddiviso in 11 file per area di responsabilità (nessun cambio di comportamento previsto)
+- Metadati pacchetto `.deb`: maintainer impostato su `Raffaele Maiorino <raffaelemaiorino@gmail.com>`
 
-### Corretto
-- Avvio app (`boot()`): un errore durante l'inizializzazione (lingua, impostazioni app o una qualsiasi `setup*()`) viene ora intercettato e mostrato in un messaggio di errore invece di lasciare l'app a metà avvio senza alcun feedback.
-- Processo principale Electron: un errore dopo l'inizializzazione del database (es. durante la creazione della finestra principale) viene ora intercettato e segnalato con un messaggio di errore e una chiusura pulita, invece di diventare un rifiuto di promessa non gestito senza errore visibile all'utente.
-- Riordino delle catene di produzione: se l'aggiornamento del dettaglio catena come passo di recupero (dopo un riordino di gruppi/step fallito) fallisce a sua volta, l'errore viene ora registrato invece di diventare un secondo rifiuto non gestito.
-- Modale modifica risorsa: aprirla dall'elenco risorse non rischia più un rifiuto di promessa non gestito se il caricamento della risorsa o delle sue categorie fallisce.
-- Content Security Policy: consentite le immagini `data:` così le icone a freccia dei menu a tendina `<select>` vengono visualizzate correttamente (prima bloccate silenziosamente da `img-src 'self'`, con una violazione CSP in console su ogni schermata con un menu a tendina).
+### Removed
+- Tabelle database inutilizzate `recipes` / `recipe_ingredients` (i nuovi database non le creano più; i database esistenti restano invariati)
+
+### Fixed
+- Avvio app (`boot()`): un errore durante l'inizializzazione viene ora mostrato invece di lasciare l'app a metà avvio senza feedback
+- Processo principale Electron: errori dopo l'init del database segnalati con dialog e chiusura pulita
+- Riordino catene di produzione: un secondo fallimento nel refresh di recupero non diventa più un rifiuto non gestito
+- Modale modifica risorsa: apertura dall'elenco senza rischio di rejection non gestita
+- Content Security Policy: consentite immagini `data:` per le frecce dei menu `<select>`
+- Impostazioni → Configurazione (IT/EN): titoli, etichette e messaggi usano il testo tradotto invece delle chiavi i18n
 
 ## [1.51.0] - 2026-07-27
 

@@ -306,7 +306,14 @@
   },
   "settings": {
     "title": "Impostazioni",
-    "subtitle": "Gestione dati locali e ripristino del catalogo risorse predefinito.",
+    "subtitle": "Parametri personalizzabili, gestione dati locali e ripristino del catalogo risorse.",
+    "configTitle": "Configurazione",
+    "configLead": "Limiti personalizzabili per gli slider di macchine e generatori negli schemi.",
+    "maxMachines": "Numero massimo Macchine",
+    "maxEnergyGenerators": "Numero massimo Generatori Energia",
+    "saveConfig": "Salva configurazione",
+    "configSaved": "Configurazione salvata.",
+    "errorSaveConfig": "Errore durante il salvataggio della configurazione.",
     "baseData": "Dati base",
     "baseDataLead": "Il catalogo oggetti, le strutture e gli schemi di produzione sono inclusi nell'applicazione. Su un PC nuovo vengono popolati automaticamente al primo avvio.",
     "statItems": "Risorse nel database",
@@ -329,6 +336,7 @@
     "envNode": "Node.js",
     "envDbSchema": "Schema DB",
     "envDbPath": "Percorso DB",
+    "envDbLocal": "database locale",
     "restoreSuccess": "Ripristino completato: {items} risorse, {buildings} strutture, {schemas} schemi di produzione.",
     "errorLoadInfo": "Errore nel caricamento delle informazioni sui dati.",
     "errorRestore": "Errore durante il ripristino."
