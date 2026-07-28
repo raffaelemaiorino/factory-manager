@@ -9,6 +9,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.53.5] - 2026-07-28
+
+### Fixed
+- App startup: `setupCalculator is not defined` caused by a typo in the Paste regex in `calculator.js`
+
+## [1.53.4] - 2026-07-28
+
+### Changed
+- Calculator → Paste: extracts and cleans only the number (ignores text/units; rejects clipboard content with no digits)
+
+## [1.53.3] - 2026-07-28
+
+### Changed
+- Calculator: yellow border (`--warning`) so it stands out more clearly from the rest of the UI
+
+## [1.53.2] - 2026-07-28
+
+### Added
+- Calculator: Copy and Paste buttons (Italian number format; also Ctrl+C / Ctrl+V while the calculator is open)
+
+## [1.53.1] - 2026-07-28
+
+### Changed
+- Calculator: panel 50% larger and opens at the top-right below the topbar
+
+## [1.53.0] - 2026-07-28
+
+### Added
+- Floating calculator from the topbar: basic operations (+ − × ÷), percent, memory (MC/MR/M+/M−/MS), draggable panel that stays open when switching views
+- Italian number format in the calculator: comma for decimals, period as thousands separator (e.g. `1.234,56`)
+
 ## [1.52.0] - 2026-07-28
 
 ### Added

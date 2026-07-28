@@ -9,6 +9,37 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.53.5] - 2026-07-28
+
+### Fixed
+- Avvio app: errore `setupCalculator is not defined` causato da un typo nella regex di Incolla in `calculator.js`
+
+## [1.53.4] - 2026-07-28
+
+### Changed
+- Calcolatrice → Incolla: estrae e pulisce solo il numero (ignora testo/unità; rifiuta appunti senza cifre)
+
+## [1.53.3] - 2026-07-28
+
+### Changed
+- Calcolatrice: bordo giallo (`--warning`) per distinguerla meglio dal resto dell’interfaccia
+
+## [1.53.2] - 2026-07-28
+
+### Added
+- Calcolatrice: tasti Copia e Incolla (formato italiano; anche Ctrl+C / Ctrl+V con la calc aperta)
+
+## [1.53.1] - 2026-07-28
+
+### Changed
+- Calcolatrice: pannello più grande (+50%) e apertura in alto a destra sotto la topbar
+
+## [1.53.0] - 2026-07-28
+
+### Added
+- Calcolatrice flottante dalla topbar: operazioni base (+ − × ÷), percentuale, memoria (MC/MR/M+/M−/MS), pannello trascinabile che resta aperto cambiando vista
+- Formato numerico italiano in calcolatrice: virgola per i decimali, punto come separatore delle migliaia (es. `1.234,56`)
+
 ## [1.52.0] - 2026-07-28
 
 ### Added

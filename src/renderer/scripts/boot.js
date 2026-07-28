@@ -10,6 +10,7 @@ async function boot() {
     setupLocaleSelector();
     setupNavigation();
     setupLegalInfoModal();
+    setupCalculator();
     setupSearch();
     setupSchemaFilter();
     setupNumberInputWheelBlock();

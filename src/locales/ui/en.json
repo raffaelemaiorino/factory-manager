@@ -20,9 +20,20 @@
   "topbar": {
     "info": "Info",
     "infoTitle": "Legal information",
+    "calculator": "Calculator",
+    "calculatorTitle": "Calculator",
     "language": "Language",
     "languageTitle": "Language / Lingua",
     "languageAria": "Language: {name}"
+  },
+  "calculator": {
+    "title": "Calculator",
+    "memoryAria": "Memory",
+    "keysAria": "Keys",
+    "backspaceAria": "Backspace",
+    "clipboardAria": "Clipboard",
+    "copy": "Copy",
+    "paste": "Paste"
   },
   "breadcrumb": {
     "items": "Items",

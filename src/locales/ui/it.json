@@ -20,9 +20,20 @@
   "topbar": {
     "info": "Info",
     "infoTitle": "Informazioni legali",
+    "calculator": "Calcolatrice",
+    "calculatorTitle": "Calcolatrice",
     "language": "Lingua",
     "languageTitle": "Lingua / Language",
     "languageAria": "Lingua: {name}"
+  },
+  "calculator": {
+    "title": "Calcolatrice",
+    "memoryAria": "Memoria",
+    "keysAria": "Tasti",
+    "backspaceAria": "Cancella cifra",
+    "clipboardAria": "Appunti",
+    "copy": "Copia",
+    "paste": "Incolla"
   },
   "breadcrumb": {
     "items": "Oggetti",

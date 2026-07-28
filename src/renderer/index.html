@@ -50,6 +50,19 @@
           <button
             type="button"
             class="topbar-info-btn"
+            id="calculator-btn"
+            aria-haspopup="dialog"
+            aria-controls="calculator-panel"
+            aria-expanded="false"
+            title="Calcolatrice"
+            data-i18n-title="topbar.calculatorTitle"
+          >
+            <i class="fa-solid fa-calculator" aria-hidden="true"></i>
+            <span data-i18n="topbar.calculator">Calcolatrice</span>
+          </button>
+          <button
+            type="button"
+            class="topbar-info-btn"
             id="legal-info-btn"
             aria-haspopup="dialog"
             aria-controls="legal-info-modal"
@@ -1070,6 +1083,88 @@
       </div>
     </div>
 
+    <aside
+      id="calculator-panel"
+      class="calculator-panel hidden"
+      role="dialog"
+      aria-labelledby="calculator-panel-title"
+      aria-hidden="true"
+    >
+      <header class="calculator-panel-header" id="calculator-panel-drag">
+        <h3 id="calculator-panel-title" data-i18n="calculator.title">Calcolatrice</h3>
+        <button
+          type="button"
+          class="modal-close"
+          id="calculator-panel-close"
+          aria-label="Chiudi"
+          data-i18n-aria="common.closeAria"
+        >
+          ×
+        </button>
+      </header>
+      <div class="calculator-display-wrap">
+        <span class="calculator-memory-indicator" id="calculator-memory-indicator" hidden>M</span>
+        <output class="calculator-display" id="calculator-display" aria-live="polite">0</output>
+      </div>
+      <div class="calculator-clipboard" role="group" aria-label="Appunti" data-i18n-aria="calculator.clipboardAria">
+        <button
+          type="button"
+          class="calculator-btn calculator-btn-clip"
+          data-calc="copy"
+          title="Copia"
+          data-i18n-title="calculator.copy"
+          aria-label="Copia"
+          data-i18n-aria="calculator.copy"
+        >
+          <i class="fa-solid fa-copy" aria-hidden="true"></i>
+          <span data-i18n="calculator.copy">Copia</span>
+        </button>
+        <button
+          type="button"
+          class="calculator-btn calculator-btn-clip"
+          data-calc="paste"
+          title="Incolla"
+          data-i18n-title="calculator.paste"
+          aria-label="Incolla"
+          data-i18n-aria="calculator.paste"
+        >
+          <i class="fa-solid fa-paste" aria-hidden="true"></i>
+          <span data-i18n="calculator.paste">Incolla</span>
+        </button>
+      </div>
+      <div class="calculator-memory" role="group" aria-label="Memoria" data-i18n-aria="calculator.memoryAria">
+        <button type="button" class="calculator-btn calculator-btn-mem" data-calc="mc" title="Memory Clear">MC</button>
+        <button type="button" class="calculator-btn calculator-btn-mem" data-calc="mr" title="Memory Recall">MR</button>
+        <button type="button" class="calculator-btn calculator-btn-mem" data-calc="mplus" title="Memory Add">M+</button>
+        <button type="button" class="calculator-btn calculator-btn-mem" data-calc="mminus" title="Memory Subtract">M−</button>
+        <button type="button" class="calculator-btn calculator-btn-mem" data-calc="ms" title="Memory Store">MS</button>
+      </div>
+      <div class="calculator-keys" role="group" aria-label="Tasti" data-i18n-aria="calculator.keysAria">
+        <button type="button" class="calculator-btn" data-calc="percent">%</button>
+        <button type="button" class="calculator-btn" data-calc="ce">CE</button>
+        <button type="button" class="calculator-btn" data-calc="c">C</button>
+        <button type="button" class="calculator-btn" data-calc="backspace" aria-label="Backspace" data-i18n-aria="calculator.backspaceAria">
+          <i class="fa-solid fa-delete-left" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="7">7</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="8">8</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="9">9</button>
+        <button type="button" class="calculator-btn calculator-btn-op" data-calc="op" data-op="/">÷</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="4">4</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="5">5</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="6">6</button>
+        <button type="button" class="calculator-btn calculator-btn-op" data-calc="op" data-op="*">×</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="1">1</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="2">2</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="3">3</button>
+        <button type="button" class="calculator-btn calculator-btn-op" data-calc="op" data-op="-">−</button>
+        <button type="button" class="calculator-btn" data-calc="negate">+/−</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="digit" data-digit="0">0</button>
+        <button type="button" class="calculator-btn calculator-btn-num" data-calc="decimal">,</button>
+        <button type="button" class="calculator-btn calculator-btn-eq" data-calc="equals">=</button>
+      </div>
+    </aside>
+
     <script src="scripts/i18n-ui.js"></script>
     <script src="scripts/production-scale.js"></script>
     <script src="scripts/number-format.js"></script>
@@ -1093,6 +1188,7 @@
     <script src="scripts/production-setup-wiring.js"></script>
     <script src="scripts/resource-detail-view.js"></script>
     <script src="scripts/settings-and-modals.js"></script>
+    <script src="scripts/calculator.js"></script>
     <script src="scripts/boot.js"></script>
     <script src="scripts/energy-ui.js"></script>
   </body>
