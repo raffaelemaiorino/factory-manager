@@ -10,7 +10,9 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 ## [Unreleased]
 
 ### Aggiunto
-- Target di build Linux (`npm run build:linux`, produce un AppImage) accanto alle build Windows e macOS già esistenti.
+- Target di build Linux (`npm run build:linux`, produce un AppImage e un `.deb`) accanto alle build Windows e macOS già esistenti. Il `.deb` usa un'email maintainer segnaposto in `package.json` (`build.linux.maintainer`) — da sostituire con una reale prima di pubblicare quell'artefatto; vedi `TODO.md`.
+- `TODO.md`: follow-up noti (build macOS non testata, build `.deb` non testata + email maintainer segnaposto, nessuna matrice CI, nessun test automatico) così restano tracciati invece di essere dimenticati.
+- README: sezione Architettura che descrive la separazione processo principale/renderer/livello dati e la struttura file attuale, con nota sull'assenza di una suite di test automatica.
 
 ### Modificato
 - Corretti gli asset icona e logo (`app-icon.png`, `logo.png`): erano in realtà dati JPEG etichettati con estensione `.png`, il che rompeva la generazione dell'icona su Linux. Risalvati come PNG genuini, nessuna differenza visiva.

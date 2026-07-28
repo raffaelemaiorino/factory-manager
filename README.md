@@ -65,6 +65,20 @@ The macOS build has `hardenedRuntime` enabled but is not notarized by Apple, so 
 
 Produces a single-file `AppImage` (`chmod +x` it and run, or use an AppImage launcher — no installation needed). Requires `libfuse2` on the host to run directly; without it, extract first with `./Factory*.AppImage --appimage-extract` and run `./squashfs-root/factory-manager`.
 
+## Architecture
+
+Everything runs locally — there is no server or cloud backend. Data lives in a SQLite database file (via [sql.js](https://sql.js.org/), a WASM build of SQLite) inside Electron's per-user app-data directory.
+
+- **`electron/`** — the Electron main process: window/lifecycle management (`main.js`), the `contextBridge` IPC surface exposed to the renderer as `window.satisfactory` (`preload.js`), GitHub release-check logic (`update-check.js`), and persistence of production-view UI state to a JSON file (`production-ui-state-store.js`).
+- **`src/database/`** — the data layer, run in the main process and accessed only via IPC: schema/migrations and query helpers (`index.js`), one file per domain (`items.js`, `buildings.js`, `production-chains.js`, `energy-chains.js`, `energy-extraction.js`, `mineral-extraction.js`, `schemas.js`/recipes, `i18n.js`, `app-settings.js`), and seed data under `seeds/` (game catalog JSON scraped from a fan site, plus bundled locale packs).
+- **`src/renderer/`** — the UI, loaded as `index.html` in the main window:
+  - `scripts/` — plain global `<script>` files (no bundler, no modules), loaded in a fixed order — see the `<script>` tags at the bottom of `index.html`. The former single 7,957-line `app.js` is now 11 files split by responsibility (`app-core.js`, `locale-legal-nav.js`, `dashboard.js`, `resources-catalog.js`, `production-chain-core.js`, `extraction-management.js`, `production-detail-view.js`, `production-setup-wiring.js`, `resource-detail-view.js`, `settings-and-modals.js`, `boot.js`), alongside the pre-existing `production-graph.js`, `production-scale.js`, `energy-ui.js`, `energy-scale.js`, `extraction-scale.js`, `i18n-ui.js`, and `number-format.js`. Load order matters: these files share one global scope instead of using ES modules, so don't reorder the `<script>` tags.
+  - `styles/`, `assets/` — CSS and static assets (game building/item icons, app icon/logo).
+- **`src/locales/ui/`** — per-language UI text packs (interface strings, not game data), loaded at runtime based on the selected locale.
+- **`scripts/`** — data-import tooling, run manually via `npm run import:*` (see `package.json`), not part of the shipped app. `scripts/archive/` holds one-off scripts that generated the already-committed locale packs and are kept for reference, not active use — see `scripts/archive/README.md`.
+
+There is currently no automated test suite (no test framework, no test files) — changes are verified by manually running the app and exercising the affected flow.
+
 ## Community
 
 Join the discussion on Facebook: [Factory Manager](https://www.facebook.com/groups/factorymanager)
