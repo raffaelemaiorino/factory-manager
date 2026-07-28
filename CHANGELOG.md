@@ -9,6 +9,9 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+### Rimosso
+- Tabelle database inutilizzate `recipes` / `recipe_ingredients`: create a ogni avvio ma mai popolate (i dati delle ricette vivono nella tabella `item_schemas`). I nuovi database non le creano più; i database esistenti mantengono le tabelle vuote invariate (nessuna migrazione distruttiva).
+
 ### Corretto
 - Avvio app (`boot()`): un errore durante l'inizializzazione (lingua, impostazioni app o una qualsiasi `setup*()`) viene ora intercettato e mostrato in un messaggio di errore invece di lasciare l'app a metà avvio senza alcun feedback.
 - Processo principale Electron: un errore dopo l'inizializzazione del database (es. durante la creazione della finestra principale) viene ora intercettato e segnalato con un messaggio di errore e una chiusura pulita, invece di diventare un rifiuto di promessa non gestito senza errore visibile all'utente.

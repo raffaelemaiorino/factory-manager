@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- Unused `recipes` / `recipe_ingredients` database tables: created on every startup but never written to (actual recipe data lives in the `item_schemas` table). New databases no longer create them; existing databases keep the empty tables untouched (no destructive migration).
+
 ### Fixed
 - App startup (`boot()`): a rejection anywhere during initialization (locale, app settings, or any `setup*()` call) is now caught and shown in an error dialog instead of silently leaving the app half-started with no feedback.
 - Electron main process: a failure after database initialization (e.g. while creating the main window) is now caught and reported via an error dialog and a clean quit, instead of becoming an unhandled promise rejection with no user-visible error.
