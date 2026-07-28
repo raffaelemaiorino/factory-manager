@@ -1076,7 +1076,24 @@
     <script src="scripts/extraction-scale.js"></script>
     <script src="scripts/energy-scale.js"></script>
     <script src="scripts/production-graph.js"></script>
-    <script src="scripts/app.js"></script>
+    <!--
+      app.js was split into these 11 files (formerly one 7,957-line file).
+      They are plain global scripts, not modules, each a contiguous slice
+      of the original file in its original order - do not reorder these
+      tags, and do not reorder statements between files. See boot.js for
+      why 3 statements were moved out of their original position.
+    -->
+    <script src="scripts/app-core.js"></script>
+    <script src="scripts/locale-legal-nav.js"></script>
+    <script src="scripts/dashboard.js"></script>
+    <script src="scripts/resources-catalog.js"></script>
+    <script src="scripts/production-chain-core.js"></script>
+    <script src="scripts/extraction-management.js"></script>
+    <script src="scripts/production-detail-view.js"></script>
+    <script src="scripts/production-setup-wiring.js"></script>
+    <script src="scripts/resource-detail-view.js"></script>
+    <script src="scripts/settings-and-modals.js"></script>
+    <script src="scripts/boot.js"></script>
     <script src="scripts/energy-ui.js"></script>
   </body>
 </html>
