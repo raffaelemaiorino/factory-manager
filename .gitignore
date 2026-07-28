@@ -12,4 +12,5 @@ Thumbs.db
 .tmp-video-frames/
 start.bat
 src/database/seeds/translations/_import-progress.json
+graphify-out/
 
