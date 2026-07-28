@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { collectStringKeys } = require('../src/locales/ui/format');
+const { collectStringKeys } = require('../../src/locales/ui/format');
 
 const uiDir = path.join(__dirname, '..', 'src', 'locales', 'ui');
 

@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { collectStringKeys } = require('../src/locales/ui/format');
+const { collectStringKeys } = require('../../src/locales/ui/format');
 const { flatToNested } = require('./apply-ui-flats');
 const {
   legalRu,
