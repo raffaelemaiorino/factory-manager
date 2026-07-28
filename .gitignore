@@ -1,6 +1,7 @@
 node_modules/
 dist/
 dist-build/
+dist-release-*/
 out/
 *.db
 *.db-shm

@@ -1,84 +1,140 @@
 # Factory Manager
 
-Factory Manager is an independent, unofficial, fan-made production planning tool for Satisfactory.
+A local desktop app for planning Satisfactory factories.
 
-It is designed to help players visually plan and calculate production chains, including:
+I built it because working out production chains by hand (machines, rates, power, extractions) gets messy fast. Factory Manager keeps an item catalog, production plans, and power plans on your PC — no account, no cloud, not affiliated with Coffee Stain.
 
-* required resources;
-* production inputs and outputs;
-* machine quantities;
-* production rates;
-* recipes and manufacturing steps;
-* factory layouts and production schemes.
+What you can do with it:
 
-Factory Manager is a local application and is not affiliated with, endorsed by, sponsored by, supported by, or officially connected to Coffee Stain Studios AB, Coffee Stain Publishing AB, or any other Coffee Stain company.
+- browse game items and recipes
+- plan production chains (inputs, outputs, machine counts, rates)
+- set up extractions and power (generators + fuel)
+- save projects and reopen them later
 
-Satisfactory, its name, trademarks, logos, images, icons, resources, machines, buildings, items, recipes, production elements, game data, and all related content are the property of Coffee Stain Studios AB and/or their respective owners and licensors.
+Data can be wrong or out of date after a game patch. Double-check important numbers in-game if it matters.
 
-The developers of Factory Manager do not claim ownership of any Satisfactory-related content. Any references, names, images, icons, or game assets used within the application are included solely for informational, descriptive, and identification purposes.
+## Releases vs building yourself
 
-Factory Manager does not replace the original game, does not allow users to play Satisfactory, and does not distribute copies, files, or executable content from the game.
+GitHub Releases include Windows installers / portable builds (and other platforms when published). Those binaries are built from this repo with electron-builder. They are **not code-signed**, so Windows SmartScreen (and similar warnings on macOS/Linux) may complain — that is normal for an unsigned indie app, not proof the file is malicious.
 
-Production data and calculations may contain errors or may not always reflect the latest game updates, balancing changes, or recipe modifications.
-
-Factory Manager is provided as-is, without warranties of accuracy, availability, or fitness for a particular purpose.
+If you prefer not to trust a prebuilt `.exe`, build from this source (steps below). That is the most transparent option.
 
 ## Changelog
 
 - Italian: [`CHANGELOG.md`](CHANGELOG.md)
 - English: [`CHANGELOG.en.md`](CHANGELOG.en.md)
 
-## Run from source
+## Build from source (step by step)
+
+You do not need to be a developer. Roughly: install Node.js, download the code, install dependencies, run or build.
+
+### 1. Install Node.js
+
+1. Open [https://nodejs.org](https://nodejs.org)
+2. Download the **LTS** version for your OS
+3. Install it with the default options
+4. Open a terminal (PowerShell on Windows, Terminal on macOS/Linux) and check:
+
+```bash
+node -v
+npm -v
+```
+
+Both commands should print a version number. If they fail, restart the terminal (or reboot) and try again.
+
+### 2. Get the source code
+
+**Option A — Git (if you have it):**
+
+```bash
+git clone https://github.com/raffaelemaiorino/factory-manager.git
+cd factory-manager
+```
+
+**Option B — ZIP from GitHub:**
+
+1. On the GitHub repo page, click **Code → Download ZIP**
+2. Unzip somewhere easy to find
+3. In the terminal, `cd` into that folder
+
+### 3. Install dependencies
+
+From the project folder:
 
 ```bash
 npm install
-npm start          # or: npm run dev (adds --enable-logging for DevTools console output)
 ```
 
-Works the same on Windows, macOS, and Linux — the app is a standard Electron app with no OS-specific setup required.
+This downloads Electron and other packages. It can take a few minutes.
 
-## Build
+### 4. Run the app (no installer)
+
+```bash
+npm start
+```
+
+Or with more console logging:
+
+```bash
+npm run dev
+```
+
+Same idea on Windows, macOS, and Linux — it is a normal Electron app.
+
+### 5. Build installers / portable apps
 
 ```bash
 npm install
-npm run build:win     # NSIS installer + portable exe
-npm run build:mac     # .dmg
-npm run build:linux   # AppImage
+npm run build:win     # Windows: NSIS installer + portable exe
+npm run build:mac     # macOS: .dmg
+npm run build:linux   # Linux: AppImage
 ```
 
-Artifacts land under `dist/`. `npm run build` (no suffix) is an alias for `npm run build:win`, kept for backward compatibility.
+Finished files go under `dist/`.  
+`npm run build` (no suffix) is the same as `npm run build:win` (kept for older habits).
 
-### Windows code signing (optional)
+#### Windows code signing (optional)
 
-Without a certificate the Windows build is unsigned (SmartScreen may warn). To sign with Authenticode, set env vars before `npm run build:win`:
+Without a certificate the Windows build is unsigned (SmartScreen may warn). To sign with Authenticode, set these before `npm run build:win`:
 
 - `CSC_LINK` — path to `.pfx` / `.p12` (or `WIN_CSC_LINK`)
 - `CSC_KEY_PASSWORD` — certificate password
 
 electron-builder picks them up automatically.
 
-### macOS notarization
+#### macOS Gatekeeper
 
-The macOS build has `hardenedRuntime` enabled but is not notarized by Apple, so Gatekeeper will warn on first launch ("unidentified developer") unless you notarize it yourself (requires an Apple Developer account) or the user right-clicks → Open to bypass the warning once.
+The macOS build has `hardenedRuntime` enabled but is **not** notarized by Apple. Gatekeeper will warn on first launch (“unidentified developer”) unless you notarize it yourself (Apple Developer account) or the user right-clicks → **Open** once to bypass the warning.
 
-### Linux
+#### Linux AppImage
 
-Produces a single-file `AppImage` (`chmod +x` it and run, or use an AppImage launcher — no installation needed). Requires `libfuse2` on the host to run directly; without it, extract first with `./Factory*.AppImage --appimage-extract` and run `./squashfs-root/factory-manager`.
+You get a single `AppImage` file. Make it executable (`chmod +x`) and run it, or use an AppImage launcher. Running it directly often needs `libfuse2` on the host; without that, extract and run:
 
-## Architecture
+```bash
+./Factory*.AppImage --appimage-extract
+./squashfs-root/factory-manager
+```
 
-Everything runs locally — there is no server or cloud backend. Data lives in a SQLite database file (via [sql.js](https://sql.js.org/), a WASM build of SQLite) inside Electron's per-user app-data directory.
+## Architecture (for contributors)
 
-- **`electron/`** — the Electron main process: window/lifecycle management (`main.js`), the `contextBridge` IPC surface exposed to the renderer as `window.satisfactory` (`preload.js`), GitHub release-check logic (`update-check.js`), and persistence of production-view UI state to a JSON file (`production-ui-state-store.js`).
-- **`src/database/`** — the data layer, run in the main process and accessed only via IPC: schema/migrations and query helpers (`index.js`), one file per domain (`items.js`, `buildings.js`, `production-chains.js`, `energy-chains.js`, `energy-extraction.js`, `mineral-extraction.js`, `schemas.js`/recipes, `i18n.js`, `app-settings.js`), and seed data under `seeds/` (game catalog JSON scraped from a fan site, plus bundled locale packs).
-- **`src/renderer/`** — the UI, loaded as `index.html` in the main window:
-  - `scripts/` — plain global `<script>` files (no bundler, no modules), loaded in a fixed order — see the `<script>` tags at the bottom of `index.html`. The former single 7,957-line `app.js` is now 11 files split by responsibility (`app-core.js`, `locale-legal-nav.js`, `dashboard.js`, `resources-catalog.js`, `production-chain-core.js`, `extraction-management.js`, `production-detail-view.js`, `production-setup-wiring.js`, `resource-detail-view.js`, `settings-and-modals.js`, `boot.js`), alongside the pre-existing `production-graph.js`, `production-scale.js`, `energy-ui.js`, `energy-scale.js`, `extraction-scale.js`, `i18n-ui.js`, and `number-format.js`. Load order matters: these files share one global scope instead of using ES modules, so don't reorder the `<script>` tags.
-  - `styles/`, `assets/` — CSS and static assets (game building/item icons, app icon/logo).
-- **`src/locales/ui/`** — per-language UI text packs (interface strings, not game data), loaded at runtime based on the selected locale.
-- **`scripts/`** — data-import tooling, run manually via `npm run import:*` (see `package.json`), not part of the shipped app. `scripts/archive/` holds one-off scripts that generated the already-committed locale packs and are kept for reference, not active use — see `scripts/archive/README.md`.
+Everything runs locally — no server or cloud backend. Data lives in a SQLite database file (via [sql.js](https://sql.js.org/), SQLite compiled to WASM) in Electron’s per-user app-data folder.
 
-There is currently no automated test suite (no test framework, no test files) — changes are verified by manually running the app and exercising the affected flow.
+- **`electron/`** — main process: window/lifecycle (`main.js`), IPC bridge as `window.satisfactory` (`preload.js`), GitHub update check (`update-check.js`), production-view UI state JSON (`production-ui-state-store.js`).
+- **`src/database/`** — data layer in the main process, reached only via IPC: schema/migrations, domain files (`items.js`, `buildings.js`, `production-chains.js`, …), seeds under `seeds/`.
+- **`src/renderer/`** — UI (`index.html` + plain `<script>` files, no bundler). Load order in `index.html` matters; scripts share one global scope.
+- **`src/locales/ui/`** — UI language packs (not game catalog text).
+- **`scripts/`** — manual import helpers (`npm run import:*`). One-off generators live under `scripts/archive/` — see `scripts/archive/README.md`.
+
+There is no automated test suite yet; changes are checked by running the app and trying the affected flow.
 
 ## Community
 
-Join the discussion on Facebook: [Factory Manager](https://www.facebook.com/groups/factorymanager)
+Facebook group: [Factory Manager](https://www.facebook.com/groups/factorymanager)
+
+## Disclaimer
+
+Factory Manager is an independent, unofficial fan project. It is not affiliated with, endorsed by, sponsored by, or connected to Coffee Stain Studios AB, Coffee Stain Publishing AB, or any Coffee Stain company.
+
+Satisfactory and related names, trademarks, logos, images, icons, game data, and assets belong to Coffee Stain Studios AB and/or their respective owners. This app does not claim ownership of that content; game references are for identification and planning only.
+
+Factory Manager does not replace Satisfactory, does not let you play the game, and does not ship game executables or files. It is provided as-is, without warranties.
