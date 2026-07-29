@@ -406,6 +406,10 @@ function setupProduction() {
   });
 
   productionDetailBody.addEventListener('click', (e) => {
+    if (e.target.closest('.production-io-rate')) {
+      e.stopPropagation();
+    }
+
     const inputAddTrigger = e.target.closest('.production-input-add-trigger');
     if (inputAddTrigger) {
       e.preventDefault();

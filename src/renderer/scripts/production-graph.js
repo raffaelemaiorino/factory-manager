@@ -687,9 +687,21 @@
     const item = step.item;
     const schema = step.schema;
     const isMarked = Number(step.marked) === 1;
+    const slots = window.ProductionScale?.getSomersloopSlots?.(schema) ?? 0;
+    const hasSomersloop =
+      slots > 0 &&
+      (window.ProductionScale?.countSomersloopChecked?.(step.somersloop_mask ?? 0, slots) ?? 0) > 0;
+    const nodeClasses = [
+      'production-graph-node',
+      'production-graph-node--step',
+      isMarked ? 'production-graph-node--marked' : '',
+      hasSomersloop ? 'production-graph-node--somersloop' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     return `
-      <div class="production-graph-node production-graph-node--step${isMarked ? ' production-graph-node--marked' : ''}" data-node-id="${node.id}" role="button" tabindex="0" aria-grabbed="false">
+      <div class="${nodeClasses}" data-node-id="${node.id}" role="button" tabindex="0" aria-grabbed="false">
         <label
           class="production-graph-step-mark-btn${isMarked ? ' production-graph-step-mark-btn--active' : ''}"
           title="${escapeHtml(t('production.highlightStepTitle'))}"

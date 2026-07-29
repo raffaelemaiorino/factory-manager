@@ -1399,8 +1399,9 @@ function renderProductionObjectivesSummary(steps = []) {
     </div>`;
 }
 
-function renderPowerShardsSummary(totalShards, totalMw = 0) {
+function renderPowerShardsSummary(totalShards, totalMw = 0, totalSomersloops = 0) {
   const mw = Number(totalMw) || 0;
+  const somersloops = Math.max(0, Math.round(Number(totalSomersloops) || 0));
   const mwRow =
     mw > 0
       ? `
@@ -1410,6 +1411,17 @@ function renderPowerShardsSummary(totalShards, totalMw = 0) {
               <span>${escapeHtml(t('production.totalPowerConsumption'))}</span>
             </td>
             <td class="production-external-rate">${escapeHtml(formatRateWithUnit(mw, 'MW'))}</td>
+          </tr>`
+      : '';
+  const somersloopRow =
+    somersloops > 0
+      ? `
+          <tr>
+            <td class="production-external-resource">
+              <img class="production-external-icon" src="${SOMERSLOOP_IMAGE}" alt="" />
+              <span>${escapeHtml(t('production.totalSomersloops'))}</span>
+            </td>
+            <td class="production-external-rate">${formatDisplayInteger(somersloops)}</td>
           </tr>`
       : '';
 
@@ -1430,6 +1442,7 @@ function renderPowerShardsSummary(totalShards, totalMw = 0) {
             </td>
             <td class="production-external-rate">${formatDisplayInteger(totalShards)}</td>
           </tr>
+          ${somersloopRow}
           ${mwRow}
         </tbody>
       </table>
@@ -1444,7 +1457,8 @@ function renderProductionExternalSummary(steps, extractions = []) {
     steps.length || extractions.length
       ? renderPowerShardsSummary(
           computeDetailPowerShards(steps, extractions),
-          computeDetailPowerMw(steps, extractions)
+          computeDetailPowerMw(steps, extractions),
+          computeDetailSomersloops(steps)
         )
       : '';
 
@@ -2340,6 +2354,7 @@ function getConfigInputField(input) {
   if (input.classList.contains('production-machines-input')) return 'machines';
   if (input.classList.contains('production-extraction-overclock-input')) return 'extraction-overclock';
   if (input.classList.contains('production-extraction-nodes-input')) return 'extraction-nodes';
+  if (input.classList.contains('production-io-rate-input')) return 'io-rate';
   if (input.classList.contains('energy-generator-fuel-input')) return 'energy-fuel';
   if (input.classList.contains('energy-generator-overclock-input')) return 'energy-overclock';
   if (input.classList.contains('energy-generator-machines-input')) return 'energy-machines';
@@ -2362,19 +2377,19 @@ function applyConfigInputNudge(input, field, delta, commit = commitConfigInputCh
     const max = getConfigInputNudgeMax(input, field, value);
     if (max != null) value = Math.min(max, value);
     formatted = formatOverclockInputValue(value);
-  } else if (field === 'output' || field === 'extraction-output' || field === 'energy-fuel') {
+  } else if (field === 'output' || field === 'extraction-output' || field === 'energy-fuel' || field === 'io-rate') {
     const fractionalOutput =
-      (field === 'output' || field === 'extraction-output') &&
+      (field === 'output' || field === 'extraction-output' || field === 'io-rate') &&
       input.classList.contains('production-config-decimal-input');
     const nudgeStep =
-      field === 'output' || field === 'extraction-output'
+      field === 'output' || field === 'extraction-output' || field === 'io-rate'
         ? fractionalOutput
           ? 0.001
           : 1
         : stepSize;
     value = (Number(parseConfigNumberInput(input.value)) || Number(input.value) || 0) + delta * nudgeStep;
     if (!Number.isFinite(value)) value = Math.max(1, delta > 0 ? 1 : 0);
-    if (field === 'output' || field === 'extraction-output') {
+    if (field === 'output' || field === 'extraction-output' || field === 'io-rate') {
       value = fractionalOutput
         ? window.ProductionScale.roundProduction(value)
         : Math.round(value);
@@ -2383,7 +2398,7 @@ function applyConfigInputNudge(input, field, delta, commit = commitConfigInputCh
     const max = getConfigInputNudgeMax(input, field, value);
     if (max != null) value = Math.min(max, value);
     formatted =
-      field === 'output'
+      field === 'output' || field === 'io-rate'
         ? formatOutputInputValue(value)
         : field === 'extraction-output'
           ? formatExtractionOutputInputValue(value, getExtractionOverclockForConfigInput(input))
@@ -2411,6 +2426,15 @@ function applyConfigInputNudge(input, field, delta, commit = commitConfigInputCh
 function commitConfigInputFromField(input, field) {
   if (!input || !field) return;
 
+  if (field === 'io-rate') {
+    handleStepIoRateChange(
+      Number(input.dataset.stepId),
+      input.dataset.ioKind,
+      input.dataset.itemSlug,
+      parseConfigNumberInput(input.value)
+    );
+    return;
+  }
   if (field === 'output' || field === 'machines') {
     handleStepConfigChange(
       Number(input.dataset.stepId),
@@ -2441,6 +2465,15 @@ function commitConfigInputFromField(input, field) {
 }
 
 function commitConfigInputChange(input, field, value) {
+  if (field === 'io-rate') {
+    handleStepIoRateChange(
+      Number(input.dataset.stepId),
+      input.dataset.ioKind,
+      input.dataset.itemSlug,
+      value
+    );
+    return;
+  }
   if (field === 'output' || field === 'machines') {
     handleStepConfigChange(Number(input.dataset.stepId), field, value);
     return;
@@ -2587,6 +2620,23 @@ function handleStepConfigChange(stepId, field, rawValue) {
   refreshRelatedStepIoDisplays(stepId);
   updateProductionDetailExternalSummary();
   scheduleStepConfigSave(stepId, updated);
+}
+
+function handleStepIoRateChange(stepId, kind, itemSlug, ratePerMin) {
+  const step = activeProductionDetail?.steps?.find((item) => item.id === stepId);
+  if (!step?.schema) return;
+
+  const target = window.ProductionScale.computeTargetOutputFromIoRate(
+    step.schema,
+    step.item,
+    kind,
+    itemSlug,
+    ratePerMin,
+    step.somersloop_mask ?? 0
+  );
+  if (target == null || !Number.isFinite(target) || target <= 0) return;
+
+  handleStepConfigChange(stepId, 'output', target);
 }
 
 async function resetProductionStep(stepId) {

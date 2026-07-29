@@ -132,6 +132,15 @@ function computeDetailPowerShards(machines = [], extractions = []) {
   return computeChainPowerShards(machines) + computeExtractionsPowerShards(extractions);
 }
 
+function computeDetailSomersloops(steps = []) {
+  return (steps ?? []).reduce(
+    (sum, step) =>
+      sum +
+      computeTotalSomersloops(step.schema, step.somersloop_mask ?? 0, step.machine_count ?? 1),
+    0
+  );
+}
+
 function computeChainNodeCount(extractions = []) {
   return computeExtractionNodeGroups(extractions).reduce((sum, group) => sum + group.node_count, 0);
 }

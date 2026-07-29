@@ -9,6 +9,47 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.58.1] - 2026-07-29
+
+### Changed
+- Icona Somersloop ufficiale nel riepilogo macchina e nel box Info della catena
+
+## [1.58.0] - 2026-07-29
+
+### Added
+- Produzione: nel riepilogo macchina (e nel box Info della catena) compaiono anche i Somersloop necessari, oltre ai Frammenti Energetici
+
+## [1.57.0] - 2026-07-29
+
+### Added
+- Visualizzazione ad albero: gli schemi con Somersloop attivo hanno un bordo di 5px con sfumatura animata dal rosso al viola
+
+## [1.56.3] - 2026-07-29
+
+### Fixed
+- Produzione: attivando/disattivando il Somersloop l’output scala per rapporto pulito (es. 400→800) senza residui tipo 800,002 / 200,001
+
+## [1.56.2] - 2026-07-29
+
+### Fixed
+- Produzione: inserendo un rate input/output intero (es. plastica 200/min) non compare più un residuo tipo 200,01 per arrotondamento per eccesso su decimali periodici
+
+## [1.56.1] - 2026-07-29
+
+### Changed
+- Produzione: campi rate input/output più visibili (bordo giallo) e box IO un po’ più alti
+
+## [1.56.0] - 2026-07-29
+
+### Added
+- Produzione: i rate di input e output (anche secondari, es. resina / greggio) sono campi editabili: inserendo un valore si ricalcolano output primario, macchine e overclock
+
+## [1.55.0] - 2026-07-29
+
+### Changed
+- Produzione: se l’output richiesto supera il massimo delle macchine attuali (×250% OC), vengono calcolate automaticamente le macchine necessarie (numero pari) e l’overclock
+- Campo Output allineato in larghezza allo slider sottostante
+
 ## [1.54.2] - 2026-07-29
 
 ### Fixed

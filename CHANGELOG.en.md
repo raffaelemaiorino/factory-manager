@@ -9,6 +9,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.58.1] - 2026-07-29
+
+### Changed
+- Official Somersloop icon in the machine summary and plan Info box
+
+## [1.58.0] - 2026-07-29
+
+### Added
+- Production: the machine summary (and the plan Info box) also shows required Somersloops alongside Power Shards
+
+## [1.57.0] - 2026-07-29
+
+### Added
+- Tree view: steps with Somersloop enabled show a 5px border with an animated red-to-purple gradient
+
+## [1.56.3] - 2026-07-29
+
+### Fixed
+- Production: toggling Somersloop scales output by a clean ratio (e.g. 400→800) without leftovers like 800.002 / 200.001
+
+## [1.56.2] - 2026-07-29
+
+### Fixed
+- Production: entering an integer input/output rate (e.g. plastic 200/min) no longer shows leftovers like 200.01 from ceiling rounding of repeating decimals
+
+## [1.56.1] - 2026-07-29
+
+### Changed
+- Production: input/output rate fields more visible (yellow border) and slightly taller IO boxes
+
+## [1.56.0] - 2026-07-29
+
+### Added
+- Production: input and output rates (including byproducts, e.g. resin / crude oil) are editable fields — entering a value recalculates primary output, machines, and overclock
+
+## [1.55.0] - 2026-07-29
+
+### Changed
+- Production: if the requested output exceeds the current machines’ max (×250% OC), the required machine count (even number) and overclock are calculated automatically
+- Output field width matched to the slider below it
+
 ## [1.54.2] - 2026-07-29
 
 ### Fixed

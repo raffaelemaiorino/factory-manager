@@ -66,6 +66,37 @@ function formatIoPerMinute(io, duration) {
   return formatRateWithUnit(perMin, unit);
 }
 
+function getIoRatePerMin(io, duration) {
+  const perMin = window.ProductionScale.outputPerMinute(io.amount, duration);
+  return Number.isFinite(perMin) ? perMin : 0;
+}
+
+function formatIoRateInputValue(ratePerMin, overclock = null) {
+  return formatOutputInputValue(ratePerMin, overclock);
+}
+
+function renderProductionIoRateInput(step, io, kind, duration) {
+  const rate = getIoRatePerMin(io, duration);
+  const unit = io.is_fluid ? 'm³/min' : '/min';
+  const value = formatIoRateInputValue(rate, step?.overclock);
+  const label = io.item_name || io.item_slug || '';
+  return `
+    <span class="production-io-rate">
+      <input
+        type="text"
+        class="production-config-input production-config-decimal-input production-io-rate-input"
+        inputmode="decimal"
+        readonly
+        data-step-id="${step.id}"
+        data-io-kind="${escapeHtml(kind)}"
+        data-item-slug="${escapeHtml(io.item_slug)}"
+        value="${escapeHtml(value)}"
+        aria-label="${escapeHtml(label)} (${escapeHtml(unit)})"
+      />
+      <span class="production-io-rate-unit">${escapeHtml(unit)}</span>
+    </span>`;
+}
+
 function productionIoRenderOptions(schema) {
   return { perMinute: true, duration: schema?.duration ?? 1 };
 }
@@ -181,6 +212,19 @@ function computeTotalPowerShards(overclock, machineCount) {
   return computePowerShardsPerMachine(overclock) * machines;
 }
 
+function computeSomersloopsPerMachine(schema, somersloopMask = 0) {
+  const slots = window.ProductionScale.getSomersloopSlots(schema);
+  if (!slots) return 0;
+  return window.ProductionScale.countSomersloopChecked(somersloopMask ?? 0, slots);
+}
+
+function computeTotalSomersloops(schema, somersloopMask, machineCount) {
+  const perMachine = computeSomersloopsPerMachine(schema, somersloopMask);
+  if (!perMachine) return 0;
+  const machines = Math.max(1, Math.round(Number(machineCount) || 1));
+  return perMachine * machines;
+}
+
 function renderBuildingPowerShards(overclockOrConfig, machineCount) {
   const config =
     overclockOrConfig != null && typeof overclockOrConfig === 'object'
@@ -223,6 +267,27 @@ function renderBuildingPowerShards(overclockOrConfig, machineCount) {
         })()
       : '';
 
+  const somersloopTotal = computeTotalSomersloops(
+    config.schema,
+    config.somersloop_mask ?? 0,
+    machines
+  );
+  const somersloopLine =
+    slots > 0
+      ? (() => {
+          const sCount = formatDisplayInteger(somersloopTotal);
+          const [sBefore = '', sAfter = ''] = t('production.somersloopsRequired', {
+            count: '\u0000',
+          }).split('\u0000');
+          return `<div class="craft-building-somersloop">
+      <img class="craft-building-somersloop-icon" src="${SOMERSLOOP_IMAGE}" alt="" />
+      <span class="craft-building-somersloop-label">${escapeHtml(sBefore)}<strong>${escapeHtml(
+            sCount
+          )}</strong>${escapeHtml(sAfter)}</span>
+    </div>`;
+        })()
+      : '';
+
   return `
     <div class="craft-building-power-shards">
       <img class="craft-building-power-shards-icon" src="${POWER_SHARD_IMAGE}" alt="" />
@@ -230,15 +295,18 @@ function renderBuildingPowerShards(overclockOrConfig, machineCount) {
         count
       )}</strong>${escapeHtml(after)}</span>
     </div>
+    ${somersloopLine}
     ${powerLine}`;
 }
 
 function updateBuildingPowerShardsEl(container, overclockOrConfig, machineCount) {
   if (!container) return;
   const existingShards = container.querySelector('.craft-building-power-shards');
+  const existingSomersloop = container.querySelector('.craft-building-somersloop');
   const existingPower = container.querySelector('.craft-building-power-consumption');
   const html = renderBuildingPowerShards(overclockOrConfig, machineCount);
   existingPower?.remove();
+  existingSomersloop?.remove();
   if (existingShards) {
     existingShards.outerHTML = html;
     return;
@@ -281,10 +349,6 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
   const img = io.item_image
     ? `<img src="${escapeHtml(io.item_image)}" alt="" />`
     : '<span class="resource-img resource-img--placeholder" style="width:28px;height:28px"></span>';
-
-  const amountLabel = ioOptions.perMinute
-    ? formatIoPerMinute(io, ioOptions.duration)
-    : formatIoAmount(io);
 
   const linkedProducers = getLinkedProducersForInput(step, itemSlug, allSteps);
   const linkedExtractions = getLinkedExtractionsForInput(step, itemSlug, allExtractions, allSteps);
@@ -415,19 +479,24 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
         </div>`
       : '';
 
+  const duration = ioOptions?.duration ?? step?.schema?.duration ?? 1;
+  const rateControl = renderProductionIoRateInput(step, io, 'input', duration);
+
   return `
     <div class="craft-io-item craft-io-item--with-links ${linkStateClass}" data-item-slug="${escapeHtml(itemSlug)}">
-      <button
-        type="button"
-        class="production-input-add-trigger"
-        data-item-slug="${escapeHtml(itemSlug)}"
-        title="${escapeHtml(t('production.addResourceStepFor', { name: io.item_name || itemSlug }))}"
-        aria-label="${escapeHtml(t('production.addResourceStepFor', { name: io.item_name || itemSlug }))}"
-      >
-        ${img}
-        <span>${escapeHtml(io.item_name || itemSlug)}</span>
-        <span class="amount">${amountLabel}</span>
-      </button>
+      <div class="craft-io-item-row">
+        <button
+          type="button"
+          class="production-input-add-trigger"
+          data-item-slug="${escapeHtml(itemSlug)}"
+          title="${escapeHtml(t('production.addResourceStepFor', { name: io.item_name || itemSlug }))}"
+          aria-label="${escapeHtml(t('production.addResourceStepFor', { name: io.item_name || itemSlug }))}"
+        >
+          ${img}
+          <span>${escapeHtml(io.item_name || itemSlug)}</span>
+        </button>
+        ${rateControl}
+      </div>
       ${linkedBadge}
       ${linkSection}
       ${extractionLinkSection}
@@ -439,10 +508,6 @@ function renderProductionOutputWithLinks(step, io, ioOptions, allSteps) {
   const img = io.item_image
     ? `<img src="${escapeHtml(io.item_image)}" alt="" />`
     : '<span class="resource-img resource-img--placeholder" style="width:28px;height:28px"></span>';
-
-  const amountLabel = ioOptions.perMinute
-    ? formatIoPerMinute(io, ioOptions.duration)
-    : formatIoAmount(io);
 
   const outputRate = getStepOutputRateForItem(step, itemSlug);
   const linkedConsumers = getLinkedConsumersForOutput(step, itemSlug, allSteps);
@@ -474,11 +539,16 @@ function renderProductionOutputWithLinks(step, io, ioOptions, allSteps) {
         </div>`
       : '';
 
+  const duration = ioOptions?.duration ?? step?.schema?.duration ?? 1;
+  const rateControl = renderProductionIoRateInput(step, io, 'output', duration);
+
   return `
     <div class="craft-io-item craft-io-item--with-links ${linkStateClass}" data-item-slug="${escapeHtml(itemSlug)}">
-      ${img}
-      <span>${escapeHtml(io.item_name || io.item_slug)}</span>
-      <span class="amount">${amountLabel}</span>
+      <div class="craft-io-item-row">
+        ${img}
+        <span>${escapeHtml(io.item_name || io.item_slug)}</span>
+        ${rateControl}
+      </div>
       ${linkedBadge}
     </div>`;
 }
