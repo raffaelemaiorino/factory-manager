@@ -9,6 +9,16 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.58.3] - 2026-07-29
+
+### Changed
+- Produzione: il pulsante «Visualizzazione ad albero Gruppi» non compare quando sei già nell’albero di un singolo gruppo
+
+## [1.58.2] - 2026-07-29
+
+### Changed
+- Produzione: icone Comprimi/Espandi (schema e raggruppamento) passano da chevron a caret (caret-up / caret-down)
+
 ## [1.58.1] - 2026-07-29
 
 ### Changed

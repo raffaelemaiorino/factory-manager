@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.58.3] - 2026-07-29
+
+### Changed
+- Production: the “Group tree view” button is hidden when you are already inside a single group’s tree view
+
+## [1.58.2] - 2026-07-29
+
+### Changed
+- Production: Collapse/Expand icons (step and group) switch from chevron to caret (caret-up / caret-down)
+
 ## [1.58.1] - 2026-07-29
 
 ### Changed

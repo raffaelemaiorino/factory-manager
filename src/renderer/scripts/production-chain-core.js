@@ -681,8 +681,8 @@ function updateProductionStepToggleButton(stepEl, state) {
   if (!btn) return;
 
   const configByState = {
-    expanded: { icon: 'fa-chevron-up', label: t('production.collapseStep') },
-    collapsed: { icon: 'fa-chevron-down', label: t('production.expandStep') },
+    expanded: { icon: 'fa-caret-up', label: t('production.collapseStep') },
+    collapsed: { icon: 'fa-caret-down', label: t('production.expandStep') },
   };
   const config = configByState[state] ?? configByState.expanded;
 
@@ -722,7 +722,7 @@ function updateProductionGroupToggleButton(groupEl, state) {
 
   const icon = btn.querySelector('i');
   if (icon) {
-    icon.className = `fa-solid ${state === 'collapsed' ? 'fa-chevron-down' : 'fa-chevron-up'}`;
+    icon.className = `fa-solid ${state === 'collapsed' ? 'fa-caret-down' : 'fa-caret-up'}`;
   }
 }
 
@@ -1022,7 +1022,9 @@ function updateProductionGroupTreeButtonVisibility(detail) {
   const groupBtn = document.getElementById('btn-production-group-tree-view');
   if (!groupBtn) return;
   const hasNamedGroups = collectProductionGroupNames(detail?.steps ?? []).length > 0;
-  groupBtn.hidden = !hasNamedGroups;
+  const insideGroupTree =
+    productionDetailViewMode === 'tree' && Boolean(productionTreeGroupKey);
+  groupBtn.hidden = !hasNamedGroups || insideGroupTree;
   if (!hasNamedGroups && productionDetailViewMode === 'group-tree') {
     productionDetailViewMode = 'editor';
     updateProductionTreeButtonState();
@@ -1677,7 +1679,7 @@ function renderProductionStepGroup(group, allSteps = []) {
           aria-expanded="${state !== 'collapsed' ? 'true' : 'false'}"
           title="${escapeHtml(state === 'collapsed' ? t('production.expandGroup') : t('production.collapseGroup'))}"
           aria-label="${escapeHtml(state === 'collapsed' ? t('production.expandGroup') : t('production.collapseGroup'))}"
-        ><i class="fa-solid ${state === 'collapsed' ? 'fa-chevron-down' : 'fa-chevron-up'}" aria-hidden="true"></i></button>
+        ><i class="fa-solid ${state === 'collapsed' ? 'fa-caret-down' : 'fa-caret-up'}" aria-hidden="true"></i></button>
         <h4 class="production-step-group-title">${escapeHtml(label)}</h4>
         <div class="production-step-group-header-actions">
           ${markBtn}
@@ -1902,7 +1904,7 @@ function renderProductionStep(step, allSteps = []) {
                 aria-label="${escapeHtml(t('production.collapseStep'))}"
                 aria-expanded="true"
                 title="${escapeHtml(t('production.collapseStep'))}"
-              ><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></button>
+              ><i class="fa-solid fa-caret-up" aria-hidden="true"></i></button>
               <button
                 type="button"
                 class="production-step-reset-btn"
