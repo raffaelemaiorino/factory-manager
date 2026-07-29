@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.54.2] - 2026-07-29
+
+### Fixed
+- Estrazione greggio: nodo puro a 100% produce 240 m³/min (non 250), allineato al wiki; a 250% → 600 m³/min per estrattore
+
 ## [1.54.1] - 2026-07-28
 
 ### Fixed

@@ -19,7 +19,7 @@ const MINER_BASE_RATES = {
 const OIL_PUMP_BASE_RATES = {
   impure: 60,
   normal: 120,
-  pure: 250,
+  pure: 240,
 };
 
 const WATER_PUMP_BASE_RATE = 120;

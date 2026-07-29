@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.54.2] - 2026-07-29
+
+### Fixed
+- Crude oil extraction: pure node at 100% yields 240 m³/min (not 250), matching the wiki; at 250% → 600 m³/min per extractor
+
 ## [1.54.1] - 2026-07-28
 
 ### Fixed
