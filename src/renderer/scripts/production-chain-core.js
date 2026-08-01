@@ -349,13 +349,17 @@ function getProducerCandidates(allSteps, consumerStepId, itemSlug, allExtraction
   );
 }
 
-function getTotalLinkedConsumerDemand(extraction, itemSlug, allSteps) {
+function getLinkedConsumersUnmetDemand(extraction, itemSlug, allSteps, allExtractions = []) {
   if (!itemSlug) return 0;
 
   return window.ProductionScale.roundProduction(
     allSteps
       .filter((step) => isExtractionLinkedToConsumer(step, extraction.id, itemSlug))
-      .reduce((sum, step) => sum + getStepInputRateForItem(step, itemSlug), 0)
+      .reduce((sum, step) => {
+        const required = getStepInputRateForItem(step, itemSlug);
+        const linked = getConsumerLinkedInputRate(step, itemSlug, allSteps, allExtractions);
+        return sum + normalizeLinkDelta(required - linked, required);
+      }, 0)
   );
 }
 

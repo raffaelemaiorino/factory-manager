@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.58.5] - 2026-08-01
+
+### Fixed
+- Production: on extractions, “Missing … for linked steps” now accounts for total coverage from all linked sources (not just that miner’s output)
+
+## [1.58.4] - 2026-08-01
+
+### Changed
+- Production: mineral/liquid extractions on the left are sorted alphabetically (including after adding a new extraction)
+
 ## [1.58.3] - 2026-07-29
 
 ### Changed

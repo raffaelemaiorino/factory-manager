@@ -9,6 +9,16 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.58.5] - 2026-08-01
+
+### Fixed
+- Produzione: sulle estrazioni, «Mancano … per gli schemi collegati» considera la copertura totale di tutte le fonti collegate (non più solo l’output di quella trivella)
+
+## [1.58.4] - 2026-08-01
+
+### Changed
+- Produzione: le estrazioni minerali/liquidi a sinistra sono ordinate in ordine alfabetico (anche dopo l’aggiunta di una nuova estrazione)
+
 ## [1.58.3] - 2026-07-29
 
 ### Changed
