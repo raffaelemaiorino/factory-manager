@@ -111,9 +111,27 @@ function getOutputSliderMin(step) {
 
 function usesFractionalProductionOutput(step) {
   if (!step) return false;
+  if (!window.ProductionScale.isIntegerOverclock(step.overclock ?? 100)) return true;
+  const target = Number(step.target_output);
+  if (Number.isFinite(target) && Math.abs(target - Math.round(target)) >= 0.0005) return true;
   const min = getOutputSliderMin(step);
   const max = getOutputSliderMax(step);
   return min < 1 - 0.0005 || max < 1 - 0.0005;
+}
+
+function syncProductionOutputInputMode(outputInput, fractional) {
+  if (!outputInput) return;
+  if (fractional) {
+    outputInput.type = 'text';
+    outputInput.setAttribute('inputmode', 'decimal');
+    outputInput.classList.add('production-config-decimal-input');
+    outputInput.removeAttribute('step');
+    return;
+  }
+  outputInput.type = 'number';
+  outputInput.removeAttribute('inputmode');
+  outputInput.classList.remove('production-config-decimal-input');
+  outputInput.step = '1';
 }
 
 function getProductionOutputSliderStep(step) {
@@ -730,16 +748,24 @@ function updateProductionGroupToggleButton(groupEl, state) {
   }
 }
 
-function applyProductionGroupViewState(groupEl, state) {
+function applyProductionGroupViewState(groupEl, state, { syncReorderUi = true } = {}) {
   if (!groupEl) return;
 
-  groupEl.classList.toggle('production-step-group--collapsed', state === 'collapsed');
+  groupEl.classList.toggle(
+    'production-step-group--collapsed',
+    isCollapsedProductionViewState(state)
+  );
   updateProductionGroupToggleButton(groupEl, state);
+  if (syncReorderUi) updateProductionGroupReorderUi();
 }
 
 function applyAllProductionGroupViewStates() {
   productionDetailBody.querySelectorAll('.production-step-group[data-group-key]').forEach((groupEl) => {
-    applyProductionGroupViewState(groupEl, getProductionGroupViewState(groupEl.dataset.groupKey));
+    applyProductionGroupViewState(
+      groupEl,
+      getProductionGroupViewState(groupEl.dataset.groupKey),
+      { syncReorderUi: false }
+    );
   });
   updateProductionGroupReorderUi();
 }
@@ -2072,14 +2098,26 @@ function updateStepConfigInputs(stepEl, config, step) {
   const overclockSlider = stepEl.querySelector('.production-overclock-slider');
   const machinesSlider = stepEl.querySelector('.production-machines-slider');
   const configEl = stepEl.querySelector('.craft-building-config');
+  const fractionalStep = step
+    ? {
+        ...step,
+        overclock: config.overclock,
+        machine_count: config.machine_count,
+        target_output: config.target_output,
+        somersloop_mask: config.somersloop_mask ?? step.somersloop_mask,
+      }
+    : null;
+  const fractionalOutput = fractionalStep
+    ? usesFractionalProductionOutput(fractionalStep)
+    : !window.ProductionScale.isIntegerOverclock(config.overclock ?? 100);
 
   if (outputInput) {
-    const fractional = step ? usesFractionalProductionOutput(step) : false;
-    outputInput.step = fractional ? '0.001' : '1';
+    // type=number rejects localized decimals (e.g. "187,5"); keep text+decimal in sync
+    syncProductionOutputInputMode(outputInput, fractionalOutput);
     outputInput.value = formatOutputInputValue(config.target_output, config.overclock);
     if (step) {
-      outputInput.min = String(getOutputSliderMin(step));
-      outputInput.max = String(getOutputSliderMax(step));
+      outputInput.min = String(getOutputSliderMin(fractionalStep ?? step));
+      outputInput.max = String(getOutputSliderMax(fractionalStep ?? step));
     }
     rememberConfigInputValue(outputInput);
   }
@@ -2095,14 +2133,13 @@ function updateStepConfigInputs(stepEl, config, step) {
   }
 
   if (outputSlider && step) {
-    const fractional = usesFractionalProductionOutput(step);
-    const stepSize = getProductionOutputSliderStep(step);
-    const minOutput = getOutputSliderMin(step);
-    const maxOutput = getOutputSliderMax(step);
+    const stepSize = getProductionOutputSliderStep(fractionalStep);
+    const minOutput = getOutputSliderMin(fractionalStep);
+    const maxOutput = getOutputSliderMax(fractionalStep);
     outputSlider.min = String(minOutput);
     outputSlider.max = String(maxOutput);
     outputSlider.step = String(stepSize);
-    const value = fractional
+    const value = fractionalOutput
       ? window.ProductionScale.roundProduction(config.target_output)
       : Math.round(config.target_output);
     outputSlider.value = String(Math.min(Math.max(value, minOutput), maxOutput));

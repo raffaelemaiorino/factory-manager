@@ -9,6 +9,12 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [1.58.6] - 2026-08-01
+
+### Fixed
+- Produzione: il campo Output non diventa più nero/vuoto quando modifichi le Macchine con overclock decimale (es. 62,5%)
+- Produzione: con tutti i raggruppamenti compressi torna la maniglia di trascinamento a sinistra per riordinarli (non serve comprimere anche gli schemi interni)
+
 ## [1.58.5] - 2026-08-01
 
 ### Fixed

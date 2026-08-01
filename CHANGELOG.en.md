@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.58.6] - 2026-08-01
+
+### Fixed
+- Production: the Output field no longer goes blank/black when changing Machines with a decimal overclock (e.g. 62.5%)
+- Production: when all groups are collapsed, the left drag handle to reorder them shows again (no need to also collapse schemas inside)
+
 ## [1.58.5] - 2026-08-01
 
 ### Fixed
