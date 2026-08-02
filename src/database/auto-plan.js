@@ -1,4 +1,4 @@
-const { getItemSchemas } = require('./schemas');
+const { pickDefaultSchema } = require('./auto-plan-recipes');
 const {
   addProductionChainStep,
   updateProductionChainStep,
@@ -55,12 +55,6 @@ function findItemBySlug(db, getItemById, slug) {
   const row = queryOne(db, 'SELECT id FROM items WHERE slug = ?', [String(slug ?? '').trim()]);
   if (!row) return null;
   return getItemById(db, row.id);
-}
-
-function pickDefaultSchema(db, itemId) {
-  const schemas = getItemSchemas(db, itemId);
-  if (!schemas.length) return null;
-  return schemas.find((schema) => !schema.is_alternative) || schemas[0];
 }
 
 function resolveItemDemandRate(scaledInput, schema) {
@@ -164,6 +158,7 @@ function autoPlanProductionChain(db, persist, chainId, options, getItemById) {
     addDemand(entry.item.slug, entry.target_rate);
   }
 
+  const expandCount = new Map();
   let guard = 0;
   while (queue.length) {
     if (++guard > 8000) {
@@ -188,10 +183,18 @@ function autoPlanProductionChain(db, persist, chainId, options, getItemById) {
       continue;
     }
 
-    const schema = pickDefaultSchema(db, item.id);
+    const schema = pickDefaultSchema(db, item.id, item);
     if (!schema) {
       // No craft recipe (e.g. missing seed data, or power-only specials not yet seeded):
       // leave as external demand instead of aborting the whole plan.
+      planMeta.set(slug, { kind: 'external', item });
+      continue;
+    }
+
+    // Safety net for residual recipe cycles (pack/unpack, mutual crafts).
+    const times = (expandCount.get(slug) || 0) + 1;
+    expandCount.set(slug, times);
+    if (times > 32) {
       planMeta.set(slug, { kind: 'external', item });
       continue;
     }
@@ -212,17 +215,27 @@ function autoPlanProductionChain(db, persist, chainId, options, getItemById) {
     // 'external' intentionally skipped — shows as shortfall / objective
   }
 
-  function craftDepth(slug, visiting = new Set()) {
-    const meta = planMeta.get(slug);
-    if (!meta || meta.kind !== 'craft') return 0;
-    if (visiting.has(slug)) return 0;
-    visiting.add(slug);
-    let depth = 0;
-    for (const input of meta.schema.inputs ?? []) {
-      depth = Math.max(depth, craftDepth(input.item_slug, visiting));
-    }
-    visiting.delete(slug);
-    return depth + 1;
+  const craftDepthCache = new Map();
+  function craftDepth(slug) {
+    if (craftDepthCache.has(slug)) return craftDepthCache.get(slug);
+
+    const walk = (current, visiting) => {
+      if (craftDepthCache.has(current)) return craftDepthCache.get(current);
+      const meta = planMeta.get(current);
+      if (!meta || meta.kind !== 'craft') return 0;
+      if (visiting.has(current)) return 0;
+      visiting.add(current);
+      let depth = 0;
+      for (const input of meta.schema.inputs ?? []) {
+        depth = Math.max(depth, walk(input.item_slug, visiting));
+      }
+      visiting.delete(current);
+      const result = depth + 1;
+      craftDepthCache.set(current, result);
+      return result;
+    };
+
+    return walk(slug, new Set());
   }
 
   craftSlugs.sort((a, b) => craftDepth(a) - craftDepth(b));
@@ -385,17 +398,21 @@ function autoPlanProductionChain(db, persist, chainId, options, getItemById) {
     ];
 
     for (const inputSlug of inputSlugs) {
+      // Skip self-inputs (bad/placeholder recipes) — would throw on link validation.
+      if (!inputSlug || inputSlug === slug) continue;
+
       const producerStepId = stepBySlug.get(inputSlug);
       const producerExtractionId = extractionBySlug.get(inputSlug);
 
-      if (producerStepId) {
+      if (producerStepId && producerStepId !== consumerId) {
         setProductionStepInputLinks(
           db,
           noopPersist,
           consumerId,
           inputSlug,
           [producerStepId],
-          getItemById
+          getItemById,
+          { skipDetail: true }
         );
       }
       if (producerExtractionId) {
@@ -405,7 +422,8 @@ function autoPlanProductionChain(db, persist, chainId, options, getItemById) {
           consumerId,
           inputSlug,
           [producerExtractionId],
-          getItemById
+          getItemById,
+          { skipDetail: true }
         );
       }
     }

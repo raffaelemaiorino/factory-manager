@@ -331,7 +331,7 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
             <div class="production-extraction-title">
               <h4>${escapeHtml(displayName)}</h4>
               <p>${escapeHtml(getExtractionSubtitle(kind))}</p>
-              ${renderBuildStatsBadge(computeExtractionBuildInfo(extraction), { compact: true })}
+              ${renderExtractionBuildStatsBlock(extraction, { compact: true })}
             </div>
             <div class="production-step-actions">
               <button
@@ -348,6 +348,7 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
                 aria-label="${escapeHtml(t('production.resetExtraction'))}"
                 title="${escapeHtml(t('production.resetDefaults'))}"
               >${RESET_ICON}</button>
+              ${renderBuildStatsToggleBtn('extraction', extraction.id)}
               <button
                 type="button"
                 class="production-step-delete-btn"

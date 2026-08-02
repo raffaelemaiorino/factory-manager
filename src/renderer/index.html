@@ -399,9 +399,11 @@
             </div>
           </section>
 
-          <section class="card production-detail-main" id="production-detail-body">
-            <p class="loading" data-i18n="common.loading">Caricamento…</p>
-          </section>
+          <div class="production-detail-stack" id="production-detail-body">
+            <section class="card production-detail-main">
+              <p class="loading" data-i18n="common.loading">Caricamento…</p>
+            </section>
+          </div>
         </div>
 
         <!-- Energia -->
@@ -475,9 +477,11 @@
             </div>
           </section>
 
-          <section class="card production-detail-main" id="energy-detail-body">
-            <p class="loading" data-i18n="common.loading">Caricamento…</p>
-          </section>
+          <div class="production-detail-stack" id="energy-detail-body">
+            <section class="card production-detail-main">
+              <p class="loading" data-i18n="common.loading">Caricamento…</p>
+            </section>
+          </div>
         </div>
 
         <!-- Impostazioni -->
@@ -886,6 +890,24 @@
         <div class="modal-body detail-body" id="schema-picker-list">
           <p class="loading" data-i18n="common.loading">Caricamento…</p>
         </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="manifold-layout-modal" aria-hidden="true">
+      <div class="modal card modal-wide" role="dialog" aria-labelledby="manifold-layout-modal-title">
+        <header class="modal-header">
+          <h3 id="manifold-layout-modal-title">Schema linee</h3>
+          <button
+            type="button"
+            class="modal-close"
+            id="manifold-layout-modal-close"
+            aria-label="Chiudi"
+            data-i18n-aria="common.closeAria"
+          >
+            ×
+          </button>
+        </header>
+        <div class="modal-body manifold-layout-modal-body" id="manifold-layout-modal-body"></div>
       </div>
     </div>
 

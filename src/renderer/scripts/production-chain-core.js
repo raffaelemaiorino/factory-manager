@@ -231,13 +231,429 @@ function getStepInputRateForItem(step, itemSlug) {
 const BELT_RATES_BY_MK = { 1: 60, 2: 120, 3: 270, 4: 480, 5: 780, 6: 1200 };
 const PIPE_RATES_BY_MK = { 1: 300, 2: 600 };
 
-function getPlanTransportCapacity(isFluid, chain = activeProductionDetail?.chain) {
+function getPlanTransportCapacity(
+  isFluid,
+  chain = activeProductionDetail?.chain,
+  override = null
+) {
   if (isFluid) {
-    const mk = Math.min(2, Math.max(1, Number(chain?.max_pipe_mk) || 2));
+    const mk = Math.min(
+      2,
+      Math.max(1, Number(override?.pipe ?? chain?.max_pipe_mk) || 2)
+    );
     return { mk, capacity: PIPE_RATES_BY_MK[mk] || 600, kind: 'pipe' };
   }
-  const mk = Math.min(6, Math.max(1, Number(chain?.max_belt_mk) || 6));
+  const mk = Math.min(
+    6,
+    Math.max(1, Number(override?.belt ?? chain?.max_belt_mk) || 6)
+  );
   return { mk, capacity: BELT_RATES_BY_MK[mk] || 1200, kind: 'belt' };
+}
+
+function getStepTransportNeeds(step) {
+  let belt = false;
+  let pipe = false;
+  for (const io of [...(step?.scaled_inputs ?? []), ...(step?.scaled_outputs ?? [])]) {
+    if (io?.is_fluid) pipe = true;
+    else belt = true;
+  }
+  return { belt, pipe };
+}
+
+function getExtractionTransportNeeds(extraction) {
+  const isFluid =
+    extraction?.extraction_kind === 'oil' ||
+    extraction?.extraction_kind === 'water' ||
+    extraction?.item?.slug === 'water' ||
+    extraction?.item?.slug === 'liquid-oil';
+  return { belt: !isFluid, pipe: isFluid };
+}
+
+function renderBoxTransportMkControls(entityKind, entityId, needs, chain) {
+  if (!needs?.belt && !needs?.pipe) return '';
+  const override =
+    typeof getTransportMkOverride === 'function'
+      ? getTransportMkOverride(entityKind, entityId)
+      : null;
+  const beltMk = Math.min(6, Math.max(1, Number(override?.belt ?? chain?.max_belt_mk) || 6));
+  const pipeMk = Math.min(2, Math.max(1, Number(override?.pipe ?? chain?.max_pipe_mk) || 2));
+  const parts = [];
+  if (needs.belt) {
+    parts.push(`
+      <div class="production-box-transport">
+        <span class="production-box-transport-label">${escapeHtml(t('production.changeBeltMk'))}</span>
+        ${renderThemeSelect({
+          id: `box-transport-belt-${entityKind}-${Number(entityId)}`,
+          options: [1, 2, 3, 4, 5, 6].map((mk) => ({
+            value: String(mk),
+            label: `Mk.${mk}`,
+          })),
+          selectedValue: String(beltMk),
+          dataset: {
+            boxTransportMk: 'belt',
+            entityKind,
+            entityId: Number(entityId),
+          },
+        })}
+      </div>`);
+  }
+  if (needs.pipe) {
+    parts.push(`
+      <div class="production-box-transport">
+        <span class="production-box-transport-label">${escapeHtml(t('production.changePipeMk'))}</span>
+        ${renderThemeSelect({
+          id: `box-transport-pipe-${entityKind}-${Number(entityId)}`,
+          options: [1, 2].map((mk) => ({
+            value: String(mk),
+            label: `Mk.${mk}`,
+          })),
+          selectedValue: String(pipeMk),
+          dataset: {
+            boxTransportMk: 'pipe',
+            entityKind,
+            entityId: Number(entityId),
+          },
+        })}
+      </div>`);
+  }
+  parts.push(`
+    <button
+      type="button"
+      class="production-manifold-layout-btn"
+      data-manifold-layout-open
+      data-entity-kind="${escapeHtml(entityKind)}"
+      data-entity-id="${Number(entityId)}"
+      aria-label="${escapeHtml(t('production.manifoldLayoutOpen'))}"
+      title="${escapeHtml(t('production.manifoldLayoutOpen'))}"
+    ><i class="fa-solid fa-sitemap" aria-hidden="true"></i></button>`);
+  return `<div class="production-box-transport-row">${parts.join('')}</div>`;
+}
+
+function formatManifoldRate(rate) {
+  if (typeof formatProductionValue === 'function') return formatProductionValue(rate);
+  return formatDisplayInteger(rate);
+}
+
+function renderManifoldMachineCells(count, buildingImage) {
+  const n = Math.max(1, Math.round(Number(count) || 1));
+  const maxShow = 8;
+  const show = Math.min(n, maxShow);
+  const cells = Array.from({ length: show }, () => {
+    if (buildingImage) {
+      return `<span class="manifold-machine"><img src="${escapeHtml(buildingImage)}" alt="" /></span>`;
+    }
+    return `<span class="manifold-machine manifold-machine--plain" aria-hidden="true"></span>`;
+  });
+  if (n > maxShow) {
+    cells.push(
+      `<span class="manifold-machine manifold-machine--more">+${formatDisplayInteger(n - maxShow)}</span>`
+    );
+  }
+  return cells.join('');
+}
+
+function resolveManifoldLayoutTransport(info) {
+  if (info?.limiting?.[0]) return info.limiting[0];
+  if (info?.transport) {
+    return {
+      ...info.transport,
+      item_name: info.buildingName,
+      rate: 0,
+      direction: 'output',
+    };
+  }
+  return {
+    kind: 'belt',
+    mk: 6,
+    capacity: 1200,
+    item_name: '',
+    rate: 0,
+    direction: 'output',
+  };
+}
+
+function renderManifoldLayoutDiagram(info, { title } = {}) {
+  const banks = Array.isArray(info?.banks) && info.banks.length ? info.banks : [info?.machines || 1];
+  const totalMachines = banks.reduce((sum, n) => sum + n, 0) || 1;
+  const transport = resolveManifoldLayoutTransport(info);
+  const kindLabel =
+    transport.kind === 'pipe' ? t('production.transportPipe') : t('production.transportBelt');
+  const unitLabel = info?.isExtraction
+    ? t(totalMachines === 1 ? 'production.buildNodesOne' : 'production.buildNodesMany', {
+        count: formatDisplayInteger(totalMachines),
+      })
+    : t(totalMachines === 1 ? 'production.buildMachinesOne' : 'production.buildMachinesMany', {
+        count: formatDisplayInteger(totalMachines),
+      });
+  const summaryParts = [
+    unitLabel,
+    t('production.buildAtClock', { overclock: formatOverclockLabel(info?.overclock || 100) }),
+    t('production.manifoldLayoutLines', { count: formatDisplayInteger(banks.length) }),
+  ];
+  const bottleneck =
+    transport.rate > 0
+      ? t('production.manifoldLayoutBottleneck', {
+          item: transport.item_name || transport.item_slug || '—',
+          rate: formatManifoldRate(transport.rate),
+          kind: kindLabel,
+          mk: transport.mk,
+          capacity: formatDisplayInteger(transport.capacity),
+        })
+      : t('production.manifoldLayoutHint', {
+          kind: kindLabel,
+          mk: transport.mk,
+          capacity: formatDisplayInteger(transport.capacity),
+        });
+
+  const rows = banks
+    .map((machineCount, index) => {
+      const share =
+        transport.rate > 0
+          ? window.ProductionScale?.roundProduction?.(
+              (transport.rate * machineCount) / totalMachines
+            ) ?? (transport.rate * machineCount) / totalMachines
+          : 0;
+      const shareLabel = share > 0 ? `${formatManifoldRate(share)}/min` : '—';
+      const beltCard = `
+        <div class="manifold-belt">
+          <span class="manifold-belt-kind">${escapeHtml(kindLabel)} Mk.${escapeHtml(String(transport.mk))}</span>
+          <strong class="manifold-belt-rate">${escapeHtml(shareLabel)}</strong>
+          <span class="manifold-belt-cap">${escapeHtml(
+            t('production.manifoldLayoutCap', {
+              capacity: formatDisplayInteger(transport.capacity),
+            })
+          )}</span>
+        </div>`;
+      const machineLabel = info?.isExtraction
+        ? t('production.buildManifoldBankNodes', {
+            index: index + 1,
+            count: formatDisplayInteger(machineCount),
+          })
+        : t('production.buildManifoldBank', {
+            index: index + 1,
+            count: formatDisplayInteger(machineCount),
+          });
+      return `
+        <article class="manifold-line">
+          <header class="manifold-line-header">${escapeHtml(machineLabel)}</header>
+          <div class="manifold-line-flow">
+            ${beltCard}
+            <span class="manifold-flow-arrow" aria-hidden="true">→</span>
+            <div class="manifold-machines" title="${escapeHtml(machineLabel)}">
+              ${renderManifoldMachineCells(machineCount, info?.buildingImage)}
+            </div>
+            <span class="manifold-flow-arrow" aria-hidden="true">→</span>
+            ${beltCard}
+          </div>
+        </article>`;
+    })
+    .join('');
+
+  return `
+    <p class="manifold-layout-summary">${escapeHtml(summaryParts.join(' · '))}</p>
+    <p class="manifold-layout-bottleneck">${escapeHtml(bottleneck)}</p>
+    <div class="manifold-layout-diagram" role="img" aria-label="${escapeHtml(
+      title || t('production.manifoldLayoutTitle')
+    )}">
+      ${rows}
+    </div>
+    <p class="manifold-layout-note">${escapeHtml(t('production.manifoldLayoutNote'))}</p>`;
+}
+
+function closeManifoldLayoutModal() {
+  const modal = document.getElementById('manifold-layout-modal');
+  if (!modal) return;
+  modal.classList.add('hidden');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function openManifoldLayoutModal(entityKind, entityId) {
+  const modal = document.getElementById('manifold-layout-modal');
+  const titleEl = document.getElementById('manifold-layout-modal-title');
+  const bodyEl = document.getElementById('manifold-layout-modal-body');
+  if (!modal || !titleEl || !bodyEl) return;
+
+  const chain = activeProductionDetail?.chain;
+  let title = t('production.manifoldLayoutTitle');
+  let info = null;
+
+  if (entityKind === 'step') {
+    const step = activeProductionDetail?.steps?.find((entry) => Number(entry.id) === Number(entityId));
+    if (!step) return;
+    title = step.name || title;
+    info = computeStepBuildInfo(step, chain);
+  } else if (entityKind === 'extraction') {
+    const extraction = activeProductionDetail?.extractions?.find(
+      (entry) => Number(entry.id) === Number(entityId)
+    );
+    if (!extraction) return;
+    title =
+      (typeof getExtractionDisplayName === 'function'
+        ? getExtractionDisplayName(extraction)
+        : extraction?.item?.name) || title;
+    info = computeExtractionBuildInfo(extraction, chain);
+  } else {
+    return;
+  }
+
+  titleEl.textContent = t('production.manifoldLayoutTitleFor', { name: title });
+  bodyEl.innerHTML = renderManifoldLayoutDiagram(info, { title });
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function handleManifoldLayoutOpen(buttonEl) {
+  if (!buttonEl) return;
+  const entityKind = buttonEl.dataset.entityKind;
+  const entityId = Number(buttonEl.dataset.entityId);
+  if (
+    (entityKind !== 'step' && entityKind !== 'extraction') ||
+    !Number.isFinite(entityId)
+  ) {
+    return;
+  }
+  openManifoldLayoutModal(entityKind, entityId);
+}
+
+function renderBuildStatsToggleBtn(entityKind, entityId) {
+  const open =
+    typeof isBuildStatsOpen === 'function' ? isBuildStatsOpen(entityKind, entityId) : false;
+  const label = open
+    ? t('production.hideBuildStats')
+    : t('production.showBuildStats');
+  return `
+    <button
+      type="button"
+      class="production-step-build-info-btn${open ? ' production-step-build-info-btn--active' : ''}"
+      data-build-stats-toggle
+      data-entity-kind="${escapeHtml(entityKind)}"
+      data-entity-id="${Number(entityId)}"
+      aria-pressed="${open ? 'true' : 'false'}"
+      aria-label="${escapeHtml(label)}"
+      title="${escapeHtml(label)}"
+    ><i class="fa-solid fa-circle-info" aria-hidden="true"></i></button>`;
+}
+
+function renderStepBuildStatsBlock(step, options = {}) {
+  const chain = activeProductionDetail?.chain;
+  const open =
+    typeof isBuildStatsOpen === 'function' ? isBuildStatsOpen('step', step.id) : false;
+  return `
+    <div
+      class="production-build-stats-block${open ? '' : ' is-collapsed'}"
+      data-build-stats-for="step"
+      data-entity-id="${Number(step.id)}"
+    >
+      ${renderBuildStatsBadge(computeStepBuildInfo(step, chain), {
+        ...options,
+        transportControls: renderBoxTransportMkControls(
+          'step',
+          step.id,
+          getStepTransportNeeds(step),
+          chain
+        ),
+      })}
+    </div>`;
+}
+
+function renderExtractionBuildStatsBlock(extraction, options = {}) {
+  const chain = activeProductionDetail?.chain;
+  const open =
+    typeof isBuildStatsOpen === 'function'
+      ? isBuildStatsOpen('extraction', extraction.id)
+      : false;
+  return `
+    <div
+      class="production-build-stats-block${open ? '' : ' is-collapsed'}"
+      data-build-stats-for="extraction"
+      data-entity-id="${Number(extraction.id)}"
+    >
+      ${renderBuildStatsBadge(computeExtractionBuildInfo(extraction, chain), {
+        ...options,
+        transportControls: renderBoxTransportMkControls(
+          'extraction',
+          extraction.id,
+          getExtractionTransportNeeds(extraction),
+          chain
+        ),
+      })}
+    </div>`;
+}
+
+function handleBuildStatsToggle(buttonEl) {
+  if (!buttonEl) return;
+  const entityKind = buttonEl.dataset.entityKind;
+  const entityId = Number(buttonEl.dataset.entityId);
+  if (
+    (entityKind !== 'step' && entityKind !== 'extraction') ||
+    !Number.isFinite(entityId) ||
+    typeof toggleBuildStatsOpen !== 'function'
+  ) {
+    return;
+  }
+
+  const open = toggleBuildStatsOpen(entityKind, entityId);
+  if (typeof persistProductionUiState === 'function') {
+    persistProductionUiState();
+  }
+
+  const label = open ? t('production.hideBuildStats') : t('production.showBuildStats');
+  buttonEl.classList.toggle('production-step-build-info-btn--active', open);
+  buttonEl.setAttribute('aria-pressed', open ? 'true' : 'false');
+  buttonEl.setAttribute('aria-label', label);
+  buttonEl.title = label;
+
+  const block = document.querySelector(
+    `[data-build-stats-for="${entityKind}"][data-entity-id="${entityId}"]`
+  );
+  if (block) block.classList.toggle('is-collapsed', !open);
+}
+
+function refreshEntityBuildStatsBlock(entityKind, entityId) {
+  const id = Number(entityId);
+  if (!Number.isFinite(id)) return;
+  const block = document.querySelector(
+    `[data-build-stats-for="${entityKind}"][data-entity-id="${id}"]`
+  );
+  if (!block) return;
+
+  if (entityKind === 'step') {
+    const step = activeProductionDetail?.steps?.find((entry) => Number(entry.id) === id);
+    if (!step) return;
+    block.outerHTML = renderStepBuildStatsBlock(step, { compact: true });
+    return;
+  }
+
+  const extraction = activeProductionDetail?.extractions?.find(
+    (entry) => Number(entry.id) === id
+  );
+  if (!extraction) return;
+  block.outerHTML = renderExtractionBuildStatsBlock(extraction, { compact: true });
+}
+
+function handleBoxTransportMkChange(selectEl, rawValue) {
+  if (!selectEl) return;
+  const entityKind = selectEl.dataset.entityKind;
+  const entityId = Number(selectEl.dataset.entityId);
+  const transportKind = selectEl.dataset.boxTransportMk;
+  const mk = Number(rawValue);
+  if (
+    (entityKind !== 'step' && entityKind !== 'extraction') ||
+    !Number.isFinite(entityId) ||
+    (transportKind !== 'belt' && transportKind !== 'pipe') ||
+    !Number.isFinite(mk)
+  ) {
+    return;
+  }
+
+  if (typeof setTransportMkOverride === 'function') {
+    setTransportMkOverride(entityKind, entityId, transportKind, mk);
+  }
+  if (typeof persistProductionUiState === 'function') {
+    persistProductionUiState();
+  }
+  refreshEntityBuildStatsBlock(entityKind, entityId);
+  updateProductionDetailExternalSummary();
 }
 
 function distributeMachinesAcrossManifolds(machineCount, manifoldCount) {
@@ -256,6 +672,10 @@ function computeStepBuildInfo(step, chain = activeProductionDetail?.chain) {
   const buildingName = step?.schema?.building_name || step?.schema?.building_slug || t('common.building');
   const buildingSlug = step?.schema?.building_slug || buildingName;
   const buildingImage = step?.schema?.building_image || null;
+  const override =
+    typeof getTransportMkOverride === 'function'
+      ? getTransportMkOverride('step', step?.id)
+      : null;
 
   let manifoldsNeeded = 1;
   const limiting = [];
@@ -274,7 +694,7 @@ function computeStepBuildInfo(step, chain = activeProductionDetail?.chain) {
 
   for (const io of ioList) {
     if (!(io.rate > 0)) continue;
-    const transport = getPlanTransportCapacity(Boolean(io.is_fluid), chain);
+    const transport = getPlanTransportCapacity(Boolean(io.is_fluid), chain, override);
     const lines = Math.max(1, Math.ceil(io.rate / transport.capacity - 1e-9));
     if (lines > manifoldsNeeded) {
       manifoldsNeeded = lines;
@@ -324,9 +744,26 @@ function computeExtractionBuildInfo(extraction, chain = activeProductionDetail?.
     extraction?.extraction_kind === 'water' ||
     extraction?.item?.slug === 'water' ||
     extraction?.item?.slug === 'liquid-oil';
-  const transport = getPlanTransportCapacity(isFluid, chain);
+  const override =
+    typeof getTransportMkOverride === 'function'
+      ? getTransportMkOverride('extraction', extraction?.id)
+      : null;
+  const transport = getPlanTransportCapacity(isFluid, chain, override);
   const lines = rate > 0 ? Math.max(1, Math.ceil(rate / transport.capacity - 1e-9)) : 1;
   const banks = distributeMachinesAcrossManifolds(nodes, Math.min(nodes, lines));
+  const limiting =
+    banks.length > 1 && rate > 0
+      ? [
+          {
+            item_slug: extraction?.item?.slug,
+            item_name: extraction?.item?.name || extraction?.item?.slug,
+            direction: 'output',
+            rate,
+            ...transport,
+            lines,
+          },
+        ]
+      : [];
 
   return {
     machines: nodes,
@@ -339,10 +776,14 @@ function computeExtractionBuildInfo(extraction, chain = activeProductionDetail?.
     needsSplit: banks.length > 1,
     isExtraction: true,
     transport,
+    limiting,
   };
 }
 
-function renderBuildStatsBadge(info, { compact = false, detailMode = 'complex' } = {}) {
+function renderBuildStatsBadge(
+  info,
+  { compact = false, detailMode = 'complex', transportControls = '' } = {}
+) {
   if (!info) return '';
   const showManifolds = detailMode !== 'simple' && info.needsSplit;
   const machineLabel = info.isExtraction
@@ -356,63 +797,91 @@ function renderBuildStatsBadge(info, { compact = false, detailMode = 'complex' }
     overclock: formatOverclockLabel(info.overclock),
   });
   const banksText = (info.banks || [])
-    .map((count) => `${formatDisplayInteger(count)}×`)
+    .map((count) => formatDisplayInteger(count))
     .join(' + ');
-  const splitLabel = showManifolds
-    ? t('production.buildManifolds', {
-        count: formatDisplayInteger(info.manifoldCount),
-        banks: banksText,
-      })
-    : '';
   const limiter = info.limiting?.[0];
-  const title = showManifolds
-    ? escapeHtml(
-        limiter
-          ? t('production.buildSplitReason', {
-              count: formatDisplayInteger(info.manifoldCount),
-              item: limiter.item_name || limiter.item_slug,
-              mk: limiter.mk,
-              kind: limiter.kind === 'pipe' ? t('production.transportPipe') : t('production.transportBelt'),
-              capacity: formatDisplayInteger(limiter.capacity),
-            })
-          : t('production.buildSplitHint', {
-              count: formatDisplayInteger(info.manifoldCount),
-              banks: banksText,
-            })
-      )
-    : '';
+  const kindLabel =
+    limiter?.kind === 'pipe' ? t('production.transportPipe') : t('production.transportBelt');
+  const directionLabel =
+    limiter?.direction === 'output'
+      ? t('production.buildSplitWhyOut')
+      : t('production.buildSplitWhyIn');
+  const rateLabel =
+    typeof formatProductionValue === 'function'
+      ? formatProductionValue(limiter?.rate)
+      : formatDisplayInteger(limiter?.rate);
 
+  const whyText =
+    showManifolds && limiter
+      ? t('production.buildSplitWhy', {
+          item: limiter.item_name || limiter.item_slug,
+          direction: directionLabel,
+          rate: rateLabel,
+          kind: kindLabel,
+          mk: limiter.mk,
+          capacity: formatDisplayInteger(limiter.capacity),
+        })
+      : showManifolds
+        ? t('production.buildSplitHint', {
+            count: formatDisplayInteger(info.manifoldCount),
+            banks: banksText,
+          })
+        : '';
+  const needText =
+    showManifolds && limiter
+      ? t(info.isExtraction ? 'production.buildSplitNeedNodes' : 'production.buildSplitNeed', {
+          count: formatDisplayInteger(info.manifoldCount),
+          kind: kindLabel,
+          banks: banksText,
+        })
+      : '';
+  const title = whyText ? escapeHtml(whyText) : '';
+  const bankKey = info.isExtraction
+    ? 'production.buildManifoldBankNodes'
+    : 'production.buildManifoldBank';
+
+  const hasTransport = Boolean(transportControls);
   return `
     <div class="production-build-stats${compact ? ' production-build-stats--compact' : ''}${
       showManifolds ? ' production-build-stats--split' : ''
-    }"${title ? ` title="${title}"` : ''}>
-      <span class="production-build-stats-main">
-        <strong>${escapeHtml(machineLabel)}</strong>
-        <span class="production-build-stats-sep">@</span>
-        <strong>${escapeHtml(ocLabel)}</strong>
-      </span>
-      ${
-        splitLabel
-          ? `<span class="production-build-stats-split">${escapeHtml(splitLabel)}</span>`
-          : ''
-      }
-      ${
-        showManifolds
-          ? `<div class="production-build-manifold-banks">${info.banks
-              .map(
-                (count, index) => `
-            <span class="production-build-manifold-bank">
-              ${escapeHtml(
-                t('production.buildManifoldBank', {
-                  index: index + 1,
-                  count: formatDisplayInteger(count),
-                })
-              )}
-            </span>`
-              )
-              .join('')}</div>`
-          : ''
-      }
+    }${hasTransport ? ' production-build-stats--with-transport' : ''}"${
+      title ? ` title="${title}"` : ''
+    }>
+      <div class="production-build-stats-content">
+        <span class="production-build-stats-main">
+          <strong>${escapeHtml(machineLabel)}</strong>
+          <span class="production-build-stats-sep">@</span>
+          <strong>${escapeHtml(ocLabel)}</strong>
+        </span>
+        ${
+          whyText
+            ? `<p class="production-build-stats-why">${escapeHtml(whyText)}</p>`
+            : ''
+        }
+        ${
+          needText
+            ? `<p class="production-build-stats-need">${escapeHtml(needText)}</p>`
+            : ''
+        }
+        ${
+          showManifolds
+            ? `<div class="production-build-manifold-banks">${info.banks
+                .map(
+                  (count, index) => `
+              <span class="production-build-manifold-bank">
+                ${escapeHtml(
+                  t(bankKey, {
+                    index: index + 1,
+                    count: formatDisplayInteger(count),
+                  })
+                )}
+              </span>`
+                )
+                .join('')}</div>`
+            : ''
+        }
+      </div>
+      ${transportControls || ''}
     </div>`;
 }
 
@@ -466,10 +935,31 @@ function collectPlanBuildSummary(steps = [], extractions = [], chain = activePro
   });
 }
 
+const BUILD_SUMMARY_COLLAPSED_KEY = 'fm-production-build-summary-collapsed';
+
+function isPlanBuildSummaryCollapsed() {
+  try {
+    const raw = localStorage.getItem(BUILD_SUMMARY_COLLAPSED_KEY);
+    if (raw === null) return true; // default collapsed — list is long
+    return raw === '1' || raw === 'true';
+  } catch {
+    return true;
+  }
+}
+
+function setPlanBuildSummaryCollapsed(collapsed) {
+  try {
+    localStorage.setItem(BUILD_SUMMARY_COLLAPSED_KEY, collapsed ? '1' : '0');
+  } catch {
+    /* ignore */
+  }
+}
+
 function renderPlanBuildSummary(steps = [], extractions = [], chain = activeProductionDetail?.chain) {
   const rows = collectPlanBuildSummary(steps, extractions, chain);
   if (!rows.length) return '';
 
+  const collapsed = isPlanBuildSummaryCollapsed();
   const body = rows
     .map((row) => {
       const img = row.buildingImage
@@ -506,17 +996,39 @@ function renderPlanBuildSummary(steps = [], extractions = [], chain = activeProd
     })
     .join('');
 
+  const toggleLabel = collapsed
+    ? t('production.summaryBuildExpand')
+    : t('production.summaryBuildCollapse');
+
   return `
-    <div class="production-external-summary-inner production-external-summary-inner--build">
+    <div class="production-external-summary-inner production-external-summary-inner--build${
+      collapsed ? ' is-collapsed' : ''
+    }">
       <table class="production-external-table production-external-table--build">
         <thead>
           <tr>
-            <th>${escapeHtml(t('production.summaryBuild'))}</th>
-            <th class="production-external-rate">${escapeHtml(t('production.summaryCount'))}</th>
-            <th class="production-external-rate">${escapeHtml(t('production.summaryClock'))}</th>
+            <th>
+              <button
+                type="button"
+                class="production-build-summary-toggle"
+                data-build-summary-toggle
+                aria-expanded="${collapsed ? 'false' : 'true'}"
+                aria-label="${escapeHtml(t('production.summaryBuildToggle'))}"
+                title="${escapeHtml(toggleLabel)}"
+              >
+                <i class="fa-solid ${collapsed ? 'fa-chevron-right' : 'fa-chevron-down'}" aria-hidden="true"></i>
+                <span>${escapeHtml(t('production.summaryBuild'))}</span>
+              </button>
+            </th>
+            <th class="production-external-rate">${
+              collapsed ? '' : escapeHtml(t('production.summaryCount'))
+            }</th>
+            <th class="production-external-rate">${
+              collapsed ? '' : escapeHtml(t('production.summaryClock'))
+            }</th>
           </tr>
         </thead>
-        <tbody>${body}</tbody>
+        ${collapsed ? '' : `<tbody>${body}</tbody>`}
       </table>
     </div>`;
 }
@@ -1199,6 +1711,13 @@ function getMineralSlugs() {
   for (const cat of pickerResourcesData) {
     if (cat.slug === 'minerali') {
       cat.items.forEach((item) => slugs.add(item.slug));
+    }
+  }
+  // Fallback while catalog cache is empty (e.g. mid locale switch): keep extractions visible.
+  if (!slugs.size && activeProductionDetail?.extractions?.length) {
+    for (const extraction of activeProductionDetail.extractions) {
+      const slug = extraction?.item?.slug;
+      if (slug) slugs.add(slug);
     }
   }
   return slugs;
@@ -2271,6 +2790,7 @@ function renderProductionStep(step, allSteps = []) {
                 aria-label="${escapeHtml(t('actions.reset'))} ${escapeHtml(step.name)}"
                 title="${escapeHtml(t('production.resetDefaults'))}"
               >${RESET_ICON}</button>
+              ${renderBuildStatsToggleBtn('step', step.id)}
               <button
                 type="button"
                 class="production-step-delete-btn"
@@ -2280,7 +2800,7 @@ function renderProductionStep(step, allSteps = []) {
             </div>
           </div>
           <p class="production-step-resource">${escapeHtml(item?.name || t('common.resource'))}</p>
-          ${renderBuildStatsBadge(computeStepBuildInfo(step), { compact: true })}
+          ${renderStepBuildStatsBlock(step, { compact: true })}
         </div>
       </header>
       ${renderCraftSchema(scaledSchema, schema?.is_alternative, {
@@ -3099,6 +3619,7 @@ function closeAllThemeSelects() {
     trigger?.setAttribute('aria-expanded', 'false');
     select.closest('.production-config-field--select')?.classList.remove('theme-select-field--open');
     select.closest('.production-step-group-select')?.classList.remove('production-step-group-select--open');
+    select.closest('.production-box-transport')?.classList.remove('production-box-transport--open');
   });
 }
 
@@ -3120,6 +3641,7 @@ function toggleThemeSelect(themeSelect) {
     trigger.setAttribute('aria-expanded', 'true');
     themeSelect.closest('.production-config-field--select')?.classList.add('theme-select-field--open');
     themeSelect.closest('.production-step-group-select')?.classList.add('production-step-group-select--open');
+    themeSelect.closest('.production-box-transport')?.classList.add('production-box-transport--open');
   }
 }
 

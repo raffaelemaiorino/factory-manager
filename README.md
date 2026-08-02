@@ -196,6 +196,10 @@ There is no automated test suite yet; changes are checked by running the app and
 
 Facebook group: [Factory Manager](https://www.facebook.com/groups/factorymanager)
 
+## Credits
+
+- **Auto-plan** (production & power from targets) and navigable tree view: [@loafdaddy](https://github.com/loafdaddy) — [PR #3](https://github.com/raffaelemaiorino/factory-manager/pull/3), integrated in **2.0.0**.
+
 ## Disclaimer
 
 Factory Manager is an independent, unofficial fan project. It is not affiliated with, endorsed by, sponsored by, or connected to Coffee Stain Studios AB, Coffee Stain Publishing AB, or any Coffee Stain company.

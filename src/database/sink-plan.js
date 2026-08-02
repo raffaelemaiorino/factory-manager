@@ -1,7 +1,9 @@
 const { getItemSchemas } = require('./schemas');
+const { pickDefaultSchema } = require('./auto-plan-recipes');
 const {
   getProductionChainById,
   getProductionChainDetail,
+  getStepById,
   addProductionChainStep,
   addSinkProductionChainStep,
   updateProductionChainStep,
@@ -9,6 +11,8 @@ const {
   setProductionStepExtractionLinks,
   getStepOutputRateForItem,
 } = require('./production-chains');
+
+const SKIP_LINK_DETAIL = { skipDetail: true };
 const {
   addMineralExtraction,
   updateMineralExtraction,
@@ -49,12 +53,6 @@ function findItemBySlug(db, getItemById, slug) {
   const row = queryOne(db, 'SELECT id FROM items WHERE slug = ?', [String(slug ?? '').trim()]);
   if (!row) return null;
   return getItemById(db, row.id);
-}
-
-function pickDefaultSchema(db, itemId) {
-  const schemas = getItemSchemas(db, itemId);
-  if (!schemas.length) return null;
-  return schemas.find((schema) => !schema.is_alternative) || schemas[0];
 }
 
 /** Alternate Wet Concrete on cement: limestone (stone) + water → cement. */
@@ -260,8 +258,7 @@ function ensureSideInput(
 
   if (stepBySlug.has(itemSlug)) {
     const stepId = stepBySlug.get(itemSlug);
-    const detail = getProductionChainDetail(db, chainId, getItemById);
-    const step = (detail.steps || []).find((row) => Number(row.id) === Number(stepId));
+    const step = getStepById(db, stepId, getItemById);
     if (!step?.schema) return { kind: 'craft', id: stepId };
     const current = Number(step.target_output) || 0;
     const target = Math.max(current, needed);
@@ -270,7 +267,7 @@ function ensureSideInput(
     return { kind: 'craft', id: stepId };
   }
 
-  const schema = pickDefaultSchema(db, item.id);
+  const schema = pickDefaultSchema(db, item.id, item);
   if (!schema) return null;
 
   const step = addProductionChainStep(
@@ -299,7 +296,15 @@ function ensureSideInput(
         getItemById,
         extractionBySlug
       );
-      setProductionStepExtractionLinks(db, noopPersist, step.id, io.item_slug, [extId], getItemById);
+      setProductionStepExtractionLinks(
+        db,
+        noopPersist,
+        step.id,
+        io.item_slug,
+        [extId],
+        getItemById,
+        SKIP_LINK_DETAIL
+      );
     } else if (stepBySlug.has(io.item_slug)) {
       setProductionStepInputLinks(
         db,
@@ -307,7 +312,8 @@ function ensureSideInput(
         step.id,
         io.item_slug,
         [stepBySlug.get(io.item_slug)],
-        getItemById
+        getItemById,
+        SKIP_LINK_DETAIL
       );
     }
   }
@@ -352,9 +358,23 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
   const stepBySlug = new Map(context.stepBySlug || []);
   const maxBeltMk = clampBeltMk(context.max_belt_mk ?? chain.max_belt_mk, DEFAULT_MAX_BELT_MK);
 
-  let detail = getProductionChainDetail(db, chainId, getItemById);
+  const detail = getProductionChainDetail(db, chainId, getItemById);
   const dispose = collectByproductDisposeRates(detail.steps || []);
   if (!dispose.size) return detail;
+
+  // Producers for byproduct outputs are known from the pre-sink plan; avoid
+  // reloading full chain detail on every dispose entry (that froze large creates).
+  const producersBySlug = new Map();
+  for (const step of detail.steps || []) {
+    if (Number(step.is_sink) === 1) continue;
+    for (const io of step.scaled_outputs || []) {
+      const outSlug = String(io.item_slug ?? '').trim();
+      if (!outSlug) continue;
+      const list = producersBySlug.get(outSlug) || [];
+      list.push(step.id);
+      producersBySlug.set(outSlug, list);
+    }
+  }
 
   const cementItem = findItemBySlug(db, getItemById, 'cement');
   const wetConcreteSchema = cementItem ? findWetConcreteSchema(db, cementItem.id) : null;
@@ -365,8 +385,7 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
     const item = findItemBySlug(db, getItemById, slug);
     if (!item) continue;
 
-    detail = getProductionChainDetail(db, chainId, getItemById);
-    const producerIds = findProducerStepIdsForSlug(detail.steps || [], slug);
+    const producerIds = [...new Set(producersBySlug.get(slug) || [])];
 
     // Water → Wet Concrete → sink cement
     if (slug === 'water' && wetConcreteSchema && cementItem) {
@@ -388,7 +407,15 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
       updateProductionChainStep(db, noopPersist, step.id, config, getItemById);
 
       if (producerIds.length) {
-        setProductionStepInputLinks(db, noopPersist, step.id, 'water', producerIds, getItemById);
+        setProductionStepInputLinks(
+          db,
+          noopPersist,
+          step.id,
+          'water',
+          producerIds,
+          getItemById,
+          SKIP_LINK_DETAIL
+        );
       }
 
       const stoneScaled = scaleSchema(wetConcreteSchema, cementItem, config.target_output);
@@ -406,9 +433,25 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
           stoneRate
         );
         if (side?.kind === 'extract') {
-          setProductionStepExtractionLinks(db, noopPersist, step.id, 'stone', [side.id], getItemById);
+          setProductionStepExtractionLinks(
+            db,
+            noopPersist,
+            step.id,
+            'stone',
+            [side.id],
+            getItemById,
+            SKIP_LINK_DETAIL
+          );
         } else if (side?.kind === 'craft') {
-          setProductionStepInputLinks(db, noopPersist, step.id, 'stone', [side.id], getItemById);
+          setProductionStepInputLinks(
+            db,
+            noopPersist,
+            step.id,
+            'stone',
+            [side.id],
+            getItemById,
+            SKIP_LINK_DETAIL
+          );
         }
       }
 
@@ -424,7 +467,15 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
         },
         getItemById
       );
-      setProductionStepInputLinks(db, noopPersist, sink.id, 'cement', [step.id], getItemById);
+      setProductionStepInputLinks(
+        db,
+        noopPersist,
+        sink.id,
+        'cement',
+        [step.id],
+        getItemById,
+        SKIP_LINK_DETAIL
+      );
       continue;
     }
 
@@ -445,7 +496,15 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
       updateProductionChainStep(db, noopPersist, step.id, config, getItemById);
 
       if (producerIds.length) {
-        setProductionStepInputLinks(db, noopPersist, step.id, slug, producerIds, getItemById);
+        setProductionStepInputLinks(
+          db,
+          noopPersist,
+          step.id,
+          slug,
+          producerIds,
+          getItemById,
+          SKIP_LINK_DETAIL
+        );
       }
 
       const scaled = scaleSchema(packed.schema, packed.item, config.target_output);
@@ -469,7 +528,8 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
             step.id,
             io.item_slug,
             [side.id],
-            getItemById
+            getItemById,
+            SKIP_LINK_DETAIL
           );
         } else if (side?.kind === 'craft') {
           setProductionStepInputLinks(
@@ -478,7 +538,8 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
             step.id,
             io.item_slug,
             [side.id],
-            getItemById
+            getItemById,
+            SKIP_LINK_DETAIL
           );
         }
       }
@@ -501,7 +562,8 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
         sink.id,
         packed.outputSlug || packed.item.slug,
         [step.id],
-        getItemById
+        getItemById,
+        SKIP_LINK_DETAIL
       );
       continue;
     }
@@ -520,7 +582,15 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
       getItemById
     );
     if (producerIds.length) {
-      setProductionStepInputLinks(db, noopPersist, sink.id, slug, producerIds, getItemById);
+      setProductionStepInputLinks(
+        db,
+        noopPersist,
+        sink.id,
+        slug,
+        producerIds,
+        getItemById,
+        SKIP_LINK_DETAIL
+      );
     }
   }
 

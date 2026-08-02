@@ -9,27 +9,112 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
-### Aggiunto
+## [2.0.0] - 2026-08-02
+
+Major release: auto-plan da obiettivi (produzione ed energia), albero navigabile, vincoli nastro/tubo e power shard — base del contributo di [@loafdaddy](https://github.com/loafdaddy) ([PR #3](https://github.com/raffaelemaiorino/factory-manager/pull/3)), poi integrato, corretto e rifinito in questa versione.
+
+### Added
 - Produzione: crea uno schema da uno o più prodotti obiettivo + rate/min; aggiunge automaticamente passi (ricetta default), estrazioni e collegamenti (intermedi condivisi uniti).
 - Produzione: gestisci gli obiettivi nell’editor (aggiungi / rimuovi / modifica rate) — le modifiche ricostruiscono l’albero di produzione.
 - Produzione: vincoli power shard (default 0, oppure illimitati) e nastro/tubo Mk massimi; sugli archi dell’albero compare il fabbisogno.
-- Produzione: conteggio macchine + clock speed evidenziati su nodi albero e passi piano; riepilogo costruzione per edificio; raggruppamento manifold (banchi) quando un nastro/tubo non regge tutto il flusso.
-- Produzione: toggle albero Semplice / Complesso (solo macchine@clock vs banchi manifold nastro/tubo).
-- Produzione: in modalità Complesso l’albero divide gli step/estrazioni in nodi separati per banco manifold quando nastro/tubo richiedono più linee.
-- Produzione: opzione «Sink sottoprodotti» — aggiunge linee Calcestruzzo umido / packaging / AWESOME Sink per i sottoprodotti non usati.
+- Produzione: conteggio macchine + clock speed evidenziati su nodi albero e passi piano; riepilogo costruzione per edificio; split in linee quando un nastro/tubo non regge tutto il flusso.
+- Produzione: toggle albero Semplice / Complesso; in Complesso l’albero divide gli step/estrazioni in nodi per linea.
+- Produzione: opzione «Sink sottoprodotti» — linee Calcestruzzo umido / packaging / AWESOME Sink per i sottoprodotti non usati.
+- Produzione: su ogni step/estrazione, icona «i» per il box linee, selettore «Cambia nastro/tubo» locale, e schema grafico delle file macchine/nastri.
 - Energia: crea/riplanifica da target MW + generatore + combustibile; dimensiona generatori e fornisce carbone/acqua o un piano produzione combustibile collegato.
-- Energia: budget power shard (limitato o illimitato) in creazione e ricostruzione; vista ad albero Semplice/Complesso per estrazioni, fornitura combustibile, generatori e target MW.
-- Vista ad albero: pan (trascina lo sfondo), zoom (scroll / toolbar), Adatta e schermo intero; header compatto in modalità albero per più spazio al canvas.
-- Catalogo: ricetta Convertitore per Materia fotonica eccitata (solo potenza, 200/min); l’auto-plan tratta gli item senza ricetta come domanda esterna invece di fallire.
+- Energia: budget power shard; vista ad albero Semplice/Complesso.
+- Vista ad albero: pan, zoom, Adatta, schermo intero; header compatto.
+- Catalogo: ricetta Convertitore per Materia fotonica eccitata; auto-plan tratta gli item senza ricetta come domanda esterna.
 - Dashboard: elimina progetto al passaggio del mouse in I tuoi progetti.
 
-### Modificato
-- Risorse: i conteggi per categoria usano la lingua UI attiva (corretto l’hardcoded italiano «oggetti» con EN selezionato).
-- Vista ad albero: zoom più nitido con CSS `zoom` (niente sfocatura da `transform: scale`); più spazio tra i nodi; hint layout localizzati.
-- UI obiettivi: i campi rate non coprono più i nomi; il select «Budget» power shard non tronca più il testo.
+### Changed
+- Risorse: i conteggi per categoria usano la lingua UI attiva.
+- Vista ad albero: zoom più nitido (`zoom` CSS); più spazio tra i nodi; hint localizzati.
+- UI obiettivi e badge linee: testi più chiari; select a tema; traduzioni nastro/tubo/linee in tutte le lingue UI (terminologia Satisfactory / SCIM).
 - Default: UI inglese e formato numeri en-US per nuove installazioni; con budget shard limitato l’auto-plan resta al 100% OC.
 - I nomi degli step auto-generati usano il nome localizzato dell’oggetto nella lingua attiva.
-- README: sezione Funzionalità riscritta (auto-plan, vincoli, albero navigabile) in EN e IT.
+- README: sezione Funzionalità aggiornata (auto-plan, vincoli, albero).
+
+### Fixed
+- Freeze / lentezza su Create con piani grandi (link e dettaglio catena).
+- Cicli ricetta errati (es. alluminio Packager) e self-link su sottoprodotti / azoto.
+- Box risorse che spariva al cambio lingua IT→EN; altri aggiustamenti UI auto-plan.
+
+### Credits
+- Calcolatore automatico (auto-plan produzione/energia) e vista ad albero: [@loafdaddy](https://github.com/loafdaddy) — [PR #3](https://github.com/raffaelemaiorino/factory-manager/pull/3)
+
+## [1.58.20] - 2026-08-02
+
+### Changed
+- Produzione: icone macchine più grandi nello schema linee; testi nastro/tubo/linee tradotti in tutte le lingue UI (terminologia Satisfactory / SCIM)
+
+## [1.58.19] - 2026-08-02
+
+### Added
+- Produzione: icona schema di fianco a «Cambia nastro» apre un popup con le file macchine/nastri calcolate
+
+## [1.58.18] - 2026-08-02
+
+### Changed
+- Produzione: il selettore «Cambia nastro» / «Cambia tubo» è dentro il box linee, a destra
+
+## [1.58.17] - 2026-08-02
+
+### Changed
+- Produzione: «Cambia nastro» / «Cambia tubo» usano la stessa select a tema delle altre tendine dell’app
+
+## [1.58.16] - 2026-08-02
+
+### Added
+- Produzione: icona «i» su step/estrazione per mostrare o nascondere il box linee nastro/tubo (chiuso di default)
+
+## [1.58.15] - 2026-08-02
+
+### Added
+- Produzione: su ogni step/estrazione puoi scegliere «Cambia nastro» / «Cambia tubo» (Mk) solo per quel box; le linee si ricalcolano lì senza cambiare il massimo dello schema
+
+## [1.58.14] - 2026-08-02
+
+### Changed
+- Produzione: il badge linee/file spiega perché serve lo split (risorsa, portata, limite nastro/tubo Mk) e come distribuire le macchine
+
+## [1.58.13] - 2026-08-02
+
+### Changed
+- Produzione: riepilogo «Elenco macchine» / «Buildings» comprimibile (chiuso di default) al posto di «Costruzione» / «Build»
+
+### Fixed
+- Produzione: il box risorse (richiesta/prodotta/mancante) non scompare più passando da italiano a inglese
+
+## [1.58.12] - 2026-08-02
+
+### Changed
+- Produzione/Energia: gli obiettivi dello schema sono in un box separato da estrazioni e schemi (stesso distacco del box header sopra)
+
+## [1.58.11] - 2026-08-02
+
+### Changed
+- UI italiana: opzione frammenti energetici «Limite» rinominata in «Definiti» (con «Illimitati» invariato)
+
+## [1.58.10] - 2026-08-02
+
+### Changed
+- UI italiana: termini auto-plan allineati al gioco/SCIM — frammenti energetici, limite, portata, linee/file, tubo, smaltisci sottoprodotti, obiettivo MW
+
+## [1.58.9] - 2026-08-02
+
+### Fixed
+- Produzione: l’auto-plan preferisce ricette in cui l’oggetto è l’output primario (non un sottoprodotto) e salta i self-link — evita errori su carbone compattato («Non puoi collegare uno schema risorsa a sé stesso») e catene sbagliate via carburanti
+
+## [1.58.8] - 2026-08-02
+
+### Fixed
+- Produzione: l’auto-plan non sceglie più ricette Packager (pack/unpack) come default — evita cicli (es. lingotto di alluminio → allumina ↔ imballata ↔ taniche) e l’errore «possibile ciclo nelle ricette»
+
+## [1.58.7] - 2026-08-02
+
+### Fixed
+- Produzione: crea schema con auto-plan su piani grandi non blocca più l’app (niente ricostruzione completa dello schema a ogni collegamento; sink sottoprodotti senza N+1 sul dettaglio)
 
 ## [1.58.6] - 2026-08-01
 

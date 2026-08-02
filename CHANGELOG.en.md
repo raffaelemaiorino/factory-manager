@@ -9,27 +9,112 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-08-02
+
+Major release: target-based auto-plan (production and power), navigable tree view, belt/pipe and power-shard constraints — based on [@loafdaddy](https://github.com/loafdaddy)’s contribution ([PR #3](https://github.com/raffaelemaiorino/factory-manager/pull/3)), then integrated, fixed, and polished in this version.
+
 ### Added
 - Production: create a plan from one or more target products + rates/min; the app auto-adds default-recipe steps, raw extractions, and supply links (shared intermediates are combined).
 - Production: manage plan targets in the editor (add / remove / edit rates) — changes rebuild the production tree.
 - Production: plan constraints for power-shard budget (default 0, or unlimited) and highest belt/pipe Mk; tree edges show belt/pipe needs.
-- Production: machine count + clock speed highlighted on tree nodes and plan steps; build summary by building type; belt/pipe-aware manifold bank grouping when one line cannot carry the full rate.
-- Production: tree Simple / Complex detail toggle (machine totals vs belt/pipe manifold banks).
-- Production: Complex tree mode splits steps/extractions into separate manifold bank nodes when belt/pipe limits require multiple lines.
-- Production: optional “Sink byproducts” — auto-adds Wet Concrete / packaging / AWESOME Sink lines for unused secondary outputs.
-- Power: create/replan from target MW + generator + fuel; auto-sizes generators and supplies coal/water extractions or a companion fuel production plan.
-- Power: power-shard budget (limited or unlimited) on create and rebuild; tree view with Simple/Complex detail for extractions, fuel supply, generators, and MW target.
-- Tree view: pan (drag empty space), zoom (scroll / toolbar), Fit, and fullscreen; compact header in tree mode for more canvas space.
-- Catalog: Excited Photonic Matter Converter recipe (power-only, 200/min); auto-plan leaves uncraftable items as external demand instead of failing.
+- Production: machine count + clock speed on tree nodes and plan steps; build summary by building; split into lines when belt/pipe throughput is not enough.
+- Production: tree Simple / Complex toggle; Complex splits steps/extractions into per-line nodes.
+- Production: optional “Sink byproducts” — Wet Concrete / packaging / AWESOME Sink lines for unused secondary outputs.
+- Production: per step/extraction — «i» toggle for the lines box, local «Change belt/pipe» Mk, and a graphical machine/belt line schematic.
+- Power: create/replan from target MW + generator + fuel; auto-sizes generators with coal/water extractions or a companion fuel production plan.
+- Power: power-shard budget; Simple/Complex tree view.
+- Tree view: pan, zoom, Fit, fullscreen; compact header.
+- Catalog: Excited Photonic Matter Converter recipe; auto-plan leaves uncraftable items as external demand.
 - Dashboard: hover delete on projects in Your projects.
 
 ### Changed
-- Resources: category counts use the active UI locale (fixes hardcoded Italian “oggetti” when English is selected).
-- Tree view: sharper zoom via CSS `zoom` (avoids blurry `transform: scale`); more spacing between nodes; localized layout hints.
-- Plan UI: target rate inputs no longer stretch over item names; power-shard “Budget” select no longer truncates.
-- Defaults: English UI locale and en-US number format for new installs; auto-plan prefers 100% OC when shard budget is limited.
-- Auto-planned step names use the localized item name for the active language.
-- README: Features section rewritten for auto-plan, constraints, and navigable tree view (EN + IT).
+- Resources: category counts use the active UI locale.
+- Tree view: sharper CSS `zoom`; more node spacing; localized hints.
+- Plan UI and line badges: clearer copy; themed selects; belt/pipe/line strings translated for all UI locales (Satisfactory / SCIM terminology).
+- Defaults: English UI and en-US numbers for new installs; limited shard budget keeps auto-plan at 100% OC.
+- Auto-planned step names use the localized item name.
+- README: Features section updated (auto-plan, constraints, tree).
+
+### Fixed
+- Freeze / slowness on Create for large plans (link and chain-detail work).
+- Bad recipe cycles (e.g. aluminum Packager) and self-links on byproducts / nitrogen.
+- Resource box vanishing on IT→EN locale switch; other auto-plan UI polish.
+
+### Credits
+- Automatic planner (production/power auto-plan) and tree view: [@loafdaddy](https://github.com/loafdaddy) — [PR #3](https://github.com/raffaelemaiorino/factory-manager/pull/3)
+
+## [1.58.20] - 2026-08-02
+
+### Changed
+- Production: larger machine icons in the line schematic; belt/pipe/line UI strings translated for all UI locales (Satisfactory / SCIM terminology)
+
+## [1.58.19] - 2026-08-02
+
+### Added
+- Production: sitemap icon next to «Change belt» opens a popup with the calculated machine/belt line layout
+
+## [1.58.18] - 2026-08-02
+
+### Changed
+- Production: «Change belt» / «Change pipe» selector sits inside the lines box, on the right
+
+## [1.58.17] - 2026-08-02
+
+### Changed
+- Production: «Change belt» / «Change pipe» now use the same themed select as the other app dropdowns
+
+## [1.58.16] - 2026-08-02
+
+### Added
+- Production: «i» icon on each step/extraction to show or hide the belt/pipe lines box (hidden by default)
+
+## [1.58.15] - 2026-08-02
+
+### Added
+- Production: each step/extraction has «Change belt» / «Change pipe» (Mk) for that box only; line split recalculates there without changing the plan-wide maximum
+
+## [1.58.14] - 2026-08-02
+
+### Changed
+- Production: line/bank badge now explains why a split is needed (item, rate, belt/pipe Mk limit) and how to distribute machines
+
+## [1.58.13] - 2026-08-02
+
+### Changed
+- Production: collapsible «Buildings» / «Elenco macchine» summary (collapsed by default) replaces «Build» / «Costruzione»
+
+### Fixed
+- Production: the resource balance box (required/produced/missing) no longer disappears when switching Italian → English
+
+## [1.58.12] - 2026-08-02
+
+### Changed
+- Production/Power: plan targets sit in their own card, separated from extractions and steps (same gap as the header card above)
+
+## [1.58.11] - 2026-08-02
+
+### Changed
+- Italian UI: power-shard option label «Limite» renamed to «Definiti» («Illimitati» unchanged)
+
+## [1.58.10] - 2026-08-02
+
+### Changed
+- Italian UI: auto-plan wording aligned with the game/SCIM — power shards as «frammenti energetici», rate as «portata», manifold banks as «linee/file», pipes, byproduct sink, MW target
+
+## [1.58.9] - 2026-08-02
+
+### Fixed
+- Production: auto-plan prefers recipes where the item is the primary output (not a byproduct) and skips self-links — fixes compacted coal (“cannot link a resource schema to itself”) and wrong fuel-byproduct chains
+
+## [1.58.8] - 2026-08-02
+
+### Fixed
+- Production: auto-plan no longer picks Packager pack/unpack recipes as defaults — avoids loops (e.g. aluminum ingot → alumina ↔ packaged ↔ canisters) and the “possible recipe cycle” error
+
+## [1.58.7] - 2026-08-02
+
+### Fixed
+- Production: creating a large auto-planned schema no longer freezes the app (skip full-detail rebuilds on every link; sink-byproducts path avoids N+1 detail loads)
 
 ## [1.58.6] - 2026-08-01
 

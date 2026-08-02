@@ -3,7 +3,7 @@ function renderProductionDetailContent(detail) {
   disposeProductionGraph();
 
   if (!detail?.chain) {
-    productionDetailBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('production.notFound'))}</p>`;
+    productionDetailBody.innerHTML = `<section class="card production-detail-main"><p class="detail-empty">${escapeHtml(t('production.notFound'))}</p></section>`;
     document.getElementById('production-detail-external-summary').innerHTML = '';
     return;
   }
@@ -23,8 +23,10 @@ function renderProductionDetailContent(detail) {
 
   if (isProductionTreeViewMode()) {
     syncChainResourceBalanceCache();
+    productionDetailBody.innerHTML = `<section class="card production-detail-main production-tree-card"></section>`;
+    const treeHost = productionDetailBody.querySelector('.production-tree-card');
     productionGraphHandle = window.ProductionGraph.renderProductionGraph(
-      productionDetailBody,
+      treeHost,
       detail,
       getProductionGraphHelpers(detail),
       {
@@ -40,31 +42,56 @@ function renderProductionDetailContent(detail) {
   }
 
   const extractionsHtml = renderProductionExtractionsList(extractions, steps);
-
-  const stepsHtml = renderProductionStepsList(steps, steps, detail.group_marks ?? {});
+  const largePlan = steps.length + extractions.length > 40;
 
   productionDetailBody.innerHTML = `
-    ${renderProductionTargetsEditor(detail.targets ?? [])}
-    <div class="production-detail-columns">
-      <section class="production-extractions-section">
-        <h3 class="production-section-header">${escapeHtml(t('production.sectionExtractions'))}</h3>
-        ${extractionsHtml}
-      </section>
-      <section class="production-schemas-section">
-        <div class="production-section-header-row">
-          <h3 class="production-section-header">${escapeHtml(t('production.sectionResourceSteps'))}</h3>
-          <p class="production-group-reorder-hint" hidden>
-            ${escapeHtml(t('production.groupReorderHint'))}
-          </p>
-        </div>
-        ${stepsHtml}
-      </section>
-    </div>`;
+    <section class="card production-detail-main production-targets-card">
+      ${renderProductionTargetsEditor(detail.targets ?? [])}
+    </section>
+    <section class="card production-detail-main production-columns-card">
+      <div class="production-detail-columns">
+        <section class="production-extractions-section">
+          <h3 class="production-section-header">${escapeHtml(t('production.sectionExtractions'))}</h3>
+          ${extractionsHtml}
+        </section>
+        <section class="production-schemas-section">
+          <div class="production-section-header-row">
+            <h3 class="production-section-header">${escapeHtml(t('production.sectionResourceSteps'))}</h3>
+            <p class="production-group-reorder-hint" hidden>
+              ${escapeHtml(t('production.groupReorderHint'))}
+            </p>
+          </div>
+          <div id="production-steps-mount">
+            ${
+              largePlan
+                ? `<p class="loading">${escapeHtml(t('common.loading'))}</p>`
+                : renderProductionStepsList(steps, steps, detail.group_marks ?? {})
+            }
+          </div>
+        </section>
+      </div>
+    </section>`;
 
-  lockConfigNumberInputsIn(productionDetailBody);
-  lockConfigSlidersIn(productionDetailBody);
-  applyAllProductionGroupViewStates();
-  applyAllProductionStepViewStates();
+  const finishDetailChrome = () => {
+    lockConfigNumberInputsIn(productionDetailBody);
+    lockConfigSlidersIn(productionDetailBody);
+    applyAllProductionGroupViewStates();
+    applyAllProductionStepViewStates();
+  };
+
+  if (!largePlan) {
+    finishDetailChrome();
+    return;
+  }
+
+  // Paint the shell first, then mount the heavy step list on the next frame.
+  requestAnimationFrame(() => {
+    if (activeProductionChainId !== detail.chain?.id) return;
+    const mount = document.getElementById('production-steps-mount');
+    if (!mount) return;
+    mount.innerHTML = renderProductionStepsList(steps, steps, detail.group_marks ?? {});
+    finishDetailChrome();
+  });
 }
 
 function moveProductionGroupAtPointer(movingEl, list, clientY) {
@@ -427,7 +454,7 @@ async function openProductionDetail(chainId) {
   productionDetailViewMode = 'editor';
   productionTreeGroupKey = null;
   hydrateProductionUiStateMaps(chainId);
-  productionDetailBody.innerHTML = `<p class="loading">${escapeHtml(t('common.loading'))}</p>`;
+  productionDetailBody.innerHTML = `<section class="card production-detail-main"><p class="loading">${escapeHtml(t('common.loading'))}</p></section>`;
   document.getElementById('production-detail-heading').textContent = '—';
   document.getElementById('production-detail-breadcrumb').textContent = '—';
   document.getElementById('production-detail-meta').textContent = '';
@@ -441,7 +468,7 @@ async function openProductionDetail(chainId) {
     activeProductionDetail = await window.satisfactory.getProductionChainDetail(chainId);
     renderProductionDetailContent(activeProductionDetail);
   } catch (err) {
-    productionDetailBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('production.errorDetailLoad'))}</p>`;
+    productionDetailBody.innerHTML = `<section class="card production-detail-main"><p class="detail-empty">${escapeHtml(t('production.errorDetailLoad'))}</p></section>`;
     console.error('Production detail error:', err);
   }
 }

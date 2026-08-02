@@ -1284,7 +1284,7 @@
     disposeEnergyGraph();
 
     if (!detail?.chain) {
-      energyDetailBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('energy.notFound'))}</p>`;
+      energyDetailBody.innerHTML = `<section class="card production-detail-main"><p class="detail-empty">${escapeHtml(t('energy.notFound'))}</p></section>`;
       document.getElementById('energy-detail-external-summary').innerHTML = '';
       updateEnergyTreeButtonState();
       return;
@@ -1309,8 +1309,11 @@
     updateEnergyTreeButtonState();
 
     if (isEnergyTreeViewMode()) {
+      energyDetailBody.innerHTML =
+        '<section class="card production-detail-main production-tree-card"></section>';
+      const treeHost = energyDetailBody.querySelector('.production-tree-card');
       energyGraphHandle = window.ProductionGraph.renderEnergyGraph(
-        energyDetailBody,
+        treeHost,
         detail,
         getEnergyGraphHelpers(detail),
         {
@@ -1331,17 +1334,21 @@
       : `<p class="detail-empty production-schemas-empty">${escapeHtml(t('energy.emptyGenerators'))}</p>`;
 
     energyDetailBody.innerHTML = `
-      ${renderEnergyTargetsEditor(detail.chain)}
-      <div class="production-detail-columns">
-        <section class="production-extractions-section">
-          <h3 class="production-section-header">${escapeHtml(t('energy.sectionExtractions'))}</h3>
-          <div class="production-extractions-list">${extractionsHtml}</div>
-        </section>
-        <section class="production-schemas-section">
-          <h3 class="production-section-header">${escapeHtml(t('energy.sectionGenerators'))}</h3>
-          ${generatorsHtml}
-        </section>
-      </div>`;
+      <section class="card production-detail-main production-targets-card">
+        ${renderEnergyTargetsEditor(detail.chain)}
+      </section>
+      <section class="card production-detail-main production-columns-card">
+        <div class="production-detail-columns">
+          <section class="production-extractions-section">
+            <h3 class="production-section-header">${escapeHtml(t('energy.sectionExtractions'))}</h3>
+            <div class="production-extractions-list">${extractionsHtml}</div>
+          </section>
+          <section class="production-schemas-section">
+            <h3 class="production-section-header">${escapeHtml(t('energy.sectionGenerators'))}</h3>
+            ${generatorsHtml}
+          </section>
+        </div>
+      </section>`;
 
     productionUi().lockConfigNumberInputsIn?.(energyDetailBody);
     productionUi().lockConfigSlidersIn?.(energyDetailBody);
@@ -1370,7 +1377,7 @@
     activeEnergyDetail = null;
     energyDetailViewMode = 'editor';
     disposeEnergyGraph();
-    energyDetailBody.innerHTML = `<p class="loading">${escapeHtml(t('common.loading'))}</p>`;
+    energyDetailBody.innerHTML = `<section class="card production-detail-main"><p class="loading">${escapeHtml(t('common.loading'))}</p></section>`;
     document.getElementById('energy-detail-heading').textContent = '—';
     document.getElementById('energy-detail-breadcrumb').textContent = '—';
     document.getElementById('energy-detail-meta').textContent = '';
@@ -1383,7 +1390,7 @@
       activeEnergyDetail = await window.satisfactory.getEnergyChainDetail(chainId);
       renderEnergyDetailContent(activeEnergyDetail);
     } catch (err) {
-      energyDetailBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('energy.errorDetailLoad'))}</p>`;
+      energyDetailBody.innerHTML = `<section class="card production-detail-main"><p class="detail-empty">${escapeHtml(t('energy.errorDetailLoad'))}</p></section>`;
       console.error('Energy detail error:', err);
     }
   }

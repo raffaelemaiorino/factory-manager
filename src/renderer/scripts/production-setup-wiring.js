@@ -24,6 +24,17 @@ function setupProduction() {
   });
   document.getElementById('production-create-modal-close').addEventListener('click', closeProductionCreateModal);
   document.getElementById('production-create-cancel').addEventListener('click', closeProductionCreateModal);
+
+  const manifoldLayoutModal = document.getElementById('manifold-layout-modal');
+  document.getElementById('manifold-layout-modal-close')?.addEventListener('click', closeManifoldLayoutModal);
+  manifoldLayoutModal?.addEventListener('click', (e) => {
+    if (e.target === manifoldLayoutModal) closeManifoldLayoutModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (!manifoldLayoutModal || manifoldLayoutModal.classList.contains('hidden')) return;
+    closeManifoldLayoutModal();
+  });
   document.getElementById('production-create-pick-product')?.addEventListener('click', () => {
     openCreateTargetPickerModal();
   });
@@ -148,6 +159,13 @@ function setupProduction() {
   });
 
   document.getElementById('production-detail-back').addEventListener('click', closeProductionDetail);
+  document.getElementById('production-detail-external-summary')?.addEventListener('click', (e) => {
+    const toggle = e.target.closest('[data-build-summary-toggle]');
+    if (!toggle) return;
+    e.preventDefault();
+    setPlanBuildSummaryCollapsed(!isPlanBuildSummaryCollapsed());
+    updateProductionDetailExternalSummary();
+  });
   document.getElementById('btn-production-tree-view').addEventListener('click', toggleProductionTreeView);
   document
     .getElementById('btn-production-group-tree-view')
@@ -473,6 +491,11 @@ function setupProduction() {
       e.preventDefault();
       e.stopPropagation();
       const select = themeSelectOption.closest('.theme-select');
+      if (select?.dataset.boxTransportMk) {
+        handleBoxTransportMkChange(select, themeSelectOption.dataset.value);
+        closeAllThemeSelects();
+        return;
+      }
       if (select?.dataset.field === 'step-group' && select.dataset.stepId) {
         handleProductionStepGroupChange(
           Number(select.dataset.stepId),
@@ -570,6 +593,22 @@ function setupProduction() {
       const stepId = normalizeProductionStepId(toggleBtn.dataset.stepId);
       if (!stepEl || !stepId) return;
       applyProductionStepViewState(stepEl, cycleProductionStepViewState(stepId));
+      return;
+    }
+
+    const manifoldLayoutBtn = e.target.closest('[data-manifold-layout-open]');
+    if (manifoldLayoutBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleManifoldLayoutOpen(manifoldLayoutBtn);
+      return;
+    }
+
+    const buildStatsToggle = e.target.closest('[data-build-stats-toggle]');
+    if (buildStatsToggle) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleBuildStatsToggle(buildStatsToggle);
       return;
     }
 
@@ -690,6 +729,13 @@ function setupProduction() {
       }
     }
 
+    const submitBtn = productionCreateForm.querySelector('button[type="submit"]');
+    const submitLabel = submitBtn?.textContent;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = t('common.loading');
+    }
+
     try {
       const payload = { name };
       if (targets.length) {
@@ -701,16 +747,39 @@ function setupProduction() {
           : 0;
       }
 
+      // Close modal first so the UI can show loading instead of looking frozen on Crea.
+      if (targets.length) {
+        closeProductionCreateModal();
+        productionDetailBody.innerHTML = `<section class="card production-detail-main"><p class="loading">${escapeHtml(t('common.loading'))}</p></section>`;
+        document.getElementById('production-detail-heading').textContent = name || '—';
+        document.getElementById('production-detail-breadcrumb').textContent = name || '—';
+        document.getElementById('production-detail-meta').textContent = '';
+        document.getElementById('production-detail-external-summary').innerHTML = '';
+        switchView('production-detail');
+      }
+
       const chain = await window.satisfactory.createProductionChain(payload);
       productionChains = [chain, ...productionChains.filter((item) => item.id !== chain.id)];
-      closeProductionCreateModal();
+      if (!targets.length) {
+        closeProductionCreateModal();
+      }
       await loadProductionChainSummaries();
       renderProductionChains();
       if (targets.length) {
         await openProductionDetail(chain.id);
       }
     } catch (err) {
+      if (targets.length) {
+        switchView('production');
+        productionCreateModal.classList.remove('hidden');
+        productionCreateModal.setAttribute('aria-hidden', 'false');
+      }
       showProductionCreateError(err.message || t('errors.createFailed'));
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        if (submitLabel != null) submitBtn.textContent = submitLabel;
+      }
     }
   });
 }

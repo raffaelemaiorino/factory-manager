@@ -149,6 +149,10 @@ const stepOutputDebounce = new Map();
 const extractionConfigDebounce = new Map();
 const productionStepViewStates = new Map();
 const productionGroupViewStates = new Map();
+/** @type {Map<string, { belt?: number, pipe?: number }>} keys `s:{stepId}` / `e:{extractionId}` */
+const productionTransportMkOverrides = new Map();
+/** @type {Set<string>} keys `s:{stepId}` / `e:{extractionId}` — box linee aperto */
+const productionBuildStatsOpen = new Set();
 const PRODUCTION_GROUP_KEY_UNGROUPED = '__ungrouped__';
 const PRODUCTION_UI_STATE_KEY = 'satisfactory-production-ui';
 const PRODUCTION_TREE_DETAIL_MODE_KEY = 'satisfactory-tree-detail-mode';
@@ -237,12 +241,89 @@ async function initProductionUiStateStore() {
 }
 
 function getProductionUiStateForChain(chainId) {
-  if (!chainId) return { groups: {}, steps: {} };
+  if (!chainId) {
+    return { groups: {}, steps: {}, transportMk: {}, buildStatsOpen: {} };
+  }
   const chain = loadAllProductionUiStates()[String(chainId)];
   return {
     groups: chain?.groups && typeof chain.groups === 'object' ? chain.groups : {},
     steps: chain?.steps && typeof chain.steps === 'object' ? chain.steps : {},
+    transportMk:
+      chain?.transportMk && typeof chain.transportMk === 'object' ? chain.transportMk : {},
+    buildStatsOpen:
+      chain?.buildStatsOpen && typeof chain.buildStatsOpen === 'object'
+        ? chain.buildStatsOpen
+        : {},
   };
+}
+
+function transportMkOverrideKey(entityKind, entityId) {
+  const id = Number(entityId);
+  if (!Number.isFinite(id)) return null;
+  if (entityKind === 'extraction') return `e:${id}`;
+  if (entityKind === 'step') return `s:${id}`;
+  return null;
+}
+
+function clampUiBeltMk(mk, fallback = 6) {
+  const n = Math.round(Number(mk));
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(6, Math.max(1, n));
+}
+
+function clampUiPipeMk(mk, fallback = 2) {
+  const n = Math.round(Number(mk));
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(2, Math.max(1, n));
+}
+
+function getTransportMkOverride(entityKind, entityId) {
+  const key = transportMkOverrideKey(entityKind, entityId);
+  if (!key) return null;
+  return productionTransportMkOverrides.get(key) || null;
+}
+
+function isBuildStatsOpen(entityKind, entityId) {
+  const key = transportMkOverrideKey(entityKind, entityId);
+  return Boolean(key && productionBuildStatsOpen.has(key));
+}
+
+function setBuildStatsOpen(entityKind, entityId, open) {
+  const key = transportMkOverrideKey(entityKind, entityId);
+  if (!key) return false;
+  if (open) productionBuildStatsOpen.add(key);
+  else productionBuildStatsOpen.delete(key);
+  return productionBuildStatsOpen.has(key);
+}
+
+function toggleBuildStatsOpen(entityKind, entityId) {
+  return setBuildStatsOpen(entityKind, entityId, !isBuildStatsOpen(entityKind, entityId));
+}
+
+function setTransportMkOverride(entityKind, entityId, transportKind, mk) {
+  const key = transportMkOverrideKey(entityKind, entityId);
+  if (!key) return;
+
+  const chain = activeProductionDetail?.chain;
+  const planBelt = clampUiBeltMk(chain?.max_belt_mk, 6);
+  const planPipe = clampUiPipeMk(chain?.max_pipe_mk, 2);
+  const current = { ...(productionTransportMkOverrides.get(key) || {}) };
+
+  if (transportKind === 'pipe') {
+    const pipeMk = clampUiPipeMk(mk, planPipe);
+    if (pipeMk === planPipe) delete current.pipe;
+    else current.pipe = pipeMk;
+  } else {
+    const beltMk = clampUiBeltMk(mk, planBelt);
+    if (beltMk === planBelt) delete current.belt;
+    else current.belt = beltMk;
+  }
+
+  if (current.belt == null && current.pipe == null) {
+    productionTransportMkOverrides.delete(key);
+  } else {
+    productionTransportMkOverrides.set(key, current);
+  }
 }
 
 function persistProductionUiState(chainId = activeProductionChainId) {
@@ -258,11 +339,30 @@ function persistProductionUiState(chainId = activeProductionChainId) {
     if (value === 'collapsed') steps[String(key)] = value;
   }
 
+  const transportMk = {};
+  for (const [key, value] of productionTransportMkOverrides) {
+    if (!value || typeof value !== 'object') continue;
+    const entry = {};
+    if (value.belt != null) entry.belt = clampUiBeltMk(value.belt);
+    if (value.pipe != null) entry.pipe = clampUiPipeMk(value.pipe);
+    if (entry.belt != null || entry.pipe != null) transportMk[key] = entry;
+  }
+
+  const buildStatsOpen = {};
+  for (const key of productionBuildStatsOpen) {
+    if (/^([se]):\d+$/.test(key)) buildStatsOpen[key] = 1;
+  }
+
   const all = loadAllProductionUiStates();
-  if (!Object.keys(groups).length && !Object.keys(steps).length) {
+  if (
+    !Object.keys(groups).length &&
+    !Object.keys(steps).length &&
+    !Object.keys(transportMk).length &&
+    !Object.keys(buildStatsOpen).length
+  ) {
     delete all[String(chainId)];
   } else {
-    all[String(chainId)] = { groups, steps };
+    all[String(chainId)] = { groups, steps, transportMk, buildStatsOpen };
   }
 
   try {
@@ -275,6 +375,8 @@ function persistProductionUiState(chainId = activeProductionChainId) {
 function hydrateProductionUiStateMaps(chainId) {
   productionGroupViewStates.clear();
   productionStepViewStates.clear();
+  productionTransportMkOverrides.clear();
+  productionBuildStatsOpen.clear();
 
   const saved = getProductionUiStateForChain(chainId);
   for (const [key, value] of Object.entries(saved.groups)) {
@@ -285,6 +387,20 @@ function hydrateProductionUiStateMaps(chainId) {
     if (stepId && isCollapsedProductionViewState(value)) {
       productionStepViewStates.set(stepId, 'collapsed');
     }
+  }
+  for (const [key, value] of Object.entries(saved.transportMk)) {
+    if (!value || typeof value !== 'object') continue;
+    if (!/^([se]):\d+$/.test(key)) continue;
+    const entry = {};
+    if (value.belt != null) entry.belt = clampUiBeltMk(value.belt);
+    if (value.pipe != null) entry.pipe = clampUiPipeMk(value.pipe);
+    if (entry.belt != null || entry.pipe != null) {
+      productionTransportMkOverrides.set(key, entry);
+    }
+  }
+  for (const [key, value] of Object.entries(saved.buildStatsOpen)) {
+    if (!/^([se]):\d+$/.test(key)) continue;
+    if (value) productionBuildStatsOpen.add(key);
   }
 }
 

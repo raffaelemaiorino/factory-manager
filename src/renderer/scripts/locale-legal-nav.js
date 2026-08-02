@@ -79,6 +79,16 @@ async function refreshAfterLocaleChange() {
   pickerResourcesData = [];
   window.EnergyUI?.clearLocaleCaches?.();
 
+  // Rebuild catalog cache before any summary that depends on mineral slugs
+  // (otherwise the resource balance box vanishes after IT→EN switch).
+  try {
+    if (typeof ensurePickerResourcesData === 'function') {
+      await ensurePickerResourcesData();
+    }
+  } catch (err) {
+    console.error('Locale picker resources refresh error:', err);
+  }
+
   const app = document.getElementById('app');
   const currentView = app?.dataset.view || 'dashboard';
 

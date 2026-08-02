@@ -1218,7 +1218,8 @@ function setProductionStepInputLinks(
   consumerStepId,
   itemSlug,
   producerStepIds,
-  getItemById
+  getItemById,
+  options = {}
 ) {
   ensureProductionChainStepsTable(db);
 
@@ -1274,6 +1275,8 @@ function setProductionStepInputLinks(
 
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
+  // Auto-plan/sink call this many times; rebuilding full detail each link freezes large plans.
+  if (options.skipDetail) return null;
   return getProductionChainDetail(db, chainId, getItemById);
 }
 
@@ -1283,7 +1286,8 @@ function setProductionStepExtractionLinks(
   consumerStepId,
   itemSlug,
   producerExtractionIds,
-  getItemById
+  getItemById,
+  options = {}
 ) {
   ensureProductionChainStepsTable(db);
 
@@ -1335,6 +1339,7 @@ function setProductionStepExtractionLinks(
 
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
+  if (options.skipDetail) return null;
   return getProductionChainDetail(db, chainId, getItemById);
 }
 
