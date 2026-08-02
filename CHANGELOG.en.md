@@ -9,6 +9,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.5] - 2026-08-02
+
+### Changed
+- Align-machines robot: always clickable — always opens the popup (already aligned / single line / alternatives); no more disabled icon with “no useful alignment”
+
+## [2.2.4] - 2026-08-02
+
+### Changed
+- Align machines (robot) and line schematic: respect the selected belt/pipe Mk — if linked sources (e.g. 1200+600) do not fit the belt (e.g. Mk.5 at 780), lines switch to belt-true shares (e.g. 600+600+600) and the robot suggests compatible machine counts
+
+## [2.2.3] - 2026-08-02
+
+### Fixed
+- Line schematic: with many machines the output belt no longer stacks under the input belt (they stay left and right of the row)
+
+## [2.2.2] - 2026-08-02
+
+### Fixed
+- Align machines: with multiple sources, belt shares are no longer proportionally shrunk (e.g. 1200+960 → 1000+800). Larger belts are filled first (1200+600), so suggestions like 15 machines (10+5) come back
+
+## [2.2.1] - 2026-08-02
+
+### Fixed
+- Align machines (robot): uses live linked source shares (same as input badges), not stale rates on the links — so 1200+600 also suggests 15 machines (10+5), not only options based on outdated values
+
+## [2.2.0] - 2026-08-02
+
+### Added
+- Production: robot icon next to the line schematic — opens a popup to align machine count to real belt/linked source shares (e.g. 1200+600 → 15 machines as 10+5 or 18 as 12+6), keeping total output fixed
+
+### Changed
+- Belt/pipe line box: with multiple linked sources on the same input, machine rows follow real shares instead of an even split (8+8)
+
+### Fixed
+- Belt/pipe line box: updates immediately when you change output, overclock, or machine count (it used to stay stale)
+- Overclock with repeating decimals (e.g. 83.333%): no more spurious totals like 1800.015/min
+
+## [2.1.1] - 2026-08-02
+
+### Changed
+- Multi-extraction input links: clearer partial rates (`600/min of 1,800/min` instead of `600/min/1,800/min`) and more spacing between source badges
+
 ## [2.1.0] - 2026-08-02
 
 ### Added

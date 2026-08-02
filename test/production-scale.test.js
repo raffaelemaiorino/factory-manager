@@ -53,4 +53,31 @@ describe('production-scale', () => {
     assert.equal(config.overclock, 100);
     assert.ok(config.target_output + 1e-9 >= 60);
   });
+
+  it('applyStepChange machines-keep-output keeps target and rounds OC without spur', () => {
+    // Converter-like: base 120/min, target 1800, 18 machines → 83.333% (not 83.334)
+    const schema = {
+      duration: 60,
+      building_slug: 'converter',
+      inputs: [{ item_slug: 'raw-quartz', amount: 120, is_fluid: 0 }],
+      outputs: [{ item_slug: 'ore-caterium', amount: 120, is_fluid: 0 }],
+    };
+    const item = { slug: 'ore-caterium' };
+    const config = applyStepChange(
+      schema,
+      item,
+      { target_output: 1800, machine_count: 16, overclock: 93.75, somersloop_mask: 0 },
+      'machines-keep-output',
+      18
+    );
+    assert.ok(config);
+    assert.equal(config.machine_count, 18);
+    assert.equal(config.target_output, 1800);
+    assert.equal(config.overclock, 83.333);
+  });
+
+  it('clampOverclock uses round not ceil for repeating decimals', () => {
+    const { clampOverclock } = require('../src/database/production-scale');
+    assert.equal(clampOverclock(1000 / 12), 83.333);
+  });
 });

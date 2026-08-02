@@ -670,6 +670,7 @@ function handleExtractionConfigChange(extractionId, field, rawValue) {
 
   const extractionEl = productionDetailBody.querySelector(`[data-extraction-id="${extractionId}"]`);
   if (extractionEl) updateExtractionConfigDisplay(extractionEl, extraction);
+  refreshEntityBuildStatsBlock('extraction', extractionId);
   updateProductionDetailExternalSummary();
 
   const config = {

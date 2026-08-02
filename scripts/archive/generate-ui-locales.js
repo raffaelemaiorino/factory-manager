@@ -429,6 +429,7 @@ const it = {
     linkChainExcess: 'Eccedenza in catena: {rate}',
     linkInsufficient: 'Insufficiente: {rate}',
     surplusFree: '{rate} liberi',
+    linkPartialRate: '{allocated} di {required}',
   },
   energy: {
     title: 'Energia',
@@ -853,6 +854,7 @@ en.production = {
   linkChainExcess: 'Chain surplus: {rate}',
   linkInsufficient: 'Insufficient: {rate}',
   surplusFree: '{rate} free',
+  linkPartialRate: '{allocated} of {required}',
 };
 en.energy = {
   title: 'Power',

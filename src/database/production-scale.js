@@ -103,7 +103,8 @@ function normalizeIoRate(value) {
   const n = Number(value);
   if (!Number.isFinite(n) || n <= 0) return 0;
   const nearestInt = Math.round(n);
-  if (Math.abs(n - nearestInt) <= 0.005) return nearestInt;
+  // 0.01: also catches OC-derived drift (e.g. 1799.993 from 83.333% × 18 × 120).
+  if (Math.abs(n - nearestInt) <= 0.01) return nearestInt;
   const factor = 10 ** PRODUCTION_DECIMALS;
   const scaled = n * factor;
   const nearest = Math.round(scaled);
@@ -161,9 +162,12 @@ function roundMachineCount(value) {
 }
 
 function clampOverclock(value) {
-  const n = roundProduction(value);
+  const n = Number(value);
   if (!Number.isFinite(n)) return DEFAULT_OVERCLOCK;
-  return Math.min(OVERCLOCK_MAX, Math.max(OVERCLOCK_MIN, n));
+  // Math.round (not ceil): 83.333…% stays 83.333, avoiding 83.334 → 1800.015/min spur.
+  const factor = 10 ** PRODUCTION_DECIMALS;
+  const rounded = Math.round(n * factor) / factor;
+  return Math.min(OVERCLOCK_MAX, Math.max(OVERCLOCK_MIN, rounded));
 }
 
 function clampMachineCount(value) {
@@ -480,6 +484,25 @@ function applyStepChange(schema, item, current, changedField, rawValue) {
       schema
     );
     target_output = normalizeTargetOutput(target_output, overclock);
+  } else if (changedField === 'machines-keep-output') {
+    // Keep target output fixed; recompute overclock (belt/line alignment suggestions).
+    const keptTarget = Number(target_output);
+    machine_count = clampMachineCount(rawValue);
+    target_output = clampTargetToRange(
+      keptTarget,
+      basePerMin,
+      machine_count,
+      somersloop_mask,
+      schema
+    );
+    target_output = normalizeTargetOutput(target_output, overclock);
+    overclock = computeOverclock(
+      target_output,
+      basePerMin,
+      machine_count,
+      somersloop_mask,
+      schema
+    );
   } else if (changedField === 'overclock' || changedField === 'overclock-slider') {
     overclock =
       changedField === 'overclock-slider'

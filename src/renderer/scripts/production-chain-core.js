@@ -326,6 +326,22 @@ function renderBoxTransportMkControls(entityKind, entityId, needs, chain) {
       aria-label="${escapeHtml(t('production.manifoldLayoutOpen'))}"
       title="${escapeHtml(t('production.manifoldLayoutOpen'))}"
     ><i class="fa-solid fa-sitemap" aria-hidden="true"></i></button>`);
+  if (entityKind === 'step') {
+    const step = activeProductionDetail?.steps?.find((entry) => Number(entry.id) === Number(entityId));
+    const needsAlign = Boolean(step && computeStepBuildInfo(step)?.needsAlignment);
+    parts.push(`
+    <button
+      type="button"
+      class="production-manifold-layout-btn production-manifold-align-btn${
+        needsAlign ? ' production-manifold-align-btn--hint' : ''
+      }"
+      data-manifold-align-open
+      data-entity-kind="${escapeHtml(entityKind)}"
+      data-entity-id="${Number(entityId)}"
+      aria-label="${escapeHtml(t('production.manifoldAlignOpen'))}"
+      title="${escapeHtml(t('production.manifoldAlignOpen'))}"
+    ><i class="fa-solid fa-robot" aria-hidden="true"></i></button>`);
+  }
   return `<div class="production-box-transport-row">${parts.join('')}</div>`;
 }
 
@@ -388,7 +404,13 @@ function renderManifoldLayoutDiagram(info, { title } = {}) {
   const summaryParts = [
     unitLabel,
     t('production.buildAtClock', { overclock: formatOverclockLabel(info?.overclock || 100) }),
-    t('production.manifoldLayoutLines', { count: formatDisplayInteger(banks.length) }),
+    t('production.manifoldLayoutLines', {
+      count: formatDisplayInteger(
+        info?.needsAlignment && info?.sourceShares?.length
+          ? info.sourceShares.length
+          : banks.length
+      ),
+    }),
   ];
   const bottleneck =
     transport.rate > 0
@@ -405,17 +427,72 @@ function renderManifoldLayoutDiagram(info, { title } = {}) {
           capacity: formatDisplayInteger(transport.capacity),
         });
 
+  if (info?.needsAlignment && Array.isArray(info.sourceShares) && info.sourceShares.length >= 2) {
+    const shareRows = info.sourceShares
+      .map((shareRate, index) => {
+        const shareLabel = `${formatManifoldRate(shareRate)}/min`;
+        const beltCard = `
+        <div class="manifold-belt">
+          <span class="manifold-belt-kind">${escapeHtml(kindLabel)} Mk.${escapeHtml(String(transport.mk))}</span>
+          <strong class="manifold-belt-rate">${escapeHtml(shareLabel)}</strong>
+          <span class="manifold-belt-cap">${escapeHtml(
+            t('production.manifoldLayoutCap', {
+              capacity: formatDisplayInteger(transport.capacity),
+            })
+          )}</span>
+        </div>`;
+        return `
+        <article class="manifold-line">
+          <header class="manifold-line-header">${escapeHtml(
+            t('production.manifoldLayoutSourceRow', {
+              index: index + 1,
+              rate: formatManifoldRate(shareRate),
+            })
+          )}</header>
+          <div class="manifold-line-flow">
+            ${beltCard}
+            <span class="manifold-flow-arrow" aria-hidden="true">→</span>
+            <div class="manifold-machines manifold-machines--pending" title="${escapeHtml(
+              t('production.manifoldAlignOpen')
+            )}">
+              <span class="manifold-machine manifold-machine--more">?</span>
+            </div>
+          </div>
+        </article>`;
+      })
+      .join('');
+
+    return `
+    <p class="manifold-layout-summary">${escapeHtml(summaryParts.join(' · '))}</p>
+    <p class="manifold-layout-bottleneck">${escapeHtml(bottleneck)}</p>
+    <p class="manifold-layout-align">${escapeHtml(
+      t('production.buildSplitAlignHint', {
+        shares: info.sourceShares.map((rate) => formatManifoldRate(rate)).join(' + '),
+      })
+    )}</p>
+    <div class="manifold-layout-diagram" role="img" aria-label="${escapeHtml(
+      title || t('production.manifoldLayoutTitle')
+    )}">
+      ${shareRows}
+    </div>
+    <p class="manifold-layout-note">${escapeHtml(t('production.manifoldLayoutNote'))}</p>`;
+  }
+
   const rows = banks
     .map((machineCount, index) => {
       const share =
-        transport.rate > 0
-          ? window.ProductionScale?.roundProduction?.(
-              (transport.rate * machineCount) / totalMachines
-            ) ?? (transport.rate * machineCount) / totalMachines
-          : 0;
+        Array.isArray(info?.sourceShares) && info.sourceShares[index] != null
+          ? Number(info.sourceShares[index])
+          : transport.rate > 0
+            ? window.ProductionScale?.roundProduction?.(
+                (transport.rate * machineCount) / totalMachines
+              ) ?? (transport.rate * machineCount) / totalMachines
+            : 0;
       const shareLabel = share > 0 ? `${formatManifoldRate(share)}/min` : '—';
+      const overCap =
+        transport.capacity > 0 && share > transport.capacity + 1e-9;
       const beltCard = `
-        <div class="manifold-belt">
+        <div class="manifold-belt${overCap ? ' manifold-belt--over' : ''}">
           <span class="manifold-belt-kind">${escapeHtml(kindLabel)} Mk.${escapeHtml(String(transport.mk))}</span>
           <strong class="manifold-belt-rate">${escapeHtml(shareLabel)}</strong>
           <span class="manifold-belt-cap">${escapeHtml(
@@ -513,6 +590,185 @@ function handleManifoldLayoutOpen(buttonEl) {
     return;
   }
   openManifoldLayoutModal(entityKind, entityId);
+}
+
+function closeManifoldAlignModal() {
+  const modal = document.getElementById('manifold-align-modal');
+  if (!modal) return;
+  modal.classList.add('hidden');
+  modal.setAttribute('aria-hidden', 'true');
+  modal.dataset.stepId = '';
+}
+
+function renderManifoldAlignOptionCard(option, index) {
+  const banksText = (option.banks || []).map((count) => formatDisplayInteger(count)).join(' + ');
+  const sharesText = Array.isArray(option.shares)
+    ? option.shares
+        .map((rate) =>
+          typeof formatProductionValue === 'function'
+            ? formatProductionValue(rate)
+            : formatDisplayInteger(rate)
+        )
+        .join(' + ')
+    : '';
+  const preferred = index === 0;
+  const mkLabel =
+    option.transportMk != null
+      ? t('production.manifoldAlignOptionBelt', {
+          mk: option.transportMk,
+          capacity: formatDisplayInteger(option.transportCapacity || 0),
+        })
+      : '';
+  return `
+    <button
+      type="button"
+      class="manifold-align-option${preferred ? ' manifold-align-option--preferred' : ''}"
+      data-manifold-align-apply
+      data-machines="${Number(option.machines)}"
+    >
+      <span class="manifold-align-option-title">
+        ${escapeHtml(
+          t('production.manifoldAlignOptionTitle', {
+            machines: formatDisplayInteger(option.machines),
+            overclock: formatOverclockLabel(option.overclock),
+          })
+        )}
+      </span>
+      <span class="manifold-align-option-banks">
+        ${escapeHtml(t('production.manifoldAlignOptionBanks', { banks: banksText }))}
+      </span>
+      ${
+        sharesText
+          ? `<span class="manifold-align-option-shares">${escapeHtml(
+              t('production.manifoldAlignOptionShares', { shares: sharesText })
+            )}</span>`
+          : ''
+      }
+      <span class="manifold-align-option-rate">
+        ${escapeHtml(
+          t('production.manifoldAlignOptionRate', {
+            rate:
+              typeof formatProductionValue === 'function'
+                ? formatProductionValue(option.ratePerMachine)
+                : formatDisplayInteger(option.ratePerMachine),
+          })
+        )}
+      </span>
+      ${mkLabel ? `<span class="manifold-align-option-belt">${escapeHtml(mkLabel)}</span>` : ''}
+      ${
+        preferred
+          ? `<span class="manifold-align-option-badge">${escapeHtml(
+              t('production.manifoldAlignPreferred')
+            )}</span>`
+          : ''
+      }
+    </button>`;
+}
+
+function openManifoldAlignModal(stepId) {
+  const modal = document.getElementById('manifold-align-modal');
+  const titleEl = document.getElementById('manifold-align-modal-title');
+  const bodyEl = document.getElementById('manifold-align-modal-body');
+  if (!modal || !titleEl || !bodyEl) return;
+
+  const step = activeProductionDetail?.steps?.find((entry) => Number(entry.id) === Number(stepId));
+  if (!step) return;
+
+  const info = computeStepBuildInfo(step);
+  const suggestions = suggestStepMachineAlignments(step);
+  const stepName = step.name || t('common.building');
+  titleEl.textContent = t('production.manifoldAlignTitleFor', { name: stepName });
+
+  const currentBanks = (info.banks || []).map((count) => formatDisplayInteger(count)).join(' + ');
+  const sharesText = Array.isArray(info.sourceShares)
+    ? info.sourceShares
+        .map((rate) =>
+          typeof formatProductionValue === 'function'
+            ? formatProductionValue(rate)
+            : formatDisplayInteger(rate)
+        )
+        .join(' + ')
+    : '';
+
+  let optionsHtml = '';
+  if (!suggestions.length) {
+    // Single line / nothing to realign — still explain current state in the popup.
+    const currentOption = {
+      machines: info.machines,
+      overclock: info.overclock,
+      banks: info.banks || [info.machines],
+      shares: info.sourceShares || null,
+      ratePerMachine:
+        window.ProductionScale?.roundProduction?.(
+          (Number(step.target_output) || 0) / Math.max(1, info.machines)
+        ) ?? (Number(step.target_output) || 0) / Math.max(1, info.machines),
+      transportMk: info.transportMk,
+      transportCapacity: info.transportCapacity,
+      isCurrent: true,
+    };
+    optionsHtml = `
+      <p class="manifold-align-empty">${escapeHtml(
+        info.needsSplit
+          ? t('production.manifoldAlignNone')
+          : t('production.manifoldAlignSingleLine')
+      )}</p>
+      ${renderManifoldAlignOptionCard(currentOption, 0)}`;
+  } else if (suggestions.length === 1 && suggestions[0].isCurrent && !info.needsAlignment) {
+    optionsHtml = `
+      <p class="manifold-align-ok">${escapeHtml(t('production.manifoldAlignAlready'))}</p>
+      ${renderManifoldAlignOptionCard(suggestions[0], 0)}`;
+  } else {
+    optionsHtml = suggestions.map((option, index) => renderManifoldAlignOptionCard(option, index)).join('');
+  }
+
+  bodyEl.innerHTML = `
+    <p class="manifold-align-lead">${escapeHtml(
+      info.transportMk != null
+        ? t('production.manifoldAlignLeadWithBelt', {
+            mk: info.transportMk,
+            capacity: formatDisplayInteger(info.transportCapacity || 0),
+          })
+        : t('production.manifoldAlignLead')
+    )}</p>
+    <p class="manifold-align-current">${escapeHtml(
+      t('production.manifoldAlignCurrent', {
+        machines: formatDisplayInteger(info.machines),
+        overclock: formatOverclockLabel(info.overclock),
+        banks: currentBanks || '—',
+      })
+    )}</p>
+    ${
+      sharesText
+        ? `<p class="manifold-align-shares">${escapeHtml(
+            info.shareMode === 'belt' || info.shareMode === 'belt-split'
+              ? t('production.manifoldAlignSharesBelt', { shares: sharesText })
+              : t('production.manifoldAlignShares', { shares: sharesText })
+          )}</p>`
+        : ''
+    }
+    <div class="manifold-align-options">${optionsHtml}</div>
+    <p class="manifold-align-note">${escapeHtml(t('production.manifoldAlignNote'))}</p>`;
+
+  modal.dataset.stepId = String(stepId);
+  modal.classList.remove('hidden');
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function handleManifoldAlignOpen(buttonEl) {
+  if (!buttonEl) return;
+  const entityKind = buttonEl.dataset.entityKind;
+  const entityId = Number(buttonEl.dataset.entityId);
+  if (entityKind !== 'step' || !Number.isFinite(entityId)) return;
+  openManifoldAlignModal(entityId);
+}
+
+function handleManifoldAlignApply(buttonEl) {
+  const modal = document.getElementById('manifold-align-modal');
+  const stepId = Number(modal?.dataset.stepId);
+  const machines = Number(buttonEl?.dataset.machines);
+  if (!Number.isFinite(stepId) || !Number.isFinite(machines) || machines < 1) return;
+  closeManifoldAlignModal();
+  handleStepConfigChange(stepId, 'machines-keep-output', machines);
 }
 
 function renderBuildStatsToggleBtn(entityKind, entityId) {
@@ -666,6 +922,216 @@ function distributeMachinesAcrossManifolds(machineCount, manifoldCount) {
   );
 }
 
+function gcdInt(a, b) {
+  let x = Math.abs(Math.round(Number(a) || 0));
+  let y = Math.abs(Math.round(Number(b) || 0));
+  while (y) {
+    const next = x % y;
+    x = y;
+    y = next;
+  }
+  return x || 1;
+}
+
+function lcmInt(a, b) {
+  const left = Math.max(1, Math.round(Number(a) || 1));
+  const right = Math.max(1, Math.round(Number(b) || 1));
+  return Math.round((left / gcdInt(left, right)) * right);
+}
+
+function almostIntegerRate(value, epsilon = 1e-6) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return false;
+  return Math.abs(n - Math.round(n)) <= epsilon;
+}
+
+/** Linked producer rates for an input, as real belt shares for this step. */
+function getInputSourceShareRates(step, itemSlug, requiredRate) {
+  const links = step?.input_links?.[itemSlug] ?? [];
+  if (links.length < 2) return null;
+
+  const allSteps = activeProductionDetail?.steps ?? [];
+  const allExtractions = activeProductionDetail?.extractions ?? [];
+  const capacities = [];
+
+  for (const link of links) {
+    let capacity = 0;
+    if (link.producer_extraction_id != null) {
+      const extraction = allExtractions.find(
+        (candidate) => Number(candidate.id) === Number(link.producer_extraction_id)
+      );
+      if (extraction) {
+        // Physical belt from that miner/extractor (live output), not stale link.producer_rate.
+        capacity = Number(getExtractionOutputRate(extraction)) || 0;
+      } else {
+        capacity = Number(link.producer_rate) || 0;
+      }
+    } else if (link.producer_step_id != null) {
+      const producer = allSteps.find(
+        (candidate) => Number(candidate.id) === Number(link.producer_step_id)
+      );
+      if (producer) {
+        capacity =
+          Number(getStepOutputRateForItem(producer, itemSlug)) ||
+          Number(link.producer_rate) ||
+          0;
+      } else {
+        capacity = Number(link.producer_rate) || 0;
+      }
+    }
+    if (capacity > 0) capacities.push(capacity);
+  }
+
+  if (capacities.length < 2) return null;
+  return allocateDemandAcrossSourceCapacities(capacities, requiredRate);
+}
+
+/**
+ * Split this step's required input across linked source capacities.
+ * Fill larger belts first so a 1200 line stays 1200 (not proportionally shrunk to 1000).
+ * Example: capacities 1200+960, required 1800 → shares 1200+600.
+ */
+function allocateDemandAcrossSourceCapacities(capacities, requiredRate) {
+  const required = Number(requiredRate) || 0;
+  const caps = (capacities || []).map((rate) => Number(rate) || 0).filter((rate) => rate > 0);
+  if (!(required > 0) || caps.length < 2) return null;
+
+  const sum = caps.reduce((acc, rate) => acc + rate, 0);
+  const tolerance = Math.max(0.05, required * 0.001);
+
+  if (Math.abs(sum - required) <= tolerance) {
+    return caps.map((rate) => snapShareRate(rate));
+  }
+
+  if (sum + tolerance < required) {
+    return [...caps, required - sum].map((rate) => snapShareRate(rate));
+  }
+
+  // Over-linked capacity: waterfill demand onto larger belts first.
+  const indexed = caps.map((capacity, index) => ({ capacity, index }));
+  indexed.sort((a, b) => b.capacity - a.capacity || a.index - b.index);
+
+  let remaining = required;
+  const allocated = Array(caps.length).fill(0);
+  for (const entry of indexed) {
+    if (!(remaining > 0)) break;
+    const take = Math.min(entry.capacity, remaining);
+    allocated[entry.index] = take;
+    remaining = Math.max(0, remaining - take);
+  }
+
+  return allocated.map((rate) => snapShareRate(rate)).filter((rate) => rate > 0);
+}
+
+function snapShareRate(rate) {
+  const n = Number(rate) || 0;
+  if (!(n > 0)) return 0;
+  const nearest = Math.round(n);
+  return Math.abs(n - nearest) <= 0.01 ? nearest : n;
+}
+
+/** Split any rate that exceeds one belt/pipe into multiple chunks ≤ capacity. */
+function splitRatesToTransportCapacity(rates, transportCapacity) {
+  const cap = Number(transportCapacity) || 0;
+  if (!(cap > 0)) return Array.isArray(rates) ? rates.filter((r) => r > 0) : null;
+  const out = [];
+  for (const rate of rates || []) {
+    let remaining = Number(rate) || 0;
+    if (!(remaining > 0)) continue;
+    while (remaining > cap + 1e-9) {
+      out.push(snapShareRate(cap));
+      remaining =
+        window.ProductionScale?.roundProduction?.(remaining - cap) ?? remaining - cap;
+    }
+    if (remaining > 1e-9) out.push(snapShareRate(remaining));
+  }
+  return out.length ? out : null;
+}
+
+/** Equal belt/pipe lines that cover required rate within transport capacity. */
+function equalSharesForTransportCapacity(requiredRate, transportCapacity) {
+  const required = Number(requiredRate) || 0;
+  const cap = Number(transportCapacity) || 0;
+  if (!(required > 0) || !(cap > 0)) return null;
+  const lines = Math.max(1, Math.ceil(required / cap - 1e-9));
+  const perLine = required / lines;
+  if (perLine > cap + 1e-9) return null;
+  return Array.from({ length: lines }, () => snapShareRate(perLine));
+}
+
+/**
+ * Shares for manifold + robot: prefer linked sources when they fit on the selected
+ * belt/pipe Mk; otherwise plan by real transport capacity (equal lines).
+ */
+function resolveInputSharesForTransport(step, itemSlug, requiredRate, transportCapacity) {
+  const required = Number(requiredRate) || 0;
+  const cap = Number(transportCapacity) || 0;
+  if (!(required > 0)) return null;
+
+  const sourceShares = getInputSourceShareRates(step, itemSlug, required);
+  if (sourceShares?.length >= 2 && cap > 0) {
+    const fits = sourceShares.every((rate) => Number(rate) <= cap + 1e-9);
+    if (fits) {
+      return { shares: sourceShares, mode: 'sources' };
+    }
+    // Sources exceed selected Mk — fall back to belt/pipe-true equal lines.
+    const beltShares = equalSharesForTransportCapacity(required, cap);
+    if (beltShares?.length >= 2) {
+      return { shares: beltShares, mode: 'belt' };
+    }
+    const split = splitRatesToTransportCapacity(sourceShares, cap);
+    if (split?.length >= 2) {
+      return { shares: split, mode: 'belt-split' };
+    }
+  } else if (sourceShares?.length >= 2) {
+    return { shares: sourceShares, mode: 'sources' };
+  }
+
+  if (cap > 0 && required > cap + 1e-9) {
+    const beltShares = equalSharesForTransportCapacity(required, cap);
+    if (beltShares?.length >= 2) {
+      return { shares: beltShares, mode: 'belt' };
+    }
+  }
+
+  return null;
+}
+
+function distributeMachinesBySourceShares(machineCount, shares) {
+  const machines = Math.max(1, Math.round(Number(machineCount) || 1));
+  if (!Array.isArray(shares) || shares.length < 2) return null;
+  const total = shares.reduce((acc, rate) => acc + Number(rate), 0);
+  if (!(total > 0)) return null;
+
+  const raw = shares.map((rate) => (Number(rate) * machines) / total);
+  if (!raw.every((value) => almostIntegerRate(value, 1e-4))) return null;
+
+  const banks = raw.map((value) => Math.round(value));
+  if (banks.some((count) => count < 1)) return null;
+  if (banks.reduce((acc, count) => acc + count, 0) !== machines) return null;
+  return banks;
+}
+
+function fractionDenominator(part, whole, maxDen = 360) {
+  const p = Math.round(Number(part) || 0);
+  const w = Math.round(Number(whole) || 0);
+  if (!(p > 0) || !(w > 0)) return 1;
+  const den = Math.round(w / gcdInt(p, w));
+  return Math.min(maxDen, Math.max(1, den));
+}
+
+function shareAlignmentPeriod(shares) {
+  if (!Array.isArray(shares) || shares.length < 2) return 1;
+  const total = shares.reduce((acc, rate) => acc + Number(rate), 0);
+  if (!(total > 0)) return 1;
+  let period = 1;
+  for (const rate of shares) {
+    period = lcmInt(period, fractionDenominator(rate, total));
+    if (period > 360) return 360;
+  }
+  return period;
+}
+
 function computeStepBuildInfo(step, chain = activeProductionDetail?.chain) {
   const machines = Math.max(1, Math.round(Number(step?.machine_count) || 1));
   const overclock = Number(step?.overclock) || 100;
@@ -720,7 +1186,35 @@ function computeStepBuildInfo(step, chain = activeProductionDetail?.chain) {
   }
 
   manifoldsNeeded = Math.min(machines, manifoldsNeeded);
-  const banks = distributeMachinesAcrossManifolds(machines, manifoldsNeeded);
+
+  let sourceShares = null;
+  let shareMode = null;
+  let banks = null;
+  let sourceAligned = true;
+  const primaryLimiter =
+    limiting.find((entry) => entry.direction === 'input') || limiting[0] || null;
+  if (primaryLimiter) {
+    const resolved = resolveInputSharesForTransport(
+      step,
+      primaryLimiter.item_slug,
+      primaryLimiter.rate,
+      primaryLimiter.capacity
+    );
+    if (resolved?.shares?.length >= 2) {
+      sourceShares = resolved.shares;
+      shareMode = resolved.mode;
+      manifoldsNeeded = Math.min(machines, Math.max(manifoldsNeeded, sourceShares.length));
+      banks = distributeMachinesBySourceShares(machines, sourceShares);
+      sourceAligned = Boolean(banks);
+      if (sourceShares.some((rate) => Number(rate) > Number(primaryLimiter.capacity) + 1e-9)) {
+        sourceAligned = false;
+      }
+    }
+  }
+
+  if (!banks) {
+    banks = distributeMachinesAcrossManifolds(machines, manifoldsNeeded);
+  }
 
   return {
     machines,
@@ -731,8 +1225,141 @@ function computeStepBuildInfo(step, chain = activeProductionDetail?.chain) {
     manifoldCount: banks.length,
     banks,
     needsSplit: banks.length > 1,
+    needsAlignment: Boolean(sourceShares?.length >= 2 && !sourceAligned),
+    sourceShares,
+    shareMode,
     limiting,
+    transportCapacity: primaryLimiter?.capacity ?? null,
+    transportMk: primaryLimiter?.mk ?? null,
+    transportKind: primaryLimiter?.kind ?? null,
   };
+}
+
+/**
+ * Suggest machine counts that keep target output and align banks to the selected
+ * belt/pipe Mk (and linked sources when they fit on that Mk).
+ */
+function suggestStepMachineAlignments(step, chain = activeProductionDetail?.chain) {
+  if (!step?.schema) return [];
+  const info = computeStepBuildInfo(step, chain);
+  const basePerMin = Number(step.base_per_min) || 0;
+  const target = Number(step.target_output) || 0;
+  const somersloopMask = step.somersloop_mask ?? 0;
+  if (!(basePerMin > 0) || !(target > 0)) return [];
+
+  const limiter =
+    info.limiting?.find((entry) => entry.direction === 'input') || info.limiting?.[0] || null;
+  const capacity = Number(limiter?.capacity) || 0;
+  const resolved =
+    limiter != null
+      ? resolveInputSharesForTransport(
+          step,
+          limiter.item_slug,
+          limiter.rate,
+          capacity
+        )
+      : null;
+  const shares = resolved?.shares ?? null;
+
+  let period = 1;
+  if (shares?.length >= 2) {
+    period = shareAlignmentPeriod(shares);
+  } else if (info.manifoldCount > 1) {
+    period = info.manifoldCount;
+  } else {
+    return [];
+  }
+
+  const currentMachines = info.machines;
+  const maxMachines =
+    typeof window.ProductionScale?.MACHINE_SLIDER_MAX === 'number'
+      ? window.ProductionScale.MACHINE_SLIDER_MAX
+      : 100;
+  const ocMin = window.ProductionScale?.OVERCLOCK_MIN ?? 1;
+  const ocMax = window.ProductionScale?.OVERCLOCK_MAX ?? 250;
+
+  const candidates = [];
+  for (let multiple = 1; multiple * period <= maxMachines; multiple += 1) {
+    const machines = multiple * period;
+    const banks =
+      shares?.length >= 2
+        ? distributeMachinesBySourceShares(machines, shares)
+        : distributeMachinesAcrossManifolds(machines, period);
+    if (!banks || banks.length < 2) continue;
+
+    const overclock = window.ProductionScale.computeOverclock(
+      target,
+      basePerMin,
+      machines,
+      somersloopMask,
+      step.schema
+    );
+    if (overclock < ocMin - 1e-9 || overclock > ocMax + 1e-9) continue;
+
+    // Each bank's share must fit on one selected belt/pipe.
+    if (limiter?.rate > 0 && capacity > 0) {
+      const ok = banks.every((count, index) => {
+        const share =
+          shares?.length === banks.length
+            ? Number(shares[index])
+            : (limiter.rate * count) / machines;
+        return share <= capacity + 1e-6;
+      });
+      if (!ok) continue;
+    }
+
+    const ratePerMachine =
+      window.ProductionScale.roundProduction?.(target / machines) ?? target / machines;
+    candidates.push({
+      machines,
+      overclock,
+      banks,
+      shares: shares?.length === banks.length ? shares : null,
+      ratePerMachine,
+      shareMode: resolved?.mode || null,
+      transportMk: limiter?.mk ?? null,
+      transportCapacity: capacity || null,
+      isCurrent: machines === currentMachines,
+      distance: Math.abs(machines - currentMachines),
+      ocDistance: Math.abs(overclock - 100),
+    });
+  }
+
+  if (!candidates.length) return [];
+
+  const current = candidates.find((entry) => entry.isCurrent);
+  if (current && !info.needsAlignment) {
+    const betterOc = candidates
+      .filter((entry) => !entry.isCurrent && entry.ocDistance + 1e-9 < current.ocDistance)
+      .sort((a, b) => a.ocDistance - b.ocDistance || a.distance - b.distance)[0];
+    if (betterOc) return [betterOc, current].slice(0, 3);
+    return [current];
+  }
+
+  const below = candidates
+    .filter((entry) => entry.machines <= currentMachines)
+    .sort((a, b) => b.machines - a.machines || a.ocDistance - b.ocDistance)[0];
+  const above = candidates
+    .filter((entry) => entry.machines >= currentMachines && !entry.isCurrent)
+    .sort((a, b) => a.machines - b.machines || a.ocDistance - b.ocDistance)[0];
+
+  const picked = [];
+  if (below && !below.isCurrent) picked.push(below);
+  else if (below?.isCurrent && info.needsAlignment) {
+    /* current unclean — skip */
+  }
+  if (above) picked.push(above);
+
+  if (!picked.length) {
+    const nearest = [...candidates].sort(
+      (a, b) => a.distance - b.distance || a.ocDistance - b.ocDistance
+    )[0];
+    if (nearest && !nearest.isCurrent) picked.push(nearest);
+  }
+
+  // Prefer listing the option closer to 100% OC first.
+  picked.sort((a, b) => a.ocDistance - b.ocDistance || a.machines - b.machines);
+  return picked.slice(0, 3);
 }
 
 function computeExtractionBuildInfo(extraction, chain = activeProductionDetail?.chain) {
@@ -828,12 +1455,39 @@ function renderBuildStatsBadge(
           })
         : '';
   const needText =
-    showManifolds && limiter
+    showManifolds && limiter && !info.needsAlignment
       ? t(info.isExtraction ? 'production.buildSplitNeedNodes' : 'production.buildSplitNeed', {
           count: formatDisplayInteger(info.manifoldCount),
           kind: kindLabel,
           banks: banksText,
         })
+      : showManifolds && limiter && info.needsAlignment
+        ? t(info.isExtraction ? 'production.buildSplitNeedNodes' : 'production.buildSplitNeed', {
+            count: formatDisplayInteger(
+              Math.max(info.manifoldCount, info.sourceShares?.length || 0)
+            ),
+            kind: kindLabel,
+            banks: '—',
+          })
+        : '';
+  const alignText =
+    showManifolds && info.needsAlignment && Array.isArray(info.sourceShares)
+      ? t(
+          info.shareMode === 'belt' || info.shareMode === 'belt-split'
+            ? 'production.buildSplitAlignHintBelt'
+            : 'production.buildSplitAlignHint',
+          {
+            shares: info.sourceShares
+              .map((rate) =>
+                typeof formatProductionValue === 'function'
+                  ? formatProductionValue(rate)
+                  : formatDisplayInteger(rate)
+              )
+              .join(' + '),
+            mk: info.transportMk ?? '',
+            capacity: formatDisplayInteger(info.transportCapacity || 0),
+          }
+        )
       : '';
   const title = whyText ? escapeHtml(whyText) : '';
   const bankKey = info.isExtraction
@@ -844,9 +1498,9 @@ function renderBuildStatsBadge(
   return `
     <div class="production-build-stats${compact ? ' production-build-stats--compact' : ''}${
       showManifolds ? ' production-build-stats--split' : ''
-    }${hasTransport ? ' production-build-stats--with-transport' : ''}"${
-      title ? ` title="${title}"` : ''
-    }>
+    }${info.needsAlignment ? ' production-build-stats--align' : ''}${
+      hasTransport ? ' production-build-stats--with-transport' : ''
+    }"${title ? ` title="${title}"` : ''}>
       <div class="production-build-stats-content">
         <span class="production-build-stats-main">
           <strong>${escapeHtml(machineLabel)}</strong>
@@ -864,7 +1518,12 @@ function renderBuildStatsBadge(
             : ''
         }
         ${
-          showManifolds
+          alignText
+            ? `<p class="production-build-stats-align">${escapeHtml(alignText)}</p>`
+            : ''
+        }
+        ${
+          showManifolds && !info.needsAlignment
             ? `<div class="production-build-manifold-banks">${info.banks
                 .map(
                   (count, index) => `
@@ -1186,11 +1845,18 @@ function getLinkedConsumersUnmetDemand(extraction, itemSlug, allSteps, allExtrac
   );
 }
 
+function formatPartialLinkRate(allocated, required, unit) {
+  return t('production.linkPartialRate', {
+    allocated: formatRateWithUnit(allocated, unit),
+    required: formatRateWithUnit(required, unit),
+  });
+}
+
 function formatLinkedConsumerBadgeRate(consumer, unit) {
   const allocated = consumer.allocated_rate ?? 0;
   const required = consumer.required_rate ?? 0;
   if (required > LINK_BALANCE_TOLERANCE && allocated + LINK_BALANCE_TOLERANCE < required) {
-    return `${formatRateWithUnit(allocated, unit)}/${formatRateWithUnit(required, unit)}`;
+    return formatPartialLinkRate(allocated, required, unit);
   }
   return formatRateWithUnit(allocated, unit);
 }
@@ -1266,7 +1932,7 @@ function formatExtractionLinkOptionRate(extraction, consumerStepId, itemSlug, al
     const allocated = getExtractionAttributedDemand(extraction, consumer, itemSlug, allSteps);
     const required = getStepInputRateForItem(consumer, itemSlug);
     if (allocated + LINK_BALANCE_TOLERANCE < required) {
-      return `${formatRateWithUnit(allocated, unit)}/${formatRateWithUnit(required, unit)}`;
+      return formatPartialLinkRate(allocated, required, unit);
     }
     return formatRateWithUnit(allocated, unit);
   }
@@ -1337,7 +2003,7 @@ function formatExtractionConsumerLinkOptionRate(consumer, extraction, itemSlug, 
   if (isExtractionLinkedToConsumer(consumer, extraction.id, itemSlug)) {
     const allocated = getExtractionAttributedDemand(extraction, consumer, itemSlug, allSteps);
     if (allocated + LINK_BALANCE_TOLERANCE < requiredRate) {
-      return `${formatRateWithUnit(allocated, unit)}/${formatRateWithUnit(requiredRate, unit)}`;
+      return formatPartialLinkRate(allocated, requiredRate, unit);
     }
     return formatRateWithUnit(requiredRate, unit);
   }
@@ -3512,6 +4178,7 @@ function handleStepConfigChange(stepId, field, rawValue) {
   syncChainResourceBalanceCache();
   updateStepIoDisplay(stepEl, scaled, step.schema, step, activeProductionDetail?.steps ?? []);
   updateStepConfigInputs(stepEl, updated, step);
+  refreshEntityBuildStatsBlock('step', stepId);
   refreshRelatedStepIoDisplays(stepId);
   updateProductionDetailExternalSummary();
   scheduleStepConfigSave(stepId, updated);

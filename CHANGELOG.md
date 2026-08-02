@@ -9,6 +9,48 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.2.5] - 2026-08-02
+
+### Changed
+- Robottino «allinea macchine»: sempre cliccabile — apre sempre il popup (già allineato / una sola linea / alternative), niente più icona disabilitata con «nessun allineamento»
+
+## [2.2.4] - 2026-08-02
+
+### Changed
+- Allinea macchine (robottino) e schema linee: rispettano il Mk nastro/tubo selezionato — se le sorgenti (es. 1200+600) non ci stanno sul nastro (es. Mk.5 a 780), le linee diventano quelle del nastro (es. 600+600+600) e il robottino propone conteggi compatibili
+
+## [2.2.3] - 2026-08-02
+
+### Fixed
+- Schema linee: con molte macchine il nastro di uscita non si impila più sotto quello di ingresso (restano a sinistra e a destra della fila)
+
+## [2.2.2] - 2026-08-02
+
+### Fixed
+- Allinea macchine: con più sorgenti la quota per nastro non viene più “schiacciata” in proporzione (es. 1200+960 → 1000+800). Si riempie prima il nastro più grande (1200+600), così tornano suggerimenti come 15 macchine (10+5)
+
+## [2.2.1] - 2026-08-02
+
+### Fixed
+- Allinea macchine (robottino): usa le quote live delle sorgenti collegate (come nei badge input), non i rate stagnanti nei link — così con 1200+600 propone anche 15 macchine (10+5), non solo opzioni basate su valori vecchi
+
+## [2.2.0] - 2026-08-02
+
+### Added
+- Produzione: icona robottino accanto allo schema linee — apre un popup per allineare il numero di macchine alle quote reali dei nastri/sorgenti collegate (es. 1200+600 → 15 macchine 10+5 oppure 18 macchine 12+6), tenendo fermo l’output
+
+### Changed
+- Box linee nastro/tubo: con più sorgenti collegate sulla stessa input, la distribuzione macchine segue le quote reali invece dello split equo (8+8)
+
+### Fixed
+- Box linee nastro/tubo: si aggiorna subito quando cambi output, overclock o numero macchine (prima restava “congelato”)
+- Overclock con decimali periodici (es. 83,333%): niente più output spurio tipo 1800,015/min
+
+## [2.1.1] - 2026-08-02
+
+### Changed
+- Collegamenti input da più estrazioni: rate parziali più leggibili (`600/min di 1.800/min` invece di `600/min/1.800/min`) e più spazio tra i badge delle fonti
+
 ## [2.1.0] - 2026-08-02
 
 ### Added

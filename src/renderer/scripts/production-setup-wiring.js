@@ -30,8 +30,24 @@ function setupProduction() {
   manifoldLayoutModal?.addEventListener('click', (e) => {
     if (e.target === manifoldLayoutModal) closeManifoldLayoutModal();
   });
+
+  const manifoldAlignModal = document.getElementById('manifold-align-modal');
+  document.getElementById('manifold-align-modal-close')?.addEventListener('click', closeManifoldAlignModal);
+  manifoldAlignModal?.addEventListener('click', (e) => {
+    if (e.target === manifoldAlignModal) closeManifoldAlignModal();
+    const applyBtn = e.target.closest('[data-manifold-align-apply]');
+    if (applyBtn) {
+      e.preventDefault();
+      handleManifoldAlignApply(applyBtn);
+    }
+  });
+
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
+    if (manifoldAlignModal && !manifoldAlignModal.classList.contains('hidden')) {
+      closeManifoldAlignModal();
+      return;
+    }
     if (!manifoldLayoutModal || manifoldLayoutModal.classList.contains('hidden')) return;
     closeManifoldLayoutModal();
   });
@@ -601,6 +617,14 @@ function setupProduction() {
       e.preventDefault();
       e.stopPropagation();
       handleManifoldLayoutOpen(manifoldLayoutBtn);
+      return;
+    }
+
+    const manifoldAlignBtn = e.target.closest('[data-manifold-align-open]');
+    if (manifoldAlignBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleManifoldAlignOpen(manifoldAlignBtn);
       return;
     }
 
