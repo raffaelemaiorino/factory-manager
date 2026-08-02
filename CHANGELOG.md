@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.2.6] - 2026-08-02
+
+### Changed
+- Schema linee: fino a 24 macchine per fila mostra tutte le icone (niente più «+4» su banchetti da 12 che andavano già a capo)
+
 ## [2.2.5] - 2026-08-02
 
 ### Changed

@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.6] - 2026-08-02
+
+### Changed
+- Line schematic: up to 24 machines per row show every icon (no more “+4” on 12-machine banks that already wrapped)
+
 ## [2.2.5] - 2026-08-02
 
 ### Changed

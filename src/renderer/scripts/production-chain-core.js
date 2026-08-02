@@ -352,7 +352,8 @@ function formatManifoldRate(rate) {
 
 function renderManifoldMachineCells(count, buildingImage) {
   const n = Math.max(1, Math.round(Number(count) || 1));
-  const maxShow = 8;
+  // Show icons for typical bank sizes; only collapse when the row would be huge.
+  const maxShow = 24;
   const show = Math.min(n, maxShow);
   const cells = Array.from({ length: show }, () => {
     if (buildingImage) {
