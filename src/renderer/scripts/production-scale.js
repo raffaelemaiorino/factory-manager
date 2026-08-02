@@ -28,6 +28,56 @@
     return outputPerMinute(primary.amount, schema.duration);
   }
 
+  function getSchemaIo(schema, kind, itemSlug) {
+    const list = kind === 'input' ? schema?.inputs : schema?.outputs;
+    if (!list?.length || !itemSlug) return null;
+    return list.find((io) => io.item_slug === itemSlug) || null;
+  }
+
+  function getBaseIoPerMin(schema, kind, itemSlug) {
+    const io = getSchemaIo(schema, kind, itemSlug);
+    if (!io) return 0;
+    return outputPerMinute(io.amount, schema.duration);
+  }
+
+  /**
+   * Converte un rate /min di un input o output (anche secondario) nel target_output primario.
+   * Gli input tengono conto del moltiplicatore Somersloop (input_scale = output_scale / mult).
+   */
+  function computeTargetOutputFromIoRate(
+    schema,
+    item,
+    kind,
+    itemSlug,
+    ratePerMin,
+    somersloopMask = 0
+  ) {
+    const rate = Number(ratePerMin);
+    if (!Number.isFinite(rate) || rate <= 0) return null;
+
+    const primary = getPrimaryOutput(schema, item);
+    if (kind === 'output' && primary && itemSlug === primary.item_slug) {
+      return rate;
+    }
+
+    const baseIo = getBaseIoPerMin(schema, kind, itemSlug);
+    const basePrimary = getBaseOutputPerMin(schema, item);
+    if (!(baseIo > 0) || !(basePrimary > 0)) return null;
+
+    if (kind === 'input') {
+      const slots = getSomersloopSlots(schema);
+      const mult = computeSomersloopMultiplier(slots, somersloopMask);
+      if (!(mult > 0)) return null;
+      return rate * (basePrimary / baseIo) * mult;
+    }
+
+    if (kind === 'output') {
+      return rate * (basePrimary / baseIo);
+    }
+
+    return null;
+  }
+
   function getDefaultTargetOutput(schema, item) {
     const base = getBaseOutputPerMin(schema, item);
     return base || 60;
@@ -43,6 +93,32 @@
       return nearest / factor;
     }
     return Math.ceil(scaled - 1e-12) / factor;
+  }
+
+  /**
+   * Rate /min da scala ricetta: preferisce interi esatti (es. 200) ed evita
+   * che amount*scale periodici (13.333…) finiscano in 13.334 → 200.01/min.
+   * Soglia 0.005: cattura residui tipo 800.002 / 200.001 da OC arrotondato.
+   */
+  function normalizeIoRate(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n) || n <= 0) return 0;
+    const nearestInt = Math.round(n);
+    if (Math.abs(n - nearestInt) <= 0.005) return nearestInt;
+    const factor = 10 ** PRODUCTION_DECIMALS;
+    const scaled = n * factor;
+    const nearest = Math.round(scaled);
+    if (Math.abs(scaled - nearest) < 1e-6) {
+      return nearest / factor;
+    }
+    return roundProduction(n);
+  }
+
+  function amountFromPerMinute(perMin, duration) {
+    const rate = Number(perMin);
+    const cycleSeconds = Number(duration);
+    if (!Number.isFinite(rate) || !(cycleSeconds > 0)) return 0;
+    return (rate * cycleSeconds) / 60;
   }
 
   function roundConfigOutput(value) {
@@ -68,7 +144,7 @@
     ) {
       return Math.round(n);
     }
-    return roundProduction(n);
+    return normalizeIoRate(n);
   }
 
   function roundTargetOutput(value, overclock) {
@@ -93,6 +169,38 @@
 
   function clampMachineCount(value) {
     return roundMachineCount(value);
+  }
+
+  /** Arrotonda per eccesso a un numero pari (1 resta consentito). */
+  function roundUpPreferEven(machines) {
+    const n = Math.max(1, Math.ceil(Number(machines) || 1));
+    if (n <= 1) return 1;
+    return n % 2 === 0 ? n : n + 1;
+  }
+
+  /**
+   * Macchine minime (preferendo pari) per raggiungere targetOutput a ≤250% OC.
+   */
+  function computeMachinesForTargetOutput(
+    targetOutput,
+    basePerMin,
+    somersloopMask = 0,
+    schema = null
+  ) {
+    const base = Number(basePerMin);
+    const target = Number(targetOutput);
+    const slots = schema ? getSomersloopSlots(schema) : 0;
+    const mult = computeSomersloopMultiplier(slots, somersloopMask);
+    if (!base || !target || !mult) return DEFAULT_MACHINE_COUNT;
+    const perMachineMax = base * (OVERCLOCK_MAX / 100) * mult;
+    if (!(perMachineMax > 0)) return DEFAULT_MACHINE_COUNT;
+    let machines = roundUpPreferEven(target / perMachineMax);
+    // Sicurezza FP: se il max arrotondato resta sotto target, aggiungi 2 (pari).
+    while (computeMaxTargetOutput(base, machines, somersloopMask, schema) < target) {
+      machines += machines === 1 ? 1 : 2;
+      if (machines > 10000) break;
+    }
+    return machines;
   }
 
   function getSomersloopSlots(schema) {
@@ -303,6 +411,20 @@
     if (changedField === 'output') {
       const parsed = Number(rawValue);
       if (!Number.isFinite(parsed) || parsed <= 0) return null;
+      const maxAtCurrent = computeMaxTargetOutput(
+        basePerMin,
+        machine_count,
+        somersloop_mask,
+        schema
+      );
+      if (parsed > maxAtCurrent) {
+        machine_count = computeMachinesForTargetOutput(
+          parsed,
+          basePerMin,
+          somersloop_mask,
+          schema
+        );
+      }
       target_output = clampTargetToRange(
         parsed,
         basePerMin,
@@ -368,14 +490,21 @@
         );
       }
     } else if (changedField === 'somersloop') {
+      const prevMult = computeSomersloopMultiplier(slots, somersloop_mask);
       somersloop_mask = normalizeSomersloopMask(rawValue, slots);
-      target_output = computeTargetOutput(
-        basePerMin,
-        machine_count,
-        overclock,
-        somersloop_mask,
-        schema
-      );
+      const nextMult = computeSomersloopMultiplier(slots, somersloop_mask);
+      if (prevMult > 0 && nextMult > 0) {
+        // Scala l'output per rapporto moltiplicatori (evita drift da OC già arrotondato).
+        target_output = normalizeIoRate(Number(target_output) * (nextMult / prevMult));
+      } else {
+        target_output = computeTargetOutput(
+          basePerMin,
+          machine_count,
+          overclock,
+          somersloop_mask,
+          schema
+        );
+      }
       target_output = clampTargetToRange(
         target_output,
         basePerMin,
@@ -442,14 +571,20 @@
       scale: roundProduction(outputScale),
       input_scale: roundProduction(inputScale),
       target_output: target,
-      inputs: (schema?.inputs ?? []).map((io) => ({
-        ...io,
-        amount: roundProduction(io.amount * inputScale),
-      })),
-      outputs: (schema?.outputs ?? []).map((io) => ({
-        ...io,
-        amount: roundProduction(io.amount * outputScale),
-      })),
+      inputs: (schema?.inputs ?? []).map((io) => {
+        const rate = normalizeIoRate(outputPerMinute(io.amount, schema.duration) * inputScale);
+        return {
+          ...io,
+          amount: amountFromPerMinute(rate, schema.duration),
+        };
+      }),
+      outputs: (schema?.outputs ?? []).map((io) => {
+        const rate = normalizeIoRate(outputPerMinute(io.amount, schema.duration) * outputScale);
+        return {
+          ...io,
+          amount: amountFromPerMinute(rate, schema.duration),
+        };
+      }),
     };
   }
 
@@ -457,8 +592,13 @@
     getPrimaryOutput,
     outputPerMinute,
     getBaseOutputPerMin,
+    getSchemaIo,
+    getBaseIoPerMin,
+    computeTargetOutputFromIoRate,
     getDefaultTargetOutput,
     roundProduction,
+    normalizeIoRate,
+    amountFromPerMinute,
     roundConfigOutput,
     isIntegerOverclock,
     normalizeTargetOutput,
@@ -469,6 +609,8 @@
     roundMachineCount,
     clampOverclock,
     clampMachineCount,
+    roundUpPreferEven,
+    computeMachinesForTargetOutput,
     getSomersloopSlots,
     normalizeSomersloopMask,
     countSomersloopChecked,

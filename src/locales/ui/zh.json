@@ -282,7 +282,7 @@
     "title": "设置",
     "subtitle": "本地数据管理与恢复默认资源目录。",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -313,7 +313,10 @@
     "restoreSuccess": "恢复完成：{items} 项资源、{buildings} 座建筑、{schemas} 条生产配方。",
     "errorLoadInfo": "加载数据信息失败。",
     "errorRestore": "恢复过程中出错。",
-    "envDbLocal": "本地数据库"
+    "envDbLocal": "本地数据库",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager 是用于规划 Satisfactory 生产的独立非官方粉丝工具，与 Coffee Stain Studios 无隶属、赞助或授权关系。Satisfactory 及其商标、标识、图像、图标、资源、机器、配方、数据等内容归 Coffee Stain Studios AB 及相应权利人所有。Factory Manager 开发者不主张对游戏内容的任何权利。"

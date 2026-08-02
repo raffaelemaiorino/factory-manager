@@ -9,28 +9,147 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Linux build target (`npm run build:linux`, produces an AppImage and a `.deb`) alongside the existing Windows and macOS builds. The `.deb` uses a placeholder maintainer email in `package.json` (`build.linux.maintainer`) - replace it with a real one before publishing that artifact; see `TODO.md`.
-- `TODO.md`: known follow-ups (macOS build untested, `.deb` build untested + placeholder maintainer email, no CI matrix, no automated tests) so they're tracked instead of forgotten.
-- README: Architecture section describing the main-process/renderer/data-layer split and the current file layout, including a note that there's no automated test suite yet.
-
 ### Changed
-- README refresh: added a top logo banner, cleaner project overview, and a dedicated screenshots section template.
+- README: added a top logo banner above the bilingual overview.
 - Logo polish: `src/renderer/assets/logo.png` now has a transparent background (removes the black box effect in-app).
-- Fixed the app-icon and logo assets (`app-icon.png`, `logo.png`): both were actually JPEG data mislabeled with a `.png` extension, which broke Linux icon generation. Re-saved as genuine PNGs with no visible change.
-- The main window's icon now uses the correct format per platform (`icon.ico` on Windows, `app-icon.png` elsewhere) - previously it always used `icon.ico`, which Electron's image loader can't read on Linux/macOS (silently fell back to Electron's default icon).
-- README: build instructions now cover all three platforms, plus a "Run from source" section and macOS notarization / Linux FUSE notes.
-- Internal: `src/renderer/scripts/app.js` (7,957 lines, the largest file in the codebase) split into 11 files by responsibility (`app-core.js`, `locale-legal-nav.js`, `dashboard.js`, `resources-catalog.js`, `production-chain-core.js`, `extraction-management.js`, `production-detail-view.js`, `production-setup-wiring.js`, `resource-detail-view.js`, `settings-and-modals.js`, `boot.js`), matching the existing pattern already used for `production-graph.js`/`energy-ui.js`/etc. No behavior change - see `boot.js` for the one place statement order had to change (a namespace export that only worked before via whole-file function hoisting).
 
-### Removed
-- Unused `recipes` / `recipe_ingredients` database tables: created on every startup but never written to (actual recipe data lives in the `item_schemas` table). New databases no longer create them; existing databases keep the empty tables untouched (no destructive migration).
+## [1.58.6] - 2026-08-01
 
 ### Fixed
-- App startup (`boot()`): a rejection anywhere during initialization (locale, app settings, or any `setup*()` call) is now caught and shown in an error dialog instead of silently leaving the app half-started with no feedback.
-- Electron main process: a failure after database initialization (e.g. while creating the main window) is now caught and reported via an error dialog and a clean quit, instead of becoming an unhandled promise rejection with no user-visible error.
-- Production chain reordering: if refreshing the chain detail view as a recovery step (after a failed group/step reorder) itself fails, the error is now logged instead of becoming a second unhandled rejection.
-- Resource edit modal: opening it from the resources list no longer risks an unhandled promise rejection if loading the resource or its categories fails.
-- Content Security Policy: allowed `data:` image sources so the dropdown-arrow icons on `<select>` elements actually render (previously silently blocked by `img-src 'self'`, console showed a CSP violation on every screen with a dropdown).
+- Production: the Output field no longer goes blank/black when changing Machines with a decimal overclock (e.g. 62.5%)
+- Production: when all groups are collapsed, the left drag handle to reorder them shows again (no need to also collapse schemas inside)
+
+## [1.58.5] - 2026-08-01
+
+### Fixed
+- Production: on extractions, “Missing … for linked steps” now accounts for total coverage from all linked sources (not just that miner’s output)
+
+## [1.58.4] - 2026-08-01
+
+### Changed
+- Production: mineral/liquid extractions on the left are sorted alphabetically (including after adding a new extraction)
+
+## [1.58.3] - 2026-07-29
+
+### Changed
+- Production: the “Group tree view” button is hidden when you are already inside a single group’s tree view
+
+## [1.58.2] - 2026-07-29
+
+### Changed
+- Production: Collapse/Expand icons (step and group) switch from chevron to caret (caret-up / caret-down)
+
+## [1.58.1] - 2026-07-29
+
+### Changed
+- Official Somersloop icon in the machine summary and plan Info box
+
+## [1.58.0] - 2026-07-29
+
+### Added
+- Production: the machine summary (and the plan Info box) also shows required Somersloops alongside Power Shards
+
+## [1.57.0] - 2026-07-29
+
+### Added
+- Tree view: steps with Somersloop enabled show a 5px border with an animated red-to-purple gradient
+
+## [1.56.3] - 2026-07-29
+
+### Fixed
+- Production: toggling Somersloop scales output by a clean ratio (e.g. 400→800) without leftovers like 800.002 / 200.001
+
+## [1.56.2] - 2026-07-29
+
+### Fixed
+- Production: entering an integer input/output rate (e.g. plastic 200/min) no longer shows leftovers like 200.01 from ceiling rounding of repeating decimals
+
+## [1.56.1] - 2026-07-29
+
+### Changed
+- Production: input/output rate fields more visible (yellow border) and slightly taller IO boxes
+
+## [1.56.0] - 2026-07-29
+
+### Added
+- Production: input and output rates (including byproducts, e.g. resin / crude oil) are editable fields — entering a value recalculates primary output, machines, and overclock
+
+## [1.55.0] - 2026-07-29
+
+### Changed
+- Production: if the requested output exceeds the current machines’ max (×250% OC), the required machine count (even number) and overclock are calculated automatically
+- Output field width matched to the slider below it
+
+## [1.54.2] - 2026-07-29
+
+### Fixed
+- Crude oil extraction: pure node at 100% yields 240 m³/min (not 250), matching the wiki; at 250% → 600 m³/min per extractor
+
+## [1.54.1] - 2026-07-28
+
+### Fixed
+- Resource schemas: when an input is already "Fully covered", no additional extractions or schemas are offered for linking
+
+## [1.54.0] - 2026-07-28
+
+### Added
+- Settings → Configuration: number format preference independent of UI language — Italian (`1.234,56`) or US English (`1,234.56`), used across dashboard, production, energy, and the calculator
+
+## [1.53.5] - 2026-07-28
+
+### Fixed
+- App startup: `setupCalculator is not defined` caused by a typo in the Paste regex in `calculator.js`
+
+## [1.53.4] - 2026-07-28
+
+### Changed
+- Calculator → Paste: extracts and cleans only the number (ignores text/units; rejects clipboard content with no digits)
+
+## [1.53.3] - 2026-07-28
+
+### Changed
+- Calculator: yellow border (`--warning`) so it stands out more clearly from the rest of the UI
+
+## [1.53.2] - 2026-07-28
+
+### Added
+- Calculator: Copy and Paste buttons (Italian number format; also Ctrl+C / Ctrl+V while the calculator is open)
+
+## [1.53.1] - 2026-07-28
+
+### Changed
+- Calculator: panel 50% larger and opens at the top-right below the topbar
+
+## [1.53.0] - 2026-07-28
+
+### Added
+- Floating calculator from the topbar: basic operations (+ − × ÷), percent, memory (MC/MR/M+/M−/MS), draggable panel that stays open when switching views
+- Italian number format in the calculator: comma for decimals, period as thousands separator (e.g. `1.234,56`)
+
+## [1.52.0] - 2026-07-28
+
+### Added
+- Linux build target (`npm run build:linux`, produces an AppImage and a `.deb`) alongside the existing Windows and macOS builds
+- `TODO.md`: known follow-ups (macOS build untested, `.deb` build untested, no CI matrix, no automated tests)
+- README: Architecture section describing the main-process/renderer/data-layer split and the current file layout, including a note that there's no automated test suite yet
+
+### Changed
+- Fixed the app-icon and logo assets (`app-icon.png`, `logo.png`): both were actually JPEG data mislabeled with a `.png` extension, which broke Linux icon generation. Re-saved as genuine PNGs with no visible change
+- The main window's icon now uses the correct format per platform (`icon.ico` on Windows, `app-icon.png` elsewhere)
+- README: build instructions now cover all three platforms, plus a "Run from source" section and macOS notarization / Linux FUSE notes
+- Internal: `src/renderer/scripts/app.js` split into 11 files by responsibility (no intended behavior change)
+- `.deb` package metadata: maintainer set to `Raffaele Maiorino <raffaelemaiorino@gmail.com>`
+
+### Removed
+- Unused `recipes` / `recipe_ingredients` database tables (new databases no longer create them; existing databases unchanged)
+
+### Fixed
+- App startup (`boot()`): initialization errors are shown instead of leaving the app half-started with no feedback
+- Electron main process: failures after database init reported via error dialog and a clean quit
+- Production chain reordering: a second failure during recovery refresh is logged instead of becoming an unhandled rejection
+- Resource edit modal: opening from the resources list no longer risks an unhandled promise rejection
+- Content Security Policy: allowed `data:` images so `<select>` dropdown arrows render
+- Settings → Configuration (IT/EN): titles, labels, and messages show translated text instead of i18n keys
 
 ## [1.51.0] - 2026-07-27
 

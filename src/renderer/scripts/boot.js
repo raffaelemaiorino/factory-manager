@@ -10,6 +10,7 @@ async function boot() {
     setupLocaleSelector();
     setupNavigation();
     setupLegalInfoModal();
+    setupCalculator();
     setupSearch();
     setupSchemaFilter();
     setupNumberInputWheelBlock();
@@ -62,7 +63,9 @@ window.ProductionUI = {
   formatOverclockInputValue,
   formatMachineCountInput,
   computeTotalPowerShards,
+  computeTotalSomersloops,
   computeDetailPowerShards,
+  computeDetailSomersloops,
   computeDetailPowerMw,
   computeExtractionsPowerMw,
   renderPowerShardsSummary,

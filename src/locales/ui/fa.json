@@ -282,7 +282,7 @@
     "title": "تنظیمات",
     "subtitle": "مدیریت داده محلی و بازیابی فهرست پیش‌فرض منابع.",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -313,7 +313,10 @@
     "restoreSuccess": "بازیابی انجام شد: {items} منبع، {buildings} ساختمان، {schemas} دستور.",
     "errorLoadInfo": "خطا در بارگذاری اطلاعات داده.",
     "errorRestore": "خطا هنگام بازیابی.",
-    "envDbLocal": "پایگاه داده محلی"
+    "envDbLocal": "پایگاه داده محلی",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager ابزار fan-made غیررسمی برای برنامه‌ریزی تولید Satisfactory است. وابسته یا مجاز Coffee Stain Studios نیست. محتوای Satisfactory متعلق به Coffee Stain Studios AB و/یا دارندگان حق است."

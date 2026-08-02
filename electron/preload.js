@@ -1,9 +1,11 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, clipboard } = require('electron');
 
 contextBridge.exposeInMainWorld('satisfactory', {
   getAppInfo: () => ipcRenderer.invoke('app:info'),
   checkForUpdate: () => ipcRenderer.invoke('app:check-update'),
   openExternal: (url) => ipcRenderer.invoke('shell:open-external', url),
+  clipboardWriteText: (text) => clipboard.writeText(String(text ?? '')),
+  clipboardReadText: () => clipboard.readText(),
   loadProductionUiState: () => ipcRenderer.sendSync('production-ui-state:load'),
   saveProductionUiState: (data) => ipcRenderer.sendSync('production-ui-state:save', data),
   getDbStatus: () => ipcRenderer.invoke('db:status'),

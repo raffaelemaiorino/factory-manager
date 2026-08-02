@@ -282,7 +282,7 @@
     "title": "การตั้งค่า",
     "subtitle": "จัดการข้อมูล local และคืนค่าแคตตาล็อกเริ่มต้น",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -313,7 +313,10 @@
     "restoreSuccess": "คืนค่าแล้ว: {items} ทรัพยากร {buildings} อาคาร {schemas} สูตร",
     "errorLoadInfo": "โหลดข้อมูลไม่สำเร็จ",
     "errorRestore": "คืนค่าไม่สำเร็จ",
-    "envDbLocal": "ฐานข้อมูลในเครื่อง"
+    "envDbLocal": "ฐานข้อมูลในเครื่อง",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager เป็นเครื่องมือแฟนเมดที่ไม่เป็นทางการสำหรับวางแผนการผลิตใน Satisfactory ไม่เกี่ยวข้องหรือได้รับอนุญาตจาก Coffee Stain Studios Satisfactory เครื่องหมาย โลโก้ รูป ไอคอน ทรัพยากร เครื่องจักร สูตร ข้อมูล และเนื้อหาอื่นเป็นของ Coffee Stain Studios AB และ/หรือเจ้าของสิทธิ์ ผู้พัฒนา Factory Manager ไม่อ้างสิทธิ์ในเนื้อหาเกม"

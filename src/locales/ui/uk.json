@@ -282,7 +282,7 @@
     "title": "Налаштування",
     "subtitle": "Локальні дані та відновлення каталогу за замовчуванням.",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -313,7 +313,10 @@
     "restoreSuccess": "Відновлено: {items} ресурсів, {buildings} будівель, {schemas} рецептів.",
     "errorLoadInfo": "Помилка завантаження інформації про дані.",
     "errorRestore": "Помилка під час відновлення.",
-    "envDbLocal": "локальна база даних"
+    "envDbLocal": "локальна база даних",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager — незалежний неофіційний фанатський інструмент для планування виробництва в Satisfactory. Не пов’язаний, не спонсорований і не авторизований Coffee Stain Studios. Satisfactory, торгові марки, логотипи, зображення, іконки, ресурси, машини, рецепти, дані та інший контент належать Coffee Stain Studios AB та/або правовласникам. Розробники Factory Manager не претендують на права на контент гри."

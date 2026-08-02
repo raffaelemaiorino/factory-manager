@@ -9,28 +9,147 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
-### Aggiunto
-- Target di build Linux (`npm run build:linux`, produce un AppImage e un `.deb`) accanto alle build Windows e macOS già esistenti. Il `.deb` usa un'email maintainer segnaposto in `package.json` (`build.linux.maintainer`) — da sostituire con una reale prima di pubblicare quell'artefatto; vedi `TODO.md`.
-- `TODO.md`: follow-up noti (build macOS non testata, build `.deb` non testata + email maintainer segnaposto, nessuna matrice CI, nessun test automatico) così restano tracciati invece di essere dimenticati.
-- README: sezione Architettura che descrive la separazione processo principale/renderer/livello dati e la struttura file attuale, con nota sull'assenza di una suite di test automatica.
-
 ### Modificato
-- Refresh README: aggiunto banner logo in alto, panoramica progetto più pulita e template dedicato per gli screenshot.
+- README: aggiunto banner logo in alto sopra la panoramica bilingue.
 - Rifinitura logo: `src/renderer/assets/logo.png` ora ha sfondo trasparente (rimuove l'effetto riquadro nero nell'app).
-- Corretti gli asset icona e logo (`app-icon.png`, `logo.png`): erano in realtà dati JPEG etichettati con estensione `.png`, il che rompeva la generazione dell'icona su Linux. Risalvati come PNG genuini, nessuna differenza visiva.
-- L'icona della finestra principale ora usa il formato corretto in base alla piattaforma (`icon.ico` su Windows, `app-icon.png` altrove) — prima usava sempre `icon.ico`, che il loader immagini di Electron non riesce a leggere su Linux/macOS (tornava silenziosamente all'icona di default di Electron).
-- README: le istruzioni di build ora coprono tutte e tre le piattaforme, più una sezione "Avvio da sorgente" e note su notarizzazione macOS / FUSE su Linux.
-- Interno: `src/renderer/scripts/app.js` (7.957 righe, il file più grande del codebase) suddiviso in 11 file per area di responsabilità (`app-core.js`, `locale-legal-nav.js`, `dashboard.js`, `resources-catalog.js`, `production-chain-core.js`, `extraction-management.js`, `production-detail-view.js`, `production-setup-wiring.js`, `resource-detail-view.js`, `settings-and-modals.js`, `boot.js`), seguendo lo schema già usato per `production-graph.js`/`energy-ui.js`/ecc. Nessun cambio di comportamento — vedi `boot.js` per l'unico punto in cui l'ordine delle istruzioni è cambiato (un export di namespace che funzionava prima solo grazie all'hoisting delle funzioni sull'intero file).
 
-### Rimosso
-- Tabelle database inutilizzate `recipes` / `recipe_ingredients`: create a ogni avvio ma mai popolate (i dati delle ricette vivono nella tabella `item_schemas`). I nuovi database non le creano più; i database esistenti mantengono le tabelle vuote invariate (nessuna migrazione distruttiva).
+## [1.58.6] - 2026-08-01
 
-### Corretto
-- Avvio app (`boot()`): un errore durante l'inizializzazione (lingua, impostazioni app o una qualsiasi `setup*()`) viene ora intercettato e mostrato in un messaggio di errore invece di lasciare l'app a metà avvio senza alcun feedback.
-- Processo principale Electron: un errore dopo l'inizializzazione del database (es. durante la creazione della finestra principale) viene ora intercettato e segnalato con un messaggio di errore e una chiusura pulita, invece di diventare un rifiuto di promessa non gestito senza errore visibile all'utente.
-- Riordino delle catene di produzione: se l'aggiornamento del dettaglio catena come passo di recupero (dopo un riordino di gruppi/step fallito) fallisce a sua volta, l'errore viene ora registrato invece di diventare un secondo rifiuto non gestito.
-- Modale modifica risorsa: aprirla dall'elenco risorse non rischia più un rifiuto di promessa non gestito se il caricamento della risorsa o delle sue categorie fallisce.
-- Content Security Policy: consentite le immagini `data:` così le icone a freccia dei menu a tendina `<select>` vengono visualizzate correttamente (prima bloccate silenziosamente da `img-src 'self'`, con una violazione CSP in console su ogni schermata con un menu a tendina).
+### Fixed
+- Produzione: il campo Output non diventa più nero/vuoto quando modifichi le Macchine con overclock decimale (es. 62,5%)
+- Produzione: con tutti i raggruppamenti compressi torna la maniglia di trascinamento a sinistra per riordinarli (non serve comprimere anche gli schemi interni)
+
+## [1.58.5] - 2026-08-01
+
+### Fixed
+- Produzione: sulle estrazioni, «Mancano … per gli schemi collegati» considera la copertura totale di tutte le fonti collegate (non più solo l’output di quella trivella)
+
+## [1.58.4] - 2026-08-01
+
+### Changed
+- Produzione: le estrazioni minerali/liquidi a sinistra sono ordinate in ordine alfabetico (anche dopo l’aggiunta di una nuova estrazione)
+
+## [1.58.3] - 2026-07-29
+
+### Changed
+- Produzione: il pulsante «Visualizzazione ad albero Gruppi» non compare quando sei già nell’albero di un singolo gruppo
+
+## [1.58.2] - 2026-07-29
+
+### Changed
+- Produzione: icone Comprimi/Espandi (schema e raggruppamento) passano da chevron a caret (caret-up / caret-down)
+
+## [1.58.1] - 2026-07-29
+
+### Changed
+- Icona Somersloop ufficiale nel riepilogo macchina e nel box Info della catena
+
+## [1.58.0] - 2026-07-29
+
+### Added
+- Produzione: nel riepilogo macchina (e nel box Info della catena) compaiono anche i Somersloop necessari, oltre ai Frammenti Energetici
+
+## [1.57.0] - 2026-07-29
+
+### Added
+- Visualizzazione ad albero: gli schemi con Somersloop attivo hanno un bordo di 5px con sfumatura animata dal rosso al viola
+
+## [1.56.3] - 2026-07-29
+
+### Fixed
+- Produzione: attivando/disattivando il Somersloop l’output scala per rapporto pulito (es. 400→800) senza residui tipo 800,002 / 200,001
+
+## [1.56.2] - 2026-07-29
+
+### Fixed
+- Produzione: inserendo un rate input/output intero (es. plastica 200/min) non compare più un residuo tipo 200,01 per arrotondamento per eccesso su decimali periodici
+
+## [1.56.1] - 2026-07-29
+
+### Changed
+- Produzione: campi rate input/output più visibili (bordo giallo) e box IO un po’ più alti
+
+## [1.56.0] - 2026-07-29
+
+### Added
+- Produzione: i rate di input e output (anche secondari, es. resina / greggio) sono campi editabili: inserendo un valore si ricalcolano output primario, macchine e overclock
+
+## [1.55.0] - 2026-07-29
+
+### Changed
+- Produzione: se l’output richiesto supera il massimo delle macchine attuali (×250% OC), vengono calcolate automaticamente le macchine necessarie (numero pari) e l’overclock
+- Campo Output allineato in larghezza allo slider sottostante
+
+## [1.54.2] - 2026-07-29
+
+### Fixed
+- Estrazione greggio: nodo puro a 100% produce 240 m³/min (non 250), allineato al wiki; a 250% → 600 m³/min per estrattore
+
+## [1.54.1] - 2026-07-28
+
+### Fixed
+- Schemi risorsa: se un input è già «Coperto completamente», non vengono più proposte altre estrazioni o schemi da collegare
+
+## [1.54.0] - 2026-07-28
+
+### Added
+- Impostazioni → Configurazione: preferenza formato numeri indipendente dalla lingua UI — Italiano (`1.234,56`) o Inglese USA (`1,234.56`), usata in dashboard, produzione, energia e calcolatrice
+
+## [1.53.5] - 2026-07-28
+
+### Fixed
+- Avvio app: errore `setupCalculator is not defined` causato da un typo nella regex di Incolla in `calculator.js`
+
+## [1.53.4] - 2026-07-28
+
+### Changed
+- Calcolatrice → Incolla: estrae e pulisce solo il numero (ignora testo/unità; rifiuta appunti senza cifre)
+
+## [1.53.3] - 2026-07-28
+
+### Changed
+- Calcolatrice: bordo giallo (`--warning`) per distinguerla meglio dal resto dell’interfaccia
+
+## [1.53.2] - 2026-07-28
+
+### Added
+- Calcolatrice: tasti Copia e Incolla (formato italiano; anche Ctrl+C / Ctrl+V con la calc aperta)
+
+## [1.53.1] - 2026-07-28
+
+### Changed
+- Calcolatrice: pannello più grande (+50%) e apertura in alto a destra sotto la topbar
+
+## [1.53.0] - 2026-07-28
+
+### Added
+- Calcolatrice flottante dalla topbar: operazioni base (+ − × ÷), percentuale, memoria (MC/MR/M+/M−/MS), pannello trascinabile che resta aperto cambiando vista
+- Formato numerico italiano in calcolatrice: virgola per i decimali, punto come separatore delle migliaia (es. `1.234,56`)
+
+## [1.52.0] - 2026-07-28
+
+### Added
+- Target di build Linux (`npm run build:linux`, produce un AppImage e un `.deb`) accanto alle build Windows e macOS già esistenti
+- `TODO.md`: follow-up noti (build macOS non testata, build `.deb` non testata, nessuna matrice CI, nessun test automatico)
+- README: sezione Architettura che descrive la separazione processo principale/renderer/livello dati e la struttura file attuale, con nota sull'assenza di una suite di test automatica
+
+### Changed
+- Corretti gli asset icona e logo (`app-icon.png`, `logo.png`): erano in realtà dati JPEG etichettati con estensione `.png`, il che rompeva la generazione dell'icona su Linux. Risalvati come PNG genuini, nessuna differenza visiva
+- L'icona della finestra principale ora usa il formato corretto in base alla piattaforma (`icon.ico` su Windows, `app-icon.png` altrove)
+- README: le istruzioni di build ora coprono tutte e tre le piattaforme, più una sezione "Avvio da sorgente" e note su notarizzazione macOS / FUSE su Linux
+- Interno: `src/renderer/scripts/app.js` suddiviso in 11 file per area di responsabilità (nessun cambio di comportamento previsto)
+- Metadati pacchetto `.deb`: maintainer impostato su `Raffaele Maiorino <raffaelemaiorino@gmail.com>`
+
+### Removed
+- Tabelle database inutilizzate `recipes` / `recipe_ingredients` (i nuovi database non le creano più; i database esistenti restano invariati)
+
+### Fixed
+- Avvio app (`boot()`): un errore durante l'inizializzazione viene ora mostrato invece di lasciare l'app a metà avvio senza feedback
+- Processo principale Electron: errori dopo l'init del database segnalati con dialog e chiusura pulita
+- Riordino catene di produzione: un secondo fallimento nel refresh di recupero non diventa più un rifiuto non gestito
+- Modale modifica risorsa: apertura dall'elenco senza rischio di rejection non gestita
+- Content Security Policy: consentite immagini `data:` per le frecce dei menu `<select>`
+- Impostazioni → Configurazione (IT/EN): titoli, etichette e messaggi usano il testo tradotto invece delle chiavi i18n
 
 ## [1.51.0] - 2026-07-27
 

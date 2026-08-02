@@ -286,7 +286,7 @@
     "title": "Ayarlar",
     "subtitle": "Yerel veri yönetimi ve varsayılan katalog geri yükleme.",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -317,7 +317,10 @@
     "restoreSuccess": "Geri yükleme tamam: {items} kaynak, {buildings} bina, {schemas} üretim tarifi.",
     "errorLoadInfo": "Veri bilgisi yüklenirken hata.",
     "errorRestore": "Geri yükleme sırasında hata.",
-    "envDbLocal": "yerel veritabanı"
+    "envDbLocal": "yerel veritabanı",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager, Satisfactory üretim planlaması için bağımsız, resmi olmayan bir hayran aracıdır. Coffee Stain Studios ile bağlantılı değildir; onaylı veya sponsorlu değildir. Satisfactory, markalar, logolar, görseller, simgeler, kaynaklar, makineler, tarifler, veriler ve diğer içerik Coffee Stain Studios AB ve/veya hak sahiplerine aittir. Factory Manager geliştiricileri oyun içeriği üzerinde hak iddia etmez."

@@ -38,22 +38,33 @@ function buildExtractionLinkUi(extraction, allExtractions, allSteps) {
       : [];
   const consumerCandidates =
     itemSlug && isExternalSummarySlug(itemSlug)
-      ? getExtractionConsumerCandidates(extraction, allSteps)
+      ? getExtractionConsumerCandidates(extraction, allSteps, allExtractions)
       : [];
-  const totalLinkedNeed =
+  const unlinkedExcess =
     itemSlug && isExternalSummarySlug(itemSlug)
-      ? getTotalLinkedConsumerDemand(extraction, itemSlug, allSteps)
+      ? getExtractionOutputSurplus(extraction, itemSlug, allSteps)
       : 0;
-  const linkedShortfall = normalizeLinkDelta(totalLinkedNeed - outputRate, totalLinkedNeed);
-  const unlinkedExcess = normalizeLinkDelta(outputRate - totalLinkedNeed, outputRate);
+  const linkedShortfall =
+    itemSlug && isExternalSummarySlug(itemSlug)
+      ? getLinkedConsumersUnmetDemand(extraction, itemSlug, allSteps, allExtractions)
+      : 0;
   const hasLinkedConsumers = linkedConsumers.length > 0;
   const showLinkVisual =
     Boolean(itemSlug && isExternalSummarySlug(itemSlug)) && outputRate > LINK_BALANCE_TOLERANCE;
-  const linkState = showLinkVisual
-    ? hasLinkedConsumers
-      ? getLinkBalanceState(outputRate, totalLinkedNeed)
-      : 'excess'
-    : null;
+
+  let linkState = null;
+  if (showLinkVisual) {
+    if (!hasLinkedConsumers) {
+      linkState = 'excess';
+    } else if (linkedShortfall > LINK_BALANCE_TOLERANCE) {
+      linkState = 'deficit';
+    } else if (unlinkedExcess > LINK_BALANCE_TOLERANCE) {
+      linkState = 'excess';
+    } else {
+      linkState = 'balanced';
+    }
+  }
+
   const linkStateClass = getExtractionLinkStateClass(
     linkState,
     showLinkVisual && (hasLinkedConsumers || unlinkedExcess > LINK_BALANCE_TOLERANCE)
@@ -76,12 +87,22 @@ function buildExtractionLinkUi(extraction, allExtractions, allSteps) {
               ? `<div class="production-extraction-linked">
                   ${linkedConsumers
                     .map((consumer) => {
+                      const step = allSteps.find(
+                        (candidate) => Number(candidate.id) === Number(consumer.consumer_step_id)
+                      );
+                      const fullyCovered = step
+                        ? isConsumerInputFullyCovered(step, itemSlug, allSteps, allExtractions)
+                        : false;
                       const partial =
+                        !fullyCovered &&
                         consumer.required_rate > LINK_BALANCE_TOLERANCE &&
                         consumer.allocated_rate + LINK_BALANCE_TOLERANCE < consumer.required_rate;
+                      const rateLabel = fullyCovered
+                        ? formatRateWithUnit(consumer.allocated_rate ?? 0, outputUnit)
+                        : formatLinkedConsumerBadgeRate(consumer, outputUnit);
                       return `<span class="production-link-badge production-link-badge--consumer${
                         partial ? ' production-link-badge--partial' : ''
-                      }">→ ${escapeHtml(consumer.consumer_name)} (${formatLinkedConsumerBadgeRate(consumer, outputUnit)})</span>`;
+                      }">→ ${escapeHtml(consumer.consumer_name)} (${rateLabel})</span>`;
                     })
                     .join('')}
                   ${linkedStatusMessage}
@@ -174,13 +195,34 @@ function isLiquidExtraction(extraction) {
   return kind === 'water' || kind === 'oil';
 }
 
+function compareExtractionsByDisplayName(a, b, allExtractions) {
+  const nameA = getExtractionDisplayName(a, allExtractions);
+  const nameB = getExtractionDisplayName(b, allExtractions);
+  const cmp = nameA.localeCompare(nameB, activeLocale || 'it', {
+    sensitivity: 'base',
+    numeric: true,
+  });
+  if (cmp !== 0) return cmp;
+  return (a.id ?? 0) - (b.id ?? 0);
+}
+
+function sortExtractionsAlphabetically(items, allExtractions) {
+  return [...items].sort((a, b) => compareExtractionsByDisplayName(a, b, allExtractions));
+}
+
 function renderProductionExtractionsList(extractions = [], allSteps = []) {
   if (!extractions.length) {
     return `<p class="detail-empty production-extractions-empty">${escapeHtml(t('production.emptyExtractions'))}</p>`;
   }
 
-  const minerals = extractions.filter((extraction) => !isLiquidExtraction(extraction));
-  const liquids = extractions.filter((extraction) => isLiquidExtraction(extraction));
+  const minerals = sortExtractionsAlphabetically(
+    extractions.filter((extraction) => !isLiquidExtraction(extraction)),
+    extractions
+  );
+  const liquids = sortExtractionsAlphabetically(
+    extractions.filter((extraction) => isLiquidExtraction(extraction)),
+    extractions
+  );
 
   const renderGroup = (items, title, groupKey) => {
     if (!items.length) return '';

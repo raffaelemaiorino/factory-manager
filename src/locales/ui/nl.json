@@ -282,7 +282,7 @@
     "title": "Instellingen",
     "subtitle": "Lokaal databeheer en herstel van de standaardcatalogus.",
     "configTitle": "Configuration",
-    "configLead": "Customizable limits for machine and generator sliders in plans.",
+    "configLead": "Customizable limits for machine and generator sliders in plans, and the display format for numbers.",
     "maxMachines": "Maximum machine count",
     "maxEnergyGenerators": "Maximum energy generators",
     "saveConfig": "Save configuration",
@@ -313,7 +313,10 @@
     "restoreSuccess": "Herstel voltooid: {items} grondstoffen, {buildings} gebouwen, {schemas} productierecepten.",
     "errorLoadInfo": "Fout bij laden datainfo.",
     "errorRestore": "Fout tijdens herstel.",
-    "envDbLocal": "lokale database"
+    "envDbLocal": "lokale database",
+    "numberFormat": "Number format",
+    "numberFormatIt": "Italian (1.234,56)",
+    "numberFormatEn": "US English (1,234.56)"
   },
   "footer": {
     "disclaimer": "Factory Manager is een onafhankelijke, niet-officiële fan-tool voor Satisfactory-productieplanning. Niet gelieerd aan, gesponsord of goedgekeurd door Coffee Stain Studios. Satisfactory, merken, logo's, afbeeldingen, iconen, grondstoffen, machines, recepten, data en overige inhoud behoren toe aan Coffee Stain Studios AB en/of rechthebbenden. De ontwikkelaars van Factory Manager claimen geen rechten op game-inhoud."

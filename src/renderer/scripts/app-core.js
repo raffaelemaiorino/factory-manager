@@ -15,6 +15,7 @@ const DELETE_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c
 const RESET_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>`;
 const ADD_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>`;
 const POWER_SHARD_IMAGE = 'assets/items/Desc_CrystalShard_C.png';
+const SOMERSLOOP_IMAGE = 'assets/items/Somersloop.png';
 const DRAG_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h2v2H9V5zm0 6h2v2H9v-2zm0 6h2v2H9v-2zm4-12h2v2h-2V5zm0 6h2v2h-2v-2zm0 6h2v2h-2v-2z"/></svg>`;
 
 const EXTRACTION_LIQUID_SLUGS = ['liquid-oil', 'water'];
@@ -37,6 +38,7 @@ let availableLocales = [];
 const DEFAULT_APP_SETTINGS = {
   maxMachines: 100,
   maxEnergyGenerators: 600,
+  numberFormat: 'it',
 };
 
 let appSettings = { ...DEFAULT_APP_SETTINGS };
@@ -53,6 +55,9 @@ function getConfiguredMaxEnergyGenerators() {
 }
 
 function applyAppSettings(settings) {
+  const numberFormat =
+    window.NumberFormat?.normalizeFormat?.(settings?.numberFormat) ||
+    DEFAULT_APP_SETTINGS.numberFormat;
   appSettings = {
     maxMachines: Math.max(
       1,
@@ -64,7 +69,10 @@ function applyAppSettings(settings) {
         Number(settings?.maxEnergyGenerators) || DEFAULT_APP_SETTINGS.maxEnergyGenerators
       )
     ),
+    numberFormat,
   };
+  window.NumberFormat?.setFormat?.(numberFormat);
+  window.Calculator?.syncNumberFormat?.();
   return appSettings;
 }
 

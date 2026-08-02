@@ -111,9 +111,27 @@ function getOutputSliderMin(step) {
 
 function usesFractionalProductionOutput(step) {
   if (!step) return false;
+  if (!window.ProductionScale.isIntegerOverclock(step.overclock ?? 100)) return true;
+  const target = Number(step.target_output);
+  if (Number.isFinite(target) && Math.abs(target - Math.round(target)) >= 0.0005) return true;
   const min = getOutputSliderMin(step);
   const max = getOutputSliderMax(step);
   return min < 1 - 0.0005 || max < 1 - 0.0005;
+}
+
+function syncProductionOutputInputMode(outputInput, fractional) {
+  if (!outputInput) return;
+  if (fractional) {
+    outputInput.type = 'text';
+    outputInput.setAttribute('inputmode', 'decimal');
+    outputInput.classList.add('production-config-decimal-input');
+    outputInput.removeAttribute('step');
+    return;
+  }
+  outputInput.type = 'number';
+  outputInput.removeAttribute('inputmode');
+  outputInput.classList.remove('production-config-decimal-input');
+  outputInput.step = '1';
 }
 
 function getProductionOutputSliderStep(step) {
@@ -277,7 +295,44 @@ function getProducerOutputSurplus(producer, itemSlug, allSteps) {
   return normalizeLinkDelta(outputRate - totalDemand, outputRate);
 }
 
-function isProducerAvailableForLink(producer, consumerStepId, itemSlug, allSteps) {
+function getConsumerLinkedInputRate(consumer, itemSlug, allSteps, allExtractions = []) {
+  if (!consumer) return 0;
+
+  let total = 0;
+  for (const link of consumer.input_links?.[itemSlug] ?? []) {
+    if (link.producer_step_id) {
+      const producer = allSteps.find(
+        (step) => Number(step.id) === Number(link.producer_step_id)
+      );
+      if (producer) {
+        total += getProducerAttributedDemand(producer, consumer, itemSlug, allSteps);
+      }
+      continue;
+    }
+
+    if (link.producer_extraction_id) {
+      const extraction = allExtractions.find(
+        (candidate) => Number(candidate.id) === Number(link.producer_extraction_id)
+      );
+      if (extraction) {
+        total += getExtractionAttributedDemand(extraction, consumer, itemSlug, allSteps);
+      } else {
+        total += Number(link.producer_rate) || 0;
+      }
+    }
+  }
+
+  return window.ProductionScale.roundProduction(total);
+}
+
+function isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions = []) {
+  const required = getStepInputRateForItem(consumer, itemSlug);
+  if (required <= LINK_BALANCE_TOLERANCE) return true;
+  const linked = getConsumerLinkedInputRate(consumer, itemSlug, allSteps, allExtractions);
+  return linked + LINK_BALANCE_TOLERANCE >= required;
+}
+
+function isProducerAvailableForLink(producer, consumerStepId, itemSlug, allSteps, allExtractions = []) {
   if (Number(producer.id) === Number(consumerStepId)) return false;
   if (!(producer.scaled_outputs ?? []).some((output) => output.item_slug === itemSlug)) {
     return false;
@@ -285,6 +340,7 @@ function isProducerAvailableForLink(producer, consumerStepId, itemSlug, allSteps
 
   const consumer = allSteps.find((step) => Number(step.id) === Number(consumerStepId));
   if (isProducerLinkedToConsumer(consumer, producer.id, itemSlug)) return true;
+  if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
 
   return getProducerOutputSurplus(producer, itemSlug, allSteps) > 0;
 }
@@ -305,19 +361,23 @@ function formatProducerLinkOptionRate(producer, consumerStepId, itemSlug, allSte
   return formatRateWithUnit(outputRate, unit);
 }
 
-function getProducerCandidates(allSteps, consumerStepId, itemSlug) {
+function getProducerCandidates(allSteps, consumerStepId, itemSlug, allExtractions = []) {
   return allSteps.filter((candidate) =>
-    isProducerAvailableForLink(candidate, consumerStepId, itemSlug, allSteps)
+    isProducerAvailableForLink(candidate, consumerStepId, itemSlug, allSteps, allExtractions)
   );
 }
 
-function getTotalLinkedConsumerDemand(extraction, itemSlug, allSteps) {
+function getLinkedConsumersUnmetDemand(extraction, itemSlug, allSteps, allExtractions = []) {
   if (!itemSlug) return 0;
 
   return window.ProductionScale.roundProduction(
     allSteps
       .filter((step) => isExtractionLinkedToConsumer(step, extraction.id, itemSlug))
-      .reduce((sum, step) => sum + getStepInputRateForItem(step, itemSlug), 0)
+      .reduce((sum, step) => {
+        const required = getStepInputRateForItem(step, itemSlug);
+        const linked = getConsumerLinkedInputRate(step, itemSlug, allSteps, allExtractions);
+        return sum + normalizeLinkDelta(required - linked, required);
+      }, 0)
   );
 }
 
@@ -378,11 +438,18 @@ function getExtractionOutputSurplus(extraction, itemSlug, allSteps) {
   return normalizeLinkDelta(outputRate - demand, outputRate);
 }
 
-function isExtractionAvailableForLink(extraction, consumerStepId, itemSlug, allSteps) {
+function isExtractionAvailableForLink(
+  extraction,
+  consumerStepId,
+  itemSlug,
+  allSteps,
+  allExtractions = []
+) {
   if (extraction.item?.slug !== itemSlug || !isExternalSummarySlug(itemSlug)) return false;
 
   const consumer = allSteps.find((step) => Number(step.id) === Number(consumerStepId));
   if (isExtractionLinkedToConsumer(consumer, extraction.id, itemSlug)) return true;
+  if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
 
   const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
   return surplus > LINK_BALANCE_TOLERANCE;
@@ -410,7 +477,7 @@ function formatExtractionLinkOptionRate(extraction, consumerStepId, itemSlug, al
 
 function getExtractionCandidates(allExtractions, consumerStepId, itemSlug, allSteps) {
   return allExtractions.filter((candidate) =>
-    isExtractionAvailableForLink(candidate, consumerStepId, itemSlug, allSteps)
+    isExtractionAvailableForLink(candidate, consumerStepId, itemSlug, allSteps, allExtractions)
   );
 }
 
@@ -430,18 +497,31 @@ function getLinkedConsumersForExtraction(extraction, allSteps) {
     }));
 }
 
-function getExtractionConsumerCandidates(extraction, allSteps) {
+function getExtractionConsumerCandidates(extraction, allSteps, allExtractions = []) {
   const itemSlug = extraction.item?.slug;
   if (!itemSlug || !isExternalSummarySlug(itemSlug)) return [];
 
   return allSteps.filter((consumer) =>
-    isExtractionConsumerAvailableForLink(consumer, extraction, itemSlug, allSteps)
+    isExtractionConsumerAvailableForLink(
+      consumer,
+      extraction,
+      itemSlug,
+      allSteps,
+      allExtractions
+    )
   );
 }
 
-function isExtractionConsumerAvailableForLink(consumer, extraction, itemSlug, allSteps) {
+function isExtractionConsumerAvailableForLink(
+  consumer,
+  extraction,
+  itemSlug,
+  allSteps,
+  allExtractions = []
+) {
   if (!(consumer.scaled_inputs ?? []).some((io) => io.item_slug === itemSlug)) return false;
   if (isExtractionLinkedToConsumer(consumer, extraction.id, itemSlug)) return true;
+  if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
 
   const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
   return surplus > LINK_BALANCE_TOLERANCE;
@@ -623,8 +703,8 @@ function updateProductionStepToggleButton(stepEl, state) {
   if (!btn) return;
 
   const configByState = {
-    expanded: { icon: 'fa-chevron-up', label: t('production.collapseStep') },
-    collapsed: { icon: 'fa-chevron-down', label: t('production.expandStep') },
+    expanded: { icon: 'fa-caret-up', label: t('production.collapseStep') },
+    collapsed: { icon: 'fa-caret-down', label: t('production.expandStep') },
   };
   const config = configByState[state] ?? configByState.expanded;
 
@@ -664,20 +744,28 @@ function updateProductionGroupToggleButton(groupEl, state) {
 
   const icon = btn.querySelector('i');
   if (icon) {
-    icon.className = `fa-solid ${state === 'collapsed' ? 'fa-chevron-down' : 'fa-chevron-up'}`;
+    icon.className = `fa-solid ${state === 'collapsed' ? 'fa-caret-down' : 'fa-caret-up'}`;
   }
 }
 
-function applyProductionGroupViewState(groupEl, state) {
+function applyProductionGroupViewState(groupEl, state, { syncReorderUi = true } = {}) {
   if (!groupEl) return;
 
-  groupEl.classList.toggle('production-step-group--collapsed', state === 'collapsed');
+  groupEl.classList.toggle(
+    'production-step-group--collapsed',
+    isCollapsedProductionViewState(state)
+  );
   updateProductionGroupToggleButton(groupEl, state);
+  if (syncReorderUi) updateProductionGroupReorderUi();
 }
 
 function applyAllProductionGroupViewStates() {
   productionDetailBody.querySelectorAll('.production-step-group[data-group-key]').forEach((groupEl) => {
-    applyProductionGroupViewState(groupEl, getProductionGroupViewState(groupEl.dataset.groupKey));
+    applyProductionGroupViewState(
+      groupEl,
+      getProductionGroupViewState(groupEl.dataset.groupKey),
+      { syncReorderUi: false }
+    );
   });
   updateProductionGroupReorderUi();
 }
@@ -964,7 +1052,9 @@ function updateProductionGroupTreeButtonVisibility(detail) {
   const groupBtn = document.getElementById('btn-production-group-tree-view');
   if (!groupBtn) return;
   const hasNamedGroups = collectProductionGroupNames(detail?.steps ?? []).length > 0;
-  groupBtn.hidden = !hasNamedGroups;
+  const insideGroupTree =
+    productionDetailViewMode === 'tree' && Boolean(productionTreeGroupKey);
+  groupBtn.hidden = !hasNamedGroups || insideGroupTree;
   if (!hasNamedGroups && productionDetailViewMode === 'group-tree') {
     productionDetailViewMode = 'editor';
     updateProductionTreeButtonState();
@@ -1341,8 +1431,9 @@ function renderProductionObjectivesSummary(steps = []) {
     </div>`;
 }
 
-function renderPowerShardsSummary(totalShards, totalMw = 0) {
+function renderPowerShardsSummary(totalShards, totalMw = 0, totalSomersloops = 0) {
   const mw = Number(totalMw) || 0;
+  const somersloops = Math.max(0, Math.round(Number(totalSomersloops) || 0));
   const mwRow =
     mw > 0
       ? `
@@ -1352,6 +1443,17 @@ function renderPowerShardsSummary(totalShards, totalMw = 0) {
               <span>${escapeHtml(t('production.totalPowerConsumption'))}</span>
             </td>
             <td class="production-external-rate">${escapeHtml(formatRateWithUnit(mw, 'MW'))}</td>
+          </tr>`
+      : '';
+  const somersloopRow =
+    somersloops > 0
+      ? `
+          <tr>
+            <td class="production-external-resource">
+              <img class="production-external-icon" src="${SOMERSLOOP_IMAGE}" alt="" />
+              <span>${escapeHtml(t('production.totalSomersloops'))}</span>
+            </td>
+            <td class="production-external-rate">${formatDisplayInteger(somersloops)}</td>
           </tr>`
       : '';
 
@@ -1372,6 +1474,7 @@ function renderPowerShardsSummary(totalShards, totalMw = 0) {
             </td>
             <td class="production-external-rate">${formatDisplayInteger(totalShards)}</td>
           </tr>
+          ${somersloopRow}
           ${mwRow}
         </tbody>
       </table>
@@ -1386,7 +1489,8 @@ function renderProductionExternalSummary(steps, extractions = []) {
     steps.length || extractions.length
       ? renderPowerShardsSummary(
           computeDetailPowerShards(steps, extractions),
-          computeDetailPowerMw(steps, extractions)
+          computeDetailPowerMw(steps, extractions),
+          computeDetailSomersloops(steps)
         )
       : '';
 
@@ -1605,7 +1709,7 @@ function renderProductionStepGroup(group, allSteps = []) {
           aria-expanded="${state !== 'collapsed' ? 'true' : 'false'}"
           title="${escapeHtml(state === 'collapsed' ? t('production.expandGroup') : t('production.collapseGroup'))}"
           aria-label="${escapeHtml(state === 'collapsed' ? t('production.expandGroup') : t('production.collapseGroup'))}"
-        ><i class="fa-solid ${state === 'collapsed' ? 'fa-chevron-down' : 'fa-chevron-up'}" aria-hidden="true"></i></button>
+        ><i class="fa-solid ${state === 'collapsed' ? 'fa-caret-down' : 'fa-caret-up'}" aria-hidden="true"></i></button>
         <h4 class="production-step-group-title">${escapeHtml(label)}</h4>
         <div class="production-step-group-header-actions">
           ${markBtn}
@@ -1830,7 +1934,7 @@ function renderProductionStep(step, allSteps = []) {
                 aria-label="${escapeHtml(t('production.collapseStep'))}"
                 aria-expanded="true"
                 title="${escapeHtml(t('production.collapseStep'))}"
-              ><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></button>
+              ><i class="fa-solid fa-caret-up" aria-hidden="true"></i></button>
               <button
                 type="button"
                 class="production-step-reset-btn"
@@ -1994,14 +2098,26 @@ function updateStepConfigInputs(stepEl, config, step) {
   const overclockSlider = stepEl.querySelector('.production-overclock-slider');
   const machinesSlider = stepEl.querySelector('.production-machines-slider');
   const configEl = stepEl.querySelector('.craft-building-config');
+  const fractionalStep = step
+    ? {
+        ...step,
+        overclock: config.overclock,
+        machine_count: config.machine_count,
+        target_output: config.target_output,
+        somersloop_mask: config.somersloop_mask ?? step.somersloop_mask,
+      }
+    : null;
+  const fractionalOutput = fractionalStep
+    ? usesFractionalProductionOutput(fractionalStep)
+    : !window.ProductionScale.isIntegerOverclock(config.overclock ?? 100);
 
   if (outputInput) {
-    const fractional = step ? usesFractionalProductionOutput(step) : false;
-    outputInput.step = fractional ? '0.001' : '1';
+    // type=number rejects localized decimals (e.g. "187,5"); keep text+decimal in sync
+    syncProductionOutputInputMode(outputInput, fractionalOutput);
     outputInput.value = formatOutputInputValue(config.target_output, config.overclock);
     if (step) {
-      outputInput.min = String(getOutputSliderMin(step));
-      outputInput.max = String(getOutputSliderMax(step));
+      outputInput.min = String(getOutputSliderMin(fractionalStep ?? step));
+      outputInput.max = String(getOutputSliderMax(fractionalStep ?? step));
     }
     rememberConfigInputValue(outputInput);
   }
@@ -2017,14 +2133,13 @@ function updateStepConfigInputs(stepEl, config, step) {
   }
 
   if (outputSlider && step) {
-    const fractional = usesFractionalProductionOutput(step);
-    const stepSize = getProductionOutputSliderStep(step);
-    const minOutput = getOutputSliderMin(step);
-    const maxOutput = getOutputSliderMax(step);
+    const stepSize = getProductionOutputSliderStep(fractionalStep);
+    const minOutput = getOutputSliderMin(fractionalStep);
+    const maxOutput = getOutputSliderMax(fractionalStep);
     outputSlider.min = String(minOutput);
     outputSlider.max = String(maxOutput);
     outputSlider.step = String(stepSize);
-    const value = fractional
+    const value = fractionalOutput
       ? window.ProductionScale.roundProduction(config.target_output)
       : Math.round(config.target_output);
     outputSlider.value = String(Math.min(Math.max(value, minOutput), maxOutput));
@@ -2282,6 +2397,7 @@ function getConfigInputField(input) {
   if (input.classList.contains('production-machines-input')) return 'machines';
   if (input.classList.contains('production-extraction-overclock-input')) return 'extraction-overclock';
   if (input.classList.contains('production-extraction-nodes-input')) return 'extraction-nodes';
+  if (input.classList.contains('production-io-rate-input')) return 'io-rate';
   if (input.classList.contains('energy-generator-fuel-input')) return 'energy-fuel';
   if (input.classList.contains('energy-generator-overclock-input')) return 'energy-overclock';
   if (input.classList.contains('energy-generator-machines-input')) return 'energy-machines';
@@ -2304,19 +2420,19 @@ function applyConfigInputNudge(input, field, delta, commit = commitConfigInputCh
     const max = getConfigInputNudgeMax(input, field, value);
     if (max != null) value = Math.min(max, value);
     formatted = formatOverclockInputValue(value);
-  } else if (field === 'output' || field === 'extraction-output' || field === 'energy-fuel') {
+  } else if (field === 'output' || field === 'extraction-output' || field === 'energy-fuel' || field === 'io-rate') {
     const fractionalOutput =
-      (field === 'output' || field === 'extraction-output') &&
+      (field === 'output' || field === 'extraction-output' || field === 'io-rate') &&
       input.classList.contains('production-config-decimal-input');
     const nudgeStep =
-      field === 'output' || field === 'extraction-output'
+      field === 'output' || field === 'extraction-output' || field === 'io-rate'
         ? fractionalOutput
           ? 0.001
           : 1
         : stepSize;
     value = (Number(parseConfigNumberInput(input.value)) || Number(input.value) || 0) + delta * nudgeStep;
     if (!Number.isFinite(value)) value = Math.max(1, delta > 0 ? 1 : 0);
-    if (field === 'output' || field === 'extraction-output') {
+    if (field === 'output' || field === 'extraction-output' || field === 'io-rate') {
       value = fractionalOutput
         ? window.ProductionScale.roundProduction(value)
         : Math.round(value);
@@ -2325,7 +2441,7 @@ function applyConfigInputNudge(input, field, delta, commit = commitConfigInputCh
     const max = getConfigInputNudgeMax(input, field, value);
     if (max != null) value = Math.min(max, value);
     formatted =
-      field === 'output'
+      field === 'output' || field === 'io-rate'
         ? formatOutputInputValue(value)
         : field === 'extraction-output'
           ? formatExtractionOutputInputValue(value, getExtractionOverclockForConfigInput(input))
@@ -2353,6 +2469,15 @@ function applyConfigInputNudge(input, field, delta, commit = commitConfigInputCh
 function commitConfigInputFromField(input, field) {
   if (!input || !field) return;
 
+  if (field === 'io-rate') {
+    handleStepIoRateChange(
+      Number(input.dataset.stepId),
+      input.dataset.ioKind,
+      input.dataset.itemSlug,
+      parseConfigNumberInput(input.value)
+    );
+    return;
+  }
   if (field === 'output' || field === 'machines') {
     handleStepConfigChange(
       Number(input.dataset.stepId),
@@ -2383,6 +2508,15 @@ function commitConfigInputFromField(input, field) {
 }
 
 function commitConfigInputChange(input, field, value) {
+  if (field === 'io-rate') {
+    handleStepIoRateChange(
+      Number(input.dataset.stepId),
+      input.dataset.ioKind,
+      input.dataset.itemSlug,
+      value
+    );
+    return;
+  }
   if (field === 'output' || field === 'machines') {
     handleStepConfigChange(Number(input.dataset.stepId), field, value);
     return;
@@ -2529,6 +2663,23 @@ function handleStepConfigChange(stepId, field, rawValue) {
   refreshRelatedStepIoDisplays(stepId);
   updateProductionDetailExternalSummary();
   scheduleStepConfigSave(stepId, updated);
+}
+
+function handleStepIoRateChange(stepId, kind, itemSlug, ratePerMin) {
+  const step = activeProductionDetail?.steps?.find((item) => item.id === stepId);
+  if (!step?.schema) return;
+
+  const target = window.ProductionScale.computeTargetOutputFromIoRate(
+    step.schema,
+    step.item,
+    kind,
+    itemSlug,
+    ratePerMin,
+    step.somersloop_mask ?? 0
+  );
+  if (target == null || !Number.isFinite(target) || target <= 0) return;
+
+  handleStepConfigChange(stepId, 'output', target);
 }
 
 async function resetProductionStep(stepId) {
