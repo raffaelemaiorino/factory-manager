@@ -15,6 +15,8 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 - README: sezione Architettura che descrive la separazione processo principale/renderer/livello dati e la struttura file attuale, con nota sull'assenza di una suite di test automatica.
 
 ### Modificato
+- Refresh README: aggiunto banner logo in alto, panoramica progetto più pulita e template dedicato per gli screenshot.
+- Rifinitura logo: `src/renderer/assets/logo.png` ora ha sfondo trasparente (rimuove l'effetto riquadro nero nell'app).
 - Corretti gli asset icona e logo (`app-icon.png`, `logo.png`): erano in realtà dati JPEG etichettati con estensione `.png`, il che rompeva la generazione dell'icona su Linux. Risalvati come PNG genuini, nessuna differenza visiva.
 - L'icona della finestra principale ora usa il formato corretto in base alla piattaforma (`icon.ico` su Windows, `app-icon.png` altrove) — prima usava sempre `icon.ico`, che il loader immagini di Electron non riesce a leggere su Linux/macOS (tornava silenziosamente all'icona di default di Electron).
 - README: le istruzioni di build ora coprono tutte e tre le piattaforme, più una sezione "Avvio da sorgente" e note su notarizzazione macOS / FUSE su Linux.

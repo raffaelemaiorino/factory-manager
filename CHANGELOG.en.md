@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - README: Architecture section describing the main-process/renderer/data-layer split and the current file layout, including a note that there's no automated test suite yet.
 
 ### Changed
+- README refresh: added a top logo banner, cleaner project overview, and a dedicated screenshots section template.
+- Logo polish: `src/renderer/assets/logo.png` now has a transparent background (removes the black box effect in-app).
 - Fixed the app-icon and logo assets (`app-icon.png`, `logo.png`): both were actually JPEG data mislabeled with a `.png` extension, which broke Linux icon generation. Re-saved as genuine PNGs with no visible change.
 - The main window's icon now uses the correct format per platform (`icon.ico` on Windows, `app-icon.png` elsewhere) - previously it always used `icon.ico`, which Electron's image loader can't read on Linux/macOS (silently fell back to Electron's default icon).
 - README: build instructions now cover all three platforms, plus a "Run from source" section and macOS notarization / Linux FUSE notes.
