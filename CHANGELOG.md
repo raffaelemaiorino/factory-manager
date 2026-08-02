@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-08-02
+
+### Added
+- Suite di test automatici (`npm test`) su auto-plan, scelta ricette, scale produzione e nastri/tubi — protegge i casi noti (cicli Packager, self-link, conteggi macchine)
+
 ## [2.0.0] - 2026-08-02
 
 Major release: auto-plan da obiettivi (produzione ed energia), albero navigabile, vincoli nastro/tubo e power shard — base del contributo di [@loafdaddy](https://github.com/loafdaddy) ([PR #3](https://github.com/raffaelemaiorino/factory-manager/pull/3)), poi integrato, corretto e rifinito in questa versione.

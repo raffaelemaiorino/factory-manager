@@ -190,7 +190,7 @@ Tutto gira in locale — niente server né cloud. I dati stanno in un file SQLit
 - **`src/locales/ui/`** — pack lingue UI (non il catalogo di gioco).
 - **`scripts/`** — helper di import manuali (`npm run import:*`). I generatori one-off stanno in `scripts/archive/` — vedi `scripts/archive/README.md`.
 
-Non c’è ancora una suite di test automatici; si verifica avviando l’app e provando il flusso toccato.
+C’è una suite di test Node sul dominio auto-plan / scale / transport (`npm test`). Le modifiche UI si verificano ancora avviando l’app e provando il flusso toccato.
 
 ## Community
 

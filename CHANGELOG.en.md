@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-08-02
+
+### Added
+- Automated test suite (`npm test`) for auto-plan, recipe picking, production scale, and belt/pipe helpers — covers known cases (Packager loops, self-links, machine counts)
+
 ## [2.0.0] - 2026-08-02
 
 Major release: target-based auto-plan (production and power), navigable tree view, belt/pipe and power-shard constraints — based on [@loafdaddy](https://github.com/loafdaddy)’s contribution ([PR #3](https://github.com/raffaelemaiorino/factory-manager/pull/3)), then integrated, fixed, and polished in this version.

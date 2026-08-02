@@ -190,7 +190,7 @@ Everything runs locally — no server or cloud backend. Data lives in a SQLite d
 - **`src/locales/ui/`** — UI language packs (not game catalog text).
 - **`scripts/`** — manual import helpers (`npm run import:*`). One-off generators live under `scripts/archive/` — see `scripts/archive/README.md`.
 
-There is no automated test suite yet; changes are checked by running the app and trying the affected flow.
+There is a Node test suite for the production auto-plan / scale / transport domain (`npm test`). UI changes are still checked by running the app and trying the affected flow.
 
 ## Community
 

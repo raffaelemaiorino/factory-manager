@@ -1,6 +1,6 @@
 {
   "name": "factory-manager",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Unofficial local production planner for Satisfactory — chains, machines, rates, and power on your PC.",
   "productName": "Factory Manager",
   "desktopName": "factory-manager.desktop",
@@ -16,6 +16,7 @@
     "import:locale:en": "node scripts/import-locale.js --locale en",
     "import:locale:all": "node scripts/import-locale-all.js",
     "import:locale:all:names": "node scripts/import-locale-all.js --skip-details",
+    "test": "node --test test/**/*.test.js",
     "build": "electron-builder --win",
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",
