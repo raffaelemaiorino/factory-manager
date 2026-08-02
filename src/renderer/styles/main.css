@@ -3034,18 +3034,14 @@ select.production-config-input option:checked {
   inset: 0;
   display: block;
   padding: 0;
-  /* Keep a faint veil but let clicks pass through so content below stays usable. */
-  background: rgba(0, 0, 0, 0.18);
+  /* Dim veil stays visible; clicks pass through so content below stays usable. */
+  background: rgba(0, 0, 0, 0.45);
   z-index: 1000;
   pointer-events: none;
 }
 
 .modal-overlay.hidden {
   display: none;
-}
-
-.modal-overlay--dragging {
-  background: rgba(0, 0, 0, 0.08);
 }
 
 .modal {

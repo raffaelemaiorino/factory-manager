@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.3.1] - 2026-08-02
+
+### Fixed
+- Popup trascinabili: restano dove li lasci (non tornano più al centro) e lo sfondo scuro non scompare durante il drag
+
 ## [2.3.0] - 2026-08-02
 
 ### Changed

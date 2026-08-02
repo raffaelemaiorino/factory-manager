@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.1] - 2026-08-02
+
+### Fixed
+- Draggable popups: stay where you drop them (no snap-back to center) and the dim backdrop no longer fades away while dragging
+
 ## [2.3.0] - 2026-08-02
 
 ### Changed

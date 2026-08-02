@@ -1,6 +1,6 @@
 /**
  * Floating draggable modals — same idea as the calculator panel:
- * no blocking backdrop, drag by header so content underneath stays readable.
+ * light click-through backdrop, drag by header so content underneath stays readable.
  */
 (function () {
   const EDGE = 8;
@@ -8,6 +8,11 @@
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
+  }
+
+  function classListHas(classAttr, token) {
+    if (!classAttr) return false;
+    return classAttr.split(/\s+/).includes(token);
   }
 
   function getDialog(overlay) {
@@ -70,7 +75,6 @@
       dragging = false;
       header.releasePointerCapture?.(e.pointerId);
       header.classList.remove('is-dragging');
-      overlay.classList.remove('modal-overlay--dragging');
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('pointercancel', onPointerUp);
@@ -87,7 +91,6 @@
       originTop = rect.top;
       bringToFront(overlay, dialog);
       header.classList.add('is-dragging');
-      overlay.classList.add('modal-overlay--dragging');
       header.setPointerCapture?.(e.pointerId);
       window.addEventListener('pointermove', onPointerMove);
       window.addEventListener('pointerup', onPointerUp);
@@ -108,8 +111,8 @@
     header.classList.add('modal-header--draggable');
     setupDrag(overlay, dialog, header);
 
-    const placeWhenOpen = () => {
-      if (overlay.classList.contains('hidden')) {
+    const onHiddenChange = (isHidden) => {
+      if (isHidden) {
         clearPosition(dialog);
         return;
       }
@@ -119,18 +122,24 @@
       });
     };
 
+    // Only re-center when the overlay opens/closes — not on other class toggles.
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
-        if (mutation.attributeName === 'class') {
-          placeWhenOpen();
-          break;
-        }
+        if (mutation.attributeName !== 'class') continue;
+        const wasHidden = classListHas(mutation.oldValue, 'hidden');
+        const isHidden = overlay.classList.contains('hidden');
+        if (wasHidden === isHidden) continue;
+        onHiddenChange(isHidden);
+        break;
       }
     });
-    observer.observe(overlay, { attributes: true, attributeFilter: ['class'] });
+    observer.observe(overlay, {
+      attributes: true,
+      attributeFilter: ['class'],
+      attributeOldValue: true,
+    });
 
-    // If already open at init (rare), place it.
-    if (!overlay.classList.contains('hidden')) placeWhenOpen();
+    if (!overlay.classList.contains('hidden')) onHiddenChange(false);
   }
 
   function setupFloatingModals() {
