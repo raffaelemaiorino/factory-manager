@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-08-02
+
+### Changed
+- Tutti i popup sono flottanti e trascinabili dall’intestazione (come la calcolatrice): puoi spostarli per leggere ciò che c’è sotto; lo sfondo non blocca più i click
+
 ## [2.2.6] - 2026-08-02
 
 ### Changed

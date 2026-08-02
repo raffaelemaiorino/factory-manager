@@ -2,6 +2,7 @@ async function boot() {
   // Wired first, synchronously, so the alert modal is usable even if the
   // async init below throws before reaching its normal position in the list.
   setupAlertModal();
+  if (typeof setupFloatingModals === 'function') setupFloatingModals();
 
   try {
     await initProductionUiStateStore();

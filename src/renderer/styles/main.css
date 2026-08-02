@@ -3028,38 +3028,51 @@ select.production-config-input option:checked {
   font-size: 0.9rem;
 }
 
-/* Modal modifica risorsa */
+/* Floating modals (draggable like the calculator) */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.65);
+  display: block;
+  padding: 0;
+  /* Keep a faint veil but let clicks pass through so content below stays usable. */
+  background: rgba(0, 0, 0, 0.18);
   z-index: 1000;
+  pointer-events: none;
 }
 
 .modal-overlay.hidden {
   display: none;
 }
 
+.modal-overlay--dragging {
+  background: rgba(0, 0, 0, 0.08);
+}
+
 .modal {
-  width: 100%;
-  max-width: 420px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(100vw - 1.5rem, 420px);
+  max-width: calc(100vw - 1.5rem);
+  max-height: calc(100vh - 1.5rem);
   padding: 0;
   overflow: hidden;
+  pointer-events: auto;
+  box-shadow: var(--shadow), 0 16px 48px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(230, 168, 23, 0.2);
 }
 
 .modal-wide {
-  max-width: 720px;
-  max-height: 90vh;
+  width: min(100vw - 1.5rem, 720px);
+  max-width: calc(100vw - 1.5rem);
+  max-height: calc(100vh - 1.5rem);
   display: flex;
   flex-direction: column;
 }
 
 .modal-legal {
-  max-width: 1520px;
+  width: min(100vw - 1.5rem, 1520px);
+  max-width: calc(100vw - 1.5rem);
 }
 
 .modal-legal .modal-header h3 {
@@ -3107,6 +3120,16 @@ select.production-config-input option:checked {
   justify-content: space-between;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--border);
+}
+
+.modal-header--draggable {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.modal-header--draggable.is-dragging {
+  cursor: grabbing;
 }
 
 .modal-header h3 {

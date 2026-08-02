@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-08-02
+
+### Changed
+- All popups are floating and draggable from the header (like the calculator): move them to read content underneath; the backdrop no longer blocks clicks
+
 ## [2.2.6] - 2026-08-02
 
 ### Changed
