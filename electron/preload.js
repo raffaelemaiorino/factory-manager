@@ -26,6 +26,8 @@ contextBridge.exposeInMainWorld('satisfactory', {
   setAppSettings: (partial) => ipcRenderer.invoke('settings:set', partial),
   getProductionChains: () => ipcRenderer.invoke('production:all'),
   createProductionChain: (data) => ipcRenderer.invoke('production:create', data),
+  setProductionChainTargets: (chainId, targets) =>
+    ipcRenderer.invoke('production:set-targets', chainId, targets),
   updateProductionChain: (id, data) => ipcRenderer.invoke('production:update', id, data),
   deleteProductionChain: (id) => ipcRenderer.invoke('production:delete', id),
   duplicateProductionChain: (id) => ipcRenderer.invoke('production:duplicate', id),
@@ -71,6 +73,8 @@ contextBridge.exposeInMainWorld('satisfactory', {
     ipcRenderer.invoke('production:reset-extraction', extractionId),
   getEnergyChains: () => ipcRenderer.invoke('energy:all'),
   createEnergyChain: (data) => ipcRenderer.invoke('energy:create', data),
+  setEnergyChainTargets: (chainId, options) =>
+    ipcRenderer.invoke('energy:set-targets', chainId, options),
   updateEnergyChain: (id, data) => ipcRenderer.invoke('energy:update', id, data),
   deleteEnergyChain: (id) => ipcRenderer.invoke('energy:delete', id),
   exportEnergyChain: (id) => ipcRenderer.invoke('energy:export', id),

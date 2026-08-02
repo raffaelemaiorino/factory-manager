@@ -32,7 +32,11 @@ function renderCategorySidebar(categories) {
       >
         <span class="category-btn-text">
           <span class="category-btn-name">${escapeHtml(cat.name)}</span>
-          <span class="category-btn-count">${formatDisplayInteger(cat.item_count)} oggetti</span>
+          <span class="category-btn-count">${escapeHtml(
+            t(cat.item_count === 1 ? 'resources.itemsCountOne' : 'resources.itemsCountMany', {
+              count: formatDisplayInteger(cat.item_count),
+            })
+          )}</span>
         </span>
       </button>
     </li>`

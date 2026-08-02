@@ -299,6 +299,7 @@ module.exports = {
   ENERGY_EXTRACTION_SLUGS,
   isEnergyExtractionItem,
   getEnergyExtractionKind,
+  getDefaultEnergyExtractionConfig,
   ensureEnergyExtractionsTable,
   loadEnergyChainExtractions,
   addEnergyExtraction,

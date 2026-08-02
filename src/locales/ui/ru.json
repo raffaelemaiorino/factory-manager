@@ -141,7 +141,9 @@
     "emptySearch": "Нет ресурсов по запросу.",
     "emptyCategory": "В этой категории нет ресурсов.",
     "errorLoad": "Ошибка загрузки ресурсов.",
-    "editAria": "Изменить {name}"
+    "editAria": "Изменить {name}",
+    "itemsCountOne": "{count} item",
+    "itemsCountMany": "{count} items"
   },
   "production": {
     "title": "Производство",
@@ -238,7 +240,35 @@
     "linkCoveredByExtractions": "Покрыто добычей",
     "linkChainExcess": "Избыток цепочки: {rate}",
     "linkInsufficient": "Недостаточно: {rate}",
-    "surplusFree": "{rate} свободно"
+    "surplusFree": "{rate} свободно",
+    "sectionTargets": "Plan targets",
+    "targetsHint": "Changing targets or constraints rebuilds machines, extractions, and links from default recipes.",
+    "addTarget": "Add target",
+    "emptyTargets": "No targets yet. Add products to auto-build this plan.",
+    "removeTargetAria": "Remove target {name}",
+    "targetRateAria": "Target rate for {name}",
+    "powerShardsLimit": "Power shards",
+    "powerShardsLimited": "Budget",
+    "powerShardsUnlimited": "Unlimited",
+    "powerShardsBudgetAria": "Power shard budget",
+    "maxBeltMk": "Highest belt",
+    "maxPipeMk": "Highest pipe",
+    "summaryBuild": "Build",
+    "summaryClock": "Clock",
+    "buildMachinesOne": "{count} machine",
+    "buildMachinesMany": "{count} machines",
+    "buildNodesOne": "{count} node",
+    "buildNodesMany": "{count} nodes",
+    "buildAtClock": "{overclock}%",
+    "buildManifolds": "{count} manifolds · {banks}",
+    "buildManifoldBank": "Bank {index}: {count}×",
+    "buildManifoldCount": "{count} manifold groups",
+    "buildSplitHint": "Split into {count} manifolds ({banks}) for belt/pipe throughput",
+    "buildSplitReason": "Needs {count} manifolds — {item} exceeds Mk{mk} {kind} ({capacity}/min)",
+    "transportBelt": "belt",
+    "transportPipe": "pipe",
+    "sinkByproducts": "Sink byproducts",
+    "sinkByproductsHint": "Automatically dispose unused secondary outputs (package fluids, sink solids)."
   },
   "energy": {
     "title": "Энергия",
@@ -276,7 +306,18 @@
     "pickerNoGenerators": "Нет доступных генераторов.",
     "defaultWaterExtractor": "Водный насос",
     "defaultOilExtractor": "Нефтяная вышка",
-    "defaultMiner": "Miner"
+    "defaultMiner": "Miner",
+    "targetMw": "Target MW",
+    "generatorType": "Generator",
+    "generatorCoal": "Coal generator",
+    "generatorFuel": "Fuel generator",
+    "generatorNuclear": "Nuclear generator",
+    "autoPlanHint": "Leave MW blank for an empty plan. With MW + fuel, generators and supply are auto-built.",
+    "sectionTarget": "Power target",
+    "replan": "Rebuild plan",
+    "targetsHint": "Changing MW, generator, or fuel rebuilds generators, extractions, and linked fuel production.",
+    "invalidTargetMw": "Enter a valid target MW greater than zero.",
+    "invalidGeneratorFuel": "Choose a generator and fuel for auto-plan."
   },
   "settings": {
     "title": "Настройки",
@@ -346,7 +387,15 @@
     "detailNoSchemas": "Для этого ресурса нет зарегистрированных производственных рецептов.",
     "resourceNotFound": "Ресурс не найден.",
     "detailLoadError": "Ошибка загрузки сведений.",
-    "alertTitle": "Notice"
+    "alertTitle": "Notice",
+    "productionCreateTargetProduct": "Target product",
+    "productionCreateTargetRate": "Target rate (/min)",
+    "productionCreatePickProduct": "Choose product",
+    "productionCreateClearProduct": "Clear",
+    "productionCreateAutoPlanHint": "Add one or more products with rates — the plan auto-adds machines and extractions, and shared intermediates are combined.",
+    "productionCreateTargetProducts": "Target products",
+    "productionCreateAddProduct": "Add product",
+    "productionCreateRemoveTargetAria": "Remove {name}"
   },
   "legal": {
     "title": "Правовая информация, атрибуция и отказ от ответственности",
@@ -449,7 +498,20 @@
     "emptyGroups": "Нет узлов в дереве групп.",
     "emptyGroup": "Нет узлов в группе «{name}».",
     "emptyTree": "Нет узлов. Добавьте добычу или шаги ресурсов.",
-    "highlightStepAria": "Выделить шаг {name}"
+    "highlightStepAria": "Выделить шаг {name}",
+    "hint": "Drag boxes to arrange the layout. Positions are remembered automatically for this plan.",
+    "hintGroups": "Group tree: only main inputs/outputs between groups. Drag boxes to arrange the layout. Positions are remembered automatically for this plan (group view).",
+    "hintGroup": "Group «{name}». Drag boxes to arrange the layout. Positions are remembered automatically for this plan and group.",
+    "beltOk": "Fits on {count}× Mk.{mk}",
+    "beltOver": "Needs {count}× Mk.{mk} ({rate}/min > {capacity}/min)",
+    "pipeOk": "Fits on {count}× Pipe Mk.{mk}",
+    "pipeOver": "Needs {count}× Pipe Mk.{mk} ({rate}/min > {capacity}/min)",
+    "detailSimple": "Simple",
+    "detailComplex": "Complex",
+    "detailSimpleTitle": "Show machine count and clock speed only",
+    "detailComplexTitle": "Show belt/pipe manifold banks when throughput needs a split",
+    "detailModeAria": "Tree detail mode",
+    "sink": "AWESOME Sink"
   },
   "confirm": {
     "deleteResourceStepTitle": "Удалить шаг ресурса",
@@ -476,7 +538,9 @@
     "pickerExtractEmpty": "Нет ресурсов для добычи.",
     "importTypeMismatchTitle": "Incompatible plan",
     "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
-    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again.",
+    "invalidTargetRate": "Enter a valid target rate (/min).",
+    "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
     "noResources": "Ресурсы не найдены."

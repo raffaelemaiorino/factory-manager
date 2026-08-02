@@ -79,6 +79,7 @@ const {
   getResourcesDataInfo,
   getProductionChains,
   saveProductionChain,
+  setProductionChainTargets,
   updateProductionChain,
   removeProductionChain,
   duplicateProductionChain,
@@ -105,6 +106,7 @@ const {
   resetMineralExtraction,
   getEnergyChains,
   saveEnergyChain,
+  setEnergyChainTargets,
   updateEnergyChain,
   removeEnergyChain,
   exportEnergyChain,
@@ -399,6 +401,9 @@ async function openSchemaJsonFile(title) {
 
 ipcMain.handle('production:all', () => getProductionChains());
 ipcMain.handle('production:create', (_event, data) => saveProductionChain(data));
+ipcMain.handle('production:set-targets', (_event, chainId, targets) =>
+  setProductionChainTargets(chainId, targets)
+);
 ipcMain.handle('production:update', (_event, id, data) => updateProductionChain(id, data));
 ipcMain.handle('production:delete', (_event, id) => removeProductionChain(id));
 ipcMain.handle('production:duplicate', (_event, id) => duplicateProductionChain(id));
@@ -475,6 +480,9 @@ ipcMain.handle('production:reset-extraction', (_event, extractionId) =>
 );
 ipcMain.handle('energy:all', () => getEnergyChains());
 ipcMain.handle('energy:create', (_event, data) => saveEnergyChain(data));
+ipcMain.handle('energy:set-targets', (_event, chainId, options) =>
+  setEnergyChainTargets(chainId, options)
+);
 ipcMain.handle('energy:update', (_event, id, data) => updateEnergyChain(id, data));
 ipcMain.handle('energy:delete', (_event, id) => removeEnergyChain(id));
 ipcMain.handle('energy:export', async (_event, id) => {

@@ -32,13 +32,13 @@ const PURITY_OPTIONS = [
   { value: 'pure', label: 'Pure' },
 ];
 
-let activeLocale = 'it';
+let activeLocale = 'en';
 let availableLocales = [];
 
 const DEFAULT_APP_SETTINGS = {
   maxMachines: 100,
   maxEnergyGenerators: 600,
-  numberFormat: 'it',
+  numberFormat: 'en-US',
 };
 
 let appSettings = { ...DEFAULT_APP_SETTINGS };
@@ -151,7 +151,38 @@ const productionStepViewStates = new Map();
 const productionGroupViewStates = new Map();
 const PRODUCTION_GROUP_KEY_UNGROUPED = '__ungrouped__';
 const PRODUCTION_UI_STATE_KEY = 'satisfactory-production-ui';
+const PRODUCTION_TREE_DETAIL_MODE_KEY = 'satisfactory-tree-detail-mode';
+let productionTreeDetailMode = 'simple';
 let productionUiStateCache = {};
+
+function normalizeTreeDetailMode(value) {
+  return value === 'complex' ? 'complex' : 'simple';
+}
+
+function getProductionTreeDetailMode() {
+  return normalizeTreeDetailMode(productionTreeDetailMode);
+}
+
+function setProductionTreeDetailMode(mode) {
+  productionTreeDetailMode = normalizeTreeDetailMode(mode);
+  try {
+    localStorage.setItem(PRODUCTION_TREE_DETAIL_MODE_KEY, productionTreeDetailMode);
+  } catch {
+    /* storage pieno o disabilitato */
+  }
+  return productionTreeDetailMode;
+}
+
+function initProductionTreeDetailMode() {
+  try {
+    productionTreeDetailMode = normalizeTreeDetailMode(
+      localStorage.getItem(PRODUCTION_TREE_DETAIL_MODE_KEY)
+    );
+  } catch {
+    productionTreeDetailMode = 'simple';
+  }
+  return productionTreeDetailMode;
+}
 
 function normalizeProductionStepId(stepId) {
   const id = Number(stepId);

@@ -3928,7 +3928,25 @@
       "category": "gas",
       "description": "La materia fotonica eccitata è essenziale per tutti i processi di produzione nel codificatore quantistico. Formata nel convertitore provocando intense interazioni fotoniche tramite l'esposizione della S. M. A. a un ambiente molto energetico.",
       "stack_size": 200,
-      "schemas": []
+      "schemas": [
+        {
+          "name": "Materia fotonica eccitata",
+          "is_alternative": 0,
+          "building_name": "Convertitore",
+          "building_slug": "converter",
+          "duration": 3,
+          "sort_order": 0,
+          "inputs": [],
+          "outputs": [
+            {
+              "slot": 1,
+              "item_slug": "quantum-energy",
+              "amount": 10,
+              "is_fluid": 1
+            }
+          ]
+        }
+      ]
     },
     {
       "game_id": "Desc_IronRod_C",

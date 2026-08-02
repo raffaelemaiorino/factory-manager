@@ -474,6 +474,57 @@ a:hover {
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
+.dashboard-project-row {
+  position: relative;
+  padding-right: 2.75rem;
+  cursor: default;
+}
+
+.dashboard-project-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.dashboard-project-delete {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-muted);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.dashboard-project-row:hover .dashboard-project-delete,
+.dashboard-project-row:focus-within .dashboard-project-delete {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dashboard-project-delete:hover {
+  background: rgba(220, 60, 60, 0.15);
+  color: #f07178;
+}
+
 .dashboard-project-row:hover,
 .dashboard-alert-row:hover {
   border-color: var(--border-accent);
@@ -1108,8 +1159,66 @@ a:hover {
 }
 
 .production-detail-actions--tree-view #btn-add-extraction,
-.production-detail-actions--tree-view #btn-add-resource-step {
+.production-detail-actions--tree-view #btn-add-resource-step,
+.production-detail-actions--tree-view #btn-add-energy-extraction,
+.production-detail-actions--tree-view #btn-add-energy-generator {
   display: none !important;
+}
+
+/* Compact header in tree mode — free vertical space for the graph */
+.view--tree-mode .production-detail-header {
+  padding: 0.55rem 1rem;
+}
+
+.view--tree-mode .production-detail-header-grid {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'crumb actions'
+    'main actions';
+  column-gap: 1rem;
+  row-gap: 0.2rem;
+  align-items: center;
+}
+
+.view--tree-mode .production-detail-header .production-external-summary {
+  display: none !important;
+}
+
+.view--tree-mode .production-detail-breadcrumb {
+  font-size: 0.78rem;
+  margin: 0;
+}
+
+.view--tree-mode .production-detail-main-info h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.view--tree-mode .production-detail-main-info .page-subtitle {
+  display: none;
+}
+
+.view--tree-mode .production-detail-actions {
+  padding-top: 0;
+  justify-content: flex-end;
+}
+
+.view--tree-mode .production-detail-main {
+  padding: 0.75rem 1rem 1rem;
+}
+
+.view--tree-mode .production-graph {
+  min-height: 0;
+}
+
+.view--tree-mode .production-graph-scroll {
+  max-height: calc(100vh - 170px);
+  min-height: calc(100vh - 190px);
+}
+
+.view--tree-mode .production-graph-hint {
+  display: none;
 }
 
 [hidden] {
@@ -2978,6 +3087,152 @@ select.production-config-input option:checked {
   gap: 0.35rem;
 }
 
+.form-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.production-create-target-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.production-targets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.production-target-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 5.5rem auto;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+}
+
+.production-target-row img,
+.production-target-row .resource-img--placeholder {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.production-target-row-name {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.production-target-rate-input {
+  width: 5.5rem;
+  min-width: 5.5rem;
+  max-width: 5.5rem;
+  box-sizing: border-box;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius);
+  background: var(--bg-primary, var(--bg-card));
+  color: var(--text-primary);
+  font: inherit;
+}
+
+/* .form-field input { width:100% } must not stretch target rate fields */
+.form-field .production-target-rate-input,
+.production-target-row .production-target-rate-input,
+.production-plan-constraint-controls .production-target-rate-input {
+  width: 5.5rem;
+  min-width: 5.5rem;
+  max-width: 5.5rem;
+}
+
+.production-targets-section {
+  margin-bottom: 1rem;
+}
+
+.production-targets-section .production-section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.production-targets-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.production-plan-constraints {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.production-plan-constraint {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.production-plan-constraint label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.production-plan-constraint-controls {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.production-plan-constraint select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.35rem 2rem 0.35rem 0.5rem;
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.production-plan-constraint-controls select {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+
+.production-graph-edge-rate,
+.production-graph-edge-transport {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.production-graph-edge-transport--over,
+.production-graph-edge-label--over .production-graph-edge-rate {
+  color: #f0a060;
+}
+
+
 .form-field label {
   font-size: 0.75rem;
   font-weight: 600;
@@ -3914,22 +4169,177 @@ select.production-config-input option:checked {
 }
 
 .production-graph-hint {
-  margin: 0 0 0.75rem;
+  margin: 0;
   font-size: 0.78rem;
   color: var(--text-muted);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.production-graph-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  margin: 0 0 0.75rem;
+}
+
+.production-graph-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.production-graph-detail-toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.production-graph-detail-btn {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0.35rem 0.7rem;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.production-graph-detail-btn + .production-graph-detail-btn {
+  border-left: 1px solid var(--border);
+}
+
+.production-graph-detail-btn.is-active {
+  background: rgba(255, 140, 0, 0.18);
+  color: var(--accent-bright);
+}
+
+.production-graph-detail-btn:hover:not(.is-active) {
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.production-graph-zoom {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.production-graph-zoom-btn {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  min-width: 2rem;
+  padding: 0.35rem 0.55rem;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.production-graph-zoom-btn + .production-graph-zoom-btn {
+  border-left: 1px solid var(--border);
+}
+
+.production-graph-zoom-btn:hover {
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.production-graph-zoom-label {
+  min-width: 3.25rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  cursor: default;
+}
+
+.production-graph-zoom-label:hover {
+  background: transparent;
+  color: var(--text-secondary);
 }
 
 .production-graph-scroll {
-  overflow-x: hidden;
-  overflow-y: auto;
+  position: relative;
+  overflow: hidden;
   max-width: 100%;
   max-height: calc(100vh - 300px);
-  padding: 0.25rem;
+  min-height: 420px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.18);
+  cursor: grab;
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
+.production-graph-scroll.is-panning {
+  cursor: grabbing;
+}
+
+.production-graph-pan {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+.production-graph-world {
+  position: relative;
+  transform-origin: 0 0;
 }
 
 .production-graph-stage {
   position: relative;
-  max-width: 100%;
+  max-width: none;
+}
+
+.production-graph.production-graph--fullscreen,
+.production-graph:fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  margin: 0;
+  padding: 0.85rem 1rem 1rem;
+  box-sizing: border-box;
+  background: var(--bg-primary, #0f1419);
+  border-radius: 0;
+}
+
+.production-graph.production-graph--fullscreen .production-graph-toolbar,
+.production-graph:fullscreen .production-graph-toolbar {
+  flex-shrink: 0;
+}
+
+.production-graph.production-graph--fullscreen .production-graph-scroll,
+.production-graph:fullscreen .production-graph-scroll {
+  flex: 1 1 auto;
+  max-height: none;
+  min-height: 0;
+  height: auto;
 }
 
 .production-graph-edges {
@@ -3965,7 +4375,7 @@ select.production-config-input option:checked {
 
 .production-graph-node {
   position: absolute;
-  width: 228px;
+  width: 244px;
   padding: 0.75rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
@@ -3975,6 +4385,111 @@ select.production-config-input option:checked {
   touch-action: none;
   user-select: none;
   transition: box-shadow 0.15s ease;
+}
+
+.production-graph-node--manifold-split {
+  border-color: rgba(255, 193, 7, 0.55);
+  box-shadow: 0 0 0 1px rgba(255, 193, 7, 0.18), var(--shadow);
+}
+
+.production-graph-node--manifold-bank {
+  border-color: rgba(255, 193, 7, 0.5);
+  box-shadow: 0 0 0 1px rgba(255, 193, 7, 0.16), var(--shadow);
+}
+
+.production-graph-node-bank {
+  display: inline-block;
+  margin-top: 0.2rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 193, 7, 0.45);
+  background: rgba(255, 193, 7, 0.12);
+  color: #ffd54f;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.production-build-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  margin-top: 0.35rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 140, 0, 0.35);
+  background: rgba(255, 140, 0, 0.1);
+}
+
+.production-build-stats--compact {
+  margin-top: 0.45rem;
+  padding: 0.35rem 0.45rem;
+}
+
+.production-build-stats--split {
+  border-color: rgba(255, 193, 7, 0.5);
+  background: rgba(255, 193, 7, 0.12);
+}
+
+.production-build-stats-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.35rem;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.production-graph-node .production-build-stats-main {
+  font-size: 0.74rem;
+}
+
+.production-build-stats-sep {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.production-build-stats-split {
+  font-size: 0.68rem;
+  line-height: 1.3;
+  color: #ffd54f;
+  font-weight: 600;
+}
+
+.production-build-manifold-banks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.production-build-manifold-bank {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.12rem 0.4rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 213, 79, 0.4);
+  background: rgba(0, 0, 0, 0.28);
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: #ffe082;
+  white-space: nowrap;
+}
+
+.production-external-summary-inner--build {
+  min-width: 300px;
+}
+
+.production-build-summary-count {
+  font-weight: 700;
+  color: var(--accent-bright);
+}
+
+.production-build-summary-split {
+  margin-top: 0.15rem;
+  font-size: 0.68rem;
+  color: #ffd54f;
 }
 
 .production-graph-node:focus-visible {
@@ -3991,6 +4506,77 @@ select.production-config-input option:checked {
 .production-graph-node--extraction {
   border-color: rgba(76, 175, 122, 0.35);
   background: linear-gradient(180deg, rgba(76, 175, 122, 0.08), var(--bg-card));
+}
+
+.production-graph-node--supply {
+  border-color: rgba(120, 170, 230, 0.4);
+  background: linear-gradient(180deg, rgba(120, 170, 230, 0.1), var(--bg-card));
+}
+
+.production-graph-node--generator {
+  border-color: rgba(230, 170, 70, 0.4);
+  background: linear-gradient(180deg, rgba(230, 170, 70, 0.1), var(--bg-card));
+}
+
+.production-graph-node--sink {
+  border-color: rgba(180, 120, 220, 0.45);
+  background: linear-gradient(180deg, rgba(180, 120, 220, 0.1), var(--bg-card));
+}
+
+.form-option {
+  margin-top: 0.35rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.form-option-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin: 0;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+.form-option-label input[type='checkbox'] {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.form-option-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.form-option-title {
+  font-size: 0.9rem;
+  font-weight: 650;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.form-option-hint {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.production-plan-sink-option {
+  grid-column: 1 / -1;
+  margin-top: 0;
 }
 
 .production-graph-node--step {
@@ -4217,12 +4803,13 @@ select.production-config-input option:checked {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  max-width: 180px;
+  max-width: 220px;
   padding: 0.28rem 0.55rem;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: rgba(15, 20, 25, 0.94);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  z-index: 3;
 }
 
 .production-graph-edge-label--step-link,

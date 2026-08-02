@@ -1,5 +1,9 @@
 # Factory Manager
 
+<p align="center">
+  <img src="src/renderer/assets/logo.png" alt="Logo Factory Manager" width="620" />
+</p>
+
 > English: [`README.md`](README.md)
 
 App desktop locale per pianificare le fabbriche di Satisfactory.
@@ -8,7 +12,27 @@ L’ho fatta perché calcolare a mano catene, macchine, rate, estrazioni ed ener
 
 Pianifica catene, macchine, rate e layout in locale. Fan-made. Indipendente. Non affiliato a Coffee Stain.
 
-## Cosa c’è nell’app
+## Funzionalità
+
+### Auto-plan dagli obiettivi
+
+Scegli uno o più prodotti e un rate al minuto: l’app costruisce la catena (ricette default, estrazioni, collegamenti), unendo gli intermedi condivisi invece di duplicarli. Modifica gli obiettivi quando vuoi: l’albero si ricostruisce.
+
+Stessa logica per l’**energia**: target MW, tipo di generatore e combustibile. I generatori si dimensionano da soli, con estrazioni carbone/acqua oppure un piano di produzione combustibile collegato.
+
+### Vincoli da fabbrica vera
+
+- **Budget power shard** — limitato (default 0 → preferisci clock al 100%) oppure illimitato
+- **Nastro / tubo Mk massimi** — usati sugli archi e nella modalità Complesso
+- **Sink sottoprodotti** — linee opzionali per smaltire gli output secondari non usati (packaging fluidi, sink solidi)
+
+### Vista ad albero navigabile
+
+- Grafo sinistra → destra: estrazioni → passi → obiettivi (e in energia: estrazioni → generatori → MW)
+- **Semplice / Complesso** — Complesso divide gli step in banchi manifold quando nastro/tubo non reggono tutto il flusso
+- **Pan, zoom, adatta, schermo intero** — scroll per zoom nitido, trascina lo sfondo per spostarti, Fit per inquadrare, fullscreen per i piani grandi
+- Header compatto in modalità albero così il canvas prende lo schermo
+- Conteggio macchine @ clock in evidenza su nodi e passi; riepilogo costruzione per edificio
 
 ### Produzione ed energia
 
@@ -21,10 +45,6 @@ Pianifica catene, macchine, rate e layout in locale. Fan-made. Indipendente. Non
 
 Esporta e importa in JSON sia la produzione sia l’energia (estrazioni, generatori, collegamenti). Un file = un backup o uno scambio con un amico. Gli import arrivano etichettati `(import)` così non confondi gli originali. Prima di scrivere nel database, l’import verifica che il file sia davvero un export Factory Manager.
 
-### Albero più chiaro
-
-Con collegamenti paralleli tra gli stessi nodi, etichette e curve non si sovrappongono più. Più spazio, meno caos quando la fabbrica si complica.
-
 ### Energia e Power Shards
 
 - Consumo base (MW) nel catalogo per estrattori e macchine di produzione
@@ -35,7 +55,7 @@ Con collegamenti paralleli tra gli stessi nodi, etichette e curve non si sovrapp
 
 ### Multilingua
 
-Parti da italiano e inglese, poi tutte le lingue del catalogo SCIM (tedesco, francese, spagnolo, polacco, portoghese, olandese e altre): interfaccia + nomi di risorse, edifici e ricette. La preferenza resta al riavvio. Per arabo, ebraico e persiano c’è un layout RTL di base. Se manca un pezzo di UI, si cade in inglese senza rompere l’app.
+Parti da italiano e inglese, poi tutte le lingue del catalogo SCIM (tedesco, francese, spagnolo, polacco, portoghese, olandese e altre): interfaccia + nomi di risorse, edifici e ricette. La preferenza resta al riavvio. Per arabo, ebraico e persiano c’è un layout RTL di base. Se manca un pezzo di UI, si cade in inglese senza rompere l’app. Le nuove installazioni partono da UI inglese e formato numeri en-US.
 
 ### Desktop, dati sul tuo PC
 
@@ -48,9 +68,9 @@ In footer trovi disclaimer e attribuzione Coffee Stain. Logo aggiornato, interfa
 - Avvio più affidabile sui PC lenti (niente processo “fantasma”)
 - Splash «Preparazione dati…» al primo seed del catalogo
 - Menu sticky mentre scorri
-- Dashboard KPI a 4 colonne
-- In Impostazioni puoi alzare i tetti di macchine e generatori
-- Hardening Electron, sandbox, limiti sui file
+- Dashboard KPI a 4 colonne; elimina progetto al passaggio del mouse
+- In Impostazioni: tetti macchine/generatori e formato numeri (IT / US)
+- Calcolatrice flottante; hardening Electron, sandbox, limiti sui file
 
 ### Aggiornamenti
 
@@ -165,7 +185,7 @@ Ottieni un unico file `AppImage`. Rendilo eseguibile (`chmod +x`) e avvialo, opp
 Tutto gira in locale — niente server né cloud. I dati stanno in un file SQLite (via [sql.js](https://sql.js.org/), SQLite in WASM) nella cartella app-data di Electron.
 
 - **`electron/`** — processo main: finestra/ciclo di vita (`main.js`), bridge IPC come `window.satisfactory` (`preload.js`), check aggiornamenti GitHub (`update-check.js`), stato UI della vista produzione in JSON (`production-ui-state-store.js`).
-- **`src/database/`** — layer dati nel main, solo via IPC: schema/migrazioni, file di dominio (`items.js`, `buildings.js`, `production-chains.js`, …), seed in `seeds/`.
+- **`src/database/`** — layer dati nel main, solo via IPC: schema/migrazioni, file di dominio (`items.js`, `buildings.js`, `production-chains.js`, `auto-plan.js`, `auto-plan-energy.js`, …), seed in `seeds/`.
 - **`src/renderer/`** — UI (`index.html` + `<script>` semplici, senza bundler). L’ordine di caricamento in `index.html` conta: gli script condividono uno scope globale.
 - **`src/locales/ui/`** — pack lingue UI (non il catalogo di gioco).
 - **`scripts/`** — helper di import manuali (`npm run import:*`). I generatori one-off stanno in `scripts/archive/` — vedi `scripts/archive/README.md`.

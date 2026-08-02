@@ -24,6 +24,26 @@ function setupProduction() {
   });
   document.getElementById('production-create-modal-close').addEventListener('click', closeProductionCreateModal);
   document.getElementById('production-create-cancel').addEventListener('click', closeProductionCreateModal);
+  document.getElementById('production-create-pick-product')?.addEventListener('click', () => {
+    openCreateTargetPickerModal();
+  });
+  document.getElementById('production-create-targets-list')?.addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('[data-create-target-remove]');
+    if (!removeBtn) return;
+    removeProductionCreateTargetAt(Number(removeBtn.dataset.createTargetRemove));
+  });
+  document.getElementById('production-create-targets-list')?.addEventListener('change', (e) => {
+    const rateInput = e.target.closest('[data-create-target-rate]');
+    if (!rateInput) return;
+    const index = Number(rateInput.dataset.createTargetRate);
+    const rate = Number(rateInput.value);
+    if (!productionCreateTargets[index]) return;
+    if (!Number.isFinite(rate) || rate <= 0) {
+      rateInput.value = String(productionCreateTargets[index].rate);
+      return;
+    }
+    productionCreateTargets[index].rate = rate;
+  });
 
   productionCreateModal.addEventListener('click', (e) => {
     if (e.target === productionCreateModal) closeProductionCreateModal();
@@ -343,6 +363,21 @@ function setupProduction() {
   });
 
   productionDetailBody.addEventListener('change', (e) => {
+    const planSetting = e.target.closest('[data-plan-setting]');
+    if (planSetting) {
+      applyPlanSettingsFromUi();
+      return;
+    }
+
+    const planTargetRate = e.target.closest('[data-plan-target-rate]');
+    if (planTargetRate) {
+      schedulePlanTargetRateChange(
+        Number(planTargetRate.dataset.planTargetRate),
+        planTargetRate.value
+      );
+      return;
+    }
+
     const configInput = resolveConfigNumberInput(e.target);
     const field = configInput ? getConfigInputField(configInput) : null;
     if (field) {
@@ -406,6 +441,19 @@ function setupProduction() {
   });
 
   productionDetailBody.addEventListener('click', (e) => {
+    if (e.target.closest('#btn-add-plan-target')) {
+      e.preventDefault();
+      openPlanTargetPickerModal();
+      return;
+    }
+
+    const removeTargetBtn = e.target.closest('[data-plan-target-remove]');
+    if (removeTargetBtn) {
+      e.preventDefault();
+      removePlanTargetItem(Number(removeTargetBtn.dataset.planTargetRemove));
+      return;
+    }
+
     if (e.target.closest('.production-io-rate')) {
       e.stopPropagation();
     }
@@ -627,13 +675,40 @@ function setupProduction() {
     hideProductionCreateError();
 
     const name = document.getElementById('production-chain-name').value;
+    const targets = productionCreateTargets.map((entry) => ({
+      item_id: entry.id,
+      target_rate: Number(entry.rate),
+    }));
+
+    if (targets.length) {
+      const invalid = targets.some(
+        (entry) => !Number.isFinite(entry.target_rate) || entry.target_rate <= 0
+      );
+      if (invalid) {
+        showProductionCreateError(t('errors.invalidTargetRate'));
+        return;
+      }
+    }
 
     try {
-      const chain = await window.satisfactory.createProductionChain({ name });
+      const payload = { name };
+      if (targets.length) {
+        payload.auto_plan = true;
+        payload.targets = targets;
+        payload.sink_byproducts = document.getElementById('production-create-sink-byproducts')
+          ?.checked
+          ? 1
+          : 0;
+      }
+
+      const chain = await window.satisfactory.createProductionChain(payload);
       productionChains = [chain, ...productionChains.filter((item) => item.id !== chain.id)];
       closeProductionCreateModal();
       await loadProductionChainSummaries();
       renderProductionChains();
+      if (targets.length) {
+        await openProductionDetail(chain.id);
+      }
     } catch (err) {
       showProductionCreateError(err.message || t('errors.createFailed'));
     }

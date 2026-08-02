@@ -202,6 +202,30 @@ function computeMachinesForTargetOutput(
   return machines;
 }
 
+/** Macchine minime per raggiungere target a un overclock fisso. */
+function computeMachinesForTargetAtOverclock(
+  targetOutput,
+  basePerMin,
+  overclock = DEFAULT_OVERCLOCK,
+  somersloopMask = 0,
+  schema = null
+) {
+  const base = Number(basePerMin);
+  const target = Number(targetOutput);
+  const oc = clampOverclock(overclock);
+  const slots = schema ? getSomersloopSlots(schema) : 0;
+  const mult = computeSomersloopMultiplier(slots, somersloopMask);
+  if (!base || !target || !mult) return DEFAULT_MACHINE_COUNT;
+  const perMachine = base * (oc / 100) * mult;
+  if (!(perMachine > 0)) return DEFAULT_MACHINE_COUNT;
+  let machines = roundUpPreferEven(target / perMachine);
+  while (computeTargetOutput(base, machines, oc, somersloopMask, schema) + 1e-9 < target) {
+    machines += machines === 1 ? 1 : 2;
+    if (machines > 10000) break;
+  }
+  return machines;
+}
+
 function getSomersloopSlots(schema) {
   return Math.max(0, Math.min(4, Number(schema?.somersloop_slots) || 0));
 }
@@ -610,6 +634,7 @@ module.exports = {
   clampMachineCount,
   roundUpPreferEven,
   computeMachinesForTargetOutput,
+  computeMachinesForTargetAtOverclock,
   getSomersloopSlots,
   normalizeSomersloopMask,
   countSomersloopChecked,

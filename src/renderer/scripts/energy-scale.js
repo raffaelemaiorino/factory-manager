@@ -326,6 +326,11 @@
   window.EnergyScale = {
     GENERATOR_DEFINITIONS,
     getGeneratorDefinition,
+    getSupportedGenerators: () =>
+      Object.keys(GENERATOR_DEFINITIONS).map((slug) => ({
+        slug,
+        ...GENERATOR_DEFINITIONS[slug],
+      })),
     getFuelOption,
     computeMaxTargetFuel,
     computeMinTargetFuel,

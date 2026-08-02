@@ -851,7 +851,16 @@
       ]
     },
     "Desc_QuantumEnergy_C": {
-      "name": "Excited Photonic Matter"
+      "name": "Excited Photonic Matter",
+      "description": "Excited Photonic Matter is essential for all production processes in the Quantum Encoder. Formed in the Converter by inducing intense photon interactions through exposure to S.A.M. in a high-energy environment.",
+      "schemas": [
+        {
+          "name": "Excited Photonic Matter",
+          "is_alternative": 0,
+          "building_slug": "converter",
+          "fingerprint": "0::converter::::quantum-energy:10:1"
+        }
+      ]
     },
     "Desc_IronRod_C": {
       "name": "Iron Rod"

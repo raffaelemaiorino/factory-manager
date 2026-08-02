@@ -234,6 +234,95 @@ function computeTargetPower(basePower, machineCount, overclock) {
   return roundTargetOutput(base * machines * (oc / 100), oc);
 }
 
+/**
+ * Size generators to hit a target MW for a given building + fuel.
+ * Prefers 100% OC with more machines; otherwise uses the fewest machines at ≤250% OC.
+ */
+function sizeGeneratorsForTargetMw({
+  building_slug,
+  fuel_slug,
+  target_mw,
+  prefer100oc = true,
+  maxMachines = ENERGY_MACHINE_SLIDER_MAX,
+} = {}) {
+  const definition = getGeneratorDefinition(building_slug);
+  if (!definition) {
+    throw new Error('Generatore non supportato');
+  }
+  const fuelOption = getFuelOption(definition, fuel_slug) || getFuelOption(definition, getDefaultFuelSlug(definition));
+  if (!fuelOption) {
+    throw new Error('Combustibile non supportato');
+  }
+
+  const basePower = getBasePowerPerMachine(definition);
+  const targetMw = Number(target_mw);
+  if (!(basePower > 0) || !Number.isFinite(targetMw) || targetMw <= 0) {
+    throw new Error('Target MW non valido');
+  }
+
+  const maxCount = Math.max(1, Math.min(ENERGY_MACHINE_SLIDER_MAX, Math.round(Number(maxMachines) || ENERGY_MACHINE_SLIDER_MAX)));
+
+  let machine_count;
+  let overclock;
+
+  if (prefer100oc) {
+    machine_count = Math.max(1, Math.ceil(targetMw / basePower - 1e-9));
+    machine_count = Math.min(maxCount, machine_count);
+    const powerAt100 = computeTargetPower(basePower, machine_count, DEFAULT_OVERCLOCK);
+    if (powerAt100 + 1e-6 < targetMw && machine_count < maxCount) {
+      // Not enough even at 100% with capped machines — fall through to OC
+      overclock = Math.min(
+        OVERCLOCK_MAX,
+        Math.max(DEFAULT_OVERCLOCK, (targetMw / (basePower * machine_count)) * 100)
+      );
+    } else if (powerAt100 + 1e-6 < targetMw) {
+      overclock = Math.min(
+        OVERCLOCK_MAX,
+        Math.max(DEFAULT_OVERCLOCK, (targetMw / (basePower * machine_count)) * 100)
+      );
+    } else {
+      // Exact or overshoot at 100%: use fractional OC only if fewer machines would work with OC > 100
+      const fewer = Math.max(1, machine_count - 1);
+      const neededOcFewer = (targetMw / (basePower * fewer)) * 100;
+      if (machine_count > 1 && neededOcFewer <= OVERCLOCK_MAX + 1e-9 && neededOcFewer > DEFAULT_OVERCLOCK + 1e-9) {
+        // Keep prefer100oc: stay at machine_count @ 100% (slight overshoot OK for planning)
+        overclock = DEFAULT_OVERCLOCK;
+      } else {
+        overclock = DEFAULT_OVERCLOCK;
+      }
+    }
+  } else {
+    machine_count = Math.max(1, Math.ceil(targetMw / (basePower * (OVERCLOCK_MAX / 100)) - 1e-9));
+    machine_count = Math.min(maxCount, machine_count);
+    overclock = Math.min(
+      OVERCLOCK_MAX,
+      Math.max(OVERCLOCK_MIN, (targetMw / (basePower * machine_count)) * 100)
+    );
+  }
+
+  overclock = normalizeGeneratorOverclock(overclock);
+  const resolved = resolveGeneratorProduction(definition.slug, {
+    fuel_slug: fuelOption.slug,
+    machine_count,
+    overclock,
+  });
+
+  // Nudge overclock so actual MW is at least the target when possible
+  if (resolved.power_output_mw + 1e-6 < targetMw) {
+    const neededOc = Math.min(
+      OVERCLOCK_MAX,
+      Math.max(OVERCLOCK_MIN, (targetMw / (basePower * resolved.machine_count)) * 100)
+    );
+    return resolveGeneratorProduction(definition.slug, {
+      fuel_slug: fuelOption.slug,
+      machine_count: resolved.machine_count,
+      overclock: neededOc,
+    });
+  }
+
+  return resolved;
+}
+
 function computeFuelConsumption(fuelRatePerMin, machineCount, overclock) {
   const rate = Number(fuelRatePerMin);
   const machines = clampMachineCount(machineCount);
@@ -396,6 +485,7 @@ module.exports = {
   applyGeneratorChange,
   resolveGeneratorProduction,
   scaleGeneratorForUpdate,
+  sizeGeneratorsForTargetMw,
   DEFAULT_OVERCLOCK,
   DEFAULT_MACHINE_COUNT,
   OVERCLOCK_MIN,

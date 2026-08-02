@@ -9,9 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Production: create a plan from one or more target products + rates/min; the app auto-adds default-recipe steps, raw extractions, and supply links (shared intermediates are combined).
+- Production: manage plan targets in the editor (add / remove / edit rates) — changes rebuild the production tree.
+- Production: plan constraints for power-shard budget (default 0, or unlimited) and highest belt/pipe Mk; tree edges show belt/pipe needs.
+- Production: machine count + clock speed highlighted on tree nodes and plan steps; build summary by building type; belt/pipe-aware manifold bank grouping when one line cannot carry the full rate.
+- Production: tree Simple / Complex detail toggle (machine totals vs belt/pipe manifold banks).
+- Production: Complex tree mode splits steps/extractions into separate manifold bank nodes when belt/pipe limits require multiple lines.
+- Production: optional “Sink byproducts” — auto-adds Wet Concrete / packaging / AWESOME Sink lines for unused secondary outputs.
+- Power: create/replan from target MW + generator + fuel; auto-sizes generators and supplies coal/water extractions or a companion fuel production plan.
+- Power: power-shard budget (limited or unlimited) on create and rebuild; tree view with Simple/Complex detail for extractions, fuel supply, generators, and MW target.
+- Tree view: pan (drag empty space), zoom (scroll / toolbar), Fit, and fullscreen; compact header in tree mode for more canvas space.
+- Catalog: Excited Photonic Matter Converter recipe (power-only, 200/min); auto-plan leaves uncraftable items as external demand instead of failing.
+- Dashboard: hover delete on projects in Your projects.
+
 ### Changed
-- README: added a top logo banner above the bilingual overview.
-- Logo polish: `src/renderer/assets/logo.png` now has a transparent background (removes the black box effect in-app).
+- Resources: category counts use the active UI locale (fixes hardcoded Italian “oggetti” when English is selected).
+- Tree view: sharper zoom via CSS `zoom` (avoids blurry `transform: scale`); more spacing between nodes; localized layout hints.
+- Plan UI: target rate inputs no longer stretch over item names; power-shard “Budget” select no longer truncates.
+- Defaults: English UI locale and en-US number format for new installs; auto-plan prefers 100% OC when shard budget is limited.
+- Auto-planned step names use the localized item name for the active language.
+- README: Features section rewritten for auto-plan, constraints, and navigable tree view (EN + IT).
 
 ## [1.58.6] - 2026-08-01
 

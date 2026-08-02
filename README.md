@@ -12,7 +12,27 @@ I built it because working out production chains by hand (machines, rates, power
 
 Plan chains, machines, rates, and layouts locally. Fan-made. Independent. Not affiliated with Coffee Stain.
 
-## What’s in the app
+## Features
+
+### Auto-plan from targets
+
+Pick one or more products and a rate per minute — the app builds the chain for you: default recipes, raw extractions, and supply links, with shared intermediates combined instead of duplicated. Edit targets anytime; the tree rebuilds.
+
+Same idea for **power**: set a MW target, generator type, and fuel. Generators are sized automatically, with coal/water extractions or a linked companion production plan for crafted fuels.
+
+### Constraints that match the factory floor
+
+- **Power shard budget** — limited (default 0 → prefer 100% clock) or unlimited
+- **Highest belt / pipe Mk** — edges and Complex tree mode use these limits
+- **Sink byproducts** — optional disposal lines for unused secondary outputs (package fluids, sink solids)
+
+### Tree view you can actually navigate
+
+- Left-to-right graph of extractions → steps → targets (and power: extractions → generators → MW)
+- **Simple / Complex** — Complex splits steps into manifold banks when belt/pipe throughput needs multiple lines
+- **Pan, zoom, fit, fullscreen** — scroll to zoom (sharp CSS zoom), drag empty space to pan, Fit to frame, fullscreen for big plans
+- Compact header in tree mode so the canvas gets the screen
+- Machine count @ clock highlighted on nodes and plan steps; build summary by building type
 
 ### Production and power plans
 
@@ -25,10 +45,6 @@ Plan chains, machines, rates, and layouts locally. Fan-made. Independent. Not af
 
 Export and import JSON for both production and power (extractions, generators, links). One file = a backup or something you can send a friend. Imports are labeled `(import)` so they don’t get mixed up with your originals. The importer checks that the file is really a Factory Manager export before writing to the database.
 
-### Clearer production tree
-
-When several links run between the same nodes, labels and curves no longer sit on top of each other. More space, less clutter when the factory gets big.
-
 ### Power and power shards
 
 - Base MW use in the catalog for extractors and production machines
@@ -39,7 +55,7 @@ When several links run between the same nodes, labels and curves no longer sit o
 
 ### Languages
 
-Italian and English first, then the full SCIM catalog set (German, French, Spanish, Polish, Portuguese, Dutch, and more) — UI strings plus resource, building, and recipe names. Your language choice is kept across restarts. Arabic, Hebrew, and Persian get basic RTL layout. If a UI string is missing, it falls back to English without breaking the app.
+Italian and English first, then the full SCIM catalog set (German, French, Spanish, Polish, Portuguese, Dutch, and more) — UI strings plus resource, building, and recipe names. Your language choice is kept across restarts. Arabic, Hebrew, and Persian get basic RTL layout. If a UI string is missing, it falls back to English without breaking the app. New installs default to English UI and en-US number format.
 
 ### Desktop app, data on your PC
 
@@ -52,9 +68,9 @@ Footer shows the Coffee Stain disclaimer and attribution. Custom window chrome (
 - More reliable startup on slow PCs (no leftover “ghost” process)
 - Splash (“Preparing data…”) on first catalog seed
 - Sticky menu while you scroll
-- Dashboard KPIs in a four-column layout
-- Settings: raise the caps for machines and generators
-- Electron hardening, sandbox, file limits
+- Dashboard KPIs in a four-column layout; hover-delete on projects
+- Settings: raise the caps for machines and generators; number format (IT / US)
+- Floating calculator; Electron hardening, sandbox, file limits
 
 ### Update check
 
@@ -169,7 +185,7 @@ You get a single `AppImage` file. Make it executable (`chmod +x`) and run it, or
 Everything runs locally — no server or cloud backend. Data lives in a SQLite database file (via [sql.js](https://sql.js.org/), SQLite compiled to WASM) in Electron’s per-user app-data folder.
 
 - **`electron/`** — main process: window/lifecycle (`main.js`), IPC bridge as `window.satisfactory` (`preload.js`), GitHub update check (`update-check.js`), production-view UI state JSON (`production-ui-state-store.js`).
-- **`src/database/`** — data layer in the main process, reached only via IPC: schema/migrations, domain files (`items.js`, `buildings.js`, `production-chains.js`, …), seeds under `seeds/`.
+- **`src/database/`** — data layer in the main process, reached only via IPC: schema/migrations, domain files (`items.js`, `buildings.js`, `production-chains.js`, `auto-plan.js`, `auto-plan-energy.js`, …), seeds under `seeds/`.
 - **`src/renderer/`** — UI (`index.html` + plain `<script>` files, no bundler). Load order in `index.html` matters; scripts share one global scope.
 - **`src/locales/ui/`** — UI language packs (not game catalog text).
 - **`scripts/`** — manual import helpers (`npm run import:*`). One-off generators live under `scripts/archive/` — see `scripts/archive/README.md`.

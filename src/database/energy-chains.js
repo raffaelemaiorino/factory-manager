@@ -178,9 +178,30 @@ function ensureEnergyChainsTable(db) {
       updated_at TEXT DEFAULT (datetime('now'))
     );
   `);
+  ensureEnergyChainTargetColumns(db);
   ensureEnergyGeneratorsTable(db);
   ensureEnergyGeneratorLinksTable(db);
   ensureEnergyProductionLinksTable(db);
+}
+
+function ensureEnergyChainTargetColumns(db) {
+  const info = db.exec('PRAGMA table_info(energy_chains)')[0]?.values ?? [];
+  const cols = new Set(info.map((row) => row[1]));
+  if (!cols.has('target_power_mw')) {
+    db.run('ALTER TABLE energy_chains ADD COLUMN target_power_mw REAL');
+  }
+  if (!cols.has('target_building_slug')) {
+    db.run('ALTER TABLE energy_chains ADD COLUMN target_building_slug TEXT');
+  }
+  if (!cols.has('target_fuel_slug')) {
+    db.run('ALTER TABLE energy_chains ADD COLUMN target_fuel_slug TEXT');
+  }
+  if (!cols.has('linked_production_chain_id')) {
+    db.run('ALTER TABLE energy_chains ADD COLUMN linked_production_chain_id INTEGER');
+  }
+  if (!cols.has('power_shard_limit')) {
+    db.run('ALTER TABLE energy_chains ADD COLUMN power_shard_limit INTEGER NOT NULL DEFAULT 0');
+  }
 }
 
 function ensureEnergyGeneratorsTable(db) {
@@ -207,10 +228,19 @@ function ensureEnergyGeneratorsTable(db) {
 }
 
 function mapChain(row) {
+  const { parsePowerShardLimit, isPowerShardUnlimited, DEFAULT_POWER_SHARD_LIMIT } = require('./transport');
+  const powerShardLimit = parsePowerShardLimit(row.power_shard_limit, DEFAULT_POWER_SHARD_LIMIT);
   return {
     id: row.id,
     name: row.name,
     notes: row.notes ?? null,
+    target_power_mw: row.target_power_mw != null ? Number(row.target_power_mw) : null,
+    target_building_slug: row.target_building_slug ?? null,
+    target_fuel_slug: row.target_fuel_slug ?? null,
+    linked_production_chain_id:
+      row.linked_production_chain_id != null ? Number(row.linked_production_chain_id) : null,
+    power_shard_limit: powerShardLimit,
+    power_shard_unlimited: isPowerShardUnlimited(powerShardLimit),
     created_at: row.created_at,
     updated_at: row.updated_at,
   };
@@ -308,7 +338,8 @@ function listEnergyChains(db) {
   ensureEnergyChainsTable(db);
   return queryAll(
     db,
-    `SELECT id, name, notes, created_at, updated_at
+    `SELECT id, name, notes, target_power_mw, target_building_slug, target_fuel_slug,
+            linked_production_chain_id, power_shard_limit, created_at, updated_at
      FROM energy_chains
      ORDER BY updated_at DESC, name ASC`
   ).map(mapChain);
@@ -318,7 +349,8 @@ function getEnergyChainById(db, id) {
   ensureEnergyChainsTable(db);
   const row = queryOne(
     db,
-    `SELECT id, name, notes, created_at, updated_at
+    `SELECT id, name, notes, target_power_mw, target_building_slug, target_fuel_slug,
+            linked_production_chain_id, power_shard_limit, created_at, updated_at
      FROM energy_chains
      WHERE id = ?`,
     [id]
@@ -342,17 +374,48 @@ function getEnergyChainDetail(db, chainId, getItemById) {
   return { chain, extractions, generators, links, production_objectives };
 }
 
-function createEnergyChain(db, persist, { name }) {
+function createEnergyChain(
+  db,
+  persist,
+  {
+    name,
+    target_power_mw = null,
+    target_building_slug = null,
+    target_fuel_slug = null,
+    linked_production_chain_id = null,
+    power_shard_limit = 0,
+  } = {}
+) {
   ensureEnergyChainsTable(db);
   const trimmed = String(name ?? '').trim();
   if (!trimmed) {
     throw new Error('Il nome è obbligatorio');
   }
 
+  const { parsePowerShardLimit } = require('./transport');
+  const targetMw =
+    target_power_mw != null && target_power_mw !== '' ? Number(target_power_mw) : null;
+  const buildingSlug = target_building_slug ? String(target_building_slug).trim() : null;
+  const fuelSlug = target_fuel_slug ? String(target_fuel_slug).trim() : null;
+  const linkedId =
+    linked_production_chain_id != null && linked_production_chain_id !== ''
+      ? Number(linked_production_chain_id)
+      : null;
+  const shardLimit = parsePowerShardLimit(power_shard_limit, 0);
+
   db.run(
-    `INSERT INTO energy_chains (name, updated_at)
-     VALUES (?, datetime('now'))`,
-    [trimmed]
+    `INSERT INTO energy_chains
+      (name, target_power_mw, target_building_slug, target_fuel_slug, linked_production_chain_id,
+       power_shard_limit, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`,
+    [
+      trimmed,
+      Number.isFinite(targetMw) && targetMw > 0 ? targetMw : null,
+      buildingSlug || null,
+      fuelSlug || null,
+      Number.isFinite(linkedId) && linkedId > 0 ? linkedId : null,
+      shardLimit,
+    ]
   );
 
   const id = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
@@ -360,22 +423,76 @@ function createEnergyChain(db, persist, { name }) {
   return getEnergyChainById(db, id);
 }
 
-function updateEnergyChain(db, persist, id, { name }) {
+function updateEnergyChain(
+  db,
+  persist,
+  id,
+  {
+    name,
+    target_power_mw,
+    target_building_slug,
+    target_fuel_slug,
+    linked_production_chain_id,
+    power_shard_limit,
+  } = {}
+) {
   ensureEnergyChainsTable(db);
   const chain = getEnergyChainById(db, id);
   if (!chain) {
     throw new Error('Schema energia non trovato');
   }
 
-  const trimmed = String(name ?? '').trim();
-  if (!trimmed) {
+  const { parsePowerShardLimit } = require('./transport');
+
+  const nextName = name !== undefined ? String(name ?? '').trim() : chain.name;
+  if (!nextName) {
     throw new Error('Il nome è obbligatorio');
   }
 
-  db.run(`UPDATE energy_chains SET name = ?, updated_at = datetime('now') WHERE id = ?`, [
-    trimmed,
-    id,
-  ]);
+  const nextMw =
+    target_power_mw !== undefined
+      ? target_power_mw != null && target_power_mw !== ''
+        ? Number(target_power_mw)
+        : null
+      : chain.target_power_mw;
+  const nextBuilding =
+    target_building_slug !== undefined
+      ? target_building_slug
+        ? String(target_building_slug).trim()
+        : null
+      : chain.target_building_slug;
+  const nextFuel =
+    target_fuel_slug !== undefined
+      ? target_fuel_slug
+        ? String(target_fuel_slug).trim()
+        : null
+      : chain.target_fuel_slug;
+  const nextLinked =
+    linked_production_chain_id !== undefined
+      ? linked_production_chain_id != null && linked_production_chain_id !== ''
+        ? Number(linked_production_chain_id)
+        : null
+      : chain.linked_production_chain_id;
+  const nextShard =
+    power_shard_limit !== undefined
+      ? parsePowerShardLimit(power_shard_limit, chain.power_shard_limit)
+      : chain.power_shard_limit;
+
+  db.run(
+    `UPDATE energy_chains
+     SET name = ?, target_power_mw = ?, target_building_slug = ?, target_fuel_slug = ?,
+         linked_production_chain_id = ?, power_shard_limit = ?, updated_at = datetime('now')
+     WHERE id = ?`,
+    [
+      nextName,
+      Number.isFinite(nextMw) && nextMw > 0 ? nextMw : null,
+      nextBuilding || null,
+      nextFuel || null,
+      Number.isFinite(nextLinked) && nextLinked > 0 ? nextLinked : null,
+      nextShard,
+      id,
+    ]
+  );
   persist();
   return getEnergyChainById(db, id);
 }
@@ -394,7 +511,13 @@ function deleteEnergyChain(db, persist, id) {
   return { id };
 }
 
-function addEnergyGenerator(db, persist, chainId, { building_slug, fuel_slug }, getItemById) {
+function addEnergyGenerator(
+  db,
+  persist,
+  chainId,
+  { building_slug, fuel_slug, machine_count, overclock, target_fuel_input, target_power },
+  getItemById
+) {
   ensureEnergyGeneratorsTable(db);
 
   const chain = getEnergyChainById(db, chainId);
@@ -409,8 +532,9 @@ function addEnergyGenerator(db, persist, chainId, { building_slug, fuel_slug }, 
 
   const resolved = resolveGeneratorProduction(building_slug, {
     fuel_slug: fuel_slug ?? definition.fuelOptions[0]?.slug,
-    machine_count: DEFAULT_MACHINE_COUNT,
-    overclock: DEFAULT_OVERCLOCK,
+    machine_count: machine_count ?? DEFAULT_MACHINE_COUNT,
+    overclock: overclock ?? DEFAULT_OVERCLOCK,
+    target_fuel_input: target_fuel_input ?? target_power,
   });
 
   const sortRow = queryOne(

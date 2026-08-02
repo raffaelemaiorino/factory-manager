@@ -9,9 +9,27 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+### Aggiunto
+- Produzione: crea uno schema da uno o più prodotti obiettivo + rate/min; aggiunge automaticamente passi (ricetta default), estrazioni e collegamenti (intermedi condivisi uniti).
+- Produzione: gestisci gli obiettivi nell’editor (aggiungi / rimuovi / modifica rate) — le modifiche ricostruiscono l’albero di produzione.
+- Produzione: vincoli power shard (default 0, oppure illimitati) e nastro/tubo Mk massimi; sugli archi dell’albero compare il fabbisogno.
+- Produzione: conteggio macchine + clock speed evidenziati su nodi albero e passi piano; riepilogo costruzione per edificio; raggruppamento manifold (banchi) quando un nastro/tubo non regge tutto il flusso.
+- Produzione: toggle albero Semplice / Complesso (solo macchine@clock vs banchi manifold nastro/tubo).
+- Produzione: in modalità Complesso l’albero divide gli step/estrazioni in nodi separati per banco manifold quando nastro/tubo richiedono più linee.
+- Produzione: opzione «Sink sottoprodotti» — aggiunge linee Calcestruzzo umido / packaging / AWESOME Sink per i sottoprodotti non usati.
+- Energia: crea/riplanifica da target MW + generatore + combustibile; dimensiona generatori e fornisce carbone/acqua o un piano produzione combustibile collegato.
+- Energia: budget power shard (limitato o illimitato) in creazione e ricostruzione; vista ad albero Semplice/Complesso per estrazioni, fornitura combustibile, generatori e target MW.
+- Vista ad albero: pan (trascina lo sfondo), zoom (scroll / toolbar), Adatta e schermo intero; header compatto in modalità albero per più spazio al canvas.
+- Catalogo: ricetta Convertitore per Materia fotonica eccitata (solo potenza, 200/min); l’auto-plan tratta gli item senza ricetta come domanda esterna invece di fallire.
+- Dashboard: elimina progetto al passaggio del mouse in I tuoi progetti.
+
 ### Modificato
-- README: aggiunto banner logo in alto sopra la panoramica bilingue.
-- Rifinitura logo: `src/renderer/assets/logo.png` ora ha sfondo trasparente (rimuove l'effetto riquadro nero nell'app).
+- Risorse: i conteggi per categoria usano la lingua UI attiva (corretto l’hardcoded italiano «oggetti» con EN selezionato).
+- Vista ad albero: zoom più nitido con CSS `zoom` (niente sfocatura da `transform: scale`); più spazio tra i nodi; hint layout localizzati.
+- UI obiettivi: i campi rate non coprono più i nomi; il select «Budget» power shard non tronca più il testo.
+- Default: UI inglese e formato numeri en-US per nuove installazioni; con budget shard limitato l’auto-plan resta al 100% OC.
+- I nomi degli step auto-generati usano il nome localizzato dell’oggetto nella lingua attiva.
+- README: sezione Funzionalità riscritta (auto-plan, vincoli, albero navigabile) in EN e IT.
 
 ## [1.58.6] - 2026-08-01
 

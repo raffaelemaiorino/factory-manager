@@ -453,6 +453,15 @@
                 <p class="page-subtitle" id="energy-detail-meta"></p>
               </div>
               <div class="production-detail-actions">
+                <button
+                  type="button"
+                  class="btn btn-tree"
+                  id="btn-energy-tree-view"
+                  aria-pressed="false"
+                >
+                  <i class="fa-solid fa-code-fork" aria-hidden="true"></i>
+                  <span data-i18n="energy.treeView">Tree view</span>
+                </button>
                 <button type="button" class="btn btn-primary" id="btn-add-energy-extraction">
                   <i class="fa-solid fa-hammer" aria-hidden="true"></i>
                   <span data-i18n="energy.addExtraction">Aggiungi estrazione</span>
@@ -680,6 +689,29 @@
               data-i18n-placeholder="modals.productionCreatePlaceholder"
             />
           </div>
+          <div class="form-field">
+            <label data-i18n="modals.productionCreateTargetProducts">Target products</label>
+            <div id="production-create-targets-list" class="production-targets-list"></div>
+            <div class="form-inline-row production-create-target-row">
+              <button type="button" class="btn btn-ghost" id="production-create-pick-product" data-i18n="modals.productionCreateAddProduct">
+                Add product
+              </button>
+            </div>
+          </div>
+          <p class="form-hint" data-i18n="modals.productionCreateAutoPlanHint">
+            Add one or more products with rates — the plan auto-adds machines and extractions, and shared intermediates are combined.
+          </p>
+          <div class="form-option" id="production-create-sink-option">
+            <label class="form-option-label" for="production-create-sink-byproducts">
+              <input type="checkbox" id="production-create-sink-byproducts" />
+              <span class="form-option-copy">
+                <span class="form-option-title" data-i18n="production.sinkByproducts">Sink byproducts</span>
+                <span class="form-option-hint" data-i18n="production.sinkByproductsHint">
+                  Automatically dispose unused secondary outputs (package fluids, sink solids).
+                </span>
+              </span>
+            </label>
+          </div>
           <p class="form-error hidden" id="production-create-error"></p>
           <div class="modal-actions">
             <button type="button" class="btn btn-ghost" id="production-create-cancel" data-i18n="common.cancel">
@@ -702,6 +734,39 @@
             <label for="energy-chain-name" data-i18n="common.name">Nome</label>
             <input type="text" id="energy-chain-name" required autocomplete="off" placeholder="Es. Centrale a carbone" data-i18n-placeholder="modals.energyCreatePlaceholder" />
           </div>
+          <div class="form-field">
+            <label for="energy-create-target-mw" data-i18n="energy.targetMw">Target MW</label>
+            <input type="text" id="energy-create-target-mw" class="production-config-decimal-input" inputmode="decimal" autocomplete="off" placeholder="750" />
+          </div>
+          <div class="form-field">
+            <label for="energy-create-generator" data-i18n="energy.generatorType">Generator</label>
+            <select id="energy-create-generator"></select>
+          </div>
+          <div class="form-field">
+            <label for="energy-create-fuel" data-i18n="common.fuel">Fuel</label>
+            <select id="energy-create-fuel"></select>
+          </div>
+          <div class="form-field">
+            <label for="energy-create-power-shard-mode" data-i18n="production.powerShardsLimit">Power shards</label>
+            <div class="production-plan-constraint-controls">
+              <select id="energy-create-power-shard-mode" data-energy-setting="power-shard-mode">
+                <option value="limited" data-i18n="production.powerShardsLimited" selected>Budget</option>
+                <option value="unlimited" data-i18n="production.powerShardsUnlimited">Unlimited</option>
+              </select>
+              <input
+                type="number"
+                id="energy-create-power-shard-budget"
+                class="production-target-rate-input"
+                data-energy-setting="power-shard-budget"
+                min="0"
+                step="1"
+                value="0"
+                aria-label="Power shard budget"
+                data-i18n-aria="production.powerShardsBudgetAria"
+              />
+            </div>
+          </div>
+          <p class="form-hint" data-i18n="energy.autoPlanHint">Leave MW blank for an empty plan. With MW + fuel, generators and supply are auto-built.</p>
           <p class="form-error hidden" id="energy-create-error"></p>
           <div class="modal-actions">
             <button type="button" class="btn btn-ghost" id="energy-create-cancel" data-i18n="common.cancel">Annulla</button>

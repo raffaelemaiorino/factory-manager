@@ -141,7 +141,9 @@
     "emptySearch": "검색과 일치하는 자원이 없습니다.",
     "emptyCategory": "이 카테고리에 자원이 없습니다.",
     "errorLoad": "자원 로드 오류.",
-    "editAria": "{name} 편집"
+    "editAria": "{name} 편집",
+    "itemsCountOne": "{count} item",
+    "itemsCountMany": "{count} items"
   },
   "production": {
     "title": "생산",
@@ -238,7 +240,35 @@
     "linkCoveredByExtractions": "채굴로 충당",
     "linkChainExcess": "체인 잉여: {rate}",
     "linkInsufficient": "불충분: {rate}",
-    "surplusFree": "여유 {rate}"
+    "surplusFree": "여유 {rate}",
+    "sectionTargets": "Plan targets",
+    "targetsHint": "Changing targets or constraints rebuilds machines, extractions, and links from default recipes.",
+    "addTarget": "Add target",
+    "emptyTargets": "No targets yet. Add products to auto-build this plan.",
+    "removeTargetAria": "Remove target {name}",
+    "targetRateAria": "Target rate for {name}",
+    "powerShardsLimit": "Power shards",
+    "powerShardsLimited": "Budget",
+    "powerShardsUnlimited": "Unlimited",
+    "powerShardsBudgetAria": "Power shard budget",
+    "maxBeltMk": "Highest belt",
+    "maxPipeMk": "Highest pipe",
+    "summaryBuild": "Build",
+    "summaryClock": "Clock",
+    "buildMachinesOne": "{count} machine",
+    "buildMachinesMany": "{count} machines",
+    "buildNodesOne": "{count} node",
+    "buildNodesMany": "{count} nodes",
+    "buildAtClock": "{overclock}%",
+    "buildManifolds": "{count} manifolds · {banks}",
+    "buildManifoldBank": "Bank {index}: {count}×",
+    "buildManifoldCount": "{count} manifold groups",
+    "buildSplitHint": "Split into {count} manifolds ({banks}) for belt/pipe throughput",
+    "buildSplitReason": "Needs {count} manifolds — {item} exceeds Mk{mk} {kind} ({capacity}/min)",
+    "transportBelt": "belt",
+    "transportPipe": "pipe",
+    "sinkByproducts": "Sink byproducts",
+    "sinkByproductsHint": "Automatically dispose unused secondary outputs (package fluids, sink solids)."
   },
   "energy": {
     "title": "전력",
@@ -276,7 +306,18 @@
     "pickerNoGenerators": "사용 가능한 발전기가 없습니다.",
     "defaultWaterExtractor": "물 추출기",
     "defaultOilExtractor": "유정 추출기",
-    "defaultMiner": "Miner"
+    "defaultMiner": "Miner",
+    "targetMw": "Target MW",
+    "generatorType": "Generator",
+    "generatorCoal": "Coal generator",
+    "generatorFuel": "Fuel generator",
+    "generatorNuclear": "Nuclear generator",
+    "autoPlanHint": "Leave MW blank for an empty plan. With MW + fuel, generators and supply are auto-built.",
+    "sectionTarget": "Power target",
+    "replan": "Rebuild plan",
+    "targetsHint": "Changing MW, generator, or fuel rebuilds generators, extractions, and linked fuel production.",
+    "invalidTargetMw": "Enter a valid target MW greater than zero.",
+    "invalidGeneratorFuel": "Choose a generator and fuel for auto-plan."
   },
   "settings": {
     "title": "설정",
@@ -346,7 +387,15 @@
     "detailNoSchemas": "이 자원에 등록된 생산 레시피가 없습니다.",
     "resourceNotFound": "자원을 찾을 수 없습니다.",
     "detailLoadError": "상세 로드 오류.",
-    "alertTitle": "Notice"
+    "alertTitle": "Notice",
+    "productionCreateTargetProduct": "Target product",
+    "productionCreateTargetRate": "Target rate (/min)",
+    "productionCreatePickProduct": "Choose product",
+    "productionCreateClearProduct": "Clear",
+    "productionCreateAutoPlanHint": "Add one or more products with rates — the plan auto-adds machines and extractions, and shared intermediates are combined.",
+    "productionCreateTargetProducts": "Target products",
+    "productionCreateAddProduct": "Add product",
+    "productionCreateRemoveTargetAria": "Remove {name}"
   },
   "legal": {
     "title": "법적 정보, 귀속 및 면책 조항",
@@ -449,7 +498,20 @@
     "emptyGroups": "그룹 트리에 표시할 노드가 없습니다.",
     "emptyGroup": "그룹 «{name}»에 노드가 없습니다.",
     "emptyTree": "노드가 없습니다. 채굴 또는 자원 단계를 추가하세요.",
-    "highlightStepAria": "단계 {name} 강조"
+    "highlightStepAria": "단계 {name} 강조",
+    "hint": "Drag boxes to arrange the layout. Positions are remembered automatically for this plan.",
+    "hintGroups": "Group tree: only main inputs/outputs between groups. Drag boxes to arrange the layout. Positions are remembered automatically for this plan (group view).",
+    "hintGroup": "Group «{name}». Drag boxes to arrange the layout. Positions are remembered automatically for this plan and group.",
+    "beltOk": "Fits on {count}× Mk.{mk}",
+    "beltOver": "Needs {count}× Mk.{mk} ({rate}/min > {capacity}/min)",
+    "pipeOk": "Fits on {count}× Pipe Mk.{mk}",
+    "pipeOver": "Needs {count}× Pipe Mk.{mk} ({rate}/min > {capacity}/min)",
+    "detailSimple": "Simple",
+    "detailComplex": "Complex",
+    "detailSimpleTitle": "Show machine count and clock speed only",
+    "detailComplexTitle": "Show belt/pipe manifold banks when throughput needs a split",
+    "detailModeAria": "Tree detail mode",
+    "sink": "AWESOME Sink"
   },
   "confirm": {
     "deleteResourceStepTitle": "자원 단계 삭제",
@@ -476,7 +538,9 @@
     "pickerExtractEmpty": "채굴 가능한 자원을 찾을 수 없습니다.",
     "importTypeMismatchTitle": "Incompatible plan",
     "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
-    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again.",
+    "invalidTargetRate": "Enter a valid target rate (/min).",
+    "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
     "noResources": "자원을 찾을 수 없습니다."

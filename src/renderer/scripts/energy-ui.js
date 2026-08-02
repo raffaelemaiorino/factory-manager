@@ -45,6 +45,8 @@
   let energyChainSummaries = new Map();
   let activeEnergyChainId = null;
   let activeEnergyDetail = null;
+  let energyDetailViewMode = 'editor';
+  let energyGraphHandle = null;
   let energyExtractionItems = [];
   let energyGeneratorCatalog = [];
   let itemNameBySlug = new Map();
@@ -1068,10 +1070,223 @@
       </article>`;
   }
 
+  function disposeEnergyGraph() {
+    if (energyGraphHandle?.disconnect) {
+      energyGraphHandle.disconnect();
+    }
+    energyGraphHandle = null;
+  }
+
+  function isEnergyTreeViewMode() {
+    return energyDetailViewMode === 'tree';
+  }
+
+  function updateEnergyTreeButtonState() {
+    const btn = document.getElementById('btn-energy-tree-view');
+    const addExtractionBtn = document.getElementById('btn-add-energy-extraction');
+    const addGeneratorBtn = document.getElementById('btn-add-energy-generator');
+    const actionsEl = document.querySelector('#view-energy-detail .production-detail-actions');
+    if (!btn) return;
+
+    const isTree = isEnergyTreeViewMode();
+    const iconClass = isTree ? 'fa-align-right' : 'fa-code-fork';
+    const label = isTree ? t('production.backToEditor') : t('energy.treeView');
+    btn.classList.toggle('btn-tree--active', isTree);
+    btn.innerHTML = `<i class="fa-solid ${iconClass}" aria-hidden="true"></i><span>${escapeHtml(label)}</span>`;
+    btn.setAttribute('aria-pressed', isTree ? 'true' : 'false');
+    btn.title = isTree ? t('production.backToEditorPlan') : t('energy.treeViewTitle');
+
+    actionsEl?.classList.toggle('production-detail-actions--tree-view', isTree);
+    addExtractionBtn?.toggleAttribute('hidden', isTree);
+    addGeneratorBtn?.toggleAttribute('hidden', isTree);
+    document.getElementById('view-energy-detail')?.classList.toggle('view--tree-mode', isTree);
+  }
+
+  function toggleEnergyTreeView() {
+    energyDetailViewMode = isEnergyTreeViewMode() ? 'editor' : 'tree';
+    updateEnergyTreeButtonState();
+    if (activeEnergyDetail) {
+      renderEnergyDetailContent(activeEnergyDetail);
+    }
+  }
+
+  function computeGeneratorBuildInfo(generator) {
+    const machines = Math.max(1, Math.round(Number(generator?.machine_count) || 1));
+    const overclock = Number(generator?.overclock) || 100;
+    const chain = { max_belt_mk: 6, max_pipe_mk: 2 };
+    const inputs = [];
+    if ((generator.fuel_consumption ?? 0) > 0) {
+      inputs.push({
+        item_slug: generator.fuel_item_slug,
+        item_name: generator.fuel_item?.name || generator.fuel_label,
+        is_fluid: Boolean(generator.fuel_is_fluid || generator.fuel_item?.is_fluid),
+        rate: generator.fuel_consumption,
+      });
+    }
+    if ((generator.water_consumption ?? 0) > 0) {
+      inputs.push({
+        item_slug: 'water',
+        item_name: generator.water_item?.name || 'water',
+        is_fluid: true,
+        rate: generator.water_consumption,
+      });
+    }
+
+    if (typeof getPlanTransportCapacity === 'function' && typeof distributeMachinesAcrossManifolds === 'function') {
+      let manifoldsNeeded = 1;
+      const limiting = [];
+      for (const io of inputs) {
+        if (!(io.rate > 0)) continue;
+        const transport = getPlanTransportCapacity(Boolean(io.is_fluid), chain);
+        const lines = Math.max(1, Math.ceil(io.rate / transport.capacity - 1e-9));
+        if (lines > manifoldsNeeded) {
+          manifoldsNeeded = lines;
+          limiting.length = 0;
+          limiting.push({ ...io, direction: 'input', ...transport, lines });
+        }
+      }
+      manifoldsNeeded = Math.min(machines, manifoldsNeeded);
+      const banks = distributeMachinesAcrossManifolds(machines, manifoldsNeeded);
+      return {
+        machines,
+        overclock,
+        buildingName: generator.building_name || t('common.generator'),
+        buildingSlug: generator.building_slug,
+        buildingImage: generator.building_image,
+        manifoldCount: banks.length,
+        banks,
+        needsSplit: banks.length > 1,
+        limiting,
+      };
+    }
+
+    return {
+      machines,
+      overclock,
+      buildingName: generator.building_name || t('common.generator'),
+      buildingSlug: generator.building_slug,
+      buildingImage: generator.building_image,
+      manifoldCount: 1,
+      banks: [machines],
+      needsSplit: false,
+      limiting: [],
+    };
+  }
+
+  function getEnergyGraphHelpers(detail) {
+    const UI = productionUi();
+    const chain = detail.chain ?? {};
+    const maxBeltMk = 6;
+    const maxPipeMk = 2;
+    const beltRates = { 1: 60, 2: 120, 3: 270, 4: 480, 5: 780, 6: 1200 };
+    const pipeRates = { 1: 300, 2: 600 };
+
+    return {
+      chainId: `energy-${chain.id ?? 'x'}`,
+      escapeHtml,
+      formatProductionValue: UI.formatProductionValue ?? ((v) => String(v)),
+      formatRateWithUnit: UI.formatRateWithUnit ?? ((v, u) => `${v}${u}`),
+      formatDisplayNumber: UI.formatDisplayInteger ?? ((v) => String(v)),
+      getExtractionOutputRate: (extraction) => Number(extraction?.output_rate) || 0,
+      getExtractionDisplayName: (extraction, all) => getExtractionDisplayName(extraction, all),
+      computeExtractionBuildInfo: (extraction) =>
+        typeof computeExtractionBuildInfo === 'function'
+          ? computeExtractionBuildInfo(extraction, { max_belt_mk: maxBeltMk, max_pipe_mk: maxPipeMk })
+          : {
+              machines: extraction.node_count,
+              overclock: extraction.overclock,
+              isExtraction: true,
+              needsSplit: false,
+              banks: [extraction.node_count],
+              manifoldCount: 1,
+            },
+      computeGeneratorBuildInfo,
+      renderBuildStatsBadge: (info, options) =>
+        typeof renderBuildStatsBadge === 'function'
+          ? renderBuildStatsBadge(info, {
+              ...options,
+              detailMode: getProductionTreeDetailMode(),
+            })
+          : '',
+      treeDetailMode: getProductionTreeDetailMode(),
+      roundProduction: (value) => window.ProductionScale.roundProduction(value),
+      linkTolerance: UI.LINK_BALANCE_TOLERANCE ?? 0.05,
+      extractions: detail.extractions ?? [],
+      describeEdgeTransport: (edge) => {
+        if (edge.kind === 'power-link' || edge.kind === 'objective-link' || !(edge.rate > 0)) {
+          return null;
+        }
+        const isFluid = Boolean(edge.isFluid);
+        const mk = isFluid ? maxPipeMk : maxBeltMk;
+        const capacity = isFluid ? pipeRates[mk] || 600 : beltRates[mk] || 1200;
+        const rate = Number(edge.rate) || 0;
+        const count = Math.max(1, Math.ceil(rate / capacity - 1e-9));
+        return {
+          isFluid,
+          mk,
+          capacity,
+          rate,
+          count,
+          over: rate > capacity + 1e-9,
+        };
+      },
+    };
+  }
+
+  function readEnergyPowerShardLimitFromUi(prefix) {
+    const mode = document.getElementById(`${prefix}-power-shard-mode`)?.value || 'limited';
+    const budgetRaw = document.getElementById(`${prefix}-power-shard-budget`)?.value;
+    return mode === 'unlimited' ? -1 : Math.max(0, Math.round(Number(budgetRaw) || 0));
+  }
+
+  function renderEnergyPowerShardControls(chain = {}, { idPrefix = 'energy-plan' } = {}) {
+    const shardLimit = chain.power_shard_limit;
+    const shardUnlimited = shardLimit == null || Number(shardLimit) < 0;
+    return `
+      <div class="production-plan-constraint">
+        <label for="${idPrefix}-power-shard-mode">${escapeHtml(t('production.powerShardsLimit'))}</label>
+        <div class="production-plan-constraint-controls">
+          <select id="${idPrefix}-power-shard-mode" data-energy-setting="power-shard-mode">
+            <option value="limited" ${!shardUnlimited ? 'selected' : ''}>${escapeHtml(t('production.powerShardsLimited'))}</option>
+            <option value="unlimited" ${shardUnlimited ? 'selected' : ''}>${escapeHtml(t('production.powerShardsUnlimited'))}</option>
+          </select>
+          <input
+            type="number"
+            id="${idPrefix}-power-shard-budget"
+            class="production-target-rate-input"
+            data-energy-setting="power-shard-budget"
+            min="0"
+            step="1"
+            value="${escapeHtml(String(shardUnlimited ? 0 : Math.max(0, Number(shardLimit) || 0)))}"
+            ${shardUnlimited ? 'disabled' : ''}
+            aria-label="${escapeHtml(t('production.powerShardsBudgetAria'))}"
+          />
+        </div>
+      </div>`;
+  }
+
+  function bindEnergyPowerShardControls(root = document) {
+    const modeEl = root.querySelector?.(
+      '#energy-plan-power-shard-mode, #energy-create-power-shard-mode, [data-energy-setting="power-shard-mode"]'
+    );
+    const budgetEl = root.querySelector?.(
+      '#energy-plan-power-shard-budget, #energy-create-power-shard-budget, [data-energy-setting="power-shard-budget"]'
+    );
+    if (!modeEl || !budgetEl) return;
+    const sync = () => {
+      budgetEl.disabled = modeEl.value === 'unlimited';
+    };
+    modeEl.onchange = sync;
+    sync();
+  }
+
   function renderEnergyDetailContent(detail) {
+    disposeEnergyGraph();
+
     if (!detail?.chain) {
       energyDetailBody.innerHTML = `<p class="detail-empty">${escapeHtml(t('energy.notFound'))}</p>`;
       document.getElementById('energy-detail-external-summary').innerHTML = '';
+      updateEnergyTreeButtonState();
       return;
     }
 
@@ -1091,6 +1306,21 @@
     document.getElementById('energy-detail-meta').textContent = `${extPart}, ${genPart}`;
     document.getElementById('energy-detail-external-summary').innerHTML = renderEnergySummary(detail);
     syncEnergyBalanceCache();
+    updateEnergyTreeButtonState();
+
+    if (isEnergyTreeViewMode()) {
+      energyGraphHandle = window.ProductionGraph.renderEnergyGraph(
+        energyDetailBody,
+        detail,
+        getEnergyGraphHelpers(detail),
+        {
+          onDetailModeChange: () => {
+            if (activeEnergyDetail) renderEnergyDetailContent(activeEnergyDetail);
+          },
+        }
+      );
+      return;
+    }
 
     const extractionsHtml = extractions.length
       ? extractions.map((ext) => renderEnergyExtraction(ext, extractions)).join('')
@@ -1101,6 +1331,7 @@
       : `<p class="detail-empty production-schemas-empty">${escapeHtml(t('energy.emptyGenerators'))}</p>`;
 
     energyDetailBody.innerHTML = `
+      ${renderEnergyTargetsEditor(detail.chain)}
       <div class="production-detail-columns">
         <section class="production-extractions-section">
           <h3 class="production-section-header">${escapeHtml(t('energy.sectionExtractions'))}</h3>
@@ -1114,16 +1345,37 @@
 
     productionUi().lockConfigNumberInputsIn?.(energyDetailBody);
     productionUi().lockConfigSlidersIn?.(energyDetailBody);
+    bindEnergyPowerShardControls(energyDetailBody);
+
+    const planGen = document.getElementById('energy-plan-generator');
+    const planFuel = document.getElementById('energy-plan-fuel');
+    if (planGen && planFuel) {
+      planGen.addEventListener('change', () => {
+        const def = window.EnergyScale?.getGeneratorDefinition?.(planGen.value);
+        planFuel.innerHTML = (def?.fuelOptions || [])
+          .map(
+            (opt) =>
+              `<option value="${escapeHtml(opt.slug)}">${escapeHtml(resolveFuelOptionLabel(opt))}</option>`
+          )
+          .join('');
+      });
+    }
+    document.getElementById('btn-energy-replan')?.addEventListener('click', () => {
+      applyEnergyPlanTargetsFromUi();
+    });
   }
 
   async function openEnergyDetail(chainId) {
     activeEnergyChainId = chainId;
     activeEnergyDetail = null;
+    energyDetailViewMode = 'editor';
+    disposeEnergyGraph();
     energyDetailBody.innerHTML = `<p class="loading">${escapeHtml(t('common.loading'))}</p>`;
     document.getElementById('energy-detail-heading').textContent = '—';
     document.getElementById('energy-detail-breadcrumb').textContent = '—';
     document.getElementById('energy-detail-meta').textContent = '';
     document.getElementById('energy-detail-external-summary').innerHTML = '';
+    updateEnergyTreeButtonState();
     window.switchView('energy-detail');
 
     try {
@@ -1137,6 +1389,9 @@
   }
 
   function closeEnergyDetail() {
+    disposeEnergyGraph();
+    energyDetailViewMode = 'editor';
+    updateEnergyTreeButtonState();
     window.switchView('energy');
     loadEnergyChainSummaries().then(() => renderEnergyChains()).catch(console.error);
   }
@@ -1638,9 +1893,146 @@
     energyCreateError.classList.add('hidden');
   }
 
+  function populateEnergyCreateGeneratorSelects() {
+    const genSelect = document.getElementById('energy-create-generator');
+    const fuelSelect = document.getElementById('energy-create-fuel');
+    if (!genSelect || !fuelSelect) return;
+
+    const catalog = window.EnergyScale?.getSupportedGenerators?.() || [];
+    genSelect.innerHTML = catalog
+      .map((gen) => {
+        const label =
+          gen.slug === 'generator-coal'
+            ? t('energy.generatorCoal')
+            : gen.slug === 'generator-fuel'
+              ? t('energy.generatorFuel')
+              : gen.slug === 'generator-nuclear'
+                ? t('energy.generatorNuclear')
+                : gen.slug;
+        return `<option value="${escapeHtml(gen.slug)}">${escapeHtml(label)}</option>`;
+      })
+      .join('');
+
+    const syncFuels = () => {
+      const def = window.EnergyScale?.getGeneratorDefinition?.(genSelect.value);
+      const options = def?.fuelOptions || [];
+      fuelSelect.innerHTML = options
+        .map(
+          (opt) =>
+            `<option value="${escapeHtml(opt.slug)}">${escapeHtml(resolveFuelOptionLabel(opt))}</option>`
+        )
+        .join('');
+    };
+    genSelect.onchange = syncFuels;
+    if (!genSelect.value && catalog[0]) genSelect.value = catalog[0].slug;
+    syncFuels();
+  }
+
+  function renderEnergyTargetsEditor(chain = {}) {
+    const catalog = window.EnergyScale?.getSupportedGenerators?.() || [];
+    const buildingSlug = chain.target_building_slug || catalog[0]?.slug || 'generator-coal';
+    const def = window.EnergyScale?.getGeneratorDefinition?.(buildingSlug);
+    const fuelSlug = chain.target_fuel_slug || def?.fuelOptions?.[0]?.slug || 'coal';
+    const genOptions = catalog
+      .map((gen) => {
+        const label =
+          gen.slug === 'generator-coal'
+            ? t('energy.generatorCoal')
+            : gen.slug === 'generator-fuel'
+              ? t('energy.generatorFuel')
+              : gen.slug === 'generator-nuclear'
+                ? t('energy.generatorNuclear')
+                : gen.slug;
+        return `<option value="${escapeHtml(gen.slug)}" ${
+          gen.slug === buildingSlug ? 'selected' : ''
+        }>${escapeHtml(label)}</option>`;
+      })
+      .join('');
+    const fuelOptions = (def?.fuelOptions || [])
+      .map(
+        (opt) =>
+          `<option value="${escapeHtml(opt.slug)}" ${
+            opt.slug === fuelSlug ? 'selected' : ''
+          }>${escapeHtml(resolveFuelOptionLabel(opt))}</option>`
+      )
+      .join('');
+    const mwValue =
+      chain.target_power_mw != null && Number(chain.target_power_mw) > 0
+        ? String(chain.target_power_mw)
+        : '';
+
+    return `
+      <section class="production-targets-section energy-targets-section">
+        <div class="production-section-header-row">
+          <h3 class="production-section-header">${escapeHtml(t('energy.sectionTarget'))}</h3>
+          <button type="button" class="btn btn-primary" id="btn-energy-replan">
+            ${escapeHtml(t('energy.replan'))}
+          </button>
+        </div>
+        <div class="production-plan-constraints">
+          <div class="production-plan-constraint">
+            <label for="energy-plan-target-mw">${escapeHtml(t('energy.targetMw'))}</label>
+            <input
+              type="text"
+              id="energy-plan-target-mw"
+              class="production-target-rate-input production-config-decimal-input"
+              inputmode="decimal"
+              value="${escapeHtml(mwValue)}"
+            />
+          </div>
+          <div class="production-plan-constraint">
+            <label for="energy-plan-generator">${escapeHtml(t('energy.generatorType'))}</label>
+            <select id="energy-plan-generator">${genOptions}</select>
+          </div>
+          <div class="production-plan-constraint">
+            <label for="energy-plan-fuel">${escapeHtml(t('common.fuel'))}</label>
+            <select id="energy-plan-fuel">${fuelOptions}</select>
+          </div>
+          ${renderEnergyPowerShardControls(chain, { idPrefix: 'energy-plan' })}
+        </div>
+        <p class="production-targets-hint">${escapeHtml(t('energy.targetsHint'))}</p>
+      </section>`;
+  }
+
+  async function applyEnergyPlanTargetsFromUi() {
+    if (!activeEnergyChainId) return;
+    const mwRaw = document.getElementById('energy-plan-target-mw')?.value;
+    const buildingSlug = document.getElementById('energy-plan-generator')?.value;
+    const fuelSlug = document.getElementById('energy-plan-fuel')?.value;
+    const powerShardLimit = readEnergyPowerShardLimitFromUi('energy-plan');
+    const targetMw = Number(String(mwRaw ?? '').replace(',', '.'));
+    if (!Number.isFinite(targetMw) || targetMw <= 0) {
+      await window.showAlert?.({
+        title: t('errors.saveFailed'),
+        message: t('energy.invalidTargetMw'),
+      });
+      return;
+    }
+    try {
+      activeEnergyDetail = await window.satisfactory.setEnergyChainTargets(activeEnergyChainId, {
+        target_power_mw: targetMw,
+        target_building_slug: buildingSlug,
+        target_fuel_slug: fuelSlug,
+        power_shard_limit: powerShardLimit,
+      });
+      renderEnergyDetailContent(activeEnergyDetail);
+      loadEnergyChains().catch(console.error);
+    } catch (err) {
+      console.error('Energy replan error:', err);
+      await window.showAlert?.({
+        title: t('errors.saveFailed'),
+        message: err.message || t('errors.saveFailed'),
+      });
+    }
+  }
+
   function openEnergyCreateModal() {
     hideEnergyCreateError();
     energyCreateForm.reset();
+    ensureItemNameCache()
+      .then(() => populateEnergyCreateGeneratorSelects())
+      .catch(() => populateEnergyCreateGeneratorSelects());
+    bindEnergyPowerShardControls(energyCreateModal);
     energyCreateModal.classList.remove('hidden');
     energyCreateModal.setAttribute('aria-hidden', 'false');
     document.getElementById('energy-chain-name').focus();
@@ -1703,6 +2095,7 @@
     document.getElementById('energy-detail-back').addEventListener('click', closeEnergyDetail);
     document.getElementById('btn-add-energy-extraction').addEventListener('click', openEnergyExtractionPickerModal);
     document.getElementById('btn-add-energy-generator').addEventListener('click', openEnergyGeneratorPickerModal);
+    document.getElementById('btn-energy-tree-view')?.addEventListener('click', toggleEnergyTreeView);
 
     energyCreateModal.addEventListener('click', (e) => {
       if (e.target === energyCreateModal) closeEnergyCreateModal();
@@ -1725,8 +2118,28 @@
         showEnergyCreateError(t('errors.nameRequired'));
         return;
       }
+      const mwRaw = document.getElementById('energy-create-target-mw')?.value?.trim() || '';
+      const buildingSlug = document.getElementById('energy-create-generator')?.value || '';
+      const fuelSlug = document.getElementById('energy-create-fuel')?.value || '';
+      const powerShardLimit = readEnergyPowerShardLimitFromUi('energy-create');
+      const payload = { name, power_shard_limit: powerShardLimit };
+      if (mwRaw) {
+        const targetMw = Number(String(mwRaw).replace(',', '.'));
+        if (!Number.isFinite(targetMw) || targetMw <= 0) {
+          showEnergyCreateError(t('energy.invalidTargetMw'));
+          return;
+        }
+        if (!buildingSlug || !fuelSlug) {
+          showEnergyCreateError(t('energy.invalidGeneratorFuel'));
+          return;
+        }
+        payload.auto_plan = true;
+        payload.target_power_mw = targetMw;
+        payload.target_building_slug = buildingSlug;
+        payload.target_fuel_slug = fuelSlug;
+      }
       try {
-        const chain = await window.satisfactory.createEnergyChain({ name });
+        const chain = await window.satisfactory.createEnergyChain(payload);
         closeEnergyCreateModal();
         energyChains.unshift(chain);
         renderEnergyChains();

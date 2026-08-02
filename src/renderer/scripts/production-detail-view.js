@@ -44,6 +44,7 @@ function renderProductionDetailContent(detail) {
   const stepsHtml = renderProductionStepsList(steps, steps, detail.group_marks ?? {});
 
   productionDetailBody.innerHTML = `
+    ${renderProductionTargetsEditor(detail.targets ?? [])}
     <div class="production-detail-columns">
       <section class="production-extractions-section">
         <h3 class="production-section-header">${escapeHtml(t('production.sectionExtractions'))}</h3>
@@ -451,6 +452,7 @@ function closeProductionDetail() {
   persistProductionUiState(activeProductionChainId);
   productionDetailViewMode = 'editor';
   productionTreeGroupKey = null;
+  updateProductionTreeButtonState();
   switchView('production');
   loadProductionChainSummaries()
     .then(() => renderProductionChains())
@@ -751,6 +753,38 @@ async function handleResourceSelection(itemId) {
     return;
   }
 
+  if (resourcePickerMode === 'create-target') {
+    try {
+      const detail = await window.satisfactory.getResourceDetail(itemId);
+      const item = detail?.item;
+      if (!item) {
+        throw new Error(t('modals.resourceNotFound'));
+      }
+      addProductionCreateTargetItem(item);
+      closeResourcePickerModal();
+    } catch (err) {
+      console.error('Create-target selection error:', err);
+      showProductionCreateError(err.message || t('errors.createFailed'));
+    }
+    return;
+  }
+
+  if (resourcePickerMode === 'plan-target') {
+    try {
+      const detail = await window.satisfactory.getResourceDetail(itemId);
+      const item = detail?.item;
+      if (!item) {
+        throw new Error(t('modals.resourceNotFound'));
+      }
+      closeResourcePickerModal();
+      await addPlanTargetItem(item);
+    } catch (err) {
+      console.error('Plan-target selection error:', err);
+      await showAlert(err.message || t('errors.saveFailed'));
+    }
+    return;
+  }
+
   try {
     await addProductionStepForItem(itemId);
   } catch (err) {
@@ -783,12 +817,327 @@ function hideProductionCreateError() {
   productionCreateError.classList.add('hidden');
 }
 
+let productionCreateTargets = [];
+
+function renderProductionCreateTargetsList() {
+  const list = document.getElementById('production-create-targets-list');
+  if (!list) return;
+
+  if (!productionCreateTargets.length) {
+    list.innerHTML = `<p class="form-hint">${escapeHtml(t('production.emptyTargets'))}</p>`;
+    return;
+  }
+
+  list.innerHTML = productionCreateTargets
+    .map((target, index) => {
+      const img = target.image
+        ? `<img src="${escapeHtml(target.image)}" alt="" />`
+        : '<span class="resource-img resource-img--placeholder"></span>';
+      return `
+        <div class="production-target-row" data-index="${index}">
+          ${img}
+          <span class="production-target-row-name">${escapeHtml(target.name)}</span>
+          <input
+            type="number"
+            class="production-target-rate-input"
+            data-create-target-rate="${index}"
+            min="0.01"
+            step="any"
+            value="${escapeHtml(String(target.rate))}"
+            aria-label="${escapeHtml(t('production.targetRateAria', { name: target.name }))}"
+          />
+          <button
+            type="button"
+            class="btn btn-ghost"
+            data-create-target-remove="${index}"
+            aria-label="${escapeHtml(t('modals.productionCreateRemoveTargetAria', { name: target.name }))}"
+          >×</button>
+        </div>`;
+    })
+    .join('');
+}
+
+function resetProductionCreateTargetFields() {
+  productionCreateTargets = [];
+  renderProductionCreateTargetsList();
+}
+
+function addProductionCreateTargetItem(item) {
+  if (!item?.id) return;
+  const existing = productionCreateTargets.find((entry) => entry.id === item.id);
+  if (existing) return;
+  productionCreateTargets.push({
+    id: item.id,
+    name: item.name || item.slug || String(item.id),
+    image: item.image || null,
+    rate: 30,
+  });
+  renderProductionCreateTargetsList();
+}
+
+function removeProductionCreateTargetAt(index) {
+  productionCreateTargets.splice(index, 1);
+  renderProductionCreateTargetsList();
+}
+
+async function openCreateTargetPickerModal() {
+  pendingInsertAfterStepId = null;
+  resourcePickerMode = 'create-target';
+  document.getElementById('resource-picker-modal-title').textContent = t(
+    'modals.productionCreateAddProduct'
+  );
+  document.getElementById('resource-picker-search').value = '';
+  document.getElementById('resource-picker-count').textContent = '';
+  document.getElementById('resource-picker-list').innerHTML =
+    `<p class="loading">${escapeHtml(t('common.loadingResources'))}</p>`;
+  resourcePickerModal.classList.remove('hidden');
+  resourcePickerModal.setAttribute('aria-hidden', 'false');
+
+  try {
+    if (!pickerResourcesData.length) {
+      pickerResourcesData = await window.satisfactory.getResources();
+    }
+    renderResourcePickerList(pickerResourcesData);
+    document.getElementById('resource-picker-search').focus();
+  } catch (err) {
+    document.getElementById('resource-picker-list').innerHTML =
+      `<p class="empty-state">${escapeHtml(t('resources.errorLoad'))}</p>`;
+    console.error('Create-target picker load error:', err);
+  }
+}
+
 function openProductionCreateModal() {
   hideProductionCreateError();
   productionCreateForm.reset();
+  resetProductionCreateTargetFields();
   productionCreateModal.classList.remove('hidden');
   productionCreateModal.setAttribute('aria-hidden', 'false');
   document.getElementById('production-chain-name').focus();
+}
+
+function renderProductionTargetsEditor(targets = []) {
+  const chain = activeProductionDetail?.chain ?? {};
+  const shardLimit = chain.power_shard_limit;
+  const shardUnlimited = shardLimit == null || Number(shardLimit) < 0;
+  const rows = targets.length
+    ? targets
+        .map((target) => {
+          const name = target.item_name || target.item?.name || target.item_slug || '';
+          const image = target.item_image || target.item?.image || null;
+          const img = image
+            ? `<img src="${escapeHtml(image)}" alt="" />`
+            : '<span class="resource-img resource-img--placeholder"></span>';
+          return `
+            <div class="production-target-row" data-target-item-id="${target.item_id}">
+              ${img}
+              <span class="production-target-row-name">${escapeHtml(name)}</span>
+              <input
+                type="number"
+                class="production-target-rate-input"
+                data-plan-target-rate="${target.item_id}"
+                min="0.01"
+                step="any"
+                value="${escapeHtml(String(target.target_rate))}"
+                aria-label="${escapeHtml(t('production.targetRateAria', { name }))}"
+              />
+              <button
+                type="button"
+                class="btn btn-ghost"
+                data-plan-target-remove="${target.item_id}"
+                aria-label="${escapeHtml(t('production.removeTargetAria', { name }))}"
+              >×</button>
+            </div>`;
+        })
+        .join('')
+    : `<p class="detail-empty">${escapeHtml(t('production.emptyTargets'))}</p>`;
+
+  const beltOptions = [1, 2, 3, 4, 5, 6]
+    .map(
+      (mk) =>
+        `<option value="${mk}" ${Number(chain.max_belt_mk) === mk ? 'selected' : ''}>Mk.${mk}</option>`
+    )
+    .join('');
+  const pipeOptions = [1, 2]
+    .map(
+      (mk) =>
+        `<option value="${mk}" ${Number(chain.max_pipe_mk) === mk ? 'selected' : ''}>Mk.${mk}</option>`
+    )
+    .join('');
+
+  return `
+    <section class="production-targets-section">
+      <div class="production-section-header-row">
+        <h3 class="production-section-header">${escapeHtml(t('production.sectionTargets'))}</h3>
+        <button type="button" class="btn btn-ghost" id="btn-add-plan-target">
+          ${escapeHtml(t('production.addTarget'))}
+        </button>
+      </div>
+      <div id="production-plan-targets-list" class="production-targets-list">${rows}</div>
+      <div class="production-plan-constraints">
+        <div class="production-plan-constraint">
+          <label for="plan-power-shard-mode">${escapeHtml(t('production.powerShardsLimit'))}</label>
+          <div class="production-plan-constraint-controls">
+            <select id="plan-power-shard-mode" data-plan-setting="power-shard-mode">
+              <option value="limited" ${!shardUnlimited ? 'selected' : ''}>${escapeHtml(t('production.powerShardsLimited'))}</option>
+              <option value="unlimited" ${shardUnlimited ? 'selected' : ''}>${escapeHtml(t('production.powerShardsUnlimited'))}</option>
+            </select>
+            <input
+              type="number"
+              id="plan-power-shard-budget"
+              class="production-target-rate-input"
+              data-plan-setting="power-shard-budget"
+              min="0"
+              step="1"
+              value="${escapeHtml(String(shardUnlimited ? 0 : Math.max(0, Number(shardLimit) || 0)))}"
+              ${shardUnlimited ? 'disabled' : ''}
+              aria-label="${escapeHtml(t('production.powerShardsBudgetAria'))}"
+            />
+          </div>
+        </div>
+        <div class="production-plan-constraint">
+          <label for="plan-max-belt-mk">${escapeHtml(t('production.maxBeltMk'))}</label>
+          <select id="plan-max-belt-mk" data-plan-setting="max-belt-mk">${beltOptions}</select>
+        </div>
+        <div class="production-plan-constraint">
+          <label for="plan-max-pipe-mk">${escapeHtml(t('production.maxPipeMk'))}</label>
+          <select id="plan-max-pipe-mk" data-plan-setting="max-pipe-mk">${pipeOptions}</select>
+        </div>
+        <div class="form-option production-plan-sink-option">
+          <label class="form-option-label" for="plan-sink-byproducts">
+            <input
+              type="checkbox"
+              id="plan-sink-byproducts"
+              data-plan-setting="sink-byproducts"
+              ${Number(chain.sink_byproducts) ? 'checked' : ''}
+            />
+            <span class="form-option-copy">
+              <span class="form-option-title">${escapeHtml(t('production.sinkByproducts'))}</span>
+              <span class="form-option-hint">${escapeHtml(t('production.sinkByproductsHint'))}</span>
+            </span>
+          </label>
+        </div>
+      </div>
+      <p class="production-targets-hint">${escapeHtml(t('production.targetsHint'))}</p>
+    </section>`;
+}
+
+function collectCurrentPlanTargetsFromDetail() {
+  return (activeProductionDetail?.targets ?? []).map((target) => ({
+    item_id: target.item_id,
+    target_rate: Number(target.target_rate),
+  }));
+}
+
+let planTargetRateDebounce = null;
+
+async function applyPlanTargets(nextTargets) {
+  if (!activeProductionChainId) return;
+  try {
+    activeProductionDetail = await window.satisfactory.setProductionChainTargets(
+      activeProductionChainId,
+      nextTargets
+    );
+    renderProductionDetailContent(activeProductionDetail);
+  } catch (err) {
+    console.error('Plan targets update error:', err);
+    await showAlert({
+      title: t('errors.saveFailed'),
+      message: err.message || t('errors.saveFailed'),
+    });
+    if (activeProductionChainId) {
+      await refreshProductionDetail();
+    }
+  }
+}
+
+async function applyPlanSettingsFromUi() {
+  if (!activeProductionChainId || !activeProductionDetail?.chain) return;
+  const mode = document.getElementById('plan-power-shard-mode')?.value || 'limited';
+  const budgetRaw = document.getElementById('plan-power-shard-budget')?.value;
+  const beltMk = document.getElementById('plan-max-belt-mk')?.value;
+  const pipeMk = document.getElementById('plan-max-pipe-mk')?.value;
+  const powerShardLimit =
+    mode === 'unlimited' ? -1 : Math.max(0, Math.round(Number(budgetRaw) || 0));
+
+  const budgetInput = document.getElementById('plan-power-shard-budget');
+  if (budgetInput) budgetInput.disabled = mode === 'unlimited';
+
+  try {
+    await window.satisfactory.updateProductionChain(activeProductionChainId, {
+      power_shard_limit: powerShardLimit,
+      max_belt_mk: Number(beltMk),
+      max_pipe_mk: Number(pipeMk),
+      sink_byproducts: document.getElementById('plan-sink-byproducts')?.checked ? 1 : 0,
+    });
+    const targets = collectCurrentPlanTargetsFromDetail();
+    if (targets.length) {
+      await applyPlanTargets(targets);
+    } else {
+      await refreshProductionDetail();
+    }
+  } catch (err) {
+    console.error('Plan settings update error:', err);
+    await showAlert({
+      title: t('errors.saveFailed'),
+      message: err.message || t('errors.saveFailed'),
+    });
+    await refreshProductionDetail();
+  }
+}
+
+async function addPlanTargetItem(item) {
+  const current = collectCurrentPlanTargetsFromDetail();
+  if (current.some((entry) => entry.item_id === item.id)) {
+    return;
+  }
+  current.push({ item_id: item.id, target_rate: 30 });
+  await applyPlanTargets(current);
+}
+
+async function removePlanTargetItem(itemId) {
+  const next = collectCurrentPlanTargetsFromDetail().filter(
+    (entry) => entry.item_id !== Number(itemId)
+  );
+  await applyPlanTargets(next);
+}
+
+function schedulePlanTargetRateChange(itemId, rate) {
+  clearTimeout(planTargetRateDebounce);
+  planTargetRateDebounce = setTimeout(async () => {
+    const parsed = Number(rate);
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      await refreshProductionDetail();
+      return;
+    }
+    const next = collectCurrentPlanTargetsFromDetail().map((entry) =>
+      entry.item_id === Number(itemId) ? { ...entry, target_rate: parsed } : entry
+    );
+    await applyPlanTargets(next);
+  }, 350);
+}
+
+async function openPlanTargetPickerModal() {
+  pendingInsertAfterStepId = null;
+  resourcePickerMode = 'plan-target';
+  document.getElementById('resource-picker-modal-title').textContent = t('production.addTarget');
+  document.getElementById('resource-picker-search').value = '';
+  document.getElementById('resource-picker-count').textContent = '';
+  document.getElementById('resource-picker-list').innerHTML =
+    `<p class="loading">${escapeHtml(t('common.loadingResources'))}</p>`;
+  resourcePickerModal.classList.remove('hidden');
+  resourcePickerModal.setAttribute('aria-hidden', 'false');
+
+  try {
+    if (!pickerResourcesData.length) {
+      pickerResourcesData = await window.satisfactory.getResources();
+    }
+    renderResourcePickerList(pickerResourcesData);
+    document.getElementById('resource-picker-search').focus();
+  } catch (err) {
+    document.getElementById('resource-picker-list').innerHTML =
+      `<p class="empty-state">${escapeHtml(t('resources.errorLoad'))}</p>`;
+    console.error('Plan-target picker load error:', err);
+  }
 }
 
 function closeProductionCreateModal() {

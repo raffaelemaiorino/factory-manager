@@ -10,8 +10,9 @@
 const { loadAllLocalePacks, listBundledLocales } = require('./seeds/load-translations');
 const { SCIM_LOCALES } = require('./seeds/scim-locales');
 
-const DEFAULT_LOCALE = 'it';
-const FALLBACK_LOCALES = ['it', 'en'];
+const DEFAULT_LOCALE = 'it'; // baseline catalog language (seed source names)
+const UI_DEFAULT_LOCALE = 'en';
+const FALLBACK_LOCALES = ['en', 'it'];
 const I18N_SEED_VERSION = 4;
 const META_LOCALE = 'locale';
 const META_I18N_SEED = 'i18n_seed_version';
@@ -166,7 +167,7 @@ function normalizeLocale(locale) {
 }
 
 function getAppLocale(db) {
-  return normalizeLocale(getMeta(db, META_LOCALE) || DEFAULT_LOCALE);
+  return normalizeLocale(getMeta(db, META_LOCALE) || UI_DEFAULT_LOCALE);
 }
 
 function setAppLocale(db, persist, locale) {
@@ -543,7 +544,7 @@ function ensureI18n(db, persist, { force = false } = {}) {
   ensureI18nTables(db);
 
   if (!getMeta(db, META_LOCALE)) {
-    setMeta(db, META_LOCALE, DEFAULT_LOCALE);
+    setMeta(db, META_LOCALE, UI_DEFAULT_LOCALE);
   }
 
   const stored = Number(getMeta(db, META_I18N_SEED) || 0);
@@ -676,8 +677,9 @@ function getSchemaTranslation(db, schemaId, locale = getAppLocale(db)) {
   );
 }
 
-module.exports = {
+  module.exports = {
   DEFAULT_LOCALE,
+  UI_DEFAULT_LOCALE,
   FALLBACK_LOCALES,
   I18N_SEED_VERSION,
   ensureI18nTables,

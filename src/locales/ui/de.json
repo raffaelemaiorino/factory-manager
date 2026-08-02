@@ -141,7 +141,9 @@
     "emptySearch": "Keine Ressourcen passen zur Suche.",
     "emptyCategory": "Keine Ressourcen in dieser Kategorie.",
     "errorLoad": "Fehler beim Laden der Ressourcen.",
-    "editAria": "{name} bearbeiten"
+    "editAria": "{name} bearbeiten",
+    "itemsCountOne": "{count} item",
+    "itemsCountMany": "{count} items"
   },
   "production": {
     "title": "Produktion",
@@ -238,7 +240,35 @@
     "linkCoveredByExtractions": "Durch Abbau gedeckt",
     "linkChainExcess": "Kettenüberschuss: {rate}",
     "linkInsufficient": "Unzureichend: {rate}",
-    "surplusFree": "{rate} frei"
+    "surplusFree": "{rate} frei",
+    "sectionTargets": "Plan targets",
+    "targetsHint": "Changing targets or constraints rebuilds machines, extractions, and links from default recipes.",
+    "addTarget": "Add target",
+    "emptyTargets": "No targets yet. Add products to auto-build this plan.",
+    "removeTargetAria": "Remove target {name}",
+    "targetRateAria": "Target rate for {name}",
+    "powerShardsLimit": "Power shards",
+    "powerShardsLimited": "Budget",
+    "powerShardsUnlimited": "Unlimited",
+    "powerShardsBudgetAria": "Power shard budget",
+    "maxBeltMk": "Highest belt",
+    "maxPipeMk": "Highest pipe",
+    "summaryBuild": "Build",
+    "summaryClock": "Clock",
+    "buildMachinesOne": "{count} machine",
+    "buildMachinesMany": "{count} machines",
+    "buildNodesOne": "{count} node",
+    "buildNodesMany": "{count} nodes",
+    "buildAtClock": "{overclock}%",
+    "buildManifolds": "{count} manifolds · {banks}",
+    "buildManifoldBank": "Bank {index}: {count}×",
+    "buildManifoldCount": "{count} manifold groups",
+    "buildSplitHint": "Split into {count} manifolds ({banks}) for belt/pipe throughput",
+    "buildSplitReason": "Needs {count} manifolds — {item} exceeds Mk{mk} {kind} ({capacity}/min)",
+    "transportBelt": "belt",
+    "transportPipe": "pipe",
+    "sinkByproducts": "Sink byproducts",
+    "sinkByproductsHint": "Automatically dispose unused secondary outputs (package fluids, sink solids)."
   },
   "energy": {
     "title": "Strom",
@@ -276,7 +306,18 @@
     "pickerNoGenerators": "Keine Generatoren verfügbar.",
     "defaultWaterExtractor": "Wasserextraktor",
     "defaultOilExtractor": "Ölextraktor",
-    "defaultMiner": "Miner"
+    "defaultMiner": "Miner",
+    "targetMw": "Target MW",
+    "generatorType": "Generator",
+    "generatorCoal": "Coal generator",
+    "generatorFuel": "Fuel generator",
+    "generatorNuclear": "Nuclear generator",
+    "autoPlanHint": "Leave MW blank for an empty plan. With MW + fuel, generators and supply are auto-built.",
+    "sectionTarget": "Power target",
+    "replan": "Rebuild plan",
+    "targetsHint": "Changing MW, generator, or fuel rebuilds generators, extractions, and linked fuel production.",
+    "invalidTargetMw": "Enter a valid target MW greater than zero.",
+    "invalidGeneratorFuel": "Choose a generator and fuel for auto-plan."
   },
   "settings": {
     "title": "Einstellungen",
@@ -346,7 +387,15 @@
     "detailNoSchemas": "Keine Produktionsrezepte für diese Ressource hinterlegt.",
     "resourceNotFound": "Ressource nicht gefunden.",
     "detailLoadError": "Fehler beim Laden der Details.",
-    "alertTitle": "Notice"
+    "alertTitle": "Notice",
+    "productionCreateTargetProduct": "Target product",
+    "productionCreateTargetRate": "Target rate (/min)",
+    "productionCreatePickProduct": "Choose product",
+    "productionCreateClearProduct": "Clear",
+    "productionCreateAutoPlanHint": "Add one or more products with rates — the plan auto-adds machines and extractions, and shared intermediates are combined.",
+    "productionCreateTargetProducts": "Target products",
+    "productionCreateAddProduct": "Add product",
+    "productionCreateRemoveTargetAria": "Remove {name}"
   },
   "legal": {
     "title": "Rechtliche Hinweise, Attributionen und Haftungsausschluss",
@@ -449,7 +498,20 @@
     "emptyGroups": "Keine Knoten im Gruppenbaum.",
     "emptyGroup": "Keine Knoten in Gruppe «{name}».",
     "emptyTree": "Keine Knoten. Abbau oder Ressourcenschritte hinzufügen.",
-    "highlightStepAria": "Schritt {name} hervorheben"
+    "highlightStepAria": "Schritt {name} hervorheben",
+    "hint": "Drag boxes to arrange the layout. Positions are remembered automatically for this plan.",
+    "hintGroups": "Group tree: only main inputs/outputs between groups. Drag boxes to arrange the layout. Positions are remembered automatically for this plan (group view).",
+    "hintGroup": "Group «{name}». Drag boxes to arrange the layout. Positions are remembered automatically for this plan and group.",
+    "beltOk": "Fits on {count}× Mk.{mk}",
+    "beltOver": "Needs {count}× Mk.{mk} ({rate}/min > {capacity}/min)",
+    "pipeOk": "Fits on {count}× Pipe Mk.{mk}",
+    "pipeOver": "Needs {count}× Pipe Mk.{mk} ({rate}/min > {capacity}/min)",
+    "detailSimple": "Simple",
+    "detailComplex": "Complex",
+    "detailSimpleTitle": "Show machine count and clock speed only",
+    "detailComplexTitle": "Show belt/pipe manifold banks when throughput needs a split",
+    "detailModeAria": "Tree detail mode",
+    "sink": "AWESOME Sink"
   },
   "confirm": {
     "deleteResourceStepTitle": "Ressourcenschritt löschen",
@@ -476,7 +538,9 @@
     "pickerExtractEmpty": "Keine abbaufähigen Ressourcen gefunden.",
     "importTypeMismatchTitle": "Incompatible plan",
     "importEnergyIntoProduction": "You are trying to import an Energy plan into the Production plans section. Open Energy and try again.",
-    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again."
+    "importProductionIntoEnergy": "You are trying to import a Production plan into the Energy plans section. Open Production and try again.",
+    "invalidTargetRate": "Enter a valid target rate (/min).",
+    "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
     "noResources": "Keine Ressourcen gefunden."

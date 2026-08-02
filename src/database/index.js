@@ -25,6 +25,7 @@ const {
   exportProductionChain: buildProductionChainExport,
   importProductionChain: loadProductionChainImport,
   getProductionChainDetail: loadProductionChainDetail,
+  getProductionChainById,
   addProductionChainStep: insertProductionChainStep,
   updateProductionChainStep: patchProductionChainStep,
   setProductionStepMarked: patchProductionStepMarked,
@@ -52,6 +53,7 @@ const {
   createEnergyChain,
   updateEnergyChain: patchEnergyChain,
   deleteEnergyChain,
+  getEnergyChainById,
   getEnergyChainDetail: loadEnergyChainDetail,
   exportEnergyChain: buildEnergyChainExport,
   importEnergyChain: loadEnergyChainImport,
@@ -303,8 +305,90 @@ function getProductionChains() {
   return listProductionChains(getDb());
 }
 
-function saveProductionChain(data) {
-  return createProductionChain(getDb(), persist, data);
+function saveProductionChain(data = {}) {
+  const db = getDb();
+  const {
+    auto_plan = false,
+    target_item_id = null,
+    target_rate = null,
+    targets = null,
+    ...createData
+  } = data;
+
+  const normalizedTargets = Array.isArray(targets)
+    ? targets
+        .map((entry) => ({
+          item_id: Number(entry?.item_id ?? entry?.id),
+          target_rate: Number(entry?.target_rate ?? entry?.rate),
+        }))
+        .filter((entry) => Number.isFinite(entry.item_id) && entry.item_id > 0)
+    : null;
+
+  let targetSlug = createData.target_item_slug ?? null;
+  let firstRate = target_rate ?? createData.target_rate ?? null;
+
+  if (normalizedTargets?.length) {
+    const firstItem = getItemById(db, normalizedTargets[0].item_id);
+    if (!firstItem) throw new Error('Risorsa non trovata');
+    targetSlug = firstItem.slug;
+    firstRate = normalizedTargets[0].target_rate;
+  } else if (target_item_id != null && target_item_id !== '') {
+    const item = getItemById(db, Number(target_item_id));
+    if (!item) {
+      throw new Error('Risorsa non trovata');
+    }
+    targetSlug = item.slug;
+  }
+
+  const chain = createProductionChain(db, persist, {
+    ...createData,
+    target_item_slug: targetSlug,
+    target_rate: firstRate,
+  });
+
+  const planTargets =
+    normalizedTargets?.length > 0
+      ? normalizedTargets
+      : target_item_id != null &&
+          target_item_id !== '' &&
+          target_rate != null &&
+          target_rate !== ''
+        ? [{ item_id: Number(target_item_id), target_rate: Number(target_rate) }]
+        : [];
+
+  if (Boolean(auto_plan) && planTargets.length) {
+    const { autoPlanProductionChain } = require('./auto-plan');
+    autoPlanProductionChain(
+      db,
+      persist,
+      chain.id,
+      {
+        targets: planTargets,
+        replace: true,
+        sink_byproducts: createData.sink_byproducts ?? chain.sink_byproducts,
+      },
+      getItemById
+    );
+    return getProductionChainById(db, chain.id);
+  }
+
+  if (planTargets.length) {
+    const { replaceChainTargets } = require('./production-targets');
+    replaceChainTargets(db, persist, chain.id, planTargets, getItemById);
+  }
+
+  return chain;
+}
+
+function setProductionChainTargets(chainId, targets) {
+  const { setProductionChainTargetsAndReplan } = require('./auto-plan');
+  return setProductionChainTargetsAndReplan(
+    getDb(),
+    persist,
+    chainId,
+    targets,
+    getItemById
+  );
 }
 
 function updateProductionChain(id, data) {
@@ -428,8 +512,54 @@ function getEnergyChains() {
   return listEnergyChains(getDb());
 }
 
-function saveEnergyChain(data) {
-  return createEnergyChain(getDb(), persist, data);
+function saveEnergyChain(data = {}) {
+  const db = getDb();
+  const {
+    auto_plan = false,
+    target_power_mw = null,
+    target_building_slug = null,
+    target_fuel_slug = null,
+    power_shard_limit = 0,
+    ...createData
+  } = data;
+
+  const chain = createEnergyChain(db, persist, {
+    ...createData,
+    target_power_mw,
+    target_building_slug,
+    target_fuel_slug,
+    power_shard_limit,
+  });
+
+  if (
+    Boolean(auto_plan) &&
+    target_power_mw != null &&
+    target_power_mw !== '' &&
+    target_building_slug &&
+    target_fuel_slug
+  ) {
+    const { autoPlanEnergyChain } = require('./auto-plan-energy');
+    autoPlanEnergyChain(
+      db,
+      persist,
+      chain.id,
+      {
+        target_power_mw,
+        target_building_slug,
+        target_fuel_slug,
+        power_shard_limit,
+      },
+      getItemById
+    );
+    return getEnergyChainById(db, chain.id);
+  }
+
+  return chain;
+}
+
+function setEnergyChainTargets(chainId, options = {}) {
+  const { setEnergyChainTargetsAndReplan } = require('./auto-plan-energy');
+  return setEnergyChainTargetsAndReplan(getDb(), persist, chainId, options, getItemById);
 }
 
 function updateEnergyChain(id, data) {
@@ -535,6 +665,7 @@ module.exports = {
   getResourcesDataInfo: () => getResourcesDataInfo(getDb()),
   getProductionChains,
   saveProductionChain,
+  setProductionChainTargets,
   updateProductionChain,
   removeProductionChain,
   duplicateProductionChain,
@@ -560,6 +691,7 @@ module.exports = {
   resetMineralExtraction,
   getEnergyChains,
   saveEnergyChain,
+  setEnergyChainTargets,
   updateEnergyChain,
   removeEnergyChain,
   exportEnergyChain,

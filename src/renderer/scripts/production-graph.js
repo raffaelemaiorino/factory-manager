@@ -5,12 +5,90 @@
 (function () {
   const t = (key, vars) => window.t(key, vars);
 
-  const NODE_WIDTH = 228;
-  const MIN_LAYER_GAP_X = 48;
-  const MAX_LAYER_GAP_X = 220;
-  const NODE_GAP_Y = 40;
-  const PADDING = 32;
-  const LAYOUT_STORAGE_PREFIX = 'satisfactory-graph-layout-';
+  const NODE_WIDTH = 256;
+  const MIN_LAYER_GAP_X = 200;
+  const MAX_LAYER_GAP_X = 320;
+  const NODE_GAP_Y = 36;
+  const PADDING = 48;
+  const LAYOUT_STORAGE_PREFIX = 'satisfactory-graph-layout-v2-';
+
+  function getStepBanks(step, helpers) {
+    const info = helpers.computeStepBuildInfo?.(step);
+    const complex = helpers.treeDetailMode === 'complex';
+    if (!complex || !info?.needsSplit || !(info.banks?.length > 1)) {
+      return [{ index: 0, machines: info?.machines ?? step.machine_count ?? 1, share: 1, split: false }];
+    }
+    const total = info.machines || 1;
+    return info.banks.map((machines, index) => ({
+      index,
+      machines,
+      share: machines / total,
+      split: true,
+      bankCount: info.banks.length,
+      overclock: info.overclock,
+    }));
+  }
+
+  function getExtractionBanks(extraction, helpers) {
+    const info = helpers.computeExtractionBuildInfo?.(extraction);
+    const complex = helpers.treeDetailMode === 'complex';
+    if (!complex || !info?.needsSplit || !(info.banks?.length > 1)) {
+      return [{ index: 0, machines: info?.machines ?? extraction.node_count ?? 1, share: 1, split: false }];
+    }
+    const total = info.machines || 1;
+    return info.banks.map((machines, index) => ({
+      index,
+      machines,
+      share: machines / total,
+      split: true,
+      bankCount: info.banks.length,
+      overclock: info.overclock,
+    }));
+  }
+
+  function stepNodeId(stepId, bankIndex, split) {
+    return split ? `step-${stepId}-bank-${bankIndex}` : `step-${stepId}`;
+  }
+
+  function extractionNodeId(extractionId, bankIndex, split) {
+    return split ? `ext-${extractionId}-bank-${bankIndex}` : `ext-${extractionId}`;
+  }
+
+  function parseStepIdFromNodeId(nodeId) {
+    const match = String(nodeId).match(/^step-(\d+)/);
+    return match ? Number(match[1]) : null;
+  }
+
+  function addDistributedEdges(addEdge, fromBanks, toBanks, edgeBase, round) {
+    if (fromBanks.length === toBanks.length && fromBanks.length > 1) {
+      for (let index = 0; index < fromBanks.length; index += 1) {
+        const fromBank = fromBanks[index];
+        const toBank = toBanks[index];
+        const rate = round(edgeBase.rate * fromBank.share);
+        if (!(rate > 0)) continue;
+        addEdge({
+          ...edgeBase,
+          from: fromBank.id,
+          to: toBank.id,
+          rate,
+        });
+      }
+      return;
+    }
+
+    for (const fromBank of fromBanks) {
+      for (const toBank of toBanks) {
+        const rate = round(edgeBase.rate * fromBank.share * toBank.share);
+        if (!(rate > 0)) continue;
+        addEdge({
+          ...edgeBase,
+          from: fromBank.id,
+          to: toBank.id,
+          rate,
+        });
+      }
+    }
+  }
 
   function buildProductionGraph(detail, helpers, options = {}) {
     const allSteps = detail.steps ?? [];
@@ -20,6 +98,7 @@
       ? allSteps.filter((step) => helpers.getProductionGroupKey(step.group_name) === groupKey)
       : allSteps;
     const visibleStepIds = new Set(visibleSteps.map((step) => step.id));
+    const round = (value) => helpers.roundProduction?.(value) ?? value;
 
     if (groupKey && !visibleSteps.length) {
       return { nodes: [], edges: [] };
@@ -28,21 +107,37 @@
     const nodes = [];
     const edges = [];
     const edgeKeys = new Set();
+    const stepBanksById = new Map();
+    const extractionBanksById = new Map();
 
     const addEdge = (edge) => {
-      const key = `${edge.from}|${edge.to}|${edge.itemSlug}|${edge.rate}`;
+      const key = `${edge.from}|${edge.to}|${edge.itemSlug}|${edge.rate}|${edge.kind}`;
       if (edgeKeys.has(key)) return;
       edgeKeys.add(key);
       edges.push(edge);
     };
 
     for (const step of visibleSteps) {
-      nodes.push({
-        id: `step-${step.id}`,
-        type: 'step',
-        layer: null,
-        data: step,
-      });
+      const banks = getStepBanks(step, helpers);
+      stepBanksById.set(
+        step.id,
+        banks.map((bank) => ({
+          ...bank,
+          id: stepNodeId(step.id, bank.index, bank.split),
+        }))
+      );
+      for (const bank of banks) {
+        nodes.push({
+          id: stepNodeId(step.id, bank.index, bank.split),
+          type: 'step',
+          layer: null,
+          data: {
+            ...step,
+            _bank: bank,
+            machine_count: bank.machines,
+          },
+        });
+      }
     }
 
     const objectives = helpers
@@ -58,6 +153,7 @@
     }
 
     for (const step of visibleSteps) {
+      const toBanks = stepBanksById.get(step.id) || [];
       for (const [itemSlug, links] of Object.entries(step.input_links ?? {})) {
         for (const link of links) {
           const producer = allSteps.find((candidate) => candidate.id === link.producer_step_id);
@@ -67,16 +163,15 @@
           const rate = helpers.getProducerAttributedDemand(producer, step, itemSlug, allSteps);
           if (!rate) continue;
 
-          addEdge({
-            from: `step-${producer.id}`,
-            to: `step-${step.id}`,
+          const fromBanks = stepBanksById.get(producer.id) || [];
+          addDistributedEdges(addEdge, fromBanks, toBanks, {
             itemSlug,
             itemName: io?.item_name ?? itemSlug,
             itemImage: io?.item_image ?? null,
             isFluid: Boolean(io?.is_fluid),
             rate,
             kind: 'step-link',
-          });
+          }, round);
         }
       }
     }
@@ -90,6 +185,7 @@
     }
 
     for (const step of visibleSteps) {
+      const toBanks = stepBanksById.get(step.id) || [];
       for (const io of step.scaled_inputs ?? []) {
         if (!helpers.isExternalSummarySlug(io.item_slug)) continue;
 
@@ -137,16 +233,23 @@
             );
             if (rate <= helpers.linkTolerance) continue;
 
-            addEdge({
-              from: `ext-${extraction.id}`,
-              to: `step-${step.id}`,
+            let fromBanks = extractionBanksById.get(extraction.id);
+            if (!fromBanks) {
+              fromBanks = getExtractionBanks(extraction, helpers).map((bank) => ({
+                ...bank,
+                id: extractionNodeId(extraction.id, bank.index, bank.split),
+              }));
+              extractionBanksById.set(extraction.id, fromBanks);
+            }
+
+            addDistributedEdges(addEdge, fromBanks, toBanks, {
               itemSlug: io.item_slug,
               itemName: io.item_name ?? io.item_slug,
               itemImage: io.item_image ?? null,
               isFluid: Boolean(io.is_fluid),
               rate,
               kind: 'extraction-link',
-            });
+            }, round);
           }
           continue;
         }
@@ -169,46 +272,76 @@
           const rate = helpers.roundProduction(externalNeed * share);
           if (rate <= 0) continue;
 
-          addEdge({
-            from: `ext-${extraction.id}`,
-            to: `step-${step.id}`,
+          let fromBanks = extractionBanksById.get(extraction.id);
+          if (!fromBanks) {
+            fromBanks = getExtractionBanks(extraction, helpers).map((bank) => ({
+              ...bank,
+              id: extractionNodeId(extraction.id, bank.index, bank.split),
+            }));
+            extractionBanksById.set(extraction.id, fromBanks);
+          }
+
+          addDistributedEdges(addEdge, fromBanks, toBanks, {
             itemSlug: io.item_slug,
             itemName: io.item_name ?? io.item_slug,
             itemImage: io.item_image ?? null,
             isFluid: Boolean(io.is_fluid),
             rate,
             kind: 'extraction-link',
-          });
+          }, round);
         }
       }
     }
 
     for (const objective of objectives) {
-      addEdge({
-        from: `step-${objective.step_id}`,
-        to: `obj-${objective.step_id}-${objective.item_slug}`,
+      const fromBanks = stepBanksById.get(objective.step_id) || [
+        { id: `step-${objective.step_id}`, share: 1 },
+      ];
+      const toBanks = [
+        { id: `obj-${objective.step_id}-${objective.item_slug}`, share: 1 },
+      ];
+      addDistributedEdges(addEdge, fromBanks, toBanks, {
         itemSlug: objective.item_slug,
         itemName: objective.item_name,
         itemImage: objective.item_image,
         isFluid: Boolean(objective.is_fluid),
         rate: objective.rate,
         kind: 'objective-link',
-      });
+      }, round);
     }
 
     const usedExtractionIds = new Set(
       edges
         .filter((edge) => edge.from.startsWith('ext-'))
-        .map((edge) => Number(edge.from.replace('ext-', '')))
+        .map((edge) => {
+          const match = edge.from.match(/^ext-(\d+)/);
+          return match ? Number(match[1]) : null;
+        })
+        .filter((id) => id != null)
     );
+
     for (const extraction of extractions) {
       if (groupKey && !usedExtractionIds.has(extraction.id)) continue;
-      nodes.unshift({
-        id: `ext-${extraction.id}`,
-        type: 'extraction',
-        layer: 0,
-        data: extraction,
-      });
+      let banks = extractionBanksById.get(extraction.id);
+      if (!banks) {
+        banks = getExtractionBanks(extraction, helpers).map((bank) => ({
+          ...bank,
+          id: extractionNodeId(extraction.id, bank.index, bank.split),
+        }));
+        extractionBanksById.set(extraction.id, banks);
+      }
+      for (const bank of banks) {
+        nodes.unshift({
+          id: bank.id,
+          type: 'extraction',
+          layer: 0,
+          data: {
+            ...extraction,
+            _bank: bank,
+            node_count: bank.machines,
+          },
+        });
+      }
     }
 
     assignLayers(nodes, edges);
@@ -286,8 +419,8 @@
     };
 
     const resolveStepGroupId = (nodeId) => {
-      if (!nodeId.startsWith('step-')) return null;
-      const stepId = Number(nodeId.slice(5));
+      const stepId = parseStepIdFromNodeId(nodeId);
+      if (stepId == null) return null;
       const groupKey = stepIdToGroupKey.get(stepId);
       return groupKey ? `group-${groupKey}` : null;
     };
@@ -409,6 +542,10 @@
       if (node.type === 'extraction') layers.set(node.id, 0);
     }
 
+    for (const node of nodes) {
+      if (node.type === 'supply') layers.set(node.id, 0);
+    }
+
     for (let pass = 0; pass < nodes.length + 2; pass += 1) {
       for (const edge of edges) {
         const fromLayer = layers.get(edge.from);
@@ -423,7 +560,9 @@
 
     let fallbackLayer = 1;
     for (const node of nodes) {
-      if (node.type !== 'step' && node.type !== 'group') continue;
+      if (node.type !== 'step' && node.type !== 'group' && node.type !== 'generator') {
+        continue;
+      }
       if (!layers.has(node.id)) {
         layers.set(node.id, fallbackLayer);
       }
@@ -475,11 +614,15 @@
         return (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0);
       }
 
+      if (a.type === 'generator' && b.type === 'generator') {
+        return (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0);
+      }
+
       if (a.type === 'group' && b.type === 'group') {
         return String(a.data.name ?? '').localeCompare(String(b.data.name ?? ''), 'it');
       }
 
-      const order = { extraction: 0, group: 1, step: 1, objective: 2 };
+      const order = { extraction: 0, supply: 0, group: 1, step: 1, generator: 1, objective: 2 };
       return (order[a.type] ?? 1) - (order[b.type] ?? 1);
     });
   }
@@ -519,54 +662,71 @@
     const usable = Math.max(320, availableWidth - PADDING * 2);
     const nodesWidth = layerCount * NODE_WIDTH;
     const gap = (usable - nodesWidth) / (layerCount - 1);
-    return Math.max(MIN_LAYER_GAP_X, Math.min(MAX_LAYER_GAP_X, gap));
-  }
-
-  function fitLayoutToWidth(positions, availableWidth) {
-    let maxX = PADDING;
-    for (const pos of Object.values(positions)) {
-      maxX = Math.max(maxX, pos.x + NODE_WIDTH);
-    }
-
-    const limit = Math.max(320, availableWidth - PADDING);
-    if (maxX <= limit) return positions;
-
-    const scale = limit / maxX;
-    const fitted = {};
-    for (const [id, pos] of Object.entries(positions)) {
-      fitted[id] = {
-        x: Math.round(pos.x * scale),
-        y: pos.y,
-      };
-    }
-    return fitted;
+    // Never go below MIN — allow the stage to scroll horizontally instead.
+    return Math.max(MIN_LAYER_GAP_X, Math.min(MAX_LAYER_GAP_X, Number.isFinite(gap) ? gap : MIN_LAYER_GAP_X));
   }
 
   function estimateNodeHeight(node, helpers) {
-    const base = 78;
-    if (node.type === 'extraction' || node.type === 'objective') return base + 22;
+    const base = 110;
+    if (node.type === 'extraction' || node.type === 'objective' || node.type === 'supply') {
+      return base + 36;
+    }
 
     if (node.type === 'group') {
       const inputCount = node.data.inputs?.length ?? 0;
       const outputCount = node.data.outputs?.length ?? 0;
       let height = base + 18;
-      if (inputCount) height += 16 + inputCount * 22;
-      if (outputCount) height += 16 + outputCount * 22;
+      if (inputCount) height += 16 + inputCount * 24;
+      if (outputCount) height += 16 + outputCount * 24;
+      return height;
+    }
+
+    if (node.type === 'generator') {
+      const generator = node.data;
+      let inputCount = 0;
+      if ((generator.fuel_consumption ?? 0) > 0) inputCount += 1;
+      if ((generator.water_consumption ?? 0) > 0) inputCount += 1;
+      const outputCount = 1 + ((generator.waste_output ?? 0) > 0 ? 1 : 0);
+      let height = base;
+      if (inputCount) height += 16 + inputCount * 24;
+      if (outputCount) height += 16 + outputCount * 24;
       return height;
     }
 
     const step = node.data;
+    const share = step._bank?.share ?? 1;
     const inputCount = (step.scaled_inputs ?? []).filter(
-      (io) => helpers.getStepInputRateForItem(step, io.item_slug) > 0
+      (io) => helpers.getStepInputRateForItem(step, io.item_slug) * share > 0
     ).length;
     const outputCount = (step.scaled_outputs ?? []).filter(
-      (io) => helpers.getStepOutputRateForItem(step, io.item_slug) > 0
+      (io) => helpers.getStepOutputRateForItem(step, io.item_slug) * share > 0
     ).length;
 
-    let height = base;
-    if (inputCount) height += 16 + inputCount * 22;
-    if (outputCount) height += 16 + outputCount * 22;
+    let height = base + (step._bank?.split ? 18 : 0);
+    if (inputCount) height += 16 + inputCount * 24;
+    if (outputCount) height += 16 + outputCount * 24;
     return height;
+  }
+
+  function reflowLayerPositions(nodesHost) {
+    const nodes = [...nodesHost.querySelectorAll('.production-graph-node')];
+    if (!nodes.length) return;
+
+    const byX = new Map();
+    for (const node of nodes) {
+      const x = Math.round(parseFloat(node.style.left) || 0);
+      if (!byX.has(x)) byX.set(x, []);
+      byX.get(x).push(node);
+    }
+
+    for (const column of byX.values()) {
+      column.sort((a, b) => (parseFloat(a.style.top) || 0) - (parseFloat(b.style.top) || 0));
+      let y = PADDING;
+      for (const node of column) {
+        node.style.top = `${y}px`;
+        y += node.offsetHeight + NODE_GAP_Y;
+      }
+    }
   }
 
   function computeAutoLayout(nodes, edges, savedLayout = {}, layerGap = MAX_LAYER_GAP_X, helpers) {
@@ -611,7 +771,7 @@
   }
 
   function renderIoRow(io, rate, helpers) {
-    const unit = io.is_fluid ? 'm³/min' : '/min';
+    const unit = io.unit || (io.is_fluid ? 'm³/min' : '/min');
     return `
       <div class="production-graph-node-io-row">
         ${renderNodeIcon(io.item_image, 'production-graph-node-io-icon', helpers)}
@@ -621,17 +781,19 @@
   }
 
   function renderStepIoSections(step, helpers) {
+    const share = step._bank?.share ?? 1;
+    const round = (value) => helpers.roundProduction?.(value) ?? value;
     const inputs = (step.scaled_inputs ?? [])
       .map((io) => ({
         io,
-        rate: helpers.getStepInputRateForItem(step, io.item_slug),
+        rate: round(helpers.getStepInputRateForItem(step, io.item_slug) * share),
       }))
       .filter(({ rate }) => rate > 0);
 
     const outputs = (step.scaled_outputs ?? [])
       .map((io) => ({
         io,
-        rate: helpers.getStepOutputRateForItem(step, io.item_slug),
+        rate: round(helpers.getStepOutputRateForItem(step, io.item_slug) * share),
       }))
       .filter(({ rate }) => rate > 0);
 
@@ -661,12 +823,43 @@
 
   function renderExtractionNode(node, helpers) {
     const extraction = node.data;
+    const bank = extraction._bank;
+    const share = bank?.share ?? 1;
     const displayName = helpers.getExtractionDisplayName(extraction, helpers.extractions);
     const item = extraction.item;
-    const rate = helpers.getExtractionOutputRate(extraction);
+    const rate = helpers.roundProduction?.(helpers.getExtractionOutputRate(extraction) * share)
+      ?? helpers.getExtractionOutputRate(extraction) * share;
+    const baseInfo =
+      helpers.computeExtractionBuildInfo?.(extraction) ||
+      {
+        machines: extraction.node_count,
+        overclock: extraction.overclock,
+        isExtraction: true,
+        needsSplit: false,
+        banks: [extraction.node_count],
+        manifoldCount: 1,
+      };
+    const buildInfo = bank?.split
+      ? {
+          ...baseInfo,
+          machines: bank.machines,
+          needsSplit: false,
+          banks: [bank.machines],
+          manifoldCount: 1,
+          isExtraction: true,
+        }
+      : baseInfo;
+    const bankLabel =
+      bank?.split
+        ? `<span class="production-graph-node-bank">${helpers.escapeHtml(
+            t('graph.manifoldBank', { index: bank.index + 1, count: bank.bankCount })
+          )}</span>`
+        : '';
 
     return `
-      <div class="production-graph-node production-graph-node--extraction" data-node-id="${node.id}" role="button" tabindex="0" aria-grabbed="false">
+      <div class="production-graph-node production-graph-node--extraction${
+        bank?.split ? ' production-graph-node--manifold-bank' : ''
+      }" data-node-id="${node.id}" role="button" tabindex="0" aria-grabbed="false">
         <div class="production-graph-node-icons">
           ${renderNodeIcon(item?.image, 'production-graph-item-icon', helpers)}
           ${renderNodeIcon(extraction.building_image, 'production-graph-building-icon', helpers)}
@@ -674,6 +867,8 @@
         <div class="production-graph-node-body">
           <span class="production-graph-node-type">${escapeHtml(t('graph.extraction'))}</span>
           <strong class="production-graph-node-title">${helpers.escapeHtml(displayName)}</strong>
+          ${bankLabel}
+          ${helpers.renderBuildStatsBadge?.(buildInfo) || ''}
           <div class="production-graph-node-io">
             <span class="production-graph-node-io-label">${escapeHtml(t('common.output'))}</span>
             ${renderIoRow({ item_image: item?.image, item_name: item?.name || displayName, item_slug: item?.slug, is_fluid: item?.is_fluid }, rate, helpers)}
@@ -684,25 +879,55 @@
 
   function renderStepNode(node, helpers) {
     const step = node.data;
+    const bank = step._bank;
     const item = step.item;
     const schema = step.schema;
+    const isSink = Number(step.is_sink) === 1;
     const isMarked = Number(step.marked) === 1;
     const slots = window.ProductionScale?.getSomersloopSlots?.(schema) ?? 0;
     const hasSomersloop =
+      !isSink &&
       slots > 0 &&
       (window.ProductionScale?.countSomersloopChecked?.(step.somersloop_mask ?? 0, slots) ?? 0) > 0;
+    const baseInfo = helpers.computeStepBuildInfo?.(step) || {
+      machines: step.machine_count,
+      overclock: step.overclock,
+      needsSplit: false,
+      banks: [step.machine_count],
+      manifoldCount: 1,
+    };
+    const buildInfo = bank?.split
+      ? {
+          ...baseInfo,
+          machines: bank.machines,
+          needsSplit: false,
+          banks: [bank.machines],
+          manifoldCount: 1,
+        }
+      : baseInfo;
+    const bankLabel =
+      bank?.split
+        ? `<span class="production-graph-node-bank">${helpers.escapeHtml(
+            t('graph.manifoldBank', { index: bank.index + 1, count: bank.bankCount })
+          )}</span>`
+        : '';
     const nodeClasses = [
       'production-graph-node',
       'production-graph-node--step',
+      isSink ? 'production-graph-node--sink' : '',
       isMarked ? 'production-graph-node--marked' : '',
       hasSomersloop ? 'production-graph-node--somersloop' : '',
+      bank?.split ? 'production-graph-node--manifold-bank' : '',
     ]
       .filter(Boolean)
       .join(' ');
 
     return `
       <div class="${nodeClasses}" data-node-id="${node.id}" role="button" tabindex="0" aria-grabbed="false">
-        <label
+        ${
+          isSink
+            ? ''
+            : `<label
           class="production-graph-step-mark-btn${isMarked ? ' production-graph-step-mark-btn--active' : ''}"
           title="${escapeHtml(t('production.highlightStepTitle'))}"
           aria-label="${escapeHtml(t('graph.highlightStepAria', { name: step.name }))}"
@@ -714,14 +939,19 @@
             ${isMarked ? 'checked' : ''}
           />
           <i class="fa-solid ${isMarked ? 'fa-xmark' : 'fa-check'}" aria-hidden="true"></i>
-        </label>
+        </label>`
+        }
         <div class="production-graph-node-icons">
           ${renderNodeIcon(item?.image, 'production-graph-item-icon', helpers)}
           ${renderNodeIcon(schema?.building_image, 'production-graph-building-icon', helpers)}
         </div>
         <div class="production-graph-node-body">
-          <span class="production-graph-node-type">${helpers.escapeHtml(schema?.building_name || t('common.schema'))}</span>
+          <span class="production-graph-node-type">${helpers.escapeHtml(
+            isSink ? t('graph.sink') : schema?.building_name || t('common.schema')
+          )}</span>
           <strong class="production-graph-node-title">${helpers.escapeHtml(step.name)}</strong>
+          ${bankLabel}
+          ${helpers.renderBuildStatsBadge?.(buildInfo) || ''}
           ${renderStepIoSections(step, helpers)}
         </div>
       </div>`;
@@ -783,6 +1013,137 @@
       </div>`;
   }
 
+  function renderSupplyNode(node, helpers) {
+    const supply = node.data;
+    const unit = supply.is_fluid ? 'm³/min' : '/min';
+
+    return `
+      <div class="production-graph-node production-graph-node--supply" data-node-id="${node.id}" role="button" tabindex="0" aria-grabbed="false">
+        <div class="production-graph-node-icons">
+          ${renderNodeIcon(supply.item_image, 'production-graph-item-icon', helpers)}
+        </div>
+        <div class="production-graph-node-body">
+          <span class="production-graph-node-type">${escapeHtml(t('graph.supply'))}</span>
+          <strong class="production-graph-node-title">${helpers.escapeHtml(
+            supply.producer_step_name || supply.item_name || supply.item_slug
+          )}</strong>
+          ${
+            supply.producer_chain_name
+              ? `<span class="production-graph-node-rate">${helpers.escapeHtml(supply.producer_chain_name)}</span>`
+              : ''
+          }
+          <div class="production-graph-node-io">
+            <span class="production-graph-node-io-label">${escapeHtml(t('common.output'))}</span>
+            ${renderIoRow(
+              {
+                item_image: supply.item_image,
+                item_name: supply.item_name || supply.item_slug,
+                item_slug: supply.item_slug,
+                is_fluid: supply.is_fluid,
+                unit,
+              },
+              supply.rate,
+              helpers
+            )}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderGeneratorNode(node, helpers) {
+    const generator = node.data;
+    const buildInfo =
+      helpers.computeGeneratorBuildInfo?.(generator) ||
+      {
+        machines: generator.machine_count,
+        overclock: generator.overclock,
+        needsSplit: false,
+        banks: [generator.machine_count],
+        manifoldCount: 1,
+      };
+
+    const inputs = [];
+    if ((generator.fuel_consumption ?? 0) > 0) {
+      inputs.push({
+        io: {
+          item_image: generator.fuel_item?.image,
+          item_name: generator.fuel_item?.name || generator.fuel_label || generator.fuel_item_slug,
+          item_slug: generator.fuel_item_slug,
+          is_fluid: Boolean(generator.fuel_is_fluid || generator.fuel_item?.is_fluid),
+        },
+        rate: generator.fuel_consumption,
+      });
+    }
+    if ((generator.water_consumption ?? 0) > 0) {
+      inputs.push({
+        io: {
+          item_image: generator.water_item?.image,
+          item_name: generator.water_item?.name || 'water',
+          item_slug: 'water',
+          is_fluid: true,
+        },
+        rate: generator.water_consumption,
+      });
+    }
+
+    const outputs = [
+      {
+        io: {
+          item_slug: 'power',
+          item_name: t('energy.totalPower'),
+          item_image: null,
+          unit: 'MW',
+        },
+        rate: generator.power_output_mw ?? 0,
+      },
+    ];
+    if ((generator.waste_output ?? 0) > 0 && generator.waste_item_slug) {
+      outputs.push({
+        io: {
+          item_image: generator.waste_item?.image,
+          item_name: generator.waste_item?.name || generator.waste_label || generator.waste_item_slug,
+          item_slug: generator.waste_item_slug,
+          is_fluid: false,
+        },
+        rate: generator.waste_output,
+      });
+    }
+
+    const inputHtml = inputs.length
+      ? `<div class="production-graph-node-io">
+          <span class="production-graph-node-io-label">${escapeHtml(t('common.input'))}</span>
+          ${inputs.map(({ io, rate }) => renderIoRow(io, rate, helpers)).join('')}
+        </div>`
+      : '';
+    const outputHtml = `<div class="production-graph-node-io">
+          <span class="production-graph-node-io-label">${escapeHtml(t('common.output'))}</span>
+          ${outputs.map(({ io, rate }) => renderIoRow(io, rate, helpers)).join('')}
+        </div>`;
+
+    return `
+      <div class="production-graph-node production-graph-node--generator${
+        helpers.treeDetailMode === 'complex' && buildInfo.needsSplit
+          ? ' production-graph-node--manifold-split'
+          : ''
+      }" data-node-id="${node.id}" role="button" tabindex="0" aria-grabbed="false">
+        <div class="production-graph-node-icons">
+          ${renderNodeIcon(generator.fuel_item?.image, 'production-graph-item-icon', helpers)}
+          ${renderNodeIcon(generator.building_image, 'production-graph-building-icon', helpers)}
+        </div>
+        <div class="production-graph-node-body">
+          <span class="production-graph-node-type">${helpers.escapeHtml(
+            generator.building_name || t('common.generator')
+          )}</span>
+          <strong class="production-graph-node-title">${helpers.escapeHtml(
+            generator.fuel_item?.name || generator.fuel_label || generator.building_name
+          )}</strong>
+          ${helpers.renderBuildStatsBadge?.(buildInfo) || ''}
+          ${inputHtml}
+          ${outputHtml}
+        </div>
+      </div>`;
+  }
+
   function renderNode(node, helpers, position) {
     const html =
       node.type === 'extraction'
@@ -791,7 +1152,11 @@
           ? renderObjectiveNode(node, helpers)
           : node.type === 'group'
             ? renderGroupNode(node, helpers)
-            : renderStepNode(node, helpers);
+            : node.type === 'generator'
+              ? renderGeneratorNode(node, helpers)
+              : node.type === 'supply'
+                ? renderSupplyNode(node, helpers)
+                : renderStepNode(node, helpers);
 
     return html.replace(
       '<div class="production-graph-node',
@@ -804,13 +1169,44 @@
       ? `<img class="production-graph-edge-icon" src="${helpers.escapeHtml(edge.itemImage)}" alt="" draggable="false" />`
       : `<span class="resource-img resource-img--placeholder production-graph-edge-icon"></span>`;
 
+    const transport = helpers.describeEdgeTransport?.(edge);
+    const unit = edge.unit || (edge.isFluid ? 'm³/min' : '/min');
+    const rateText = helpers.formatRateWithUnit
+      ? helpers.formatRateWithUnit(edge.rate, unit)
+      : `${edge.rate}${unit}`;
+    let transportHtml = '';
+    if (transport) {
+      const key = transport.isFluid
+        ? transport.over
+          ? 'graph.pipeOver'
+          : 'graph.pipeOk'
+        : transport.over
+          ? 'graph.beltOver'
+          : 'graph.beltOk';
+      transportHtml = `<span class="production-graph-edge-transport${
+        transport.over ? ' production-graph-edge-transport--over' : ''
+      }">${helpers.escapeHtml(
+        t(key, {
+          count: transport.count,
+          mk: transport.mk,
+          rate: helpers.formatDisplayNumber?.(transport.rate) ?? transport.rate,
+          capacity: helpers.formatDisplayNumber?.(transport.capacity) ?? transport.capacity,
+        })
+      )}</span>`;
+    }
+
     return `
       <div
-        class="production-graph-edge-label production-graph-edge-label--${edge.kind}"
+        class="production-graph-edge-label production-graph-edge-label--${edge.kind}${
+          transport?.over ? ' production-graph-edge-label--over' : ''
+        }"
         data-edge-id="${helpers.escapeHtml(edge.id)}"
+        title="${helpers.escapeHtml(rateText)}"
       >
         ${img}
         <span class="production-graph-edge-name">${helpers.escapeHtml(edge.itemName)}</span>
+        <span class="production-graph-edge-rate">${helpers.escapeHtml(rateText)}</span>
+        ${transportHtml}
       </div>`;
   }
 
@@ -825,8 +1221,9 @@
       maxY = Math.max(maxY, y + node.offsetHeight + PADDING);
     }
 
-    const widthLimit = scrollEl?.clientWidth;
-    stage.style.width = widthLimit ? `${Math.min(maxX, widthLimit)}px` : `${maxX}px`;
+    // Keep full layout width so columns are not crushed; scroll horizontally.
+    const minWidth = scrollEl?.clientWidth || 0;
+    stage.style.width = `${Math.max(maxX, minWidth)}px`;
     stage.style.height = `${maxY}px`;
   }
 
@@ -917,11 +1314,8 @@
     return positions;
   }
 
-  function setupNodeDragging(stage, nodesHost, chainId, scrollEl, onChange, layoutOptions = {}) {
+  function setupNodeDragging(stage, nodesHost, chainId, scrollEl, onChange, layoutOptions = {}, getScale = () => 1) {
     let dragState = null;
-
-    const maxNodeX = (node) =>
-      Math.max(PADDING, (scrollEl?.clientWidth ?? stage.offsetWidth) - node.offsetWidth - PADDING);
 
     const finishDrag = (e) => {
       if (!dragState || dragState.pointerId !== e.pointerId) return;
@@ -950,6 +1344,7 @@
       if (!node || e.button !== 0) return;
 
       e.preventDefault();
+      e.stopPropagation();
       dragState = {
         node,
         pointerId: e.pointerId,
@@ -967,16 +1362,278 @@
     nodesHost.addEventListener('pointermove', (e) => {
       if (!dragState || dragState.pointerId !== e.pointerId) return;
 
-      const x = dragState.startLeft + (e.clientX - dragState.originClientX);
-      const y = dragState.startTop + (e.clientY - dragState.originClientY);
+      const scale = Math.max(0.05, Number(getScale()) || 1);
+      const x = dragState.startLeft + (e.clientX - dragState.originClientX) / scale;
+      const y = dragState.startTop + (e.clientY - dragState.originClientY) / scale;
 
-      dragState.node.style.left = `${Math.min(maxNodeX(dragState.node), Math.max(0, x))}px`;
+      dragState.node.style.left = `${Math.max(0, x)}px`;
       dragState.node.style.top = `${Math.max(0, y)}px`;
       onChange();
     });
 
     nodesHost.addEventListener('pointerup', finishDrag);
     nodesHost.addEventListener('pointercancel', finishDrag);
+  }
+
+  function renderGraphZoomControls(escapeHtml) {
+    return `
+      <div class="production-graph-zoom" role="group" aria-label="${escapeHtml(t('graph.zoomAria'))}">
+        <button type="button" class="production-graph-zoom-btn" data-graph-zoom="out" title="${escapeHtml(
+          t('graph.zoomOut')
+        )}" aria-label="${escapeHtml(t('graph.zoomOut'))}">−</button>
+        <button type="button" class="production-graph-zoom-btn production-graph-zoom-label" data-graph-zoom="reset" title="${escapeHtml(
+          t('graph.zoomReset')
+        )}">100%</button>
+        <button type="button" class="production-graph-zoom-btn" data-graph-zoom="in" title="${escapeHtml(
+          t('graph.zoomIn')
+        )}" aria-label="${escapeHtml(t('graph.zoomIn'))}">+</button>
+        <button type="button" class="production-graph-zoom-btn" data-graph-zoom="fit" title="${escapeHtml(
+          t('graph.zoomFitTitle')
+        )}">${escapeHtml(t('graph.zoomFit'))}</button>
+        <button
+          type="button"
+          class="production-graph-zoom-btn"
+          data-graph-zoom="fullscreen"
+          title="${escapeHtml(t('graph.fullscreenTitle'))}"
+          aria-label="${escapeHtml(t('graph.fullscreen'))}"
+          aria-pressed="false"
+        >
+          <i class="fa-solid fa-expand" aria-hidden="true"></i>
+        </button>
+      </div>`;
+  }
+
+  function setupGraphCamera(scrollEl, panEl, worldEl, stage, nodesHost, zoomLabelEl) {
+    const MIN_SCALE = 0.25;
+    const MAX_SCALE = 2.5;
+    let scale = 1;
+    let panX = 16;
+    let panY = 16;
+    let panState = null;
+
+    const apply = () => {
+      // Pan with transform (screen px); zoom with CSS zoom so text/nodes stay sharp.
+      panEl.style.transform = `translate(${panX}px, ${panY}px)`;
+      worldEl.style.zoom = String(scale);
+      if (zoomLabelEl) {
+        zoomLabelEl.textContent = `${Math.round(scale * 100)}%`;
+      }
+    };
+
+    const clampScale = (value) => Math.min(MAX_SCALE, Math.max(MIN_SCALE, value));
+
+    const zoomAt = (nextScale, clientX, clientY) => {
+      const rect = scrollEl.getBoundingClientRect();
+      const mx = clientX - rect.left;
+      const my = clientY - rect.top;
+      const worldX = (mx - panX) / scale;
+      const worldY = (my - panY) / scale;
+      scale = clampScale(nextScale);
+      panX = mx - worldX * scale;
+      panY = my - worldY * scale;
+      apply();
+    };
+
+    const fit = () => {
+      const nodes = [...nodesHost.querySelectorAll('.production-graph-node')];
+      if (!nodes.length) {
+        scale = 1;
+        panX = 16;
+        panY = 16;
+        apply();
+        return;
+      }
+
+      let minX = Infinity;
+      let minY = Infinity;
+      let maxX = -Infinity;
+      let maxY = -Infinity;
+      for (const node of nodes) {
+        const x = parseFloat(node.style.left) || 0;
+        const y = parseFloat(node.style.top) || 0;
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x + node.offsetWidth);
+        maxY = Math.max(maxY, y + node.offsetHeight);
+      }
+
+      const contentW = Math.max(1, maxX - minX);
+      const contentH = Math.max(1, maxY - minY);
+      const viewW = Math.max(1, scrollEl.clientWidth);
+      const viewH = Math.max(1, scrollEl.clientHeight);
+      const pad = 48;
+      const next = clampScale(Math.min((viewW - pad * 2) / contentW, (viewH - pad * 2) / contentH, 1));
+      scale = next;
+      panX = (viewW - contentW * scale) / 2 - minX * scale;
+      panY = (viewH - contentH * scale) / 2 - minY * scale;
+      apply();
+    };
+
+    const onWheel = (event) => {
+      event.preventDefault();
+      const factor = event.deltaY < 0 ? 1.1 : 1 / 1.1;
+      zoomAt(scale * factor, event.clientX, event.clientY);
+    };
+
+    const onPointerDown = (event) => {
+      if (event.target.closest('.production-graph-node')) return;
+      if (event.button !== 0 && event.button !== 1) return;
+      event.preventDefault();
+      panState = {
+        pointerId: event.pointerId,
+        originX: event.clientX,
+        originY: event.clientY,
+        startPanX: panX,
+        startPanY: panY,
+      };
+      scrollEl.classList.add('is-panning');
+      scrollEl.setPointerCapture(event.pointerId);
+    };
+
+    const onPointerMove = (event) => {
+      if (!panState || panState.pointerId !== event.pointerId) return;
+      panX = panState.startPanX + (event.clientX - panState.originX);
+      panY = panState.startPanY + (event.clientY - panState.originY);
+      apply();
+    };
+
+    const onPointerUp = (event) => {
+      if (!panState || panState.pointerId !== event.pointerId) return;
+      panState = null;
+      scrollEl.classList.remove('is-panning');
+      try {
+        scrollEl.releasePointerCapture(event.pointerId);
+      } catch {
+        /* already released */
+      }
+    };
+
+    scrollEl.addEventListener('wheel', onWheel, { passive: false });
+    scrollEl.addEventListener('pointerdown', onPointerDown);
+    scrollEl.addEventListener('pointermove', onPointerMove);
+    scrollEl.addEventListener('pointerup', onPointerUp);
+    scrollEl.addEventListener('pointercancel', onPointerUp);
+
+    apply();
+
+    return {
+      getScale: () => scale,
+      zoomBy: (factor) => {
+        const rect = scrollEl.getBoundingClientRect();
+        zoomAt(scale * factor, rect.left + rect.width / 2, rect.top + rect.height / 2);
+      },
+      reset: () => {
+        scale = 1;
+        panX = 16;
+        panY = 16;
+        apply();
+      },
+      fit,
+      apply,
+      destroy: () => {
+        scrollEl.removeEventListener('wheel', onWheel);
+        scrollEl.removeEventListener('pointerdown', onPointerDown);
+        scrollEl.removeEventListener('pointermove', onPointerMove);
+        scrollEl.removeEventListener('pointerup', onPointerUp);
+        scrollEl.removeEventListener('pointercancel', onPointerUp);
+      },
+    };
+  }
+
+  function isGraphFullscreen(graphEl) {
+    return Boolean(
+      graphEl?.classList.contains('production-graph--fullscreen') ||
+        document.fullscreenElement === graphEl
+    );
+  }
+
+  function syncFullscreenButton(graphEl) {
+    const btn = graphEl?.querySelector('[data-graph-zoom="fullscreen"]');
+    if (!btn) return;
+    const active = isGraphFullscreen(graphEl);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    btn.title = active ? t('graph.fullscreenExitTitle') : t('graph.fullscreenTitle');
+    btn.setAttribute('aria-label', active ? t('graph.fullscreenExit') : t('graph.fullscreen'));
+    const icon = btn.querySelector('i');
+    if (icon) {
+      icon.className = `fa-solid ${active ? 'fa-compress' : 'fa-expand'}`;
+    }
+  }
+
+  async function toggleGraphFullscreen(graphEl) {
+    if (!graphEl) return;
+    const active = isGraphFullscreen(graphEl);
+
+    if (active) {
+      graphEl.classList.remove('production-graph--fullscreen');
+      if (document.fullscreenElement === graphEl && document.exitFullscreen) {
+        try {
+          await document.exitFullscreen();
+        } catch {
+          /* ignore */
+        }
+      }
+    } else {
+      graphEl.classList.add('production-graph--fullscreen');
+      if (graphEl.requestFullscreen) {
+        try {
+          await graphEl.requestFullscreen();
+        } catch {
+          /* CSS fallback still covers the window */
+        }
+      }
+    }
+    syncFullscreenButton(graphEl);
+  }
+
+  function setupGraphFullscreen(graphEl, onChange) {
+    const onFullscreenChange = () => {
+      if (document.fullscreenElement !== graphEl) {
+        graphEl.classList.remove('production-graph--fullscreen');
+      } else {
+        graphEl.classList.add('production-graph--fullscreen');
+      }
+      syncFullscreenButton(graphEl);
+      onChange?.();
+    };
+
+    const onKeyDown = (event) => {
+      if (event.key !== 'Escape') return;
+      if (!graphEl.classList.contains('production-graph--fullscreen')) return;
+      if (document.fullscreenElement === graphEl) return;
+      graphEl.classList.remove('production-graph--fullscreen');
+      syncFullscreenButton(graphEl);
+      onChange?.();
+    };
+
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    document.addEventListener('keydown', onKeyDown);
+    syncFullscreenButton(graphEl);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', onFullscreenChange);
+      document.removeEventListener('keydown', onKeyDown);
+      graphEl.classList.remove('production-graph--fullscreen');
+    };
+  }
+
+  function bindGraphZoomButtons(root, camera, graphEl) {
+    root?.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-graph-zoom]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-graph-zoom');
+      if (action === 'fullscreen') {
+        toggleGraphFullscreen(graphEl).then(() => {
+          requestAnimationFrame(() => camera?.fit?.());
+        });
+        return;
+      }
+      if (!camera) return;
+      if (action === 'in') camera.zoomBy(1.15);
+      else if (action === 'out') camera.zoomBy(1 / 1.15);
+      else if (action === 'reset') camera.reset();
+      else if (action === 'fit') camera.fit();
+    });
   }
 
   function renderProductionGraph(container, detail, helpers, options = {}) {
@@ -1006,57 +1663,97 @@
     const savedLayout = loadSavedLayout(chainId, layoutOptions);
     const layerCount = Math.max(...graph.nodes.map((node) => node.layer), 0) + 1;
 
-    const hintLead = collapseGroups
-      ? 'Albero per gruppi: solo input/output principali tra raggruppamenti. '
+    const hintText = collapseGroups
+      ? t('graph.hintGroups')
       : groupLabel
-        ? `Raggruppamento «${groupLabel}». `
-        : '';
-    const hintText = `${hintLead}Trascina i box per sistemare il layout. Le posizioni vengono ricordate automaticamente per questo progetto${
-      collapseGroups ? ' (vista gruppi)' : groupLabel ? ' e raggruppamento' : ''
-    }.`;
+        ? t('graph.hintGroup', { name: groupLabel })
+        : t('graph.hint');
+
+    const detailMode = helpers.treeDetailMode === 'complex' ? 'complex' : 'simple';
 
     container.innerHTML = `
       <div class="production-graph${groupKey ? ' production-graph--group' : ''}${
         collapseGroups ? ' production-graph--groups' : ''
-      }">
-        <p class="production-graph-hint">${helpers.escapeHtml(hintText)}</p>
+      }" data-detail-mode="${detailMode}">
+        <div class="production-graph-toolbar">
+          <p class="production-graph-hint">${helpers.escapeHtml(hintText)}</p>
+          <div class="production-graph-toolbar-actions">
+            ${renderGraphZoomControls(helpers.escapeHtml)}
+            <div class="production-graph-detail-toggle" role="group" aria-label="${helpers.escapeHtml(
+              t('graph.detailModeAria')
+            )}">
+              <button
+                type="button"
+                class="production-graph-detail-btn${detailMode === 'simple' ? ' is-active' : ''}"
+                data-tree-detail-mode="simple"
+                title="${helpers.escapeHtml(t('graph.detailSimpleTitle'))}"
+                aria-pressed="${detailMode === 'simple' ? 'true' : 'false'}"
+              >${helpers.escapeHtml(t('graph.detailSimple'))}</button>
+              <button
+                type="button"
+                class="production-graph-detail-btn${detailMode === 'complex' ? ' is-active' : ''}"
+                data-tree-detail-mode="complex"
+                title="${helpers.escapeHtml(t('graph.detailComplexTitle'))}"
+                aria-pressed="${detailMode === 'complex' ? 'true' : 'false'}"
+              >${helpers.escapeHtml(t('graph.detailComplex'))}</button>
+            </div>
+          </div>
+        </div>
         <div class="production-graph-scroll">
-          <div class="production-graph-stage">
-            <svg class="production-graph-edges" aria-hidden="true"></svg>
-            <div class="production-graph-nodes"></div>
-            <div class="production-graph-edge-labels"></div>
+          <div class="production-graph-pan">
+            <div class="production-graph-world">
+              <div class="production-graph-stage">
+                <svg class="production-graph-edges" aria-hidden="true"></svg>
+                <div class="production-graph-nodes"></div>
+                <div class="production-graph-edge-labels"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>`;
 
     const scrollEl = container.querySelector('.production-graph-scroll');
+    const panEl = container.querySelector('.production-graph-pan');
+    const worldEl = container.querySelector('.production-graph-world');
     const stage = container.querySelector('.production-graph-stage');
     const svg = container.querySelector('.production-graph-edges');
     const nodesHost = container.querySelector('.production-graph-nodes');
     const labelsHost = container.querySelector('.production-graph-edge-labels');
+    const toolbar = container.querySelector('.production-graph-toolbar');
+    const zoomLabelEl = container.querySelector('[data-graph-zoom="reset"]');
+    const graphEl = container.querySelector('.production-graph');
+
+    toolbar?.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-tree-detail-mode]');
+      if (!btn) return;
+      const next = btn.getAttribute('data-tree-detail-mode');
+      if (!next || next === getProductionTreeDetailMode()) return;
+      setProductionTreeDetailMode(next);
+      if (activeProductionDetail) {
+        renderProductionDetailContent(activeProductionDetail);
+      }
+    });
+
+    const camera = setupGraphCamera(scrollEl, panEl, worldEl, stage, nodesHost, zoomLabelEl);
+    bindGraphZoomButtons(toolbar, camera, graphEl);
 
     const layoutGraph = () => {
       const availableWidth = scrollEl.clientWidth || container.clientWidth || 960;
       const layerGap = computeLayerGap(layerCount, availableWidth);
-      let positions = computeAutoLayout(graph.nodes, graph.edges, savedLayout, layerGap, helpers);
-      positions = fitLayoutToWidth(positions, availableWidth);
+      const positions = computeAutoLayout(graph.nodes, graph.edges, savedLayout, layerGap, helpers);
 
       nodesHost.innerHTML = graph.nodes
         .map((node) => renderNode(node, helpers, positions[node.id]))
         .join('');
 
+      // Pack columns using real node heights so tall badges/IO don't overlap.
+      reflowLayerPositions(nodesHost);
       updateStageSize(stage, nodesHost, scrollEl);
       drawEdges(stage, svg, labelsHost, graph.edges);
+      camera.fit();
     };
 
-    const fitGraphWidth = () => {
-      const availableWidth = scrollEl.clientWidth || container.clientWidth || 960;
-      const positions = fitLayoutToWidth(collectPositions(nodesHost), availableWidth);
-      for (const node of nodesHost.querySelectorAll('.production-graph-node')) {
-        const pos = positions[node.dataset.nodeId];
-        if (!pos) continue;
-        node.style.left = `${pos.x}px`;
-      }
+    const onResize = () => {
       updateStageSize(stage, nodesHost, scrollEl);
       drawEdges(stage, svg, labelsHost, graph.edges);
     };
@@ -1065,23 +1762,332 @@
 
     layoutGraph();
 
-    setupNodeDragging(stage, nodesHost, chainId, scrollEl, () => {
-      updateStageSize(stage, nodesHost, scrollEl);
-      drawEdges(stage, svg, labelsHost, graph.edges);
-    }, layoutOptions);
+    setupNodeDragging(
+      stage,
+      nodesHost,
+      chainId,
+      scrollEl,
+      () => {
+        updateStageSize(stage, nodesHost, scrollEl);
+        drawEdges(stage, svg, labelsHost, graph.edges);
+      },
+      layoutOptions,
+      camera.getScale
+    );
+
+    const teardownFullscreen = setupGraphFullscreen(graphEl, () => {
+      onResize();
+      requestAnimationFrame(() => camera.fit());
+    });
 
     const observer = new ResizeObserver(() => {
       if (!nodesHost.querySelector('.production-graph-node')) return;
-      fitGraphWidth();
+      onResize();
     });
     observer.observe(scrollEl);
 
-    return { disconnect: () => observer.disconnect(), redraw: () => drawEdges(stage, svg, labelsHost, graph.edges) };
+    return {
+      disconnect: () => {
+        observer.disconnect();
+        camera.destroy();
+        teardownFullscreen();
+      },
+      redraw: () => drawEdges(stage, svg, labelsHost, graph.edges),
+    };
+  }
+
+  function buildEnergyGraph(detail, helpers) {
+    const extractions = detail.extractions ?? [];
+    const generators = detail.generators ?? [];
+    const nodes = [];
+    const edges = [];
+    const edgeKeys = new Set();
+    const round = (value) => helpers.roundProduction?.(value) ?? value;
+
+    const addEdge = (edge) => {
+      const key = `${edge.from}|${edge.to}|${edge.itemSlug}|${edge.rate}|${edge.kind}`;
+      if (edgeKeys.has(key)) return;
+      edgeKeys.add(key);
+      edges.push(edge);
+    };
+
+    for (const generator of generators) {
+      nodes.push({
+        id: `gen-${generator.id}`,
+        type: 'generator',
+        layer: null,
+        data: generator,
+      });
+
+      for (const [itemSlug, links] of Object.entries(generator.input_links ?? {})) {
+        for (const link of links) {
+          const extraction = extractions.find(
+            (candidate) => candidate.id === link.producer_extraction_id
+          );
+          if (!extraction) continue;
+          const rate = round(link.producer_rate ?? extraction.output_rate ?? 0);
+          if (!(rate > 0)) continue;
+          const isFluid =
+            itemSlug === 'water' ||
+            Boolean(extraction.item?.is_fluid) ||
+            extraction.extraction_kind === 'water';
+          addEdge({
+            from: `ext-${extraction.id}`,
+            to: `gen-${generator.id}`,
+            itemSlug,
+            itemName: extraction.item?.name ?? link.producer_name ?? itemSlug,
+            itemImage: extraction.item?.image ?? null,
+            isFluid,
+            rate,
+            kind: 'extraction-link',
+          });
+        }
+      }
+
+      for (const [itemSlug, links] of Object.entries(generator.production_input_links ?? {})) {
+        for (const link of links) {
+          const rate = round(link.producer_rate ?? 0);
+          if (!(rate > 0)) continue;
+          const supplyId = `supply-${link.producer_production_step_id}-${itemSlug}`;
+          if (!nodes.some((node) => node.id === supplyId)) {
+            const isFluid = Boolean(
+              generator.fuel_item_slug === itemSlug &&
+                (generator.fuel_is_fluid || generator.fuel_item?.is_fluid)
+            );
+            nodes.push({
+              id: supplyId,
+              type: 'supply',
+              layer: 0,
+              data: {
+                item_slug: itemSlug,
+                item_name:
+                  generator.fuel_item_slug === itemSlug
+                    ? generator.fuel_item?.name || generator.fuel_label || itemSlug
+                    : itemSlug,
+                item_image:
+                  generator.fuel_item_slug === itemSlug ? generator.fuel_item?.image ?? null : null,
+                is_fluid: isFluid,
+                rate,
+                producer_step_name: link.producer_step_name,
+                producer_chain_name: link.producer_chain_name,
+                producer_production_step_id: link.producer_production_step_id,
+              },
+            });
+          }
+          addEdge({
+            from: supplyId,
+            to: `gen-${generator.id}`,
+            itemSlug,
+            itemName:
+              generator.fuel_item_slug === itemSlug
+                ? generator.fuel_item?.name || generator.fuel_label || itemSlug
+                : itemSlug,
+            itemImage:
+              generator.fuel_item_slug === itemSlug ? generator.fuel_item?.image ?? null : null,
+            isFluid: Boolean(
+              generator.fuel_item_slug === itemSlug &&
+                (generator.fuel_is_fluid || generator.fuel_item?.is_fluid)
+            ),
+            rate,
+            kind: 'supply-link',
+          });
+        }
+      }
+    }
+
+    for (const extraction of extractions) {
+      nodes.unshift({
+        id: `ext-${extraction.id}`,
+        type: 'extraction',
+        layer: 0,
+        data: extraction,
+      });
+    }
+
+    const totalPower = round(
+      generators.reduce((sum, generator) => sum + (Number(generator.power_output_mw) || 0), 0)
+    );
+    if (generators.length) {
+      nodes.push({
+        id: 'obj-power',
+        type: 'objective',
+        layer: null,
+        data: {
+          item_slug: 'power',
+          item_name: t('energy.totalPower'),
+          item_image: null,
+          rate: totalPower,
+          unit: 'MW',
+        },
+      });
+      for (const generator of generators) {
+        const mw = round(Number(generator.power_output_mw) || 0);
+        if (!(mw > 0)) continue;
+        addEdge({
+          from: `gen-${generator.id}`,
+          to: 'obj-power',
+          itemSlug: 'power',
+          itemName: t('energy.totalPower'),
+          itemImage: null,
+          isFluid: false,
+          unit: 'MW',
+          rate: mw,
+          kind: 'power-link',
+        });
+      }
+    }
+
+    assignLayers(nodes, edges);
+    compactLayers(nodes);
+    return { nodes, edges };
+  }
+
+  function renderEnergyGraph(container, detail, helpers, options = {}) {
+    const graph = buildEnergyGraph(detail, helpers);
+
+    if (!graph.nodes.length) {
+      container.innerHTML = `<p class="detail-empty production-graph-empty">${helpers.escapeHtml(
+        t('graph.emptyEnergyTree')
+      )}</p>`;
+      return null;
+    }
+
+    graph.edges.forEach((edge, index) => {
+      edge.id = edge.id ?? `edge-${index}`;
+    });
+
+    const chainId = helpers.chainId;
+    const savedLayout = loadSavedLayout(chainId, {});
+    const layerCount = Math.max(...graph.nodes.map((node) => node.layer), 0) + 1;
+    const detailMode = helpers.treeDetailMode === 'complex' ? 'complex' : 'simple';
+
+    container.innerHTML = `
+      <div class="production-graph" data-detail-mode="${detailMode}">
+        <div class="production-graph-toolbar">
+          <p class="production-graph-hint">${helpers.escapeHtml(t('graph.hint'))}</p>
+          <div class="production-graph-toolbar-actions">
+            ${renderGraphZoomControls(helpers.escapeHtml)}
+            <div class="production-graph-detail-toggle" role="group" aria-label="${helpers.escapeHtml(
+              t('graph.detailModeAria')
+            )}">
+              <button
+                type="button"
+                class="production-graph-detail-btn${detailMode === 'simple' ? ' is-active' : ''}"
+                data-tree-detail-mode="simple"
+                title="${helpers.escapeHtml(t('graph.detailSimpleTitle'))}"
+                aria-pressed="${detailMode === 'simple' ? 'true' : 'false'}"
+              >${helpers.escapeHtml(t('graph.detailSimple'))}</button>
+              <button
+                type="button"
+                class="production-graph-detail-btn${detailMode === 'complex' ? ' is-active' : ''}"
+                data-tree-detail-mode="complex"
+                title="${helpers.escapeHtml(t('graph.detailComplexTitle'))}"
+                aria-pressed="${detailMode === 'complex' ? 'true' : 'false'}"
+              >${helpers.escapeHtml(t('graph.detailComplex'))}</button>
+            </div>
+          </div>
+        </div>
+        <div class="production-graph-scroll">
+          <div class="production-graph-pan">
+            <div class="production-graph-world">
+              <div class="production-graph-stage">
+                <svg class="production-graph-edges" aria-hidden="true"></svg>
+                <div class="production-graph-nodes"></div>
+                <div class="production-graph-edge-labels"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    const scrollEl = container.querySelector('.production-graph-scroll');
+    const panEl = container.querySelector('.production-graph-pan');
+    const worldEl = container.querySelector('.production-graph-world');
+    const stage = container.querySelector('.production-graph-stage');
+    const svg = container.querySelector('.production-graph-edges');
+    const nodesHost = container.querySelector('.production-graph-nodes');
+    const labelsHost = container.querySelector('.production-graph-edge-labels');
+    const toolbar = container.querySelector('.production-graph-toolbar');
+    const zoomLabelEl = container.querySelector('[data-graph-zoom="reset"]');
+    const graphEl = container.querySelector('.production-graph');
+
+    toolbar?.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-tree-detail-mode]');
+      if (!btn) return;
+      const next = btn.getAttribute('data-tree-detail-mode');
+      if (!next || next === getProductionTreeDetailMode()) return;
+      setProductionTreeDetailMode(next);
+      if (typeof options.onDetailModeChange === 'function') {
+        options.onDetailModeChange(next);
+      }
+    });
+
+    const camera = setupGraphCamera(scrollEl, panEl, worldEl, stage, nodesHost, zoomLabelEl);
+    bindGraphZoomButtons(toolbar, camera, graphEl);
+
+    const layoutGraph = () => {
+      const availableWidth = scrollEl.clientWidth || container.clientWidth || 960;
+      const layerGap = computeLayerGap(layerCount, availableWidth);
+      const positions = computeAutoLayout(graph.nodes, graph.edges, savedLayout, layerGap, helpers);
+
+      nodesHost.innerHTML = graph.nodes
+        .map((node) => renderNode(node, helpers, positions[node.id]))
+        .join('');
+
+      reflowLayerPositions(nodesHost);
+      updateStageSize(stage, nodesHost, scrollEl);
+      drawEdges(stage, svg, labelsHost, graph.edges);
+      camera.fit();
+    };
+
+    const onResize = () => {
+      updateStageSize(stage, nodesHost, scrollEl);
+      drawEdges(stage, svg, labelsHost, graph.edges);
+    };
+
+    labelsHost.innerHTML = graph.edges.map((edge) => renderEdgeLabel(edge, helpers)).join('');
+
+    layoutGraph();
+
+    setupNodeDragging(
+      stage,
+      nodesHost,
+      chainId,
+      scrollEl,
+      () => {
+        updateStageSize(stage, nodesHost, scrollEl);
+        drawEdges(stage, svg, labelsHost, graph.edges);
+      },
+      {},
+      camera.getScale
+    );
+
+    const teardownFullscreen = setupGraphFullscreen(graphEl, () => {
+      onResize();
+      requestAnimationFrame(() => camera.fit());
+    });
+
+    const observer = new ResizeObserver(() => {
+      if (!nodesHost.querySelector('.production-graph-node')) return;
+      onResize();
+    });
+    observer.observe(scrollEl);
+
+    return {
+      disconnect: () => {
+        observer.disconnect();
+        camera.destroy();
+        teardownFullscreen();
+      },
+      redraw: () => drawEdges(stage, svg, labelsHost, graph.edges),
+    };
   }
 
   window.ProductionGraph = {
     buildProductionGraph,
     buildCollapsedGroupGraph,
+    buildEnergyGraph,
     renderProductionGraph,
+    renderEnergyGraph,
   };
 })();

@@ -228,6 +228,299 @@ function getStepInputRateForItem(step, itemSlug) {
   );
 }
 
+const BELT_RATES_BY_MK = { 1: 60, 2: 120, 3: 270, 4: 480, 5: 780, 6: 1200 };
+const PIPE_RATES_BY_MK = { 1: 300, 2: 600 };
+
+function getPlanTransportCapacity(isFluid, chain = activeProductionDetail?.chain) {
+  if (isFluid) {
+    const mk = Math.min(2, Math.max(1, Number(chain?.max_pipe_mk) || 2));
+    return { mk, capacity: PIPE_RATES_BY_MK[mk] || 600, kind: 'pipe' };
+  }
+  const mk = Math.min(6, Math.max(1, Number(chain?.max_belt_mk) || 6));
+  return { mk, capacity: BELT_RATES_BY_MK[mk] || 1200, kind: 'belt' };
+}
+
+function distributeMachinesAcrossManifolds(machineCount, manifoldCount) {
+  const machines = Math.max(1, Math.round(Number(machineCount) || 1));
+  const manifolds = Math.min(machines, Math.max(1, Math.round(Number(manifoldCount) || 1)));
+  const base = Math.floor(machines / manifolds);
+  const rem = machines % manifolds;
+  return Array.from({ length: manifolds }, (_, index) => base + (index < rem ? 1 : 0)).filter(
+    (count) => count > 0
+  );
+}
+
+function computeStepBuildInfo(step, chain = activeProductionDetail?.chain) {
+  const machines = Math.max(1, Math.round(Number(step?.machine_count) || 1));
+  const overclock = Number(step?.overclock) || 100;
+  const buildingName = step?.schema?.building_name || step?.schema?.building_slug || t('common.building');
+  const buildingSlug = step?.schema?.building_slug || buildingName;
+  const buildingImage = step?.schema?.building_image || null;
+
+  let manifoldsNeeded = 1;
+  const limiting = [];
+  const ioList = [
+    ...(step?.scaled_inputs ?? []).map((io) => ({
+      ...io,
+      rate: getStepInputRateForItem(step, io.item_slug),
+      direction: 'input',
+    })),
+    ...(step?.scaled_outputs ?? []).map((io) => ({
+      ...io,
+      rate: getStepOutputRateForItem(step, io.item_slug),
+      direction: 'output',
+    })),
+  ];
+
+  for (const io of ioList) {
+    if (!(io.rate > 0)) continue;
+    const transport = getPlanTransportCapacity(Boolean(io.is_fluid), chain);
+    const lines = Math.max(1, Math.ceil(io.rate / transport.capacity - 1e-9));
+    if (lines > manifoldsNeeded) {
+      manifoldsNeeded = lines;
+      limiting.length = 0;
+      limiting.push({
+        item_slug: io.item_slug,
+        item_name: io.item_name || io.item_slug,
+        direction: io.direction,
+        rate: io.rate,
+        ...transport,
+        lines,
+      });
+    } else if (lines === manifoldsNeeded && manifoldsNeeded > 1) {
+      limiting.push({
+        item_slug: io.item_slug,
+        item_name: io.item_name || io.item_slug,
+        direction: io.direction,
+        rate: io.rate,
+        ...transport,
+        lines,
+      });
+    }
+  }
+
+  manifoldsNeeded = Math.min(machines, manifoldsNeeded);
+  const banks = distributeMachinesAcrossManifolds(machines, manifoldsNeeded);
+
+  return {
+    machines,
+    overclock,
+    buildingName,
+    buildingSlug,
+    buildingImage,
+    manifoldCount: banks.length,
+    banks,
+    needsSplit: banks.length > 1,
+    limiting,
+  };
+}
+
+function computeExtractionBuildInfo(extraction, chain = activeProductionDetail?.chain) {
+  const nodes = Math.max(1, Math.round(Number(extraction?.node_count) || 1));
+  const overclock = Number(extraction?.overclock) || 100;
+  const rate = Number(extraction?.target_output ?? extraction?.output_rate) || 0;
+  const isFluid =
+    extraction?.extraction_kind === 'oil' ||
+    extraction?.extraction_kind === 'water' ||
+    extraction?.item?.slug === 'water' ||
+    extraction?.item?.slug === 'liquid-oil';
+  const transport = getPlanTransportCapacity(isFluid, chain);
+  const lines = rate > 0 ? Math.max(1, Math.ceil(rate / transport.capacity - 1e-9)) : 1;
+  const banks = distributeMachinesAcrossManifolds(nodes, Math.min(nodes, lines));
+
+  return {
+    machines: nodes,
+    overclock,
+    buildingName: extraction?.building_name || extraction?.miner_slug || t('production.addExtraction'),
+    buildingSlug: extraction?.miner_slug || 'extraction',
+    buildingImage: extraction?.building_image || null,
+    manifoldCount: banks.length,
+    banks,
+    needsSplit: banks.length > 1,
+    isExtraction: true,
+    transport,
+  };
+}
+
+function renderBuildStatsBadge(info, { compact = false, detailMode = 'complex' } = {}) {
+  if (!info) return '';
+  const showManifolds = detailMode !== 'simple' && info.needsSplit;
+  const machineLabel = info.isExtraction
+    ? t(info.machines === 1 ? 'production.buildNodesOne' : 'production.buildNodesMany', {
+        count: formatDisplayInteger(info.machines),
+      })
+    : t(info.machines === 1 ? 'production.buildMachinesOne' : 'production.buildMachinesMany', {
+        count: formatDisplayInteger(info.machines),
+      });
+  const ocLabel = t('production.buildAtClock', {
+    overclock: formatOverclockLabel(info.overclock),
+  });
+  const banksText = (info.banks || [])
+    .map((count) => `${formatDisplayInteger(count)}×`)
+    .join(' + ');
+  const splitLabel = showManifolds
+    ? t('production.buildManifolds', {
+        count: formatDisplayInteger(info.manifoldCount),
+        banks: banksText,
+      })
+    : '';
+  const limiter = info.limiting?.[0];
+  const title = showManifolds
+    ? escapeHtml(
+        limiter
+          ? t('production.buildSplitReason', {
+              count: formatDisplayInteger(info.manifoldCount),
+              item: limiter.item_name || limiter.item_slug,
+              mk: limiter.mk,
+              kind: limiter.kind === 'pipe' ? t('production.transportPipe') : t('production.transportBelt'),
+              capacity: formatDisplayInteger(limiter.capacity),
+            })
+          : t('production.buildSplitHint', {
+              count: formatDisplayInteger(info.manifoldCount),
+              banks: banksText,
+            })
+      )
+    : '';
+
+  return `
+    <div class="production-build-stats${compact ? ' production-build-stats--compact' : ''}${
+      showManifolds ? ' production-build-stats--split' : ''
+    }"${title ? ` title="${title}"` : ''}>
+      <span class="production-build-stats-main">
+        <strong>${escapeHtml(machineLabel)}</strong>
+        <span class="production-build-stats-sep">@</span>
+        <strong>${escapeHtml(ocLabel)}</strong>
+      </span>
+      ${
+        splitLabel
+          ? `<span class="production-build-stats-split">${escapeHtml(splitLabel)}</span>`
+          : ''
+      }
+      ${
+        showManifolds
+          ? `<div class="production-build-manifold-banks">${info.banks
+              .map(
+                (count, index) => `
+            <span class="production-build-manifold-bank">
+              ${escapeHtml(
+                t('production.buildManifoldBank', {
+                  index: index + 1,
+                  count: formatDisplayInteger(count),
+                })
+              )}
+            </span>`
+              )
+              .join('')}</div>`
+          : ''
+      }
+    </div>`;
+}
+
+function collectPlanBuildSummary(steps = [], extractions = [], chain = activeProductionDetail?.chain) {
+  const byKey = new Map();
+
+  for (const step of steps) {
+    const info = computeStepBuildInfo(step, chain);
+    const key = `step:${info.buildingSlug}:${Math.round(info.overclock * 1000) / 1000}`;
+    const existing = byKey.get(key);
+    if (existing) {
+      existing.machines += info.machines;
+      existing.manifoldCount += info.manifoldCount;
+    } else {
+      byKey.set(key, {
+        key,
+        kind: 'craft',
+        buildingName: info.buildingName,
+        buildingImage: info.buildingImage,
+        machines: info.machines,
+        overclock: info.overclock,
+        manifoldCount: info.manifoldCount,
+      });
+    }
+  }
+
+  for (const extraction of extractions) {
+    const info = computeExtractionBuildInfo(extraction, chain);
+    const key = `ext:${info.buildingSlug}:${Math.round(info.overclock * 1000) / 1000}`;
+    const existing = byKey.get(key);
+    if (existing) {
+      existing.machines += info.machines;
+      existing.manifoldCount += info.manifoldCount;
+    } else {
+      byKey.set(key, {
+        key,
+        kind: 'extraction',
+        buildingName: info.buildingName,
+        buildingImage: info.buildingImage,
+        machines: info.machines,
+        overclock: info.overclock,
+        manifoldCount: info.manifoldCount,
+      });
+    }
+  }
+
+  return [...byKey.values()].sort((a, b) => {
+    const nameCmp = a.buildingName.localeCompare(b.buildingName, activeLocale || 'en');
+    if (nameCmp !== 0) return nameCmp;
+    return a.overclock - b.overclock;
+  });
+}
+
+function renderPlanBuildSummary(steps = [], extractions = [], chain = activeProductionDetail?.chain) {
+  const rows = collectPlanBuildSummary(steps, extractions, chain);
+  if (!rows.length) return '';
+
+  const body = rows
+    .map((row) => {
+      const img = row.buildingImage
+        ? `<img class="production-external-icon" src="${escapeHtml(row.buildingImage)}" alt="" />`
+        : '<span class="resource-img resource-img--placeholder production-external-icon"></span>';
+      const countLabel =
+        row.kind === 'extraction'
+          ? t(row.machines === 1 ? 'production.buildNodesOne' : 'production.buildNodesMany', {
+              count: formatDisplayInteger(row.machines),
+            })
+          : t(row.machines === 1 ? 'production.buildMachinesOne' : 'production.buildMachinesMany', {
+              count: formatDisplayInteger(row.machines),
+            });
+      const split =
+        row.manifoldCount > 1
+          ? `<div class="production-build-summary-split">${escapeHtml(
+              t('production.buildManifoldCount', { count: formatDisplayInteger(row.manifoldCount) })
+            )}</div>`
+          : '';
+      return `
+        <tr>
+          <td class="production-external-resource">
+            ${img}
+            <span>
+              <strong>${escapeHtml(row.buildingName)}</strong>
+              ${split}
+            </span>
+          </td>
+          <td class="production-external-rate production-build-summary-count">${escapeHtml(countLabel)}</td>
+          <td class="production-external-rate">${escapeHtml(
+            t('production.buildAtClock', { overclock: formatOverclockLabel(row.overclock) })
+          )}</td>
+        </tr>`;
+    })
+    .join('');
+
+  return `
+    <div class="production-external-summary-inner production-external-summary-inner--build">
+      <table class="production-external-table production-external-table--build">
+        <thead>
+          <tr>
+            <th>${escapeHtml(t('production.summaryBuild'))}</th>
+            <th class="production-external-rate">${escapeHtml(t('production.summaryCount'))}</th>
+            <th class="production-external-rate">${escapeHtml(t('production.summaryClock'))}</th>
+          </tr>
+        </thead>
+        <tbody>${body}</tbody>
+      </table>
+    </div>`;
+}
+
 function linkTargetsProducer(link, producerStepId) {
   return Number(link?.producer_step_id) === Number(producerStepId);
 }
@@ -976,11 +1269,18 @@ function cleanupProductionDragArtifacts() {
 }
 
 function getProductionGraphHelpers(detail) {
+  const chain = detail.chain ?? {};
+  const maxBeltMk = Number(chain.max_belt_mk) || 6;
+  const maxPipeMk = Number(chain.max_pipe_mk) || 2;
+  const beltRates = { 1: 60, 2: 120, 3: 270, 4: 480, 5: 780, 6: 1200 };
+  const pipeRates = { 1: 300, 2: 600 };
+
   return {
-    chainId: detail.chain?.id ?? null,
+    chainId: chain.id ?? null,
     escapeHtml,
     formatProductionValue,
     formatRateWithUnit,
+    formatDisplayNumber: formatDisplayInteger,
     computeProductionObjectives,
     getStepInputRateForItem,
     getStepOutputRateForItem,
@@ -994,9 +1294,33 @@ function getProductionGraphHelpers(detail) {
     getExtractionOutputUnit,
     getProductionGroupKey,
     getProductionGroupLabel,
+    computeStepBuildInfo: (step) => computeStepBuildInfo(step, chain),
+    computeExtractionBuildInfo: (extraction) => computeExtractionBuildInfo(extraction, chain),
+    renderBuildStatsBadge: (info, options) =>
+      renderBuildStatsBadge(info, {
+        ...options,
+        detailMode: getProductionTreeDetailMode(),
+      }),
+    treeDetailMode: getProductionTreeDetailMode(),
     roundProduction: (value) => window.ProductionScale.roundProduction(value),
     linkTolerance: LINK_BALANCE_TOLERANCE,
     extractions: detail.extractions ?? [],
+    describeEdgeTransport: (edge) => {
+      if (edge.kind === 'objective-link' || !(edge.rate > 0)) return null;
+      const isFluid = Boolean(edge.isFluid);
+      const mk = isFluid ? maxPipeMk : maxBeltMk;
+      const capacity = isFluid ? pipeRates[mk] || 600 : beltRates[mk] || 1200;
+      const rate = Number(edge.rate) || 0;
+      const count = Math.max(1, Math.ceil(rate / capacity - 1e-9));
+      return {
+        isFluid,
+        mk,
+        capacity,
+        rate,
+        count,
+        over: rate > capacity + 1e-9,
+      };
+    },
   };
 }
 
@@ -1046,6 +1370,7 @@ function updateProductionTreeButtonState() {
   actionsEl?.classList.toggle('production-detail-actions--tree-view', isAnyTree);
   addExtractionBtn?.toggleAttribute('hidden', isAnyTree);
   addResourceStepBtn?.toggleAttribute('hidden', isAnyTree);
+  document.getElementById('view-production-detail')?.classList.toggle('view--tree-mode', isAnyTree);
 }
 
 function updateProductionGroupTreeButtonVisibility(detail) {
@@ -1485,6 +1810,10 @@ function renderProductionExternalSummary(steps, extractions = []) {
   const nodesHtml = renderProductionNodesSummary(extractions);
   const mineralsHtml = renderProductionMineralsSummary(steps, extractions);
   const objectivesHtml = steps.length ? renderProductionObjectivesSummary(steps) : '';
+  const buildHtml =
+    steps.length || extractions.length
+      ? renderPlanBuildSummary(steps, extractions, activeProductionDetail?.chain)
+      : '';
   const powerShardsHtml =
     steps.length || extractions.length
       ? renderPowerShardsSummary(
@@ -1494,11 +1823,11 @@ function renderProductionExternalSummary(steps, extractions = []) {
         )
       : '';
 
-  if (!nodesHtml && !mineralsHtml && !objectivesHtml && !powerShardsHtml) return '';
+  if (!nodesHtml && !mineralsHtml && !objectivesHtml && !powerShardsHtml && !buildHtml) return '';
 
   const leadColumnHtml =
-    objectivesHtml || powerShardsHtml
-      ? `<div class="production-external-summary-lead">${objectivesHtml}${powerShardsHtml}</div>`
+    objectivesHtml || powerShardsHtml || buildHtml
+      ? `<div class="production-external-summary-lead">${objectivesHtml}${buildHtml}${powerShardsHtml}</div>`
       : '';
 
   return `<div class="production-external-summary-stack">${leadColumnHtml}${nodesHtml}${mineralsHtml}</div>`;
@@ -1951,6 +2280,7 @@ function renderProductionStep(step, allSteps = []) {
             </div>
           </div>
           <p class="production-step-resource">${escapeHtml(item?.name || t('common.resource'))}</p>
+          ${renderBuildStatsBadge(computeStepBuildInfo(step), { compact: true })}
         </div>
       </header>
       ${renderCraftSchema(scaledSchema, schema?.is_alternative, {

@@ -47,9 +47,9 @@ function renderLocaleSelect() {
   const current =
     availableLocales.find((locale) => locale.code === activeLocale) ||
     availableLocales[0] ||
-    { code: 'it', name: 'Italiano' };
+    { code: 'en', name: 'English' };
 
-  valueEl.textContent = String(current.code || 'it').toUpperCase();
+  valueEl.textContent = String(current.code || 'en').toUpperCase();
   trigger.title = t('topbar.languageTitle');
   trigger.setAttribute(
     'aria-label',
@@ -143,7 +143,7 @@ async function refreshAfterLocaleChange() {
 }
 
 async function setUiLocale(localeCode, { persist = true } = {}) {
-  const next = String(localeCode || 'it').toLowerCase();
+  const next = String(localeCode || 'en').toLowerCase();
   if (persist) {
     await window.satisfactory.setAppLocale(next);
   }
@@ -166,17 +166,17 @@ async function initLocaleSelector() {
     availableLocales = info.availableLocales?.length
       ? info.availableLocales
       : info.locales || [
-          { code: 'it', name: 'Italiano' },
           { code: 'en', name: 'English' },
+          { code: 'it', name: 'Italiano' },
         ];
-    activeLocale = info.activeLocale || 'it';
+    activeLocale = info.activeLocale || 'en';
   } catch (err) {
     console.error('Locale init error:', err);
     availableLocales = [
-      { code: 'it', name: 'Italiano' },
       { code: 'en', name: 'English' },
+      { code: 'it', name: 'Italiano' },
     ];
-    activeLocale = 'it';
+    activeLocale = 'en';
   }
 
   if (window.I18nUI?.loadLocale) {

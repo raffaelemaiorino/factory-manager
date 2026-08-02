@@ -927,28 +927,47 @@ function renderDashboardProjectsList(projects) {
           : t('dashboard.projectTypeEnergy');
       const typeIcon = project.type === 'production' ? 'fa-link' : 'fa-bolt';
       return `
-        <button
-          type="button"
+        <div
           class="dashboard-project-row"
           data-project-type="${project.type}"
           data-project-id="${project.id}"
         >
-          <span class="dashboard-project-icon" aria-hidden="true">
-            <i class="fa-solid ${typeIcon}"></i>
-          </span>
-          <span class="dashboard-project-body">
-            <span class="dashboard-project-title">
-              <span class="dashboard-project-name">${escapeHtml(project.name)}</span>
-              <span class="dashboard-badge dashboard-badge--${project.health.status}">${escapeHtml(project.health.label)}</span>
+          <button
+            type="button"
+            class="dashboard-project-main"
+            data-project-open="1"
+            data-project-type="${project.type}"
+            data-project-id="${project.id}"
+          >
+            <span class="dashboard-project-icon" aria-hidden="true">
+              <i class="fa-solid ${typeIcon}"></i>
             </span>
-            <span class="dashboard-project-meta">
-              <span>${typeLabel}</span>
-              <span class="dashboard-project-sep">·</span>
-              <span>${escapeHtml(project.metricsText)}</span>
+            <span class="dashboard-project-body">
+              <span class="dashboard-project-title">
+                <span class="dashboard-project-name">${escapeHtml(project.name)}</span>
+                <span class="dashboard-badge dashboard-badge--${project.health.status}">${escapeHtml(project.health.label)}</span>
+              </span>
+              <span class="dashboard-project-meta">
+                <span>${typeLabel}</span>
+                <span class="dashboard-project-sep">·</span>
+                <span>${escapeHtml(project.metricsText)}</span>
+              </span>
+              <span class="dashboard-project-updated">${escapeHtml(t('time.updated', { when: formatDashboardRelativeTime(project.updated_at) }))}</span>
             </span>
-            <span class="dashboard-project-updated">${escapeHtml(t('time.updated', { when: formatDashboardRelativeTime(project.updated_at) }))}</span>
-          </span>
-        </button>`;
+          </button>
+          <button
+            type="button"
+            class="dashboard-project-delete"
+            data-project-delete="1"
+            data-project-type="${project.type}"
+            data-project-id="${project.id}"
+            data-project-name="${escapeHtml(project.name)}"
+            aria-label="${escapeHtml(t('actions.deleteAria', { name: project.name }))}"
+            title="${escapeHtml(t('actions.delete'))}"
+          >
+            <i class="fa-solid fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>`;
     })
     .join('');
 }
@@ -1055,14 +1074,48 @@ function setupDashboard() {
   const objectivesChartEl = document.getElementById('dashboard-chart-objectives');
   const balanceChartEl = document.getElementById('dashboard-chart-balance');
 
-  const handleProjectClick = (event) => {
+  const handleProjectClick = async (event) => {
     const energyAction = event.target.closest('[data-dashboard-action="energy"]');
     if (energyAction) {
       switchView('energy');
       return;
     }
-    const row = event.target.closest('[data-project-type][data-project-id]');
-    if (!row) return;
+
+    const deleteBtn = event.target.closest('[data-project-delete]');
+    if (deleteBtn) {
+      event.preventDefault();
+      event.stopPropagation();
+      const type = deleteBtn.dataset.projectType;
+      const id = Number(deleteBtn.dataset.projectId);
+      const name = deleteBtn.dataset.projectName || '';
+      const confirmed = await showConfirm({
+        title: type === 'energy' ? t('confirm.deleteEnergyPlanTitle') : t('confirm.deletePlanTitle'),
+        message:
+          type === 'energy'
+            ? t('confirm.deleteEnergyPlanMessage', { name })
+            : t('confirm.deletePlanMessage', { name }),
+        confirmLabel: t('actions.delete'),
+      });
+      if (!confirmed) return;
+      try {
+        if (type === 'production') {
+          await window.satisfactory.deleteProductionChain(id);
+        } else if (type === 'energy') {
+          await window.satisfactory.deleteEnergyChain(id);
+        }
+        await initDashboard();
+      } catch (err) {
+        console.error('Dashboard delete project error:', err);
+        await showAlert({
+          title: t('errors.saveFailed'),
+          message: err.message || t('errors.saveFailed'),
+        });
+      }
+      return;
+    }
+
+    const row = event.target.closest('[data-project-open], [data-project-type][data-project-id]');
+    if (!row || row.dataset.projectDelete) return;
     openDashboardProject(row.dataset.projectType, Number(row.dataset.projectId));
   };
 

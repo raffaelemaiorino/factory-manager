@@ -23,8 +23,13 @@ const {
 
 const STEP_SELECT = `
   id, chain_id, name, item_id, item_schema_id, sort_order, group_name,
-  target_output, machine_count, overclock, somersloop_mask, oc_machines_linked, marked, created_at
+  target_output, machine_count, overclock, somersloop_mask, oc_machines_linked, marked, is_sink, created_at
 `;
+
+function parseSinkByproductsFlag(value, fallback = 0) {
+  if (value === undefined || value === null || value === '') return fallback ? 1 : 0;
+  return Number(value) ? 1 : 0;
+}
 
 function normalizeGroupName(name) {
   const trimmed = String(name ?? '').trim();
@@ -54,7 +59,25 @@ function queryAll(db, sql, params = []) {
   return rows;
 }
 
+function ensureProductionChainSettingsColumns(db) {
+  const info = db.exec('PRAGMA table_info(production_chains)')[0]?.values ?? [];
+  const cols = new Set(info.map((row) => row[1]));
+  if (!cols.has('power_shard_limit')) {
+    db.run('ALTER TABLE production_chains ADD COLUMN power_shard_limit INTEGER NOT NULL DEFAULT 0');
+  }
+  if (!cols.has('max_belt_mk')) {
+    db.run('ALTER TABLE production_chains ADD COLUMN max_belt_mk INTEGER NOT NULL DEFAULT 6');
+  }
+  if (!cols.has('max_pipe_mk')) {
+    db.run('ALTER TABLE production_chains ADD COLUMN max_pipe_mk INTEGER NOT NULL DEFAULT 2');
+  }
+  if (!cols.has('sink_byproducts')) {
+    db.run('ALTER TABLE production_chains ADD COLUMN sink_byproducts INTEGER NOT NULL DEFAULT 0');
+  }
+}
+
 function ensureProductionChainStepsTable(db) {
+  ensureProductionChainSettingsColumns(db);
   db.run(`
     CREATE TABLE IF NOT EXISTS production_chain_steps (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -97,6 +120,9 @@ function ensureProductionChainStepsTable(db) {
   }
   if (!cols.has('marked')) {
     db.run('ALTER TABLE production_chain_steps ADD COLUMN marked INTEGER NOT NULL DEFAULT 0');
+  }
+  if (!cols.has('is_sink')) {
+    db.run('ALTER TABLE production_chain_steps ADD COLUMN is_sink INTEGER NOT NULL DEFAULT 0');
   }
 
   ensureStepLinksTable(db);
@@ -366,14 +392,87 @@ function attachLinksToSteps(steps, links, extractions = []) {
 }
 
 function mapChain(row) {
+  const {
+    parsePowerShardLimit,
+    clampBeltMk,
+    clampPipeMk,
+    DEFAULT_POWER_SHARD_LIMIT,
+    DEFAULT_MAX_BELT_MK,
+    DEFAULT_MAX_PIPE_MK,
+    isPowerShardUnlimited,
+  } = require('./transport');
+
+  const powerShardLimit = parsePowerShardLimit(
+    row.power_shard_limit,
+    DEFAULT_POWER_SHARD_LIMIT
+  );
+
   return {
     id: row.id,
     name: row.name,
     target_item_slug: row.target_item_slug,
     target_rate: row.target_rate,
     notes: row.notes,
+    power_shard_limit: powerShardLimit,
+    power_shard_unlimited: isPowerShardUnlimited(powerShardLimit),
+    max_belt_mk: clampBeltMk(row.max_belt_mk, DEFAULT_MAX_BELT_MK),
+    max_pipe_mk: clampPipeMk(row.max_pipe_mk, DEFAULT_MAX_PIPE_MK),
+    sink_byproducts: parseSinkByproductsFlag(row.sink_byproducts),
     created_at: row.created_at,
     updated_at: row.updated_at,
+  };
+}
+
+function mapSinkStep(row, item, db) {
+  const { getBuildingBySlug } = require('./buildings');
+  const building = getBuildingBySlug(db, 'resource-sink');
+  const rate = Number(row.target_output) || 0;
+  const duration = 60;
+  const input = {
+    slot: 1,
+    item_slug: item?.slug ?? '',
+    item_name: item?.name ?? '',
+    item_image: item?.image ?? null,
+    amount: rate,
+    is_fluid: 0,
+  };
+  const schema = {
+    id: null,
+    item_id: item?.id ?? row.item_id,
+    name: building?.name || 'AWESOME Sink',
+    is_alternative: false,
+    building_name: building?.name || 'AWESOME Sink',
+    building_slug: 'resource-sink',
+    building_image: building?.image ?? null,
+    somersloop_slots: 0,
+    power_consumption: Number(building?.power_consumption) || 0,
+    duration,
+    sort_order: 0,
+    inputs: [input],
+    outputs: [],
+  };
+
+  return {
+    id: row.id,
+    chain_id: row.chain_id,
+    name: row.name,
+    item_id: row.item_id,
+    item_schema_id: row.item_schema_id,
+    sort_order: row.sort_order,
+    group_name: normalizeGroupName(row.group_name),
+    base_per_min: rate,
+    target_output: rate,
+    machine_count: Number(row.machine_count) || 1,
+    overclock: Number(row.overclock) || DEFAULT_OVERCLOCK,
+    somersloop_mask: 0,
+    oc_machines_linked: 0,
+    marked: Number(row.marked) === 1 ? 1 : 0,
+    is_sink: 1,
+    created_at: row.created_at,
+    item,
+    schema,
+    scaled_inputs: [input],
+    scaled_outputs: [],
   };
 }
 
@@ -407,6 +506,7 @@ function mapStep(row, item, schema) {
     somersloop_mask: production.somersloop_mask,
     oc_machines_linked: production.oc_machines_linked ? 1 : 0,
     marked: Number(row.marked) === 1 ? 1 : 0,
+    is_sink: Number(row.is_sink) === 1 ? 1 : 0,
     created_at: row.created_at,
     item,
     schema,
@@ -444,6 +544,9 @@ function loadChainSteps(db, chainId, getItemById) {
 
   return rows.map((row) => {
     const item = getItemById(db, row.item_id);
+    if (Number(row.is_sink) === 1) {
+      return mapSinkStep(row, item, db);
+    }
     const schema = getItemSchemaById(db, row.item_schema_id);
     return mapStep(row, item, schema);
   });
@@ -460,6 +563,9 @@ function getStepById(db, stepId, getItemById) {
   if (!row) return null;
 
   const item = getItemById(db, row.item_id);
+  if (Number(row.is_sink) === 1) {
+    return mapSinkStep(row, item, db);
+  }
   const schema = getItemSchemaById(db, row.item_schema_id);
   return mapStep(row, item, schema);
 }
@@ -468,7 +574,8 @@ function listProductionChains(db) {
   ensureProductionChainStepsTable(db);
   return queryAll(
     db,
-    `SELECT id, name, target_item_slug, target_rate, notes, created_at, updated_at
+    `SELECT id, name, target_item_slug, target_rate, notes,
+            power_shard_limit, max_belt_mk, max_pipe_mk, sink_byproducts, created_at, updated_at
      FROM production_chains
      ORDER BY updated_at DESC, name ASC`
   ).map(mapChain);
@@ -478,7 +585,8 @@ function getProductionChainById(db, id) {
   ensureProductionChainStepsTable(db);
   const row = queryOne(
     db,
-    `SELECT id, name, target_item_slug, target_rate, notes, created_at, updated_at
+    `SELECT id, name, target_item_slug, target_rate, notes,
+            power_shard_limit, max_belt_mk, max_pipe_mk, sink_byproducts, created_at, updated_at
      FROM production_chains
      WHERE id = ?`,
     [id]
@@ -491,25 +599,47 @@ function getProductionChainDetail(db, chainId, getItemById) {
   const chain = getProductionChainById(db, chainId);
   if (!chain) return null;
 
+  const { loadChainTargets, ensureProductionChainTargetsTable } = require('./production-targets');
+  ensureProductionChainTargetsTable(db);
+
   const steps = loadChainSteps(db, chainId, getItemById);
   const extractions = loadChainExtractions(db, chainId, getItemById);
   const links = loadChainLinks(db, chainId);
   attachLinksToSteps(steps, links, extractions);
   const group_marks = loadGroupMarks(db, chainId);
-  return { chain, steps, extractions, links, group_marks };
+  const targets = loadChainTargets(db, chainId, getItemById);
+  return { chain, steps, extractions, links, group_marks, targets };
 }
 
-function createProductionChain(db, persist, { name }) {
+function createProductionChain(
+  db,
+  persist,
+  { name, target_item_slug = null, target_rate = null, sink_byproducts = 0 } = {}
+) {
   ensureProductionChainStepsTable(db);
   const trimmed = String(name ?? '').trim();
   if (!trimmed) {
     throw new Error('Il nome è obbligatorio');
   }
 
+  const slug =
+    target_item_slug == null || target_item_slug === ''
+      ? null
+      : String(target_item_slug).trim() || null;
+  let rate = null;
+  if (target_rate != null && target_rate !== '') {
+    rate = Number(target_rate);
+    if (!Number.isFinite(rate) || rate <= 0) {
+      throw new Error('Rate non valido');
+    }
+  }
+
+  const sinkFlag = parseSinkByproductsFlag(sink_byproducts);
+
   db.run(
-    `INSERT INTO production_chains (name, updated_at)
-     VALUES (?, datetime('now'))`,
-    [trimmed]
+    `INSERT INTO production_chains (name, target_item_slug, target_rate, sink_byproducts, updated_at)
+     VALUES (?, ?, ?, ?, datetime('now'))`,
+    [trimmed, slug, rate, sinkFlag]
   );
 
   const id = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
@@ -517,22 +647,53 @@ function createProductionChain(db, persist, { name }) {
   return getProductionChainById(db, id);
 }
 
-function updateProductionChain(db, persist, id, { name }) {
+function updateProductionChain(
+  db,
+  persist,
+  id,
+  { name, power_shard_limit, max_belt_mk, max_pipe_mk, sink_byproducts } = {}
+) {
   ensureProductionChainStepsTable(db);
   const chain = getProductionChainById(db, id);
   if (!chain) {
     throw new Error('Schema non trovato');
   }
 
-  const trimmed = String(name ?? '').trim();
-  if (!trimmed) {
-    throw new Error('Il nome è obbligatorio');
+  const {
+    parsePowerShardLimit,
+    clampBeltMk,
+    clampPipeMk,
+  } = require('./transport');
+
+  let nextName = chain.name;
+  if (name !== undefined) {
+    const trimmed = String(name ?? '').trim();
+    if (!trimmed) {
+      throw new Error('Il nome è obbligatorio');
+    }
+    nextName = trimmed;
   }
 
-  db.run(`UPDATE production_chains SET name = ?, updated_at = datetime('now') WHERE id = ?`, [
-    trimmed,
-    id,
-  ]);
+  const nextShard =
+    power_shard_limit !== undefined
+      ? parsePowerShardLimit(power_shard_limit, chain.power_shard_limit)
+      : chain.power_shard_limit;
+  const nextBelt =
+    max_belt_mk !== undefined ? clampBeltMk(max_belt_mk, chain.max_belt_mk) : chain.max_belt_mk;
+  const nextPipe =
+    max_pipe_mk !== undefined ? clampPipeMk(max_pipe_mk, chain.max_pipe_mk) : chain.max_pipe_mk;
+  const nextSink =
+    sink_byproducts !== undefined
+      ? parseSinkByproductsFlag(sink_byproducts, chain.sink_byproducts)
+      : chain.sink_byproducts;
+
+  db.run(
+    `UPDATE production_chains
+     SET name = ?, power_shard_limit = ?, max_belt_mk = ?, max_pipe_mk = ?, sink_byproducts = ?,
+         updated_at = datetime('now')
+     WHERE id = ?`,
+    [nextName, nextShard, nextBelt, nextPipe, nextSink, id]
+  );
   persist();
   return getProductionChainById(db, id);
 }
@@ -567,7 +728,12 @@ function addProductionChainStep(
     [chainId]
   );
   const sortOrder = (sortRow?.max_order ?? -1) + 1;
-  const stepName = generateStepName(db, chainId, schema.id, schemaNameForStep(schema));
+  const stepName = generateStepName(
+    db,
+    chainId,
+    schema.id,
+    item.name || schemaNameForStep(schema)
+  );
   const targetOutput = getDefaultTargetOutput(schema, item);
   const normalizedGroupName = normalizeGroupName(group_name);
 
@@ -594,6 +760,57 @@ function addProductionChainStep(
 
   const stepId = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
   markStepIfGroupMarked(db, chainId, stepId, normalizedGroupName);
+  persist();
+  return getStepById(db, stepId, getItemById);
+}
+
+function addSinkProductionChainStep(
+  db,
+  persist,
+  chainId,
+  { item_id, target_output, machine_count, name } = {},
+  getItemById
+) {
+  ensureProductionChainStepsTable(db);
+
+  const chain = getProductionChainById(db, chainId);
+  if (!chain) {
+    throw new Error('Schema di produzione non trovato');
+  }
+
+  const item = getItemById(db, item_id);
+  if (!item) {
+    throw new Error('Risorsa non trovata');
+  }
+
+  const rate = roundProduction(target_output);
+  const machines = roundMachineCount(machine_count);
+  if (!Number.isFinite(rate) || rate <= 0) {
+    throw new Error('Output non valido');
+  }
+  if (!Number.isFinite(machines) || machines <= 0) {
+    throw new Error('Numero macchine non valido');
+  }
+
+  const sortRow = queryOne(
+    db,
+    'SELECT COALESCE(MAX(sort_order), -1) AS max_order FROM production_chain_steps WHERE chain_id = ?',
+    [chainId]
+  );
+  const sortOrder = (sortRow?.max_order ?? -1) + 1;
+  const stepName = String(name ?? '').trim() || `AWESOME Sink: ${item.name}`;
+
+  db.run(
+    `INSERT INTO production_chain_steps
+      (chain_id, name, item_id, item_schema_id, sort_order, target_output, machine_count, overclock,
+       somersloop_mask, oc_machines_linked, is_sink)
+     VALUES (?, ?, ?, 0, ?, ?, ?, ?, 0, 0, 1)`,
+    [chainId, stepName, item.id, sortOrder, rate, machines, DEFAULT_OVERCLOCK]
+  );
+
+  db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
+
+  const stepId = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
   persist();
   return getStepById(db, stepId, getItemById);
 }
@@ -1216,9 +1433,20 @@ function duplicateProductionChain(db, persist, sourceId, getItemById) {
   const copyName = `${chain.name} (copia)`;
 
   db.run(
-    `INSERT INTO production_chains (name, target_item_slug, target_rate, notes, updated_at)
-     VALUES (?, ?, ?, ?, datetime('now'))`,
-    [copyName, chain.target_item_slug ?? null, chain.target_rate ?? null, chain.notes ?? null]
+    `INSERT INTO production_chains
+      (name, target_item_slug, target_rate, notes, power_shard_limit, max_belt_mk, max_pipe_mk,
+       sink_byproducts, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+    [
+      copyName,
+      chain.target_item_slug ?? null,
+      chain.target_rate ?? null,
+      chain.notes ?? null,
+      chain.power_shard_limit ?? 0,
+      chain.max_belt_mk ?? 6,
+      chain.max_pipe_mk ?? 2,
+      parseSinkByproductsFlag(chain.sink_byproducts),
+    ]
   );
   const newChainId = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
 
@@ -1248,13 +1476,13 @@ function duplicateProductionChain(db, persist, sourceId, getItemById) {
     db.run(
       `INSERT INTO production_chain_steps
         (chain_id, name, item_id, item_schema_id, sort_order, group_name, target_output,
-         machine_count, overclock, somersloop_mask, oc_machines_linked, marked)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         machine_count, overclock, somersloop_mask, oc_machines_linked, marked, is_sink)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         newChainId,
         step.name,
         step.item_id,
-        step.item_schema_id,
+        step.is_sink ? 0 : step.item_schema_id,
         step.sort_order,
         step.group_name,
         step.target_output,
@@ -1263,6 +1491,7 @@ function duplicateProductionChain(db, persist, sourceId, getItemById) {
         step.somersloop_mask ?? 0,
         step.oc_machines_linked ? 1 : 0,
         step.marked ? 1 : 0,
+        step.is_sink ? 1 : 0,
       ]
     );
     const newStepId = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
@@ -1347,6 +1576,7 @@ function exportProductionChain(db, sourceId, getItemById, { appVersion = null } 
       somersloop_mask: step.somersloop_mask ?? 0,
       oc_machines_linked: step.oc_machines_linked ? 1 : 0,
       marked: step.marked ? 1 : 0,
+      is_sink: step.is_sink ? 1 : 0,
     };
   });
 
@@ -1377,6 +1607,10 @@ function exportProductionChain(db, sourceId, getItemById, { appVersion = null } 
       notes: chain.notes ?? null,
       target_item_slug: chain.target_item_slug ?? null,
       target_rate: chain.target_rate ?? null,
+      power_shard_limit: chain.power_shard_limit,
+      max_belt_mk: chain.max_belt_mk,
+      max_pipe_mk: chain.max_pipe_mk,
+      sink_byproducts: chain.sink_byproducts ? 1 : 0,
       extractions: exportedExtractions,
       steps: exportedSteps,
       links: exportedLinks,
@@ -1435,9 +1669,20 @@ function importProductionChain(db, persist, payload, getItemById) {
   db.run('BEGIN');
   try {
     db.run(
-      `INSERT INTO production_chains (name, target_item_slug, target_rate, notes, updated_at)
-       VALUES (?, ?, ?, ?, datetime('now'))`,
-      [name, schema.target_item_slug ?? null, schema.target_rate ?? null, schema.notes ?? null]
+      `INSERT INTO production_chains
+        (name, target_item_slug, target_rate, notes, power_shard_limit, max_belt_mk, max_pipe_mk,
+         sink_byproducts, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
+      [
+        name,
+        schema.target_item_slug ?? null,
+        schema.target_rate ?? null,
+        schema.notes ?? null,
+        schema.power_shard_limit ?? 0,
+        schema.max_belt_mk ?? 6,
+        schema.max_pipe_mk ?? 2,
+        parseSinkByproductsFlag(schema.sink_byproducts),
+      ]
     );
     const newChainId = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
 
@@ -1474,20 +1719,45 @@ function importProductionChain(db, persist, payload, getItemById) {
         throw new Error(`Risorsa schema non trovata: ${step.item_slug || '(vuota)'}`);
       }
 
+      const ref = step.ref || `s${index + 1}`;
+      const groupName = normalizeGroupName(step.group_name);
+      const isSink = Number(step.is_sink) === 1;
+
+      if (isSink) {
+        const stepName = step.name || `AWESOME Sink: ${item.name}`;
+        db.run(
+          `INSERT INTO production_chain_steps
+            (chain_id, name, item_id, item_schema_id, sort_order, group_name, target_output,
+             machine_count, overclock, somersloop_mask, oc_machines_linked, marked, is_sink)
+           VALUES (?, ?, ?, 0, ?, ?, ?, ?, ?, 0, 0, ?, 1)`,
+          [
+            newChainId,
+            stepName,
+            item.id,
+            step.sort_order,
+            groupName,
+            step.target_output,
+            step.machine_count,
+            step.overclock ?? DEFAULT_OVERCLOCK,
+            step.marked,
+          ]
+        );
+        stepIdByRef.set(ref, db.exec('SELECT last_insert_rowid()')[0].values[0][0]);
+        continue;
+      }
+
       const itemSchema = resolveSchemaForImport(db, item.id, step);
       if (!itemSchema) {
         throw new Error(`Nessuna ricetta disponibile per «${item.name}»`);
       }
 
-      const ref = step.ref || `s${index + 1}`;
       const stepName = step.name || `${schemaNameForStep(itemSchema)} #1`;
-      const groupName = normalizeGroupName(step.group_name);
 
       db.run(
         `INSERT INTO production_chain_steps
           (chain_id, name, item_id, item_schema_id, sort_order, group_name, target_output,
-           machine_count, overclock, somersloop_mask, oc_machines_linked, marked)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           machine_count, overclock, somersloop_mask, oc_machines_linked, marked, is_sink)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)`,
         [
           newChainId,
           stepName,
@@ -1558,6 +1828,7 @@ module.exports = {
   createProductionChain,
   updateProductionChain,
   addProductionChainStep,
+  addSinkProductionChainStep,
   updateProductionChainStep,
   setProductionStepMarked,
   setProductionGroupMarked,
@@ -1577,4 +1848,5 @@ module.exports = {
   listAllProductionObjectives,
   getStepById,
   getStepOutputRateForItem,
+  parseSinkByproductsFlag,
 };
