@@ -3293,6 +3293,9 @@ select.production-config-input option:checked {
   display: block;
   font-size: 0.7rem;
   color: var(--text-muted);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .production-graph-edge-transport--over,
@@ -4331,6 +4334,11 @@ select.production-config-input option:checked {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.production-graph-zoom-btn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
 .production-graph-zoom-label {
   min-width: 3.25rem;
   text-align: center;
@@ -4419,21 +4427,40 @@ select.production-config-input option:checked {
 
 .production-graph-edge {
   fill: none;
-  stroke-width: 2;
-  opacity: 0.85;
+  stroke-width: 2.5;
+  opacity: 1;
 }
 
 .production-graph-edge--step-link,
 .production-graph-edge--group-link {
-  stroke: rgba(255, 140, 0, 0.55);
+  stroke: rgba(255, 160, 50, 0.9);
 }
 
 .production-graph-edge--extraction-link {
-  stroke: rgba(76, 175, 122, 0.65);
+  stroke: rgba(90, 200, 140, 0.95);
 }
 
 .production-graph-edge--objective-link {
-  stroke: rgba(143, 163, 184, 0.75);
+  stroke: rgba(170, 190, 210, 0.95);
+}
+
+/* Thicker solid strokes for PNG export (html-to-image softens thin anti-aliased lines) */
+.production-graph--exporting .production-graph-edge {
+  stroke-width: 4;
+  opacity: 1;
+}
+
+.production-graph--exporting .production-graph-edge--step-link,
+.production-graph--exporting .production-graph-edge--group-link {
+  stroke: #ffaa33;
+}
+
+.production-graph--exporting .production-graph-edge--extraction-link {
+  stroke: #4caf7a;
+}
+
+.production-graph--exporting .production-graph-edge--objective-link {
+  stroke: #a8b8c8;
 }
 
 .production-graph-nodes {
@@ -5151,6 +5178,21 @@ select.production-config-input option:checked {
   z-index: 3;
 }
 
+.production-graph-edge-label--with-transport {
+  align-items: flex-start;
+  max-width: 280px;
+  border-radius: 12px;
+  padding: 0.4rem 0.6rem;
+}
+
+.production-graph-edge-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
 .production-graph-edge-label--step-link,
 .production-graph-edge-label--group-link {
   border-color: rgba(255, 140, 0, 0.35);
@@ -5169,15 +5211,24 @@ select.production-config-input option:checked {
   height: 22px;
   object-fit: contain;
   flex-shrink: 0;
+  margin-top: 0.05rem;
 }
 
 .production-graph-edge-name {
   font-size: 0.72rem;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.25;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.production-graph-edge-label--with-transport .production-graph-edge-name {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .production-graph-empty {

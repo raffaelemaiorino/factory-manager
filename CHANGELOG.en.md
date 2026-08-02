@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-08-02
+
+### Added
+- Production and power: export the tree view as a PNG image (button in the zoom toolbar; Save As…)
+- Production and power: “Belts/pipes” toolbar option to show or hide Mk hints on links (off by default)
+
+### Changed
+- Tree view: higher-contrast link strokes; PNG export uses thicker, fully opaque lines
+- Tree view: you can drag nodes past the top/left edge — the stage grows (previously a y=0 clamp blocked moving upward)
+
+### Fixed
+- Tree view: the Belts/pipes toggle (and other rebuilds) no longer realigns nodes you rearranged with drag and drop
+- PNG export: tree links stay visible (inline SVG strokes; html-to-image often ignored CSS stroke)
+- Tree view: Simple ↔ Complex keeps drag layout (per-mode storage + bank id mapping)
+- Tree view: with Belts/pipes on, edge label names wrap instead of truncating with “…”
+
 ## [2.0.1] - 2026-08-02
 
 ### Added

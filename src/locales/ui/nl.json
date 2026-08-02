@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Stappen splitsen in machinelijnen als transportband/pijpleiding dat vereist",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "PNG exporteren",
+    "exportPngTitle": "Boom opslaan als PNG-afbeelding",
+    "exportPngErrorTitle": "Afbeelding exporteren mislukt",
+    "exportPngError": "Er ging iets mis bij het maken van de PNG.",
+    "exportPngUnavailable": "PNG-export is niet beschikbaar in deze build.",
+    "edgeTransport": "Banden/pijpen",
+    "edgeTransportAria": "Band-/pijpaanwijzingen op verbindingen tonen",
+    "edgeTransportShowTitle": "Toon hoeveel banden/pijpen elke verbinding nodig heeft",
+    "edgeTransportHideTitle": "Band-/pijpaanwijzingen op verbindingen verbergen"
   },
   "confirm": {
     "deleteResourceStepTitle": "Grondstofstap verwijderen",

@@ -45,6 +45,8 @@ Same idea for **power**: set a MW target, generator type, and fuel. Generators a
 
 Export and import JSON for both production and power (extractions, generators, links). One file = a backup or something you can send a friend. Imports are labeled `(import)` so they don’t get mixed up with your originals. The importer checks that the file is really a Factory Manager export before writing to the database.
 
+In tree view, export the whole graph as a **PNG** (zoom toolbar) to share a snapshot on Discord, Facebook, or elsewhere.
+
 ### Power and power shards
 
 - Base MW use in the catalog for extractors and production machines

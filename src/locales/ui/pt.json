@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Dividir passos em linhas de máquinas quando a esteira/tubulação o exige",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Exportar PNG",
+    "exportPngTitle": "Guardar a árvore como imagem PNG",
+    "exportPngErrorTitle": "Não foi possível exportar a imagem",
+    "exportPngError": "Algo correu mal ao criar o PNG.",
+    "exportPngUnavailable": "A exportação PNG não está disponível nesta versão.",
+    "edgeTransport": "Esteiras/tubos",
+    "edgeTransportAria": "Mostrar dicas de esteira/tubo nas ligações",
+    "edgeTransportShowTitle": "Mostrar quantas esteiras/tubos cada ligação precisa",
+    "edgeTransportHideTitle": "Ocultar dicas de esteira/tubo nas ligações"
   },
   "confirm": {
     "deleteResourceStepTitle": "Eliminar passo de recurso",

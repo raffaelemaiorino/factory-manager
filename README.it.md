@@ -45,6 +45,8 @@ Stessa logica per l’**energia**: target MW, tipo di generatore e combustibile.
 
 Esporta e importa in JSON sia la produzione sia l’energia (estrazioni, generatori, collegamenti). Un file = un backup o uno scambio con un amico. Gli import arrivano etichettati `(import)` così non confondi gli originali. Prima di scrivere nel database, l’import verifica che il file sia davvero un export Factory Manager.
 
+Nella vista ad albero puoi esportare tutto il grafo come **PNG** (toolbar dello zoom) per condividerlo su Discord, Facebook o altrove.
+
 ### Energia e Power Shards
 
 - Consumo base (MW) nel catalogo per estrattori e macchine di produzione

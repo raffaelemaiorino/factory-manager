@@ -4,6 +4,8 @@ contextBridge.exposeInMainWorld('satisfactory', {
   getAppInfo: () => ipcRenderer.invoke('app:info'),
   checkForUpdate: () => ipcRenderer.invoke('app:check-update'),
   openExternal: (url) => ipcRenderer.invoke('shell:open-external', url),
+  savePngFile: (defaultName, dataUrl) =>
+    ipcRenderer.invoke('app:save-png', defaultName, dataUrl),
   clipboardWriteText: (text) => clipboard.writeText(String(text ?? '')),
   clipboardReadText: () => clipboard.readText(),
   loadProductionUiState: () => ipcRenderer.sendSync('production-ui-state:load'),

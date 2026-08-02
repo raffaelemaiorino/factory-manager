@@ -156,7 +156,9 @@ const productionBuildStatsOpen = new Set();
 const PRODUCTION_GROUP_KEY_UNGROUPED = '__ungrouped__';
 const PRODUCTION_UI_STATE_KEY = 'satisfactory-production-ui';
 const PRODUCTION_TREE_DETAIL_MODE_KEY = 'satisfactory-tree-detail-mode';
+const PRODUCTION_TREE_EDGE_TRANSPORT_KEY = 'satisfactory-tree-edge-transport';
 let productionTreeDetailMode = 'simple';
+let productionTreeEdgeTransport = false;
 let productionUiStateCache = {};
 
 function normalizeTreeDetailMode(value) {
@@ -186,6 +188,34 @@ function initProductionTreeDetailMode() {
     productionTreeDetailMode = 'simple';
   }
   return productionTreeDetailMode;
+}
+
+function getProductionTreeEdgeTransport() {
+  return Boolean(productionTreeEdgeTransport);
+}
+
+function setProductionTreeEdgeTransport(enabled) {
+  productionTreeEdgeTransport = Boolean(enabled);
+  try {
+    localStorage.setItem(
+      PRODUCTION_TREE_EDGE_TRANSPORT_KEY,
+      productionTreeEdgeTransport ? '1' : '0'
+    );
+  } catch {
+    /* storage pieno o disabilitato */
+  }
+  return productionTreeEdgeTransport;
+}
+
+function initProductionTreeEdgeTransport() {
+  try {
+    const raw = localStorage.getItem(PRODUCTION_TREE_EDGE_TRANSPORT_KEY);
+    // Default off: edge labels stay readable; belt/pipe hints are optional.
+    productionTreeEdgeTransport = raw === '1' || raw === 'true';
+  } catch {
+    productionTreeEdgeTransport = false;
+  }
+  return productionTreeEdgeTransport;
 }
 
 function normalizeProductionStepId(stepId) {

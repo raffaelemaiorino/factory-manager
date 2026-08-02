@@ -586,7 +586,16 @@
     "pipeOver": "Needs {count}× Pipe Mk.{mk} ({rate}/min > {capacity}/min)",
     "sink": "AWESOME Sink",
     "supply": "Fuel supply",
-    "manifoldBank": "Manifold {index}/{count}"
+    "manifoldBank": "Manifold {index}/{count}",
+    "exportPng": "Export PNG",
+    "exportPngTitle": "Save the tree as a PNG image",
+    "exportPngErrorTitle": "Could not export image",
+    "exportPngError": "Something went wrong while creating the PNG.",
+    "exportPngUnavailable": "PNG export is not available in this build.",
+    "edgeTransport": "Belts/pipes",
+    "edgeTransportAria": "Show belt and pipe hints on links",
+    "edgeTransportShowTitle": "Show how many belts/pipes each link needs",
+    "edgeTransportHideTitle": "Hide belt/pipe hints on links"
   },
   "confirm": {
     "deleteResourceStepTitle": "Delete resource step",

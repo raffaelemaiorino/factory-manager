@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "פצל שלבים לקווי מכונות כשהמסוע/צינור דורש זאת",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "ייצוא PNG",
+    "exportPngTitle": "שמירת העץ כתמונת PNG",
+    "exportPngErrorTitle": "לא ניתן לייצא את התמונה",
+    "exportPngError": "משהו השתבש בעת יצירת ה-PNG.",
+    "exportPngUnavailable": "ייצוא PNG אינו זמין בגרסה זו.",
+    "edgeTransport": "פסים/צינורות",
+    "edgeTransportAria": "הצג רמזי פסים/צינורות בקישורים",
+    "edgeTransportShowTitle": "הצג כמה פסים/צינורות כל קישור דורש",
+    "edgeTransportHideTitle": "הסתר רמזי פסים/צינורות בקישורים"
   },
   "confirm": {
     "deleteResourceStepTitle": "מחק שלב משאב",

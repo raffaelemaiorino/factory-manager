@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "وقتی نوار/لوله لازم باشد، مراحل را به خطوط ماشین تقسیم کن",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "خروجی PNG",
+    "exportPngTitle": "ذخیره درخت به‌صورت تصویر PNG",
+    "exportPngErrorTitle": "خروجی تصویر ممکن نشد",
+    "exportPngError": "هنگام ساخت PNG مشکلی پیش آمد.",
+    "exportPngUnavailable": "خروجی PNG در این نسخه در دسترس نیست.",
+    "edgeTransport": "نوار/لوله",
+    "edgeTransportAria": "نمایش راهنمای نوار/لوله روی پیوندها",
+    "edgeTransportShowTitle": "نمایش تعداد نوار/لوله مورد نیاز هر پیوند",
+    "edgeTransportHideTitle": "پنهان کردن راهنمای نوار/لوله روی پیوندها"
   },
   "confirm": {
     "deleteResourceStepTitle": "حذف گام منبع",

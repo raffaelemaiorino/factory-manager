@@ -536,7 +536,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Lépések felosztása gépvonalakra, ha a szállítószalag/cső ezt igényli",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "PNG exportálása",
+    "exportPngTitle": "Fa mentése PNG képként",
+    "exportPngErrorTitle": "A kép exportálása sikertelen",
+    "exportPngError": "Hiba történt a PNG létrehozásakor.",
+    "exportPngUnavailable": "A PNG export nem érhető el ebben a buildben.",
+    "edgeTransport": "Szalagok/csövek",
+    "edgeTransportAria": "Szalag-/cső tippek megjelenítése a kapcsolatokon",
+    "edgeTransportShowTitle": "Mutassa, hány szalag/cső kell minden kapcsolathoz",
+    "edgeTransportHideTitle": "Szalag-/cső tippek elrejtése a kapcsolatokon"
   },
   "confirm": {
     "deleteResourceStepTitle": "Erőforrás-lépés törlése",

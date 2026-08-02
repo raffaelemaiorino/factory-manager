@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Делить шаги на линии машин, когда этого требует конвейер/трубопровод",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Экспорт PNG",
+    "exportPngTitle": "Сохранить дерево как PNG",
+    "exportPngErrorTitle": "Не удалось экспортировать изображение",
+    "exportPngError": "При создании PNG произошла ошибка.",
+    "exportPngUnavailable": "Экспорт PNG недоступен в этой сборке.",
+    "edgeTransport": "Ленты/трубы",
+    "edgeTransportAria": "Показывать подсказки лент/труб на связях",
+    "edgeTransportShowTitle": "Показать, сколько лент/труб нужно каждой связи",
+    "edgeTransportHideTitle": "Скрыть подсказки лент/труб на связях"
   },
   "confirm": {
     "deleteResourceStepTitle": "Удалить шаг ресурса",

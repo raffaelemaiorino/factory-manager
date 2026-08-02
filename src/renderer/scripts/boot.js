@@ -6,6 +6,7 @@ async function boot() {
   try {
     await initProductionUiStateStore();
     initProductionTreeDetailMode();
+    initProductionTreeEdgeTransport();
     await initLocaleSelector();
     await initAppSettings();
     setupLocaleSelector();

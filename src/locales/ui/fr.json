@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Diviser les étapes en lignes de machines quand le convoyeur/pipeline l’exige",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Exporter en PNG",
+    "exportPngTitle": "Enregistrer l’arbre en image PNG",
+    "exportPngErrorTitle": "Impossible d’exporter l’image",
+    "exportPngError": "Une erreur s’est produite lors de la création du PNG.",
+    "exportPngUnavailable": "L’export PNG n’est pas disponible dans cette version.",
+    "edgeTransport": "Convoyeurs/tuyaux",
+    "edgeTransportAria": "Afficher les indices convoyeur/tuyau sur les liens",
+    "edgeTransportShowTitle": "Afficher combien de convoyeurs/tuyaux chaque lien nécessite",
+    "edgeTransportHideTitle": "Masquer les indices convoyeur/tuyau sur les liens"
   },
   "confirm": {
     "deleteResourceStepTitle": "Supprimer l'étape ressource",

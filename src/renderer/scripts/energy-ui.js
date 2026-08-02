@@ -1183,6 +1183,7 @@
 
     return {
       chainId: `energy-${chain.id ?? 'x'}`,
+      chainName: chain.name ?? null,
       escapeHtml,
       formatProductionValue: UI.formatProductionValue ?? ((v) => String(v)),
       formatRateWithUnit: UI.formatRateWithUnit ?? ((v, u) => `${v}${u}`),
@@ -1209,6 +1210,7 @@
             })
           : '',
       treeDetailMode: getProductionTreeDetailMode(),
+      showEdgeTransport: getProductionTreeEdgeTransport(),
       roundProduction: (value) => window.ProductionScale.roundProduction(value),
       linkTolerance: UI.LINK_BALANCE_TOLERANCE ?? 0.05,
       extractions: detail.extractions ?? [],

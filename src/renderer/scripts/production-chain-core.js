@@ -1796,6 +1796,7 @@ function getProductionGraphHelpers(detail) {
 
   return {
     chainId: chain.id ?? null,
+    chainName: chain.name ?? null,
     escapeHtml,
     formatProductionValue,
     formatRateWithUnit,
@@ -1821,6 +1822,7 @@ function getProductionGraphHelpers(detail) {
         detailMode: getProductionTreeDetailMode(),
       }),
     treeDetailMode: getProductionTreeDetailMode(),
+    showEdgeTransport: getProductionTreeEdgeTransport(),
     roundProduction: (value) => window.ProductionScale.roundProduction(value),
     linkTolerance: LINK_BALANCE_TOLERANCE,
     extractions: detail.extractions ?? [],

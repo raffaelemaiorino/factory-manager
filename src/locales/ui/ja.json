@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "ベルト/パイプ制限で必要な場合、ステップを機械ラインに分割",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "PNGを書き出し",
+    "exportPngTitle": "ツリーをPNG画像として保存",
+    "exportPngErrorTitle": "画像を書き出せませんでした",
+    "exportPngError": "PNGの作成中に問題が発生しました。",
+    "exportPngUnavailable": "このビルドではPNG書き出しを利用できません。",
+    "edgeTransport": "ベルト/パイプ",
+    "edgeTransportAria": "リンクにベルト/パイプのヒントを表示",
+    "edgeTransportShowTitle": "各リンクに必要なベルト/パイプ数を表示",
+    "edgeTransportHideTitle": "リンクのベルト/パイプヒントを非表示"
   },
   "confirm": {
     "deleteResourceStepTitle": "リソースステップを削除",

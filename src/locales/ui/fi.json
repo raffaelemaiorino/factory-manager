@@ -536,7 +536,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Jaa vaiheet konelinjoihin, kun kuljetin/putki sitä vaatii",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Vie PNG",
+    "exportPngTitle": "Tallenna puu PNG-kuvana",
+    "exportPngErrorTitle": "Kuvan vienti epäonnistui",
+    "exportPngError": "Jotain meni pieleen PNG:tä luotaessa.",
+    "exportPngUnavailable": "PNG-vienti ei ole käytettävissä tässä versiossa.",
+    "edgeTransport": "Hihnat/putket",
+    "edgeTransportAria": "Näytä hihna-/putkivihjeet linkeissä",
+    "edgeTransportShowTitle": "Näytä kuinka monta hihnaa/putkea kukin linkki tarvitsee",
+    "edgeTransportHideTitle": "Piilota hihna-/putkivihjeet linkeistä"
   },
   "confirm": {
     "deleteResourceStepTitle": "Poista resurssivaihe",

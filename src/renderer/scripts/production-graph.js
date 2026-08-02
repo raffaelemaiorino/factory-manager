@@ -629,13 +629,25 @@
 
   function getLayoutStorageKey(chainId, options = {}) {
     if (!chainId) return null;
+    const detail = options.detailMode === 'complex' ? 'complex' : 'simple';
+    if (options.collapseGroups) {
+      return `${LAYOUT_STORAGE_PREFIX}${chainId}::groups::${detail}`;
+    }
+    if (options.groupKey) {
+      return `${LAYOUT_STORAGE_PREFIX}${chainId}::group::${options.groupKey}::${detail}`;
+    }
+    return `${LAYOUT_STORAGE_PREFIX}${chainId}::${detail}`;
+  }
+
+  /** Pre-detailMode keys (v2 without ::simple/::complex). */
+  function getLegacyLayoutStorageKey(chainId, options = {}) {
+    if (!chainId) return null;
     if (options.collapseGroups) return `${LAYOUT_STORAGE_PREFIX}${chainId}::groups`;
     if (options.groupKey) return `${LAYOUT_STORAGE_PREFIX}${chainId}::group::${options.groupKey}`;
     return `${LAYOUT_STORAGE_PREFIX}${chainId}`;
   }
 
-  function loadSavedLayout(chainId, options = {}) {
-    const storageKey = getLayoutStorageKey(chainId, options);
+  function readLayoutJson(storageKey) {
     if (!storageKey) return {};
     try {
       const raw = localStorage.getItem(storageKey);
@@ -645,6 +657,95 @@
     } catch {
       return {};
     }
+  }
+
+  function parseLayoutNodeId(nodeId) {
+    const id = String(nodeId ?? '');
+    const bank = id.match(/^(step|ext)-(\d+)-bank-(\d+)$/);
+    if (bank) {
+      return {
+        kind: bank[1],
+        numericId: Number(bank[2]),
+        bankIndex: Number(bank[3]),
+        baseId: `${bank[1]}-${bank[2]}`,
+      };
+    }
+    const plain = id.match(/^(step|ext)-(\d+)$/);
+    if (plain) {
+      return {
+        kind: plain[1],
+        numericId: Number(plain[2]),
+        bankIndex: null,
+        baseId: `${plain[1]}-${plain[2]}`,
+      };
+    }
+    return { kind: 'other', numericId: null, bankIndex: null, baseId: id };
+  }
+
+  /**
+   * Resolve a saved position for a node id, including Simple ↔ Complex mapping
+   * (step-5 ↔ step-5-bank-0 / bank-N with vertical offset).
+   */
+  function resolveSavedNodePosition(nodeId, savedLayout) {
+    if (!savedLayout || typeof savedLayout !== 'object') return null;
+    const direct = savedLayout[nodeId];
+    if (direct && Number.isFinite(direct.x) && Number.isFinite(direct.y)) {
+      return { x: direct.x, y: direct.y };
+    }
+
+    const parsed = parseLayoutNodeId(nodeId);
+    if (parsed.kind !== 'step' && parsed.kind !== 'ext') return null;
+
+    // Complex bank node ← simple base position
+    if (parsed.bankIndex != null) {
+      const base = savedLayout[parsed.baseId];
+      if (base && Number.isFinite(base.x) && Number.isFinite(base.y)) {
+        return {
+          x: base.x,
+          y: base.y + parsed.bankIndex * (110 + NODE_GAP_Y),
+        };
+      }
+      return null;
+    }
+
+    // Simple node ← complex bank-0 (or first bank found)
+    const bank0 = savedLayout[`${parsed.baseId}-bank-0`];
+    if (bank0 && Number.isFinite(bank0.x) && Number.isFinite(bank0.y)) {
+      return { x: bank0.x, y: bank0.y };
+    }
+    for (const [key, pos] of Object.entries(savedLayout)) {
+      if (!key.startsWith(`${parsed.baseId}-bank-`)) continue;
+      if (pos && Number.isFinite(pos.x) && Number.isFinite(pos.y)) {
+        return { x: pos.x, y: pos.y };
+      }
+    }
+    return null;
+  }
+
+  function loadSavedLayout(chainId, options = {}) {
+    const storageKey = getLayoutStorageKey(chainId, options);
+    let parsed = readLayoutJson(storageKey);
+    if (Object.keys(parsed).length) return parsed;
+
+    // Migrate legacy key (no ::simple/::complex suffix)
+    const legacyKey = getLegacyLayoutStorageKey(chainId, options);
+    parsed = readLayoutJson(legacyKey);
+    if (Object.keys(parsed).length) {
+      saveLayout(chainId, parsed, options);
+      return parsed;
+    }
+
+    // Fallback: other detail mode (map ids via resolveSavedNodePosition)
+    const otherMode = {
+      ...options,
+      detailMode: options.detailMode === 'complex' ? 'simple' : 'complex',
+    };
+    const otherKey = getLayoutStorageKey(chainId, otherMode);
+    parsed = readLayoutJson(otherKey);
+    if (Object.keys(parsed).length) return parsed;
+
+    const otherLegacy = getLegacyLayoutStorageKey(chainId, otherMode);
+    return readLayoutJson(otherLegacy);
   }
 
   function saveLayout(chainId, positions, options = {}) {
@@ -757,8 +858,8 @@
         nodeIndexById.set(node.id, globalIndex);
         globalIndex += 1;
 
-        const saved = savedLayout[node.id];
-        if (saved && Number.isFinite(saved.x) && Number.isFinite(saved.y)) {
+        const saved = resolveSavedNodePosition(node.id, savedLayout);
+        if (saved) {
           positions[node.id] = { x: saved.x, y: saved.y };
         } else {
           positions[node.id] = { x, y: currentY };
@@ -1169,7 +1270,8 @@
       ? `<img class="production-graph-edge-icon" src="${helpers.escapeHtml(edge.itemImage)}" alt="" draggable="false" />`
       : `<span class="resource-img resource-img--placeholder production-graph-edge-icon"></span>`;
 
-    const transport = helpers.describeEdgeTransport?.(edge);
+    const showTransport = Boolean(helpers.showEdgeTransport);
+    const transport = showTransport ? helpers.describeEdgeTransport?.(edge) : null;
     const unit = edge.unit || (edge.isFluid ? 'm³/min' : '/min');
     const rateText = helpers.formatRateWithUnit
       ? helpers.formatRateWithUnit(edge.rate, unit)
@@ -1198,15 +1300,19 @@
     return `
       <div
         class="production-graph-edge-label production-graph-edge-label--${edge.kind}${
-          transport?.over ? ' production-graph-edge-label--over' : ''
-        }"
+          transport ? ' production-graph-edge-label--with-transport' : ''
+        }${transport?.over ? ' production-graph-edge-label--over' : ''}"
         data-edge-id="${helpers.escapeHtml(edge.id)}"
-        title="${helpers.escapeHtml(rateText)}"
+        title="${helpers.escapeHtml(
+          [edge.itemName, rateText].filter(Boolean).join(' · ')
+        )}"
       >
         ${img}
-        <span class="production-graph-edge-name">${helpers.escapeHtml(edge.itemName)}</span>
-        <span class="production-graph-edge-rate">${helpers.escapeHtml(rateText)}</span>
-        ${transportHtml}
+        <div class="production-graph-edge-body">
+          <span class="production-graph-edge-name">${helpers.escapeHtml(edge.itemName)}</span>
+          <span class="production-graph-edge-rate">${helpers.escapeHtml(rateText)}</span>
+          ${transportHtml}
+        </div>
       </div>`;
   }
 
@@ -1314,7 +1420,16 @@
     return positions;
   }
 
-  function setupNodeDragging(stage, nodesHost, chainId, scrollEl, onChange, layoutOptions = {}, getScale = () => 1) {
+  function setupNodeDragging(
+    stage,
+    nodesHost,
+    chainId,
+    scrollEl,
+    onChange,
+    layoutOptions = {},
+    getScale = () => 1,
+    camera = null
+  ) {
     let dragState = null;
 
     const finishDrag = (e) => {
@@ -1363,8 +1478,24 @@
       if (!dragState || dragState.pointerId !== e.pointerId) return;
 
       const scale = Math.max(0.05, Number(getScale()) || 1);
-      const x = dragState.startLeft + (e.clientX - dragState.originClientX) / scale;
-      const y = dragState.startTop + (e.clientY - dragState.originClientY) / scale;
+      let x = dragState.startLeft + (e.clientX - dragState.originClientX) / scale;
+      let y = dragState.startTop + (e.clientY - dragState.originClientY) / scale;
+
+      // Grow the stage up/left when dragging past the origin: shift peers and
+      // nudge the camera so the box stays under the cursor.
+      const shiftX = x < 0 ? -x : 0;
+      const shiftY = y < 0 ? -y : 0;
+      if (shiftX || shiftY) {
+        for (const n of nodesHost.querySelectorAll('.production-graph-node')) {
+          n.style.left = `${(parseFloat(n.style.left) || 0) + shiftX}px`;
+          n.style.top = `${(parseFloat(n.style.top) || 0) + shiftY}px`;
+        }
+        dragState.startLeft += shiftX;
+        dragState.startTop += shiftY;
+        x += shiftX;
+        y += shiftY;
+        camera?.nudgePan?.(shiftX * scale, shiftY * scale);
+      }
 
       dragState.node.style.left = `${Math.max(0, x)}px`;
       dragState.node.style.top = `${Math.max(0, y)}px`;
@@ -1400,7 +1531,29 @@
         >
           <i class="fa-solid fa-expand" aria-hidden="true"></i>
         </button>
+        <button
+          type="button"
+          class="production-graph-zoom-btn"
+          data-graph-zoom="export"
+          title="${escapeHtml(t('graph.exportPngTitle'))}"
+          aria-label="${escapeHtml(t('graph.exportPng'))}"
+        >
+          <i class="fa-solid fa-image" aria-hidden="true"></i>
+        </button>
       </div>`;
+  }
+
+  function renderEdgeTransportToggle(escapeHtml, enabled) {
+    const on = Boolean(enabled);
+    return `
+      <button
+        type="button"
+        class="production-graph-detail-btn production-graph-transport-btn${on ? ' is-active' : ''}"
+        data-tree-edge-transport="${on ? '0' : '1'}"
+        title="${escapeHtml(on ? t('graph.edgeTransportHideTitle') : t('graph.edgeTransportShowTitle'))}"
+        aria-pressed="${on ? 'true' : 'false'}"
+        aria-label="${escapeHtml(t('graph.edgeTransportAria'))}"
+      >${escapeHtml(t('graph.edgeTransport'))}</button>`;
   }
 
   function setupGraphCamera(scrollEl, panEl, worldEl, stage, nodesHost, zoomLabelEl) {
@@ -1530,6 +1683,25 @@
       },
       fit,
       apply,
+      snapshot: () => ({ scale, panX, panY }),
+      restore: (state) => {
+        if (!state) return;
+        scale = clampScale(Number(state.scale) || 1);
+        panX = Number(state.panX) || 0;
+        panY = Number(state.panY) || 0;
+        apply();
+      },
+      prepareForExport: () => {
+        scale = 1;
+        panX = 0;
+        panY = 0;
+        apply();
+      },
+      nudgePan: (dx, dy) => {
+        panX += Number(dx) || 0;
+        panY += Number(dy) || 0;
+        apply();
+      },
       destroy: () => {
         scrollEl.removeEventListener('wheel', onWheel);
         scrollEl.removeEventListener('pointerdown', onPointerDown);
@@ -1617,14 +1789,178 @@
     };
   }
 
-  function bindGraphZoomButtons(root, camera, graphEl) {
+  function waitNextFrames(count = 2) {
+    return new Promise((resolve) => {
+      let left = Math.max(1, count);
+      const tick = () => {
+        left -= 1;
+        if (left <= 0) resolve();
+        else requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function resolveGraphBackgroundColor() {
+    const root = document.documentElement;
+    const fromVar = getComputedStyle(root).getPropertyValue('--bg-main').trim();
+    if (fromVar) return fromVar;
+    return '#0f1419';
+  }
+
+  /**
+   * html-to-image often drops CSS `stroke` on <path> elements. Bake solid
+   * colors + width as SVG presentation attributes for a reliable PNG.
+   */
+  function applyInlineEdgeStrokesForExport(stage) {
+    const svg = stage?.querySelector('.production-graph-edges');
+    if (!svg) return () => {};
+
+    const strokeByKind = {
+      'step-link': '#ffb347',
+      'group-link': '#ffb347',
+      'extraction-link': '#5ad48a',
+      'objective-link': '#c5d4e4',
+      'power-link': '#7ec8ff',
+      default: '#ffb347',
+    };
+
+    const touched = [];
+    for (const path of svg.querySelectorAll('path.production-graph-edge')) {
+      const kindClass = [...path.classList].find((c) => c.startsWith('production-graph-edge--'));
+      const kind = kindClass ? kindClass.replace('production-graph-edge--', '') : 'default';
+      const stroke = strokeByKind[kind] || strokeByKind.default;
+      touched.push({
+        path,
+        stroke: path.getAttribute('stroke'),
+        strokeWidth: path.getAttribute('stroke-width'),
+        fill: path.getAttribute('fill'),
+        opacity: path.getAttribute('opacity'),
+        strokeLinecap: path.getAttribute('stroke-linecap'),
+        strokeLinejoin: path.getAttribute('stroke-linejoin'),
+      });
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', stroke);
+      path.setAttribute('stroke-width', '5');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-linejoin', 'round');
+      path.setAttribute('opacity', '1');
+      path.style.stroke = stroke;
+      path.style.strokeWidth = '5px';
+      path.style.fill = 'none';
+      path.style.opacity = '1';
+    }
+
+    return () => {
+      for (const entry of touched) {
+        const { path } = entry;
+        const restoreAttr = (name, value) => {
+          if (value == null) path.removeAttribute(name);
+          else path.setAttribute(name, value);
+        };
+        restoreAttr('stroke', entry.stroke);
+        restoreAttr('stroke-width', entry.strokeWidth);
+        restoreAttr('fill', entry.fill);
+        restoreAttr('opacity', entry.opacity);
+        restoreAttr('stroke-linecap', entry.strokeLinecap);
+        restoreAttr('stroke-linejoin', entry.strokeLinejoin);
+        path.style.stroke = '';
+        path.style.strokeWidth = '';
+        path.style.fill = '';
+        path.style.opacity = '';
+      }
+    };
+  }
+
+  function sanitizePngFileName(name) {
+    const cleaned = String(name ?? 'factory-tree')
+      .trim()
+      .replace(/[<>:"/\\|?*\u0000-\u001f]/g, '_')
+      .replace(/\s+/g, ' ')
+      .replace(/[. ]+$/g, '')
+      .slice(0, 120);
+    return cleaned || 'factory-tree';
+  }
+
+  async function exportGraphStageAsPng({ stage, camera, graphEl, defaultName, button }) {
+    const toPng = window.htmlToImage?.toPng;
+    if (typeof toPng !== 'function') {
+      throw new Error(t('graph.exportPngUnavailable'));
+    }
+    if (typeof window.satisfactory?.savePngFile !== 'function') {
+      throw new Error(t('graph.exportPngUnavailable'));
+    }
+
+    if (button) {
+      button.disabled = true;
+      button.setAttribute('aria-busy', 'true');
+    }
+
+    const snapshot = camera?.snapshot?.();
+    camera?.prepareForExport?.();
+    graphEl?.classList.add('production-graph--exporting');
+    const restoreEdgeStrokes = applyInlineEdgeStrokesForExport(stage);
+    await waitNextFrames(2);
+
+    try {
+      const width = Math.max(1, stage.scrollWidth || stage.offsetWidth || 1);
+      const height = Math.max(1, stage.scrollHeight || stage.offsetHeight || 1);
+      const maxSide = 4096;
+      const pixelRatio = Math.min(2, maxSide / Math.max(width, height));
+
+      const dataUrl = await toPng(stage, {
+        backgroundColor: resolveGraphBackgroundColor(),
+        pixelRatio: Math.max(0.5, pixelRatio),
+        width,
+        height,
+        cacheBust: true,
+        // Skip interactive chrome that isn't part of the tree picture
+        filter: (node) => {
+          if (!(node instanceof Element)) return true;
+          return !node.classList?.contains('production-graph-step-mark-btn');
+        },
+      });
+
+      return await window.satisfactory.savePngFile(sanitizePngFileName(defaultName), dataUrl);
+    } finally {
+      restoreEdgeStrokes();
+      graphEl?.classList.remove('production-graph--exporting');
+      camera?.restore?.(snapshot);
+      if (button) {
+        button.disabled = false;
+        button.removeAttribute('aria-busy');
+      }
+    }
+  }
+
+  function bindGraphZoomButtons(root, camera, graphEl, exportContext = null) {
     root?.addEventListener('click', (event) => {
       const btn = event.target.closest('[data-graph-zoom]');
-      if (!btn) return;
+      if (!btn || btn.disabled) return;
       const action = btn.getAttribute('data-graph-zoom');
       if (action === 'fullscreen') {
         toggleGraphFullscreen(graphEl).then(() => {
           requestAnimationFrame(() => camera?.fit?.());
+        });
+        return;
+      }
+      if (action === 'export') {
+        const stage = exportContext?.stage;
+        if (!stage || !camera) return;
+        exportGraphStageAsPng({
+          stage,
+          camera,
+          graphEl,
+          defaultName: exportContext?.defaultName || 'factory-tree',
+          button: btn,
+        }).catch(async (err) => {
+          console.error('Graph PNG export error:', err);
+          if (typeof window.showAlert === 'function') {
+            await window.showAlert({
+              title: t('graph.exportPngErrorTitle'),
+              message: err?.message || t('graph.exportPngError'),
+            });
+          }
         });
         return;
       }
@@ -1640,7 +1976,11 @@
     const groupKey = options.groupKey ?? null;
     const groupLabel = options.groupLabel ?? null;
     const collapseGroups = Boolean(options.collapseGroups);
-    const layoutOptions = { groupKey: collapseGroups ? null : groupKey, collapseGroups };
+    const layoutOptions = {
+      groupKey: collapseGroups ? null : groupKey,
+      collapseGroups,
+      detailMode: helpers.treeDetailMode === 'complex' ? 'complex' : 'simple',
+    };
     const graph = collapseGroups
       ? buildCollapsedGroupGraph(detail, helpers)
       : buildProductionGraph(detail, helpers, { groupKey });
@@ -1697,6 +2037,11 @@
                 aria-pressed="${detailMode === 'complex' ? 'true' : 'false'}"
               >${helpers.escapeHtml(t('graph.detailComplex'))}</button>
             </div>
+            <div class="production-graph-detail-toggle" role="group" aria-label="${helpers.escapeHtml(
+              t('graph.edgeTransportAria')
+            )}">
+              ${renderEdgeTransportToggle(helpers.escapeHtml, helpers.showEdgeTransport)}
+            </div>
           </div>
         </div>
         <div class="production-graph-scroll">
@@ -1724,6 +2069,24 @@
     const graphEl = container.querySelector('.production-graph');
 
     toolbar?.addEventListener('click', (event) => {
+      const transportBtn = event.target.closest('[data-tree-edge-transport]');
+      if (transportBtn) {
+        const next = transportBtn.getAttribute('data-tree-edge-transport') === '1';
+        if (next === getProductionTreeEdgeTransport()) return;
+        setProductionTreeEdgeTransport(next);
+        helpers.showEdgeTransport = next;
+        labelsHost.innerHTML = graph.edges
+          .map((edge) => renderEdgeLabel(edge, helpers))
+          .join('');
+        drawEdges(stage, svg, labelsHost, graph.edges);
+        transportBtn.classList.toggle('is-active', next);
+        transportBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        transportBtn.setAttribute('data-tree-edge-transport', next ? '0' : '1');
+        transportBtn.title = next
+          ? t('graph.edgeTransportHideTitle')
+          : t('graph.edgeTransportShowTitle');
+        return;
+      }
       const btn = event.target.closest('[data-tree-detail-mode]');
       if (!btn) return;
       const next = btn.getAttribute('data-tree-detail-mode');
@@ -1735,19 +2098,28 @@
     });
 
     const camera = setupGraphCamera(scrollEl, panEl, worldEl, stage, nodesHost, zoomLabelEl);
-    bindGraphZoomButtons(toolbar, camera, graphEl);
+    bindGraphZoomButtons(toolbar, camera, graphEl, {
+      stage,
+      defaultName: helpers.chainName || 'factory-tree',
+    });
 
     const layoutGraph = () => {
       const availableWidth = scrollEl.clientWidth || container.clientWidth || 960;
       const layerGap = computeLayerGap(layerCount, availableWidth);
       const positions = computeAutoLayout(graph.nodes, graph.edges, savedLayout, layerGap, helpers);
+      const hasSavedPositions = graph.nodes.some(
+        (node) => resolveSavedNodePosition(node.id, savedLayout) != null
+      );
 
       nodesHost.innerHTML = graph.nodes
         .map((node) => renderNode(node, helpers, positions[node.id]))
         .join('');
 
-      // Pack columns using real node heights so tall badges/IO don't overlap.
-      reflowLayerPositions(nodesHost);
+      // Only pack columns on a fresh auto-layout. Reflow would overwrite
+      // user drag positions (saved Y) every time the tree is rebuilt.
+      if (!hasSavedPositions) {
+        reflowLayerPositions(nodesHost);
+      }
       updateStageSize(stage, nodesHost, scrollEl);
       drawEdges(stage, svg, labelsHost, graph.edges);
       camera.fit();
@@ -1772,7 +2144,8 @@
         drawEdges(stage, svg, labelsHost, graph.edges);
       },
       layoutOptions,
-      camera.getScale
+      camera.getScale,
+      camera
     );
 
     const teardownFullscreen = setupGraphFullscreen(graphEl, () => {
@@ -1786,6 +2159,16 @@
     });
     observer.observe(scrollEl);
 
+    const syncTransportToggleButton = () => {
+      const btn = toolbar?.querySelector('[data-tree-edge-transport]');
+      if (!btn) return;
+      const on = Boolean(helpers.showEdgeTransport);
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      btn.setAttribute('data-tree-edge-transport', on ? '0' : '1');
+      btn.title = on ? t('graph.edgeTransportHideTitle') : t('graph.edgeTransportShowTitle');
+    };
+
     return {
       disconnect: () => {
         observer.disconnect();
@@ -1793,6 +2176,12 @@
         teardownFullscreen();
       },
       redraw: () => drawEdges(stage, svg, labelsHost, graph.edges),
+      setShowEdgeTransport: (enabled) => {
+        helpers.showEdgeTransport = Boolean(enabled);
+        labelsHost.innerHTML = graph.edges.map((edge) => renderEdgeLabel(edge, helpers)).join('');
+        drawEdges(stage, svg, labelsHost, graph.edges);
+        syncTransportToggleButton();
+      },
     };
   }
 
@@ -1957,9 +2346,10 @@
     });
 
     const chainId = helpers.chainId;
-    const savedLayout = loadSavedLayout(chainId, {});
-    const layerCount = Math.max(...graph.nodes.map((node) => node.layer), 0) + 1;
     const detailMode = helpers.treeDetailMode === 'complex' ? 'complex' : 'simple';
+    const layoutOptions = { detailMode };
+    const savedLayout = loadSavedLayout(chainId, layoutOptions);
+    const layerCount = Math.max(...graph.nodes.map((node) => node.layer), 0) + 1;
 
     container.innerHTML = `
       <div class="production-graph" data-detail-mode="${detailMode}">
@@ -1984,6 +2374,11 @@
                 title="${helpers.escapeHtml(t('graph.detailComplexTitle'))}"
                 aria-pressed="${detailMode === 'complex' ? 'true' : 'false'}"
               >${helpers.escapeHtml(t('graph.detailComplex'))}</button>
+            </div>
+            <div class="production-graph-detail-toggle" role="group" aria-label="${helpers.escapeHtml(
+              t('graph.edgeTransportAria')
+            )}">
+              ${renderEdgeTransportToggle(helpers.escapeHtml, helpers.showEdgeTransport)}
             </div>
           </div>
         </div>
@@ -2012,6 +2407,24 @@
     const graphEl = container.querySelector('.production-graph');
 
     toolbar?.addEventListener('click', (event) => {
+      const transportBtn = event.target.closest('[data-tree-edge-transport]');
+      if (transportBtn) {
+        const next = transportBtn.getAttribute('data-tree-edge-transport') === '1';
+        if (next === getProductionTreeEdgeTransport()) return;
+        setProductionTreeEdgeTransport(next);
+        helpers.showEdgeTransport = next;
+        labelsHost.innerHTML = graph.edges
+          .map((edge) => renderEdgeLabel(edge, helpers))
+          .join('');
+        drawEdges(stage, svg, labelsHost, graph.edges);
+        transportBtn.classList.toggle('is-active', next);
+        transportBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        transportBtn.setAttribute('data-tree-edge-transport', next ? '0' : '1');
+        transportBtn.title = next
+          ? t('graph.edgeTransportHideTitle')
+          : t('graph.edgeTransportShowTitle');
+        return;
+      }
       const btn = event.target.closest('[data-tree-detail-mode]');
       if (!btn) return;
       const next = btn.getAttribute('data-tree-detail-mode');
@@ -2023,18 +2436,26 @@
     });
 
     const camera = setupGraphCamera(scrollEl, panEl, worldEl, stage, nodesHost, zoomLabelEl);
-    bindGraphZoomButtons(toolbar, camera, graphEl);
+    bindGraphZoomButtons(toolbar, camera, graphEl, {
+      stage,
+      defaultName: helpers.chainName || 'factory-tree',
+    });
 
     const layoutGraph = () => {
       const availableWidth = scrollEl.clientWidth || container.clientWidth || 960;
       const layerGap = computeLayerGap(layerCount, availableWidth);
       const positions = computeAutoLayout(graph.nodes, graph.edges, savedLayout, layerGap, helpers);
+      const hasSavedPositions = graph.nodes.some(
+        (node) => resolveSavedNodePosition(node.id, savedLayout) != null
+      );
 
       nodesHost.innerHTML = graph.nodes
         .map((node) => renderNode(node, helpers, positions[node.id]))
         .join('');
 
-      reflowLayerPositions(nodesHost);
+      if (!hasSavedPositions) {
+        reflowLayerPositions(nodesHost);
+      }
       updateStageSize(stage, nodesHost, scrollEl);
       drawEdges(stage, svg, labelsHost, graph.edges);
       camera.fit();
@@ -2058,8 +2479,9 @@
         updateStageSize(stage, nodesHost, scrollEl);
         drawEdges(stage, svg, labelsHost, graph.edges);
       },
-      {},
-      camera.getScale
+      layoutOptions,
+      camera.getScale,
+      camera
     );
 
     const teardownFullscreen = setupGraphFullscreen(graphEl, () => {
@@ -2080,6 +2502,11 @@
         teardownFullscreen();
       },
       redraw: () => drawEdges(stage, svg, labelsHost, graph.edges),
+      setShowEdgeTransport: (enabled) => {
+        helpers.showEdgeTransport = Boolean(enabled);
+        labelsHost.innerHTML = graph.edges.map((edge) => renderEdgeLabel(edge, helpers)).join('');
+        drawEdges(stage, svg, labelsHost, graph.edges);
+      },
     };
   }
 

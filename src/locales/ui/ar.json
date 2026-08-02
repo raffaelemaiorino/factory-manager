@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "قسّم الخطوات إلى خطوط آلات عندما يتطلب الحزام/الأنبوب ذلك",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "تصدير PNG",
+    "exportPngTitle": "حفظ الشجرة كصورة PNG",
+    "exportPngErrorTitle": "تعذّر تصدير الصورة",
+    "exportPngError": "حدث خطأ أثناء إنشاء ملف PNG.",
+    "exportPngUnavailable": "تصدير PNG غير متاح في هذا الإصدار.",
+    "edgeTransport": "أحزمة/أنابيب",
+    "edgeTransportAria": "إظهار تلميحات الأحزمة/الأنابيب على الروابط",
+    "edgeTransportShowTitle": "إظهار عدد الأحزمة/الأنابيب التي يحتاجها كل رابط",
+    "edgeTransportHideTitle": "إخفاء تلميحات الأحزمة/الأنابيب على الروابط"
   },
   "confirm": {
     "deleteResourceStepTitle": "حذف خطوة مورد",

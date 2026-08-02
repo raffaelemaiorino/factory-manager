@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "แยกขั้นตอนเป็นสายเครื่องเมื่อสายพาน/ท่อจำเป็น",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "ส่งออก PNG",
+    "exportPngTitle": "บันทึกแผนภูมิเป็นภาพ PNG",
+    "exportPngErrorTitle": "ไม่สามารถส่งออกภาพได้",
+    "exportPngError": "เกิดข้อผิดพลาดขณะสร้าง PNG",
+    "exportPngUnavailable": "การส่งออก PNG ไม่พร้อมใช้งานในเวอร์ชันนี้",
+    "edgeTransport": "สายพาน/ท่อ",
+    "edgeTransportAria": "แสดงคำแนะนำสายพาน/ท่อบนลิงก์",
+    "edgeTransportShowTitle": "แสดงจำนวนสายพาน/ท่อที่แต่ละลิงก์ต้องใช้",
+    "edgeTransportHideTitle": "ซ่อนคำแนะนำสายพาน/ท่อบนลิงก์"
   },
   "confirm": {
     "deleteResourceStepTitle": "ลบขั้นตอนทรัพยากร",

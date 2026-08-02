@@ -536,7 +536,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Dela steg i maskinlinjer när transportband/rörledning kräver det",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Exportera PNG",
+    "exportPngTitle": "Spara trädet som PNG-bild",
+    "exportPngErrorTitle": "Kunde inte exportera bild",
+    "exportPngError": "Något gick fel när PNG skapades.",
+    "exportPngUnavailable": "PNG-export är inte tillgänglig i den här versionen.",
+    "edgeTransport": "Band/rör",
+    "edgeTransportAria": "Visa band-/rörtips på länkar",
+    "edgeTransportShowTitle": "Visa hur många band/rör varje länk behöver",
+    "edgeTransportHideTitle": "Dölj band-/rörtips på länkar"
   },
   "confirm": {
     "deleteResourceStepTitle": "Ta bort resurssteg",

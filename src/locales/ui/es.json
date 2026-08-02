@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Dividir pasos en líneas de máquinas cuando la cinta/tubería lo requiere",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Exportar PNG",
+    "exportPngTitle": "Guardar el árbol como imagen PNG",
+    "exportPngErrorTitle": "No se pudo exportar la imagen",
+    "exportPngError": "Algo salió mal al crear el PNG.",
+    "exportPngUnavailable": "La exportación PNG no está disponible en esta versión.",
+    "edgeTransport": "Cintas/tuberías",
+    "edgeTransportAria": "Mostrar pistas de cinta/tubería en los enlaces",
+    "edgeTransportShowTitle": "Mostrar cuántas cintas/tuberías necesita cada enlace",
+    "edgeTransportHideTitle": "Ocultar pistas de cinta/tubería en los enlaces"
   },
   "confirm": {
     "deleteResourceStepTitle": "Eliminar paso de recurso",

@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "在传送带/管道限制需要时，将步骤拆成机器线路",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "导出 PNG",
+    "exportPngTitle": "将树状图保存为 PNG 图片",
+    "exportPngErrorTitle": "无法导出图片",
+    "exportPngError": "创建 PNG 时出错。",
+    "exportPngUnavailable": "此版本无法使用 PNG 导出。",
+    "edgeTransport": "传送带/管道",
+    "edgeTransportAria": "在连接上显示传送带/管道提示",
+    "edgeTransportShowTitle": "显示每条连接需要多少传送带/管道",
+    "edgeTransportHideTitle": "隐藏连接上的传送带/管道提示"
   },
   "confirm": {
     "deleteResourceStepTitle": "删除资源步骤",

@@ -303,6 +303,7 @@ ipcMain.handle('app:info', () => ({
 }));
 
 ipcMain.handle('app:check-update', () => checkForAppUpdate(appVersion));
+ipcMain.handle('app:save-png', (_event, defaultName, dataUrl) => savePngFile(defaultName, dataUrl));
 
 ipcMain.handle('shell:open-external', async (_event, url) => {
   if (!isAllowedReleaseUrl(url)) {
@@ -366,6 +367,44 @@ async function saveSchemaJsonFile(title, defaultName, payload) {
   }
 
   writeFileSync(filePath, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
+  return { canceled: false, filePath };
+}
+
+function dataUrlToPngBuffer(dataUrl) {
+  const raw = String(dataUrl ?? '');
+  const match = raw.match(/^data:image\/png;base64,(.+)$/i);
+  if (!match) {
+    throw new Error('PNG non valido');
+  }
+  const buffer = Buffer.from(match[1], 'base64');
+  // ~25 MB decoded cap — guards pathological payloads from the renderer
+  if (buffer.length > 25 * 1024 * 1024) {
+    throw new Error('Immagine troppo grande');
+  }
+  return buffer;
+}
+
+async function savePngFile(defaultName, dataUrl) {
+  const base = sanitizeExportFileName(defaultName || 'factory-tree');
+  const result = await dialog.showSaveDialog(mainWindow, {
+    title: 'Esporta albero PNG',
+    defaultPath: `${base}.png`,
+    filters: [
+      { name: 'PNG', extensions: ['png'] },
+      { name: 'Tutti i file', extensions: ['*'] },
+    ],
+  });
+
+  if (result.canceled || !result.filePath) {
+    return { canceled: true };
+  }
+
+  let filePath = result.filePath;
+  if (!/\.png$/i.test(filePath)) {
+    filePath = `${filePath}.png`;
+  }
+
+  writeFileSync(filePath, dataUrlToPngBuffer(dataUrl));
   return { canceled: false, filePath };
 }
 

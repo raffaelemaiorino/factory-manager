@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Del trin i maskinlinjer, når transportbånd/rørledning kræver det",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Eksporter PNG",
+    "exportPngTitle": "Gem træet som PNG-billede",
+    "exportPngErrorTitle": "Kunne ikke eksportere billede",
+    "exportPngError": "Noget gik galt under oprettelse af PNG.",
+    "exportPngUnavailable": "PNG-eksport er ikke tilgængelig i denne build.",
+    "edgeTransport": "Bånd/rør",
+    "edgeTransportAria": "Vis bånd-/rørhints på forbindelser",
+    "edgeTransportShowTitle": "Vis hvor mange bånd/rør hver forbindelse kræver",
+    "edgeTransportHideTitle": "Skjul bånd-/rørhints på forbindelser"
   },
   "confirm": {
     "deleteResourceStepTitle": "Slet ressourcetrin",

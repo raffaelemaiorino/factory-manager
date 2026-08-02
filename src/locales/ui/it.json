@@ -586,7 +586,16 @@
     "fullscreenExitTitle": "Esci dalla vista ad albero a schermo intero",
     "sink": "AWESOME Sink",
     "supply": "Fornitura combustibile",
-    "manifoldBank": "Fila {index}/{count}"
+    "manifoldBank": "Fila {index}/{count}",
+    "exportPng": "Esporta PNG",
+    "exportPngTitle": "Salva l’albero come immagine PNG",
+    "exportPngErrorTitle": "Impossibile esportare l’immagine",
+    "exportPngError": "Qualcosa è andato storto durante la creazione del PNG.",
+    "exportPngUnavailable": "Esportazione PNG non disponibile in questa build.",
+    "edgeTransport": "Nastri/tubi",
+    "edgeTransportAria": "Mostra suggerimenti nastro/tubo sui collegamenti",
+    "edgeTransportShowTitle": "Mostra quanti nastri/tubi servono su ogni collegamento",
+    "edgeTransportHideTitle": "Nascondi i suggerimenti nastro/tubo sui collegamenti"
   },
   "confirm": {
     "deleteResourceStepTitle": "Elimina schema risorsa",

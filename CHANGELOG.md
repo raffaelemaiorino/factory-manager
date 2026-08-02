@@ -9,6 +9,22 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-08-02
+
+### Added
+- Produzione ed energia: esporta la vista ad albero come immagine PNG (pulsante nella toolbar zoom; Salva come…)
+- Produzione ed energia: opzione «Nastri/tubi» sulla toolbar dell’albero per mostrare o nascondere i suggerimenti Mk sui collegamenti (disattivata di default)
+
+### Changed
+- Vista ad albero: collegamenti più contrastati; in export PNG tratti ancora più spessi e opachi
+- Vista ad albero: puoi trascinare i nodi oltre il bordo alto/sinistro — lo stage si espande (prima un clamp a y=0 bloccava lo spostamento verso l’alto)
+
+### Fixed
+- Vista ad albero: il toggle «Nastri/tubi» (e i ri-render) non riallinea più i nodi che avevi spostato con drag & drop
+- Export PNG: i collegamenti SVG restano visibili (stroke inline; html-to-image ignorava spesso il CSS)
+- Vista ad albero: Semplice ↔ Complesso conserva il layout drag (storage separato per modalità + mapping id bank)
+- Vista ad albero: con «Nastri/tubi» attivo i nomi sulle etichette vanno a capo invece di tagliarsi con «…»
+
 ## [2.0.1] - 2026-08-02
 
 ### Added

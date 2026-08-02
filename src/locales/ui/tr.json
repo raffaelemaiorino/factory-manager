@@ -536,7 +536,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Bant/boru gerektiğinde adımları makine hatlarına böl",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "PNG dışa aktar",
+    "exportPngTitle": "Ağacı PNG görüntü olarak kaydet",
+    "exportPngErrorTitle": "Görüntü dışa aktarılamadı",
+    "exportPngError": "PNG oluşturulurken bir şeyler ters gitti.",
+    "exportPngUnavailable": "PNG dışa aktarma bu sürümde kullanılamıyor.",
+    "edgeTransport": "Bant/boru",
+    "edgeTransportAria": "Bağlantılarda bant/boru ipuçlarını göster",
+    "edgeTransportShowTitle": "Her bağlantının kaç bant/boru gerektirdiğini göster",
+    "edgeTransportHideTitle": "Bağlantılardaki bant/boru ipuçlarını gizle"
   },
   "confirm": {
     "deleteResourceStepTitle": "Kaynak adımını sil",

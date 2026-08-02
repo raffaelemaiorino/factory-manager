@@ -536,7 +536,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Del steg i maskinlinjer når transportbånd/rørledning krever det",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Eksporter PNG",
+    "exportPngTitle": "Lagre treet som PNG-bilde",
+    "exportPngErrorTitle": "Kunne ikke eksportere bilde",
+    "exportPngError": "Noe gikk galt under oppretting av PNG.",
+    "exportPngUnavailable": "PNG-eksport er ikke tilgjengelig i denne versjonen.",
+    "edgeTransport": "Belter/rør",
+    "edgeTransportAria": "Vis belte-/rørhint på koblinger",
+    "edgeTransportShowTitle": "Vis hvor mange belter/rør hver kobling trenger",
+    "edgeTransportHideTitle": "Skjul belte-/rørhint på koblinger"
   },
   "confirm": {
     "deleteResourceStepTitle": "Slett ressurstrinn",

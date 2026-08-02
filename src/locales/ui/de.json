@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Schritte in Linien/Maschinengruppen teilen, wenn Förderband/Rohrleitung es erfordern",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "PNG exportieren",
+    "exportPngTitle": "Baum als PNG-Bild speichern",
+    "exportPngErrorTitle": "Bild konnte nicht exportiert werden",
+    "exportPngError": "Beim Erstellen der PNG-Datei ist etwas schiefgelaufen.",
+    "exportPngUnavailable": "PNG-Export ist in diesem Build nicht verfügbar.",
+    "edgeTransport": "Bänder/Rohre",
+    "edgeTransportAria": "Band-/Rohrhinweise an Verbindungen anzeigen",
+    "edgeTransportShowTitle": "Anzeigen, wie viele Bänder/Rohre jede Verbindung braucht",
+    "edgeTransportHideTitle": "Band-/Rohrhinweise an Verbindungen ausblenden"
   },
   "confirm": {
     "deleteResourceStepTitle": "Ressourcenschritt löschen",

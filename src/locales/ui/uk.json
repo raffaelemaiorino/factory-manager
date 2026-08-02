@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Ділити кроки на лінії машин, коли цього вимагає конвеєр/трубопровід",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Експорт PNG",
+    "exportPngTitle": "Зберегти дерево як PNG",
+    "exportPngErrorTitle": "Не вдалося експортувати зображення",
+    "exportPngError": "Під час створення PNG сталася помилка.",
+    "exportPngUnavailable": "Експорт PNG недоступний у цій збірці.",
+    "edgeTransport": "Стрічки/труби",
+    "edgeTransportAria": "Показувати підказки стрічок/труб на зв’язках",
+    "edgeTransportShowTitle": "Показати, скільки стрічок/труб потрібно кожному зв’язку",
+    "edgeTransportHideTitle": "Сховати підказки стрічок/труб на зв’язках"
   },
   "confirm": {
     "deleteResourceStepTitle": "Видалити крок ресурсу",

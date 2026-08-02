@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "벨트/파이프 제한 시 단계를 기계 라인으로 분할",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "PNG 내보내기",
+    "exportPngTitle": "트리를 PNG 이미지로 저장",
+    "exportPngErrorTitle": "이미지를 내보낼 수 없습니다",
+    "exportPngError": "PNG를 만드는 중 문제가 발생했습니다.",
+    "exportPngUnavailable": "이 빌드에서는 PNG 내보내기를 사용할 수 없습니다.",
+    "edgeTransport": "벨트/파이프",
+    "edgeTransportAria": "링크에 벨트/파이프 힌트 표시",
+    "edgeTransportShowTitle": "각 링크에 필요한 벨트/파이프 수 표시",
+    "edgeTransportHideTitle": "링크의 벨트/파이프 힌트 숨기기"
   },
   "confirm": {
     "deleteResourceStepTitle": "자원 단계 삭제",

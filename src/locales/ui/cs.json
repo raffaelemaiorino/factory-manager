@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Dělit kroky do linií strojů, když to vyžaduje pás/potrubí",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Exportovat PNG",
+    "exportPngTitle": "Uložit strom jako obrázek PNG",
+    "exportPngErrorTitle": "Obrázek se nepodařilo exportovat",
+    "exportPngError": "Při vytváření PNG se něco pokazilo.",
+    "exportPngUnavailable": "Export PNG není v tomto sestavení dostupný.",
+    "edgeTransport": "Pásy/trubky",
+    "edgeTransportAria": "Zobrazit tipy pásů/trubek na spojích",
+    "edgeTransportShowTitle": "Zobrazit, kolik pásů/trubek každý spoj potřebuje",
+    "edgeTransportHideTitle": "Skrýt tipy pásů/trubek na spojích"
   },
   "confirm": {
     "deleteResourceStepTitle": "Smazat krok suroviny",

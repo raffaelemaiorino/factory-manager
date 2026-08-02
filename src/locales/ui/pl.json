@@ -532,7 +532,16 @@
     "detailSimpleTitle": "Show machine count and clock speed only",
     "detailComplexTitle": "Dziel kroki na linie maszyn, gdy wymaga tego taśmociąg/rurociąg",
     "detailModeAria": "Tree detail mode",
-    "sink": "AWESOME Sink"
+    "sink": "AWESOME Sink",
+    "exportPng": "Eksportuj PNG",
+    "exportPngTitle": "Zapisz drzewo jako obraz PNG",
+    "exportPngErrorTitle": "Nie udało się wyeksportować obrazu",
+    "exportPngError": "Coś poszło nie tak podczas tworzenia PNG.",
+    "exportPngUnavailable": "Eksport PNG jest niedostępny w tej wersji.",
+    "edgeTransport": "Taśmy/rury",
+    "edgeTransportAria": "Pokaż wskazówki taśm/rur na połączeniach",
+    "edgeTransportShowTitle": "Pokaż ile taśm/rur potrzebuje każde połączenie",
+    "edgeTransportHideTitle": "Ukryj wskazówki taśm/rur na połączeniach"
   },
   "confirm": {
     "deleteResourceStepTitle": "Usuń krok zasobu",
