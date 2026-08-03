@@ -34,7 +34,7 @@ function buildExtractionLinkUi(extraction, allExtractions, allSteps) {
 
   const linkedConsumers =
     itemSlug && isExternalSummarySlug(itemSlug)
-      ? getLinkedConsumersForExtraction(extraction, allSteps)
+      ? getLinkedConsumersForExtraction(extraction, allSteps, allExtractions)
       : [];
   const consumerCandidates =
     itemSlug && isExternalSummarySlug(itemSlug)
@@ -42,7 +42,7 @@ function buildExtractionLinkUi(extraction, allExtractions, allSteps) {
       : [];
   const unlinkedExcess =
     itemSlug && isExternalSummarySlug(itemSlug)
-      ? getExtractionOutputSurplus(extraction, itemSlug, allSteps)
+      ? getExtractionOutputSurplus(extraction, itemSlug, allSteps, allExtractions)
       : 0;
   const linkedShortfall =
     itemSlug && isExternalSummarySlug(itemSlug)
@@ -126,7 +126,8 @@ function buildExtractionLinkUi(extraction, allExtractions, allSteps) {
                           extraction,
                           itemSlug,
                           allSteps,
-                          outputUnit
+                          outputUnit,
+                          allExtractions
                         );
                         return `
                           <label class="production-link-option">

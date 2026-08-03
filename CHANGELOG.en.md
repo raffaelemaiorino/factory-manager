@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.2] - 2026-08-03
+
+### Fixed
+- Extraction links: with multiple miners on the same step (e.g. 1200+960 → 1800) leftover capacity is shared with other linked steps (e.g. 360 to silica) instead of assigning the full demand onto one belt
+
 ## [2.3.1] - 2026-08-02
 
 ### Fixed

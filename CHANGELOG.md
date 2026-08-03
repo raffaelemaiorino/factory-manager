@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.3.2] - 2026-08-03
+
+### Fixed
+- Collegamenti da estrazione: con più trivelle sullo stesso schema (es. 1200+960 → 1800) riparte il residuo agli altri schemi collegati (es. 360 alla silice) invece di assegnare tutto il fabbisogno a una sola linea
+
 ## [2.3.1] - 2026-08-02
 
 ### Fixed

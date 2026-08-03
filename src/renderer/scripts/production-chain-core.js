@@ -1760,6 +1760,19 @@ function getProducerOutputSurplus(producer, itemSlug, allSteps) {
   return normalizeLinkDelta(outputRate - totalDemand, outputRate);
 }
 
+function getConsumerProducerCoveredRate(consumer, itemSlug, allSteps) {
+  if (!consumer) return 0;
+  let total = 0;
+  for (const link of consumer.input_links?.[itemSlug] ?? []) {
+    if (!link.producer_step_id) continue;
+    const producer = allSteps.find((step) => Number(step.id) === Number(link.producer_step_id));
+    if (producer) {
+      total += getProducerAttributedDemand(producer, consumer, itemSlug, allSteps);
+    }
+  }
+  return window.ProductionScale.roundProduction(total);
+}
+
 function getConsumerLinkedInputRate(consumer, itemSlug, allSteps, allExtractions = []) {
   if (!consumer) return 0;
 
@@ -1780,7 +1793,13 @@ function getConsumerLinkedInputRate(consumer, itemSlug, allSteps, allExtractions
         (candidate) => Number(candidate.id) === Number(link.producer_extraction_id)
       );
       if (extraction) {
-        total += getExtractionAttributedDemand(extraction, consumer, itemSlug, allSteps);
+        total += getExtractionAttributedDemand(
+          extraction,
+          consumer,
+          itemSlug,
+          allSteps,
+          allExtractions
+        );
       } else {
         total += Number(link.producer_rate) || 0;
       }
@@ -1862,49 +1881,45 @@ function formatLinkedConsumerBadgeRate(consumer, unit) {
   return formatRateWithUnit(allocated, unit);
 }
 
-function getExtractionAllocations(extraction, itemSlug, allSteps) {
+function getExtractionAllocations(extraction, itemSlug, allSteps, allExtractions = []) {
   const outputRate = getExtractionOutputRate(extraction);
   if (!outputRate) return new Map();
 
   const slug = extraction.item?.slug;
   if (slug !== itemSlug) return new Map();
 
-  const consumers = allSteps
-    .filter((candidate) =>
-      (candidate.input_links?.[itemSlug] ?? []).some((link) =>
-        linkTargetsExtraction(link, extraction.id)
-      )
-    )
-    .sort(
-      (left, right) =>
-        (left.sort_order ?? 0) - (right.sort_order ?? 0) || Number(left.id) - Number(right.id)
-    );
+  const pool =
+    Array.isArray(allExtractions) && allExtractions.length > 0 ? allExtractions : [extraction];
 
-  let remaining = outputRate;
-  const allocations = new Map();
+  const buildTable = window.ExtractionLinkAlloc?.buildExtractionAllocationTable;
+  if (!buildTable) return new Map();
 
-  for (const consumer of consumers) {
-    const required = getStepInputRateForItem(consumer, itemSlug);
-    const take = window.ProductionScale.roundProduction(Math.min(remaining, required));
-    if (take <= 0) {
-      allocations.set(consumer.id, 0);
-      continue;
-    }
+  const table = buildTable({
+    itemSlug,
+    steps: allSteps,
+    extractions: pool,
+    getStepInputRate: getStepInputRateForItem,
+    getExtractionOutputRate,
+    getProducerCoveredRate: (consumer) =>
+      getConsumerProducerCoveredRate(consumer, itemSlug, allSteps),
+    tolerance: LINK_BALANCE_TOLERANCE,
+    round: (value) => window.ProductionScale.roundProduction(value),
+  });
 
-    allocations.set(consumer.id, take);
-    remaining = window.ProductionScale.roundProduction(Math.max(0, remaining - take));
-    if (remaining <= LINK_BALANCE_TOLERANCE) break;
-  }
-
-  return allocations;
+  return table.get(Number(extraction.id)) ?? new Map();
 }
 
-function getExtractionOutputSurplus(extraction, itemSlug, allSteps) {
+function getExtractionOutputSurplus(extraction, itemSlug, allSteps, allExtractions = []) {
   const outputRate = getExtractionOutputRate(extraction);
   if (!outputRate || extraction.item?.slug !== itemSlug) return 0;
 
   let demand = 0;
-  for (const take of getExtractionAllocations(extraction, itemSlug, allSteps).values()) {
+  for (const take of getExtractionAllocations(
+    extraction,
+    itemSlug,
+    allSteps,
+    allExtractions
+  ).values()) {
     demand += take;
   }
   return normalizeLinkDelta(outputRate - demand, outputRate);
@@ -1923,23 +1938,39 @@ function isExtractionAvailableForLink(
   if (isExtractionLinkedToConsumer(consumer, extraction.id, itemSlug)) return true;
   if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
 
-  const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
+  const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps, allExtractions);
   return surplus > LINK_BALANCE_TOLERANCE;
 }
 
-function formatExtractionLinkOptionRate(extraction, consumerStepId, itemSlug, allSteps, unit) {
+function formatExtractionLinkOptionRate(
+  extraction,
+  consumerStepId,
+  itemSlug,
+  allSteps,
+  unit,
+  allExtractions = []
+) {
   const consumer = allSteps.find((step) => Number(step.id) === Number(consumerStepId));
   if (isExtractionLinkedToConsumer(consumer, extraction.id, itemSlug)) {
-    const allocated = getExtractionAttributedDemand(extraction, consumer, itemSlug, allSteps);
+    const allocated = getExtractionAttributedDemand(
+      extraction,
+      consumer,
+      itemSlug,
+      allSteps,
+      allExtractions
+    );
     const required = getStepInputRateForItem(consumer, itemSlug);
-    if (allocated + LINK_BALANCE_TOLERANCE < required) {
+    if (
+      !isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions) &&
+      allocated + LINK_BALANCE_TOLERANCE < required
+    ) {
       return formatPartialLinkRate(allocated, required, unit);
     }
     return formatRateWithUnit(allocated, unit);
   }
 
   const required = getStepInputRateForItem(consumer, itemSlug);
-  const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
+  const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps, allExtractions);
   if (surplus + LINK_BALANCE_TOLERANCE < required) {
     return t('production.surplusFree', { rate: formatRateWithUnit(surplus, unit) });
   }
@@ -1953,11 +1984,11 @@ function getExtractionCandidates(allExtractions, consumerStepId, itemSlug, allSt
   );
 }
 
-function getLinkedConsumersForExtraction(extraction, allSteps) {
+function getLinkedConsumersForExtraction(extraction, allSteps, allExtractions = []) {
   const itemSlug = extraction.item?.slug;
   if (!itemSlug) return [];
 
-  const allocations = getExtractionAllocations(extraction, itemSlug, allSteps);
+  const allocations = getExtractionAllocations(extraction, itemSlug, allSteps, allExtractions);
 
   return allSteps
     .filter((step) => isExtractionLinkedToConsumer(step, extraction.id, itemSlug))
@@ -1995,21 +2026,37 @@ function isExtractionConsumerAvailableForLink(
   if (isExtractionLinkedToConsumer(consumer, extraction.id, itemSlug)) return true;
   if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
 
-  const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
+  const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps, allExtractions);
   return surplus > LINK_BALANCE_TOLERANCE;
 }
 
-function formatExtractionConsumerLinkOptionRate(consumer, extraction, itemSlug, allSteps, unit) {
+function formatExtractionConsumerLinkOptionRate(
+  consumer,
+  extraction,
+  itemSlug,
+  allSteps,
+  unit,
+  allExtractions = []
+) {
   const requiredRate = getStepInputRateForItem(consumer, itemSlug);
   if (isExtractionLinkedToConsumer(consumer, extraction.id, itemSlug)) {
-    const allocated = getExtractionAttributedDemand(extraction, consumer, itemSlug, allSteps);
-    if (allocated + LINK_BALANCE_TOLERANCE < requiredRate) {
+    const allocated = getExtractionAttributedDemand(
+      extraction,
+      consumer,
+      itemSlug,
+      allSteps,
+      allExtractions
+    );
+    if (
+      !isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions) &&
+      allocated + LINK_BALANCE_TOLERANCE < requiredRate
+    ) {
       return formatPartialLinkRate(allocated, requiredRate, unit);
     }
-    return formatRateWithUnit(requiredRate, unit);
+    return formatRateWithUnit(allocated > 0 ? allocated : requiredRate, unit);
   }
 
-  const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps);
+  const surplus = getExtractionOutputSurplus(extraction, itemSlug, allSteps, allExtractions);
   if (surplus + LINK_BALANCE_TOLERANCE < requiredRate) {
     return t('production.surplusFree', { rate: formatRateWithUnit(surplus, unit) });
   }
@@ -2025,8 +2072,16 @@ function getExtractionLinkStateClass(state, hasLinks) {
   return '';
 }
 
-function getExtractionAttributedDemand(extraction, consumer, itemSlug, allSteps) {
-  return getExtractionAllocations(extraction, itemSlug, allSteps).get(consumer.id) ?? 0;
+function getExtractionAttributedDemand(
+  extraction,
+  consumer,
+  itemSlug,
+  allSteps,
+  allExtractions = []
+) {
+  return (
+    getExtractionAllocations(extraction, itemSlug, allSteps, allExtractions).get(consumer.id) ?? 0
+  );
 }
 
 function getLinkedExtractionsForInput(step, itemSlug, allExtractions, allSteps) {
@@ -2041,7 +2096,7 @@ function getLinkedExtractionsForInput(step, itemSlug, allExtractions, allSteps) 
         ? getExtractionDisplayName(extraction, allExtractions)
         : link.producer_name,
       producer_rate: extraction
-        ? getExtractionAttributedDemand(extraction, step, itemSlug, allSteps)
+        ? getExtractionAttributedDemand(extraction, step, itemSlug, allSteps, allExtractions)
         : link.producer_rate,
     };
   });

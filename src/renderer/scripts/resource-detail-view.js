@@ -385,15 +385,20 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
             .join('')}
           ${linkedExtractions
             .map((link) => {
+              const fullyCovered = linkState === 'balanced' || linkState === 'excess';
               const partial =
+                !fullyCovered &&
                 requiredRate > LINK_BALANCE_TOLERANCE &&
                 link.producer_rate + LINK_BALANCE_TOLERANCE < requiredRate;
+              const rateLabel = fullyCovered
+                ? formatRateWithUnit(link.producer_rate, unit)
+                : formatLinkedConsumerBadgeRate(
+                    { allocated_rate: link.producer_rate, required_rate: requiredRate },
+                    unit
+                  );
               return `<span class="production-link-badge production-link-badge--extraction${
                 partial ? ' production-link-badge--partial' : ''
-              }">← ${escapeHtml(link.producer_name)} (${formatLinkedConsumerBadgeRate(
-                { allocated_rate: link.producer_rate, required_rate: requiredRate },
-                unit
-              )})</span>`;
+              }">← ${escapeHtml(link.producer_name)} (${rateLabel})</span>`;
             })
             .join('')}
           ${
@@ -457,7 +462,8 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
                   step.id,
                   itemSlug,
                   allSteps,
-                  unit
+                  unit,
+                  allExtractions
                 );
                 const displayName = getExtractionDisplayName(extraction, allExtractions);
                 return `
