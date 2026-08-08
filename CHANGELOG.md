@@ -9,6 +9,16 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.3.4] - 2026-08-08
+
+### Fixed
+- Albero per gruppi: rimosso il toggle Semplice/Complesso (non applicabile a questa vista; era un refuso degli alberi normali)
+
+## [2.3.3] - 2026-08-08
+
+### Fixed
+- Convertitore: il consumo mostra il picco (400 MW) invece di 0; etichetta «Consumo (massimo)» con il fulmine
+
 ## [2.3.2] - 2026-08-03
 
 ### Fixed

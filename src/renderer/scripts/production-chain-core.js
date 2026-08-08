@@ -3443,7 +3443,13 @@ function renderProductionStep(step, allSteps = []) {
             </div>
             <div class="production-config-field">
               <label class="production-config-label" for="production-power-mw-${step.id}">
-                ${escapeHtml(t('production.configPowerConsumption'))}
+                ${escapeHtml(
+                  t(
+                    window.ProductionScale.isPeakPowerBuilding(schema?.building_slug)
+                      ? 'production.configPowerConsumptionMax'
+                      : 'production.configPowerConsumption'
+                  )
+                )}
               </label>
               <input
                 type="text"

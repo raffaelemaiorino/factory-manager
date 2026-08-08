@@ -350,7 +350,8 @@
   }
 
   function buildCollapsedGroupGraph(detail, helpers) {
-    const full = buildProductionGraph(detail, helpers, {});
+    // Group tree aggregates I/O between groups — machine-bank (complex) split does not apply.
+    const full = buildProductionGraph(detail, { ...helpers, treeDetailMode: 'simple' }, {});
     const allSteps = detail.steps ?? [];
     const groupMarks = detail.group_marks ?? {};
 
@@ -1979,7 +1980,12 @@
     const layoutOptions = {
       groupKey: collapseGroups ? null : groupKey,
       collapseGroups,
-      detailMode: helpers.treeDetailMode === 'complex' ? 'complex' : 'simple',
+      // Group tree ignores machine-bank detail; keep one layout key.
+      detailMode: collapseGroups
+        ? 'simple'
+        : helpers.treeDetailMode === 'complex'
+          ? 'complex'
+          : 'simple',
     };
     const graph = collapseGroups
       ? buildCollapsedGroupGraph(detail, helpers)
@@ -2009,16 +2015,15 @@
         ? t('graph.hintGroup', { name: groupLabel })
         : t('graph.hint');
 
-    const detailMode = helpers.treeDetailMode === 'complex' ? 'complex' : 'simple';
-
-    container.innerHTML = `
-      <div class="production-graph${groupKey ? ' production-graph--group' : ''}${
-        collapseGroups ? ' production-graph--groups' : ''
-      }" data-detail-mode="${detailMode}">
-        <div class="production-graph-toolbar">
-          <p class="production-graph-hint">${helpers.escapeHtml(hintText)}</p>
-          <div class="production-graph-toolbar-actions">
-            ${renderGraphZoomControls(helpers.escapeHtml)}
+    // Group tree only shows group-level I/O — Simple/Complex (machine banks) does not apply.
+    const detailMode = collapseGroups
+      ? 'simple'
+      : helpers.treeDetailMode === 'complex'
+        ? 'complex'
+        : 'simple';
+    const detailToggleHtml = collapseGroups
+      ? ''
+      : `
             <div class="production-graph-detail-toggle" role="group" aria-label="${helpers.escapeHtml(
               t('graph.detailModeAria')
             )}">
@@ -2036,7 +2041,17 @@
                 title="${helpers.escapeHtml(t('graph.detailComplexTitle'))}"
                 aria-pressed="${detailMode === 'complex' ? 'true' : 'false'}"
               >${helpers.escapeHtml(t('graph.detailComplex'))}</button>
-            </div>
+            </div>`;
+
+    container.innerHTML = `
+      <div class="production-graph${groupKey ? ' production-graph--group' : ''}${
+        collapseGroups ? ' production-graph--groups' : ''
+      }" data-detail-mode="${detailMode}">
+        <div class="production-graph-toolbar">
+          <p class="production-graph-hint">${helpers.escapeHtml(hintText)}</p>
+          <div class="production-graph-toolbar-actions">
+            ${renderGraphZoomControls(helpers.escapeHtml)}
+            ${detailToggleHtml}
             <div class="production-graph-detail-toggle" role="group" aria-label="${helpers.escapeHtml(
               t('graph.edgeTransportAria')
             )}">

@@ -255,7 +255,12 @@ function renderBuildingPowerShards(overclockOrConfig, machineCount) {
     powerMw > 0
       ? (() => {
           const mwText = formatRateWithUnit(powerMw, 'MW');
-          const [mwBefore = '', mwAfter = ''] = t('production.powerConsumptionRequired', {
+          const powerLabelKey = window.ProductionScale.isPeakPowerBuilding(
+            config.schema?.building_slug || config.building_slug
+          )
+            ? 'production.powerConsumptionRequiredMax'
+            : 'production.powerConsumptionRequired';
+          const [mwBefore = '', mwAfter = ''] = t(powerLabelKey, {
             mw: '\u0000',
           }).split('\u0000');
           return `<div class="craft-building-power-consumption">

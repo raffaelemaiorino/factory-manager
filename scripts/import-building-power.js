@@ -18,7 +18,7 @@ const DATA_VERSION = 4;
 const SKIP_SLUGS = new Set([
   'particle-accelerator',
   'quantum-encoder',
-  'converter', // potenza variabile per ricetta (range)
+  'converter', // potenza variabile: in seed usiamo il picco (400 MW)
 ]);
 const SKIP_CATEGORIES = new Set(['generatori']);
 

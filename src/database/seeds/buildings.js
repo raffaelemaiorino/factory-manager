@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DATA_VERSION = 4;
+const DATA_VERSION = 5;
 const seedPath = path.join(__dirname, 'buildings.json');
 
 function loadSeedData() {

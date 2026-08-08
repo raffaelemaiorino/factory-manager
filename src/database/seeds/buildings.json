@@ -1,5 +1,5 @@
 {
-  "dataVersion": 4,
+  "dataVersion": 5,
   "source": "https://satisfactory-calculator.com/it/buildings",
   "importedAt": "2026-07-26T07:03:20.519Z",
   "categories": [
@@ -194,7 +194,8 @@
       "name": "Convertitore",
       "category": "produzione",
       "somersloop_slots": 2,
-      "image": "assets/buildings/Build_Converter_C.png"
+      "image": "assets/buildings/Build_Converter_C.png",
+      "power_consumption": 400
     },
     {
       "game_id": "Build_GeneratorBiomass_Automated_C",

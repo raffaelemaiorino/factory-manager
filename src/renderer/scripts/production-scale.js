@@ -260,6 +260,13 @@
     return Math.round(n * 1000) / 1000;
   }
 
+  /** Edifici con consumo oscillante: in seed usiamo il picco (MW). */
+  const PEAK_POWER_BUILDING_SLUGS = new Set(['converter']);
+
+  function isPeakPowerBuilding(buildingSlug) {
+    return PEAK_POWER_BUILDING_SLUGS.has(String(buildingSlug || ''));
+  }
+
   function computeMinTargetOutput(basePerMin, machineCount, somersloopMask = 0, schema = null) {
     const base = Number(basePerMin);
     const machines = clampMachineCount(machineCount);
@@ -640,6 +647,7 @@
     computeSomersloopMultiplier,
     computeMachinePowerMw,
     roundPowerMw,
+    isPeakPowerBuilding,
     computeMaxTargetOutput,
     computeOverclock,
     computeTargetOutput,

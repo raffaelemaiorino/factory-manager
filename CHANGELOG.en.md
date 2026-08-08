@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.4] - 2026-08-08
+
+### Fixed
+- Group tree: removed the Simple/Complex toggle (not applicable to this view; leftover from normal trees)
+
+## [2.3.3] - 2026-08-08
+
+### Fixed
+- Converter: power use shows the peak (400 MW) instead of 0; lightning label reads “Peak power use”
+
 ## [2.3.2] - 2026-08-03
 
 ### Fixed
