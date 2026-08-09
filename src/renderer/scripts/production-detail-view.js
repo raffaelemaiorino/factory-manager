@@ -654,9 +654,13 @@ async function openMineralPickerModal() {
 }
 
 async function openResourcePickerModal() {
+  return openResourcePickerWithMode('step');
+}
+
+async function openResourcePickerWithMode(mode = 'step', titleKey = 'modals.selectResource') {
   pendingInsertAfterStepId = null;
-  resourcePickerMode = 'step';
-  document.getElementById('resource-picker-modal-title').textContent = t('modals.selectResource');
+  resourcePickerMode = mode;
+  document.getElementById('resource-picker-modal-title').textContent = t(titleKey);
   document.getElementById('resource-picker-search').value = '';
   document.getElementById('resource-picker-count').textContent = '';
   document.getElementById('resource-picker-list').innerHTML =
@@ -676,6 +680,8 @@ async function openResourcePickerModal() {
     console.error('Resource picker load error:', err);
   }
 }
+
+window.openResourcePickerWithMode = openResourcePickerWithMode;
 
 function closeResourcePickerModal() {
   resourcePickerModal.classList.add('hidden');
@@ -807,6 +813,26 @@ async function handleResourceSelection(itemId) {
       await addPlanTargetItem(item);
     } catch (err) {
       console.error('Plan-target selection error:', err);
+      await showAlert(err.message || t('errors.saveFailed'));
+    }
+    return;
+  }
+
+  if (
+    resourcePickerMode === 'transport-create-cargo' ||
+    resourcePickerMode === 'transport-detail-cargo'
+  ) {
+    const pickerMode = resourcePickerMode;
+    try {
+      const detail = await window.satisfactory.getResourceDetail(itemId);
+      const item = detail?.item;
+      if (!item) {
+        throw new Error(t('modals.resourceNotFound'));
+      }
+      closeResourcePickerModal();
+      window.TransportUI?.onCargoPicked?.(item, pickerMode);
+    } catch (err) {
+      console.error('Transport cargo selection error:', err);
       await showAlert(err.message || t('errors.saveFailed'));
     }
     return;

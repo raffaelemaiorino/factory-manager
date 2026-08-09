@@ -103,4 +103,11 @@ contextBridge.exposeInMainWorld('satisfactory', {
     ipcRenderer.invoke('energy:set-input-links', generatorId, itemSlug, extractionIds),
   setEnergyGeneratorProductionLinks: (generatorId, itemSlug, producerStepIds) =>
     ipcRenderer.invoke('energy:set-production-links', generatorId, itemSlug, producerStepIds),
+  getTransportPlans: () => ipcRenderer.invoke('transport:all'),
+  createTransportPlan: (data) => ipcRenderer.invoke('transport:create', data),
+  updateTransportPlan: (id, data) => ipcRenderer.invoke('transport:update', id, data),
+  deleteTransportPlan: (id) => ipcRenderer.invoke('transport:delete', id),
+  duplicateTransportPlan: (id) => ipcRenderer.invoke('transport:duplicate', id),
+  getTransportPlanDetail: (id) => ipcRenderer.invoke('transport:get', id),
+  getTransportVehicles: () => ipcRenderer.invoke('transport:vehicles'),
 });

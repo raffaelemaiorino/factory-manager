@@ -29,6 +29,12 @@ async function initDashboard() {
     document.getElementById('dashboard-chart-power').innerHTML = '';
     const balanceChart = document.getElementById('dashboard-chart-balance');
     if (balanceChart) balanceChart.innerHTML = '';
+    const transportFleet = document.getElementById('dashboard-transport-fleet');
+    if (transportFleet) {
+      transportFleet.innerHTML = `<p class="dashboard-empty">${escapeHtml(t('dashboard.errorLoad'))}</p>`;
+    }
+    const transportChart = document.getElementById('dashboard-chart-transport');
+    if (transportChart) transportChart.innerHTML = '';
   }
 }
 
@@ -264,6 +270,81 @@ function buildEnergyProjectSummary(chain, detail) {
   };
 }
 
+function dashboardAssetSrc(image) {
+  if (!image) return '';
+  return image.startsWith('assets/') ? image : `assets/${image}`;
+}
+
+function getTransportPlanHealth(plan) {
+  const cargo = plan?.cargo ?? [];
+  const calc = plan?.calculation || {};
+  if (!cargo.length) {
+    return { status: 'empty', deficitCount: 0, label: t('common.empty') };
+  }
+  if (calc.ok === false || calc.error) {
+    return {
+      status: 'error',
+      deficitCount: 1,
+      label: t('dashboard.transportNeedsFix'),
+    };
+  }
+  return { status: 'ok', deficitCount: 0, label: t('common.balanced') };
+}
+
+function vehicleDisplayName(vehicle) {
+  if (!vehicle) return '';
+  const locale = (window.I18nUI?.getLocale?.() || 'it').toLowerCase();
+  if (locale.startsWith('it')) {
+    return vehicle.name_it || vehicle.name || vehicle.slug || '';
+  }
+  return vehicle.name_en || vehicle.name || vehicle.slug || '';
+}
+
+function formatTransportUnitLabel(vehicle, count) {
+  const locale = (window.I18nUI?.getLocale?.() || 'it').toLowerCase();
+  const isIt = locale.startsWith('it');
+  const unit = isIt
+    ? vehicle?.unit_label_it || vehicleDisplayName(vehicle) || t('transport.unitsGeneric', { count: '' }).trim()
+    : vehicle?.unit_label_en || vehicleDisplayName(vehicle) || t('transport.unitsGeneric', { count: '' }).trim();
+  if (vehicle?.unit_label_it || vehicle?.unit_label_en || vehicle?.name || vehicle?.name_en || vehicle?.name_it) {
+    return `${count} ${unit}`;
+  }
+  return t('transport.unitsGeneric', { count });
+}
+
+function buildTransportProjectSummary(plan) {
+  const calc = plan.calculation || {};
+  const vehicle = plan.vehicle || {};
+  const cargoCount = plan.cargo?.length ?? 0;
+  const vehiclesNeeded = Number(calc.vehicles_needed) || 0;
+  const health = getTransportPlanHealth(plan);
+
+  const metrics = [];
+  const vehicleName = vehicleDisplayName(vehicle);
+  if (vehicleName) metrics.push(vehicleName);
+  if (vehiclesNeeded > 0) metrics.push(formatTransportUnitLabel(vehicle, vehiclesNeeded));
+  if (cargoCount > 0) metrics.push(t('transport.metaCargo', { count: cargoCount }));
+  if (calc.round_trip_minutes != null) {
+    metrics.push(t('transport.roundTrip', { minutes: calc.round_trip_minutes }));
+  }
+
+  return {
+    id: plan.id,
+    type: 'transport',
+    name: plan.name,
+    updated_at: plan.updated_at || plan.created_at,
+    health,
+    metricsText: metrics.join(' · ') || t('dashboard.metricsNoTransport'),
+    detail: plan,
+    vehicle,
+    vehiclesNeeded,
+    cargoCount,
+    outbound_minutes: plan.outbound_minutes,
+    return_minutes: plan.return_minutes,
+    round_trip_minutes: calc.round_trip_minutes,
+  };
+}
+
 function collectDashboardAlerts(projects) {
   const alerts = [];
   const powerTotals = computeDashboardPowerTotals(projects);
@@ -301,6 +382,37 @@ function collectDashboardAlerts(projects) {
       }
       continue;
     }
+
+    if (project.type === 'transport') {
+      const cargo = project.detail?.cargo ?? [];
+      const calc = project.detail?.calculation || {};
+      if (!cargo.length) {
+        alerts.push({
+          projectId: project.id,
+          projectType: 'transport',
+          projectName: project.name,
+          itemName: t('dashboard.alertTransportEmptyCargo'),
+          missing: 1,
+          missingText: t('dashboard.alertTransportEmptyHint'),
+          sortValue: 50,
+          kind: 'transport',
+        });
+      } else if (calc.ok === false || calc.error) {
+        alerts.push({
+          projectId: project.id,
+          projectType: 'transport',
+          projectName: project.name,
+          itemName: t('dashboard.alertTransportInvalid'),
+          missing: 1,
+          missingText: t('dashboard.transportNeedsFix'),
+          sortValue: 80,
+          kind: 'transport',
+        });
+      }
+      continue;
+    }
+
+    if (project.type !== 'energy') continue;
 
     const computeBalance = window.EnergyUI?.computeEnergyResourceBalance;
     if (!computeBalance) continue;
@@ -687,6 +799,8 @@ function computeDashboardPowerTotals(projects) {
       continue;
     }
 
+    if (project.type !== 'energy') continue;
+
     const generators = project.detail?.generators ?? [];
     const extractions = project.detail?.extractions ?? [];
     producedMw += generators.reduce((sum, gen) => sum + (gen.power_output_mw ?? 0), 0);
@@ -825,11 +939,128 @@ function renderDashboardCharts(projects) {
   renderDashboardObjectivesChart(collectProductionObjectivesChart(projects));
   renderDashboardPowerChart(collectGeneratorMwMix(projects));
   renderDashboardBalanceChart(projects);
+  renderDashboardTransportChart(projects);
+}
+
+function renderDashboardTransportChart(projects) {
+  const container = document.getElementById('dashboard-chart-transport');
+  if (!container) return;
+
+  const rows = projects
+    .filter((p) => p.type === 'transport' && (p.vehiclesNeeded || 0) > 0)
+    .sort((a, b) => (b.vehiclesNeeded || 0) - (a.vehiclesNeeded || 0))
+    .slice(0, 8);
+
+  if (!rows.length) {
+    container.innerHTML = `<p class="dashboard-empty">${escapeHtml(t('dashboard.emptyNoTransport'))}</p>`;
+    return;
+  }
+
+  const max = Math.max(...rows.map((row) => row.vehiclesNeeded || 0), 1);
+  container.innerHTML = rows
+    .map((project) =>
+      renderDashboardBarRow({
+        label: project.name,
+        sublabel: vehicleDisplayName(project.vehicle) || '',
+        value: project.vehiclesNeeded || 0,
+        max,
+        valueText: formatTransportUnitLabel(project.vehicle, project.vehiclesNeeded || 0),
+        image: dashboardAssetSrc(project.vehicle?.image),
+        fillClass: 'dashboard-bar-fill--transport',
+        interactive: true,
+        projectType: 'transport',
+        projectId: String(project.id),
+      })
+    )
+    .join('');
+}
+
+function renderDashboardTransportFleet(projects) {
+  const container = document.getElementById('dashboard-transport-fleet');
+  if (!container) return;
+
+  const plans = projects
+    .filter((p) => p.type === 'transport')
+    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
+    .slice(0, 6);
+
+  if (!plans.length) {
+    container.innerHTML = `
+      <div class="dashboard-transport-empty">
+        <p class="dashboard-empty">${escapeHtml(t('dashboard.emptyNoTransport'))}</p>
+        <p class="dashboard-empty-hint">${escapeHtml(t('dashboard.emptyTransportHint'))}</p>
+        <button type="button" class="btn btn-primary" data-goto="transport">${escapeHtml(t('transport.newPlan'))}</button>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = plans
+    .map((project) => {
+      const vehicleImg = dashboardAssetSrc(project.vehicle?.image);
+      const cargo = project.detail?.cargo || [];
+      const cargoIcons = cargo
+        .slice(0, 5)
+        .map((line) => {
+          const img = dashboardAssetSrc(line.image);
+          const title = `${line.name || line.item_slug}: ${line.rate}${line.is_fluid || line.stack_size == null ? ' m³/min' : '/min'}`;
+          return img
+            ? `<img class="dashboard-transport-cargo-icon" src="${escapeHtml(img)}" alt="" title="${escapeHtml(title)}" />`
+            : '';
+        })
+        .join('');
+      const moreCargo =
+        cargo.length > 5
+          ? `<span class="dashboard-transport-cargo-more">+${cargo.length - 5}</span>`
+          : '';
+      const vehiclesLabel = formatTransportUnitLabel(project.vehicle, project.vehiclesNeeded || 0);
+      return `
+        <button
+          type="button"
+          class="dashboard-transport-card"
+          data-project-type="transport"
+          data-project-id="${project.id}"
+          data-project-open="1"
+        >
+          <div class="dashboard-transport-card-visual">
+            ${
+              vehicleImg
+                ? `<img src="${escapeHtml(vehicleImg)}" alt="" />`
+                : `<span class="dashboard-transport-card-fallback"><i class="fa-solid fa-train"></i></span>`
+            }
+          </div>
+          <div class="dashboard-transport-card-body">
+            <div class="dashboard-transport-card-top">
+              <span class="dashboard-transport-card-name">${escapeHtml(project.name)}</span>
+              <span class="dashboard-badge dashboard-badge--${project.health.status}">${escapeHtml(project.health.label)}</span>
+            </div>
+            <div class="dashboard-transport-card-vehicles">${escapeHtml(vehiclesLabel)}</div>
+            <div class="dashboard-transport-card-meta">
+              ${escapeHtml(vehicleDisplayName(project.vehicle) || '—')}
+              · ${escapeHtml(
+                t('transport.listTripTimes', {
+                  outbound: String(project.outbound_minutes ?? '—'),
+                  return: String(project.return_minutes ?? '—'),
+                  total: String(project.round_trip_minutes ?? '—'),
+                })
+              )}
+            </div>
+            <div class="dashboard-transport-card-cargo">
+              ${cargoIcons || `<span class="dashboard-transport-cargo-empty">${escapeHtml(t('dashboard.metricsNoTransportCargo'))}</span>`}
+              ${moreCargo}
+            </div>
+          </div>
+        </button>`;
+    })
+    .join('');
 }
 
 function renderDashboardKpis(status, projects) {
-  const productionCount = status.counts?.chains ?? 0;
-  const energyCount = status.counts?.energyChains ?? 0;
+  const productionCount = projects.filter((p) => p.type === 'production').length;
+  const energyCount = projects.filter((p) => p.type === 'energy').length;
+  const transportCount = projects.filter((p) => p.type === 'transport').length;
+  const transportVehicles = projects
+    .filter((p) => p.type === 'transport')
+    .reduce((sum, p) => sum + (p.vehiclesNeeded || 0), 0);
 
   let totalProductionMachines = 0;
   let totalGenerators = 0;
@@ -843,7 +1074,7 @@ function renderDashboardKpis(status, projects) {
       totalProductionMachines += computeChainMachineCount(steps);
       totalNodes += computeChainNodeCount(extractions);
       totalPowerShards += computeDetailPowerShards(steps, extractions);
-    } else {
+    } else if (project.type === 'energy') {
       const generators = project.detail?.generators ?? [];
       const extractions = project.detail?.extractions ?? [];
       totalGenerators += generators.reduce(
@@ -857,8 +1088,20 @@ function renderDashboardKpis(status, projects) {
   const powerTotals = computeDashboardPowerTotals(projects);
   const deficitCount = collectDashboardAlerts(projects).length;
 
-  document.getElementById('kpi-production-chains').textContent = formatDisplayInteger(productionCount);
-  document.getElementById('kpi-energy-chains').textContent = formatDisplayInteger(energyCount);
+  document.getElementById('kpi-production-chains').textContent = formatDisplayInteger(
+    status.counts?.chains ?? productionCount
+  );
+  document.getElementById('kpi-energy-chains').textContent = formatDisplayInteger(
+    status.counts?.energyChains ?? energyCount
+  );
+
+  const transportPlansEl = document.getElementById('kpi-transport-plans');
+  if (transportPlansEl) transportPlansEl.textContent = formatDisplayInteger(transportCount);
+  const transportVehiclesEl = document.getElementById('kpi-transport-vehicles');
+  if (transportVehiclesEl) {
+    transportVehiclesEl.textContent = formatDisplayInteger(transportVehicles);
+    transportVehiclesEl.classList.toggle('ok', transportVehicles > 0);
+  }
 
   const energyMwEl = document.getElementById('kpi-energy-mw');
   energyMwEl.textContent =
@@ -924,8 +1167,20 @@ function renderDashboardProjectsList(projects) {
       const typeLabel =
         project.type === 'production'
           ? t('dashboard.projectTypeProduction')
-          : t('dashboard.projectTypeEnergy');
-      const typeIcon = project.type === 'production' ? 'fa-link' : 'fa-bolt';
+          : project.type === 'energy'
+            ? t('dashboard.projectTypeEnergy')
+            : t('dashboard.projectTypeTransport');
+      const typeIcon =
+        project.type === 'production'
+          ? 'fa-link'
+          : project.type === 'energy'
+            ? 'fa-bolt'
+            : 'fa-train';
+      const vehicleImg =
+        project.type === 'transport' ? dashboardAssetSrc(project.vehicle?.image) : '';
+      const iconHtml = vehicleImg
+        ? `<img class="dashboard-project-thumb" src="${escapeHtml(vehicleImg)}" alt="" />`
+        : `<i class="fa-solid ${typeIcon}"></i>`;
       return `
         <div
           class="dashboard-project-row"
@@ -940,7 +1195,7 @@ function renderDashboardProjectsList(projects) {
             data-project-id="${project.id}"
           >
             <span class="dashboard-project-icon" aria-hidden="true">
-              <i class="fa-solid ${typeIcon}"></i>
+              ${iconHtml}
             </span>
             <span class="dashboard-project-body">
               <span class="dashboard-project-title">
@@ -987,10 +1242,11 @@ function renderDashboardAlertsList(alerts) {
     .slice(0, 12)
     .map((alert) => {
       const isPower = alert.kind === 'power';
+      const isTransport = alert.kind === 'transport';
       const attrs = isPower
         ? `data-dashboard-action="energy"`
         : `data-project-type="${alert.projectType}" data-project-id="${alert.projectId}"`;
-      const icon = isPower ? 'fa-bolt' : 'fa-triangle-exclamation';
+      const icon = isPower ? 'fa-bolt' : isTransport ? 'fa-train' : 'fa-triangle-exclamation';
       return `
         <button
           type="button"
@@ -1003,7 +1259,7 @@ function renderDashboardAlertsList(alerts) {
           <span class="dashboard-alert-body">
             <span class="dashboard-alert-title">
               ${escapeHtml(alert.itemName)}
-              <span class="dashboard-alert-missing">−${escapeHtml(alert.missingText)}</span>
+              <span class="dashboard-alert-missing">${isTransport ? '' : '−'}${escapeHtml(alert.missingText)}</span>
             </span>
             <span class="dashboard-alert-project">${escapeHtml(alert.projectName)}</span>
           </span>
@@ -1013,9 +1269,13 @@ function renderDashboardAlertsList(alerts) {
 }
 
 async function renderDashboardProjects(status) {
-  const [productionChains, energyChains] = await Promise.all([
+  const [productionChains, energyChains, transportPlans] = await Promise.all([
     window.satisfactory.getProductionChains(),
     window.satisfactory.getEnergyChains(),
+    window.satisfactory.getTransportPlans().catch((err) => {
+      console.error('Dashboard transport plans error:', err);
+      return [];
+    }),
   ]);
 
   const [productionDetails, energyDetails] = await Promise.all([
@@ -1050,11 +1310,13 @@ async function renderDashboardProjects(status) {
         energyDetails[index] ? buildEnergyProjectSummary(chain, energyDetails[index]) : null
       )
       .filter(Boolean),
+    ...transportPlans.map((plan) => buildTransportProjectSummary(plan)),
   ].sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
 
   renderDashboardKpis(status, projects);
   renderDashboardProjectsList(projects);
   renderDashboardAlertsList(collectDashboardAlerts(projects));
+  renderDashboardTransportFleet(projects);
   renderDashboardCharts(projects);
 }
 
@@ -1065,6 +1327,10 @@ function openDashboardProject(type, id) {
   }
   if (type === 'energy' && window.EnergyUI?.openEnergyDetail) {
     window.EnergyUI.openEnergyDetail(id);
+    return;
+  }
+  if (type === 'transport' && window.TransportUI?.openTransportDetail) {
+    window.TransportUI.openTransportDetail(id);
   }
 }
 
@@ -1073,6 +1339,8 @@ function setupDashboard() {
   const alertsEl = document.getElementById('dashboard-alerts');
   const objectivesChartEl = document.getElementById('dashboard-chart-objectives');
   const balanceChartEl = document.getElementById('dashboard-chart-balance');
+  const transportFleetEl = document.getElementById('dashboard-transport-fleet');
+  const transportChartEl = document.getElementById('dashboard-chart-transport');
 
   const handleProjectClick = async (event) => {
     const energyAction = event.target.closest('[data-dashboard-action="energy"]');
@@ -1089,11 +1357,18 @@ function setupDashboard() {
       const id = Number(deleteBtn.dataset.projectId);
       const name = deleteBtn.dataset.projectName || '';
       const confirmed = await showConfirm({
-        title: type === 'energy' ? t('confirm.deleteEnergyPlanTitle') : t('confirm.deletePlanTitle'),
+        title:
+          type === 'energy'
+            ? t('confirm.deleteEnergyPlanTitle')
+            : type === 'transport'
+              ? t('confirm.deleteTransportPlanTitle')
+              : t('confirm.deletePlanTitle'),
         message:
           type === 'energy'
             ? t('confirm.deleteEnergyPlanMessage', { name })
-            : t('confirm.deletePlanMessage', { name }),
+            : type === 'transport'
+              ? t('confirm.deleteTransportPlanMessage', { name })
+              : t('confirm.deletePlanMessage', { name }),
         confirmLabel: t('actions.delete'),
       });
       if (!confirmed) return;
@@ -1102,6 +1377,8 @@ function setupDashboard() {
           await window.satisfactory.deleteProductionChain(id);
         } else if (type === 'energy') {
           await window.satisfactory.deleteEnergyChain(id);
+        } else if (type === 'transport') {
+          await window.satisfactory.deleteTransportPlan(id);
         }
         await initDashboard();
       } catch (err) {
@@ -1123,5 +1400,7 @@ function setupDashboard() {
   alertsEl?.addEventListener('click', handleProjectClick);
   objectivesChartEl?.addEventListener('click', handleProjectClick);
   balanceChartEl?.addEventListener('click', handleProjectClick);
+  transportFleetEl?.addEventListener('click', handleProjectClick);
+  transportChartEl?.addEventListener('click', handleProjectClick);
 }
 

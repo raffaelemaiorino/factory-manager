@@ -9,6 +9,99 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.5.4] - 2026-08-09
+
+### Fixed
+- Nomi mezzi di trasporto localizzati: in inglese si vede «Freight Car», «Tractor», ecc. (non più «Vagone merci» / «Trattore»)
+
+## [2.5.3] - 2026-08-09
+
+### Fixed
+- Traduzioni Trasporti complete in tutte le lingue UI (66 chiavi per lingua: lista, dettaglio, cargo, composizione, modal slot, errori) — non più fallback inglese sulle frasi
+- Controllo generale: nav, dashboard flotta, modal e confirm allineati; «tempo totale viaggio» contestuale ovunque
+
+## [2.5.2] - 2026-08-09
+
+### Fixed
+- Trasporti: etichetta «Round-trip» sostituita con «Tempo totale viaggio» (e equivalenti contestuali in tutte le lingue UI)
+- Pacchetti lingua: stringhe trasporto/dashboard/nav allineate; le chiavi mancanti usano l’inglese come fallback
+
+## [2.5.1] - 2026-08-09
+
+### Added
+- Dashboard: panoramica trasporti con KPI, flotta a card (icona mezzo + cargo), grafico mezzi per piano, progetti/avvisi e shortcut Trasporti
+
+## [2.5.0] - 2026-08-09
+
+### Changed
+- Percorso trasporto: tempi di **andata** e **ritorno** separati (round-trip = somma); in dettaglio andata/ritorno a due colonne e tipo mezzo sotto
+- I piani esistenti migrano con ritorno = andata precedente
+
+## [2.4.9] - 2026-08-09
+
+### Added
+- Dettaglio trasporto: sotto la composizione, totali da trasportare (round-trip) per ogni cargo con icona
+
+## [2.4.8] - 2026-08-09
+
+### Fixed
+- Dialog contenuto mezzo: margini del pulsante Chiudi allineati al resto del modal
+
+## [2.4.7] - 2026-08-09
+
+### Changed
+- Lista Trasporti: icona mezzo grande come nel popup, con statistiche (mezzi, andata, round-trip) e anteprima cargo
+
+## [2.4.6] - 2026-08-09
+
+### Changed
+- Dialog contenuto mezzo: icone slot più grandi e riepilogo totali da trasportare per ogni item (round-trip)
+
+## [2.4.5] - 2026-08-09
+
+### Added
+- Icona locomotiva elettrica nella composizione treno
+- Clic su un mezzo/vagone nella composizione: dialog con griglia slot (stack size) o serbatoio fluido
+
+## [2.4.4] - 2026-08-09
+
+### Added
+- Per ogni cargo solido: scelta tra trasporto separato (vagoni dedicati) o mischiare con altri solidi
+- Anteprima composizione treno (locomotiva + vagoni dedicati/misti) nel risultato del piano
+
+### Changed
+- I fluidi restano sempre in vagoni dedicati; il default per i solidi è il carico separato
+
+## [2.4.3] - 2026-08-09
+
+### Changed
+- Dettaglio trasporto: layout a due colonne come Produzione (sinistra impostazioni/percorso, destra un box per ogni cargo)
+
+## [2.4.2] - 2026-08-09
+
+### Changed
+- Vagone merci unico (solidi + fluidi): sullo stesso treno si sommano i vagoni per ogni cargo
+
+## [2.4.1] - 2026-08-09
+
+### Changed
+- Dialog Nuovo trasporto: griglia tipi 2×4 più larga, icone più grandi; rimosso cargo in creazione e il default di 3 minuti
+
+## [2.4.0] - 2026-08-08
+
+### Added
+- Nuova sezione Trasporti: piani salvati con tipo mezzo (treno, drone, camion, …), cargo e tempo di andata; calcolo automatico dei mezzi/vagoni necessari
+
+## [2.3.6] - 2026-08-08
+
+### Fixed
+- `stack_size` degli item riallineato ai dati SCIM (es. Filorapido 500); i fluidi non hanno più uno stack fittizio
+
+## [2.3.5] - 2026-08-08
+
+### Added
+- Gli item nel database locale includono di nuovo lo `stack_size` (dimensione stack in inventario), popolato dal seed
+
 ## [2.3.4] - 2026-08-08
 
 ### Fixed

@@ -28,6 +28,7 @@
             <button class="nav-item" type="button" data-view="resources" data-i18n="nav.resources">Risorse</button>
             <button class="nav-item" type="button" data-view="production" data-i18n="nav.production">Produzione</button>
             <button class="nav-item" type="button" data-view="energy" data-i18n="nav.energy">Energia</button>
+            <button class="nav-item" type="button" data-view="transport" data-i18n="nav.transport">Trasporti</button>
             <button class="nav-item" type="button" data-view="settings" data-i18n="nav.settings">Impostazioni</button>
           </nav>
           <div class="theme-select locale-select" id="locale-select">
@@ -140,6 +141,14 @@
                 <span class="stat-value" id="kpi-energy-chains">0</span>
               </div>
               <div class="stat">
+                <span class="stat-label" data-i18n="dashboard.kpiTransportPlans">Piani trasporto</span>
+                <span class="stat-value" id="kpi-transport-plans">0</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label" data-i18n="dashboard.kpiTransportVehicles">Mezzi necessari</span>
+                <span class="stat-value" id="kpi-transport-vehicles">0</span>
+              </div>
+              <div class="stat">
                 <span class="stat-label" data-i18n="dashboard.kpiEnergyMw">Produzione energia</span>
                 <span class="stat-value stat-value--compact" id="kpi-energy-mw">—</span>
               </div>
@@ -200,6 +209,23 @@
             </article>
           </section>
 
+          <section class="card dashboard-transport-panel">
+            <header class="dashboard-panel-header dashboard-transport-header">
+              <div>
+                <h3 data-i18n="dashboard.panelTransport">Flotta trasporti</h3>
+                <p class="dashboard-panel-subtitle" data-i18n="dashboard.panelTransportSub">
+                  Mezzi necessari e cargo dei piani recenti
+                </p>
+              </div>
+              <button type="button" class="btn btn-ghost" data-goto="transport" data-i18n="nav.transport">
+                Trasporti
+              </button>
+            </header>
+            <div id="dashboard-transport-fleet" class="dashboard-transport-fleet">
+              <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
+            </div>
+          </section>
+
           <section class="dashboard-charts">
             <article class="card dashboard-chart-panel">
               <header class="dashboard-panel-header">
@@ -240,6 +266,16 @@
                 <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
               </div>
             </article>
+
+            <article class="card dashboard-chart-panel">
+              <header class="dashboard-panel-header">
+                <h3 data-i18n="dashboard.chartTransport">Mezzi per piano</h3>
+                <p class="dashboard-panel-subtitle" data-i18n="dashboard.chartTransportSub">Vagoni / veicoli richiesti</p>
+              </header>
+              <div id="dashboard-chart-transport" class="dashboard-chart-body">
+                <p class="dashboard-loading" data-i18n="common.loading">Caricamento…</p>
+              </div>
+            </article>
           </section>
 
           <section class="grid">
@@ -267,6 +303,15 @@
               <h3 data-i18n="dashboard.featureEnergyTitle">Pianificazione energia</h3>
               <p data-i18n="dashboard.featureEnergyBody">
                 Progetta estrazioni e generatori per alimentare la tua fabbrica.
+              </p>
+              <span class="tag tag-ready" data-i18n="common.available">Disponibile</span>
+            </article>
+
+            <article class="card feature-card clickable" data-goto="transport">
+              <div class="card-icon">🚂</div>
+              <h3 data-i18n="dashboard.featureTransportTitle">Trasporti</h3>
+              <p data-i18n="dashboard.featureTransportBody">
+                Calcola vagoni e mezzi in base a portata, andata e ritorno.
               </p>
               <span class="tag tag-ready" data-i18n="common.available">Disponibile</span>
             </article>
@@ -478,6 +523,67 @@
           </section>
 
           <div class="production-detail-stack" id="energy-detail-body">
+            <section class="card production-detail-main">
+              <p class="loading" data-i18n="common.loading">Caricamento…</p>
+            </section>
+          </div>
+        </div>
+
+        <!-- Trasporti -->
+        <div class="view" id="view-transport">
+          <section class="page-header card">
+            <div class="breadcrumb">
+              <span data-i18n="breadcrumb.projects">Progetti</span>
+              <span class="breadcrumb-sep">›</span>
+              <span class="breadcrumb-current" data-i18n="nav.transport">Trasporti</span>
+            </div>
+            <div class="page-header-row">
+              <div>
+                <h2 data-i18n="transport.title">Trasporti</h2>
+                <p class="page-subtitle" data-i18n="transport.subtitle">
+                  Calcola quanti mezzi o vagoni servono in base a portata e tempo di andata.
+                </p>
+              </div>
+              <div class="page-header-actions">
+                <button type="button" class="btn btn-primary" id="btn-new-transport" data-i18n="transport.newPlan">
+                  Nuovo trasporto
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <div class="production-main" id="transport-container">
+            <p class="loading" data-i18n="common.loadingSchemas">Caricamento schemi…</p>
+          </div>
+        </div>
+
+        <!-- Dettaglio trasporto -->
+        <div class="view" id="view-transport-detail">
+          <section class="page-header card production-detail-header">
+            <div class="production-detail-header-grid">
+              <div class="breadcrumb production-detail-breadcrumb">
+                <span data-i18n="breadcrumb.projects">Progetti</span>
+                <span class="breadcrumb-sep">›</span>
+                <button type="button" class="breadcrumb-link" id="transport-detail-back" data-i18n="nav.transport">
+                  Trasporti
+                </button>
+                <span class="breadcrumb-sep">›</span>
+                <span class="breadcrumb-current" id="transport-detail-breadcrumb">—</span>
+              </div>
+              <div class="page-header-main production-detail-main-info">
+                <h2 id="transport-detail-heading">—</h2>
+                <p class="page-subtitle" id="transport-detail-meta"></p>
+              </div>
+              <div class="production-detail-actions">
+                <button type="button" class="btn btn-primary" id="btn-transport-add-cargo">
+                  <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                  <span data-i18n="transport.addCargo">Aggiungi cargo</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <div class="production-detail-stack" id="transport-detail-body">
             <section class="card production-detail-main">
               <p class="loading" data-i18n="common.loading">Caricamento…</p>
             </section>
@@ -777,6 +883,107 @@
             <button type="submit" class="btn btn-primary" data-i18n="common.create">Crea</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="transport-create-modal" aria-hidden="true">
+      <div class="modal modal-wide card" role="dialog" aria-labelledby="transport-create-modal-title">
+        <header class="modal-header">
+          <h3 id="transport-create-modal-title" data-i18n="modals.transportCreateTitle">Nuovo trasporto</h3>
+          <button
+            type="button"
+            class="modal-close"
+            id="transport-create-modal-close"
+            aria-label="Chiudi"
+            data-i18n-aria="common.closeAria"
+          >
+            ×
+          </button>
+        </header>
+        <form id="transport-create-form" class="modal-body">
+          <div class="form-field">
+            <label for="transport-plan-name" data-i18n="common.name">Nome</label>
+            <input
+              type="text"
+              id="transport-plan-name"
+              required
+              autocomplete="off"
+              placeholder="Es. Filorapido → fabbrica"
+              data-i18n-placeholder="modals.transportCreatePlaceholder"
+            />
+          </div>
+          <div class="form-field">
+            <label data-i18n="transport.vehicleType">Tipo di trasporto</label>
+            <div id="transport-create-vehicle-grid" class="transport-vehicle-grid"></div>
+          </div>
+          <div class="transport-create-times">
+            <div class="form-field">
+              <label for="transport-create-outbound" data-i18n="transport.outboundMinutes">Tempo andata (min)</label>
+              <input
+                type="text"
+                id="transport-create-outbound"
+                class="production-config-decimal-input"
+                inputmode="decimal"
+                required
+                autocomplete="off"
+                value=""
+              />
+              <p class="form-hint" data-i18n="transport.outboundHint">
+                Tempo della tratta di andata (può includere carichi intermedi).
+              </p>
+            </div>
+            <div class="form-field">
+              <label for="transport-create-return" data-i18n="transport.returnMinutes">Tempo ritorno (min)</label>
+              <input
+                type="text"
+                id="transport-create-return"
+                class="production-config-decimal-input"
+                inputmode="decimal"
+                required
+                autocomplete="off"
+                value=""
+              />
+              <p class="form-hint" data-i18n="transport.returnHint">
+                Tempo della tratta di ritorno (può essere diverso dall’andata).
+              </p>
+            </div>
+          </div>
+          <p class="form-error hidden" id="transport-create-error"></p>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-ghost" id="transport-create-cancel" data-i18n="common.cancel">
+              Annulla
+            </button>
+            <button type="submit" class="btn btn-primary" data-i18n="common.create">Crea</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="transport-slot-modal" aria-hidden="true">
+      <div class="modal modal-wide card" role="dialog" aria-labelledby="transport-slot-modal-title">
+        <header class="modal-header">
+          <h3 id="transport-slot-modal-title" data-i18n="transport.slotModalTitle">Contenuto mezzo</h3>
+          <button
+            type="button"
+            class="modal-close"
+            id="transport-slot-modal-close"
+            aria-label="Chiudi"
+            data-i18n-aria="common.closeAria"
+          >
+            ×
+          </button>
+        </header>
+        <div class="modal-body">
+          <p class="page-subtitle" id="transport-slot-modal-subtitle"></p>
+          <div id="transport-slot-grid" class="transport-slot-grid" style="--slot-cols: 8"></div>
+          <p class="form-hint" id="transport-slot-modal-hint"></p>
+          <div id="transport-slot-totals" hidden></div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-primary" id="transport-slot-modal-ok" data-i18n="common.close">
+              Chiudi
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1308,5 +1515,6 @@
     <script src="scripts/calculator.js"></script>
     <script src="scripts/boot.js"></script>
     <script src="scripts/energy-ui.js"></script>
+    <script src="scripts/transport-ui.js"></script>
   </body>
 </html>

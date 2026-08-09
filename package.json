@@ -1,6 +1,6 @@
 {
   "name": "factory-manager",
-  "version": "2.3.4",
+  "version": "2.5.4",
   "description": "Unofficial local production planner for Satisfactory — chains, machines, rates, and power on your PC.",
   "productName": "Factory Manager",
   "desktopName": "factory-manager.desktop",
@@ -12,6 +12,8 @@
     "import:buildings": "node scripts/import-buildings.js",
     "import:building-power": "node scripts/import-building-power.js",
     "import:details": "node scripts/import-item-details.js",
+    "import:stack-sizes": "node scripts/import-stack-sizes.js",
+    "import:vehicles": "node scripts/import-vehicles.js",
     "import:locale": "node scripts/import-locale.js",
     "import:locale:en": "node scripts/import-locale.js --locale en",
     "import:locale:all": "node scripts/import-locale-all.js",

@@ -9,6 +9,99 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.4] - 2026-08-09
+
+### Fixed
+- Transport vehicle names are localized: English UI shows «Freight Car», «Tractor», etc. (no more Italian «Vagone merci» / «Trattore»)
+
+## [2.5.3] - 2026-08-09
+
+### Fixed
+- Full Transport UI translations in every UI language (66 keys each: list, detail, cargo, composition, slot modal, errors) — no more English sentence fallbacks
+- General pass: nav, dashboard fleet, modal and confirm strings aligned; contextual “total trip time” wording everywhere
+
+## [2.5.2] - 2026-08-09
+
+### Fixed
+- Transport: «Round-trip» label replaced with «Total trip time» (and contextual equivalents across all UI languages)
+- Locale packs: transport/dashboard/nav strings aligned; missing keys fall back to English
+
+## [2.5.1] - 2026-08-09
+
+### Added
+- Dashboard: transport overview with KPIs, fleet cards (vehicle icon + cargo), vehicles-by-plan chart, projects/alerts, and a Transport shortcut
+
+## [2.5.0] - 2026-08-09
+
+### Changed
+- Transport route: separate **outbound** and **return** times (round-trip = sum); detail layout uses two columns for times with vehicle type below
+- Existing plans migrate with return = previous one-way time
+
+## [2.4.9] - 2026-08-09
+
+### Added
+- Transport detail: under the composition strip, round-trip totals per cargo item with icons
+
+## [2.4.8] - 2026-08-09
+
+### Fixed
+- Vehicle contents dialog: Close button margins aligned with the rest of the modal
+
+## [2.4.7] - 2026-08-09
+
+### Changed
+- Transport list: large vehicle icon like the create dialog, plus stats (vehicles, one-way, round-trip) and cargo preview chips
+
+## [2.4.6] - 2026-08-09
+
+### Changed
+- Vehicle contents dialog: larger slot icons and a per-item round-trip total summary
+
+## [2.4.5] - 2026-08-09
+
+### Added
+- Electric locomotive icon in the train composition strip
+- Click a vehicle/car in the composition to open a slot grid dialog (stack sizes) or fluid tank fill
+
+## [2.4.4] - 2026-08-09
+
+### Added
+- Per solid cargo line: choose separate (dedicated cars) or mix with other solids
+- Train composition preview (loco + dedicated/mixed cars) in the plan result
+
+### Changed
+- Fluids always use dedicated cars; solids default to separate loading
+
+## [2.4.3] - 2026-08-09
+
+### Changed
+- Transport detail: two-column layout like Production (settings/route on the left, one box per cargo on the right)
+
+## [2.4.2] - 2026-08-09
+
+### Changed
+- Single freight car type (solids + fluids): cars are summed per cargo line on the same train
+
+## [2.4.1] - 2026-08-09
+
+### Changed
+- New transport dialog: wider 2×4 vehicle grid with larger icons; cargo removed from create; no default 3-minute one-way time
+
+## [2.4.0] - 2026-08-08
+
+### Added
+- New Transport section: saved plans with vehicle type (train, drone, truck, …), cargo and one-way time; automatic count of vehicles/freight cars needed
+
+## [2.3.6] - 2026-08-08
+
+### Fixed
+- Item `stack_size` values re-synced from SCIM (e.g. Quickwire 500); fluids no longer keep a fake stack size
+
+## [2.3.5] - 2026-08-08
+
+### Added
+- Items in the local database again store `stack_size` (inventory stack size), filled from the seed
+
 ## [2.3.4] - 2026-08-08
 
 ### Fixed

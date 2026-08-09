@@ -1,6 +1,6 @@
 const { loadSeedData } = require('./seeds/items');
 const { loadItemDetails } = require('./seeds/load-item-details');
-const { seedItems, syncItemMetadata } = require('./items');
+const { seedItems, syncItemMetadata, syncItemStackSizes } = require('./items');
 const { ensureSchemaTables, seedSchemas } = require('./schemas');
 const { seedBuildings, loadSeedData: loadBuildingsSeed, DATA_VERSION: BUILDINGS_DATA_VERSION, ensureBuildingColumns } = require('./buildings');
 const { ensureI18n, getI18nInfo } = require('./i18n');
@@ -89,6 +89,7 @@ function resetDefaultResources(db, persist) {
 
   const itemsResult = seedItems(db, persist, { force: true });
   syncItemMetadata(db, persist, { force: true });
+  syncItemStackSizes(db, persist);
   ensureSchemaTables(db);
   const schemasResult = seedSchemas(db, persist, { force: true });
   const buildingsResult = seedBuildings(db, persist, { force: true });
@@ -117,6 +118,7 @@ function ensureDefaultResources(db, persist) {
 
   const itemsResult = seedItems(db, persist);
   syncItemMetadata(db, persist);
+  syncItemStackSizes(db, persist);
   ensureSchemaTables(db);
   const schemasResult = seedSchemas(db, persist);
   const buildingsResult = seedBuildings(db, persist);

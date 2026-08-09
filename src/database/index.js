@@ -81,6 +81,16 @@ const {
   listAvailableLocales,
 } = require('./i18n');
 const { getAppSettings, setAppSettings } = require('./app-settings');
+const {
+  ensureTransportPlansTables,
+  listTransportPlans,
+  getTransportPlanById,
+  createTransportPlan,
+  updateTransportPlan: patchTransportPlan,
+  deleteTransportPlan,
+  duplicateTransportPlan: cloneTransportPlan,
+  listVehiclesCatalog,
+} = require('./transport-plans');
 
 const DB_FILE_NAME = 'factory-manager.db';
 const LEGACY_DB_FILE_NAMES = ['satisfactory.db'];
@@ -191,21 +201,13 @@ function runMigrations() {
   ensureEnergyChainsTable(db);
   ensureEnergyExtractionsTable(db);
   ensureProductionChainStepsTable(db);
-  migrateDropItemsStackSizeColumn(db);
+  ensureTransportPlansTables(db);
   // Solo schema: il seed traduzioni avviene in ensureDefaultResources (dopo gli item).
   ensureI18nTables(db);
 
   const versionRow = queryOne('SELECT version FROM schema_version LIMIT 1');
   if (!versionRow) {
     db.run('INSERT INTO schema_version (version) VALUES (?)', [1]);
-  }
-}
-
-function migrateDropItemsStackSizeColumn(db) {
-  const info = db.exec('PRAGMA table_info(items)')[0]?.values ?? [];
-  const cols = new Set(info.map((row) => row[1]));
-  if (cols.has('stack_size')) {
-    db.run('ALTER TABLE items DROP COLUMN stack_size');
   }
 }
 
@@ -648,6 +650,34 @@ function setEnergyGeneratorProductionLinks(consumerGeneratorId, itemSlug, produc
   );
 }
 
+function getTransportPlans() {
+  return listTransportPlans(getDb(), getItemById);
+}
+
+function saveTransportPlan(data = {}) {
+  return createTransportPlan(getDb(), persist, data, getItemById);
+}
+
+function updateTransportPlan(id, data) {
+  return patchTransportPlan(getDb(), persist, id, data, getItemById);
+}
+
+function removeTransportPlan(id) {
+  return deleteTransportPlan(getDb(), persist, id);
+}
+
+function duplicateTransportPlan(id) {
+  return cloneTransportPlan(getDb(), persist, id, getItemById);
+}
+
+function fetchTransportPlanDetail(id) {
+  return getTransportPlanById(getDb(), id, getItemById);
+}
+
+function fetchVehiclesCatalog() {
+  return listVehiclesCatalog();
+}
+
 module.exports = {
   initDatabase,
   getDbStatus,
@@ -708,6 +738,13 @@ module.exports = {
   resetEnergyChainGenerator,
   setEnergyGeneratorInputLinks,
   setEnergyGeneratorProductionLinks,
+  getTransportPlans,
+  saveTransportPlan,
+  updateTransportPlan,
+  removeTransportPlan,
+  duplicateTransportPlan,
+  fetchTransportPlanDetail,
+  fetchVehiclesCatalog,
   getI18nInfo: () => getI18nInfo(getDb()),
   getAppLocale: () => getAppLocale(getDb()),
   setAppLocale: (locale) => setAppLocale(getDb(), persist, locale),

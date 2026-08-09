@@ -41,6 +41,9 @@ function ensureItemColumns(db) {
   if (!cols.has('description')) {
     db.run('ALTER TABLE items ADD COLUMN description TEXT');
   }
+  if (!cols.has('stack_size')) {
+    db.run('ALTER TABLE items ADD COLUMN stack_size INTEGER');
+  }
 }
 
 function syncItemMetadata(db, persist, { force = false } = {}) {
@@ -64,6 +67,27 @@ function syncItemMetadata(db, persist, { force = false } = {}) {
 
   persist();
   return { patched: ITEM_METADATA_PATCHES.length };
+}
+
+/** Popola/aggiorna stack_size dagli item seed (DB esistenti senza reseed completo). */
+function syncItemStackSizes(db, persist) {
+  ensureItemColumns(db);
+  const { items } = loadSeedData();
+  let updated = 0;
+
+  for (const item of items) {
+    if (!Object.prototype.hasOwnProperty.call(item, 'stack_size') || item.slug == null) {
+      continue;
+    }
+    db.run('UPDATE items SET stack_size = ? WHERE slug = ?', [
+      item.stack_size == null ? null : Number(item.stack_size),
+      item.slug,
+    ]);
+    updated += 1;
+  }
+
+  persist();
+  return { updated };
 }
 
 function seedItems(db, persist, { force = false } = {}) {
@@ -98,7 +122,7 @@ function seedItems(db, persist, { force = false } = {}) {
 
     for (const item of items) {
       db.run(
-        `INSERT INTO items (slug, name, category, game_id, image, description) VALUES (?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO items (slug, name, category, game_id, image, description, stack_size) VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
           item.slug,
           item.name,
@@ -106,6 +130,7 @@ function seedItems(db, persist, { force = false } = {}) {
           item.game_id,
           item.image,
           item.description ?? null,
+          item.stack_size ?? null,
         ]
       );
       const itemId = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
@@ -142,7 +167,7 @@ function localizedItemSelect() {
   return `
   i.id, i.slug,
   COALESCE(it.name, i.name) AS name,
-  i.category, i.game_id, i.image,
+  i.category, i.game_id, i.image, i.stack_size,
   COALESCE(it.description, i.description) AS description,
   (SELECT COUNT(*) FROM item_schemas s WHERE s.item_id = i.id) AS schema_count
 `;
@@ -271,6 +296,7 @@ module.exports = {
   EXCLUDED_ITEM_SLUGS,
   seedItems,
   syncItemMetadata,
+  syncItemStackSizes,
   getCategories,
   getItemsByCategory,
   getAllItemsGrouped,

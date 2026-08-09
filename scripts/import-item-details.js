@@ -112,6 +112,7 @@ async function main() {
         slug: item.slug,
         category: item.category,
         description: detail.description || '',
+        stack_size: detail.stack_size,
         schemas: detail.schemas,
       });
     } catch (err) {
@@ -122,6 +123,7 @@ async function main() {
         slug: item.slug,
         category: item.category,
         description: '',
+        stack_size: null,
         schemas: [],
         error: err.message,
       });

@@ -123,6 +123,13 @@ const {
   resetEnergyChainGenerator,
   setEnergyGeneratorInputLinks,
   setEnergyGeneratorProductionLinks,
+  getTransportPlans,
+  saveTransportPlan,
+  updateTransportPlan,
+  removeTransportPlan,
+  duplicateTransportPlan,
+  fetchTransportPlanDetail,
+  fetchVehiclesCatalog,
   getI18nInfo,
   getAppLocale,
   setAppLocale,
@@ -577,3 +584,10 @@ ipcMain.handle('energy:set-input-links', (_event, generatorId, itemSlug, extract
 ipcMain.handle('energy:set-production-links', (_event, generatorId, itemSlug, producerStepIds) =>
   setEnergyGeneratorProductionLinks(generatorId, itemSlug, producerStepIds)
 );
+ipcMain.handle('transport:all', () => getTransportPlans());
+ipcMain.handle('transport:create', (_event, data) => saveTransportPlan(data));
+ipcMain.handle('transport:update', (_event, id, data) => updateTransportPlan(id, data));
+ipcMain.handle('transport:delete', (_event, id) => removeTransportPlan(id));
+ipcMain.handle('transport:duplicate', (_event, id) => duplicateTransportPlan(id));
+ipcMain.handle('transport:get', (_event, id) => fetchTransportPlanDetail(id));
+ipcMain.handle('transport:vehicles', () => fetchVehiclesCatalog());

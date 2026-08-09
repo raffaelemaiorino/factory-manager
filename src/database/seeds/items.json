@@ -1,7 +1,7 @@
 {
   "dataVersion": 2,
   "source": "https://satisfactory-calculator.com/it/items",
-  "importedAt": "2026-07-04T07:05:47.897Z",
+  "importedAt": "2026-08-08T19:04:53.327Z",
   "categories": [
     {
       "slug": "minerali",
@@ -229,7 +229,7 @@
       "name": "Calcestruzzo",
       "category": "materiali",
       "image": "assets/items/Desc_Cement_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_QuartzCrystal_C",
@@ -237,7 +237,7 @@
       "name": "Cristallo di quarzo",
       "category": "materiali",
       "image": "assets/items/Desc_QuartzCrystal_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_Silica_C",
@@ -245,7 +245,7 @@
       "name": "Silice",
       "category": "materiali",
       "image": "assets/items/Desc_Silica_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_CopperDust_C",
@@ -253,7 +253,7 @@
       "name": "Polvere di rame",
       "category": "materiali",
       "image": "assets/items/Desc_CopperDust_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_PolymerResin_C",
@@ -261,7 +261,7 @@
       "name": "Resina polimerica",
       "category": "materiali",
       "image": "assets/items/Desc_PolymerResin_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_PetroleumCoke_C",
@@ -269,7 +269,7 @@
       "name": "Coke petrolifero",
       "category": "materiali",
       "image": "assets/items/Desc_PetroleumCoke_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_AluminumScrap_C",
@@ -294,7 +294,7 @@
       "name": "Capsula di DNA alieno",
       "category": "alieni",
       "image": "assets/items/Desc_AlienDNACapsule_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_Water_C",
@@ -302,7 +302,7 @@
       "name": "Acqua",
       "category": "liquidi",
       "image": "assets/items/Desc_Water_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_LiquidOil_C",
@@ -310,7 +310,7 @@
       "name": "Greggio",
       "category": "liquidi",
       "image": "assets/items/Desc_LiquidOil_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_HeavyOilResidue_C",
@@ -318,7 +318,7 @@
       "name": "Residuo di petrolio pesante",
       "category": "liquidi",
       "image": "assets/items/Desc_HeavyOilResidue_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_LiquidFuel_C",
@@ -326,7 +326,7 @@
       "name": "Carburante",
       "category": "liquidi",
       "image": "assets/items/Desc_LiquidFuel_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_LiquidBiofuel_C",
@@ -334,7 +334,7 @@
       "name": "Biocarburante liquido",
       "category": "liquidi",
       "image": "assets/items/Desc_LiquidBiofuel_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_LiquidTurboFuel_C",
@@ -342,7 +342,7 @@
       "name": "Turbocarburante",
       "category": "liquidi",
       "image": "assets/items/Desc_LiquidTurboFuel_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_AluminaSolution_C",
@@ -350,7 +350,7 @@
       "name": "Soluzione di allumina",
       "category": "liquidi",
       "image": "assets/items/Desc_AluminaSolution_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_SulfuricAcid_C",
@@ -358,7 +358,7 @@
       "name": "Acido solforico",
       "category": "liquidi",
       "image": "assets/items/Desc_SulfuricAcid_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_NitricAcid_C",
@@ -366,7 +366,7 @@
       "name": "Acido nitrico",
       "category": "liquidi",
       "image": "assets/items/Desc_NitricAcid_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_DissolvedSilica_C",
@@ -374,7 +374,7 @@
       "name": "Silice dissolta",
       "category": "liquidi",
       "image": "assets/items/Desc_DissolvedSilica_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_NitrogenGas_C",
@@ -382,7 +382,7 @@
       "name": "Azoto gassoso",
       "category": "gas",
       "image": "assets/items/Desc_NitrogenGas_C.png",
-      "stack_size": 100
+      "stack_size": null
     },
     {
       "game_id": "Desc_RocketFuel_C",
@@ -406,7 +406,7 @@
       "name": "Residuo di materia oscura",
       "category": "gas",
       "image": "assets/items/Desc_DarkEnergy_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_QuantumEnergy_C",
@@ -414,7 +414,7 @@
       "name": "Materia fotonica eccitata",
       "category": "gas",
       "image": "assets/items/Desc_QuantumEnergy_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_IronRod_C",
@@ -422,7 +422,7 @@
       "name": "Barra di ferro",
       "category": "componenti-standard",
       "image": "assets/items/Desc_IronRod_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_IronScrew_C",
@@ -430,7 +430,7 @@
       "name": "Vite",
       "category": "componenti-standard",
       "image": "assets/items/Desc_IronScrew_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_IronPlate_C",
@@ -438,7 +438,7 @@
       "name": "Piastra di ferro",
       "category": "componenti-standard",
       "image": "assets/items/Desc_IronPlate_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_IronPlateReinforced_C",
@@ -454,7 +454,7 @@
       "name": "Lamiera di rame",
       "category": "componenti-standard",
       "image": "assets/items/Desc_CopperSheet_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_AluminumPlate_C",
@@ -462,7 +462,7 @@
       "name": "Lamiera d'alluminio Alclad",
       "category": "componenti-standard",
       "image": "assets/items/Desc_AluminumPlate_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_AluminumCasing_C",
@@ -470,7 +470,7 @@
       "name": "Contenitore di alluminio",
       "category": "componenti-standard",
       "image": "assets/items/Desc_AluminumCasing_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_SteelPipe_C",
@@ -478,7 +478,7 @@
       "name": "Tubo di acciaio",
       "category": "componenti-standard",
       "image": "assets/items/Desc_SteelPipe_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_SteelPlate_C",
@@ -486,7 +486,7 @@
       "name": "Trave d'acciaio",
       "category": "componenti-standard",
       "image": "assets/items/Desc_SteelPlate_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_SteelPlateReinforced_C",
@@ -502,7 +502,7 @@
       "name": "Telaio modulare",
       "category": "componenti-standard",
       "image": "assets/items/Desc_ModularFrame_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_ModularFrameHeavy_C",
@@ -510,7 +510,7 @@
       "name": "Telaio modulare pesante",
       "category": "componenti-standard",
       "image": "assets/items/Desc_ModularFrameHeavy_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_ModularFrameFused_C",
@@ -518,7 +518,7 @@
       "name": "Telaio modulare fuso",
       "category": "componenti-standard",
       "image": "assets/items/Desc_ModularFrameFused_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_FicsiteMesh_C",
@@ -526,7 +526,7 @@
       "name": "Trigono di Ficsite",
       "category": "componenti-standard",
       "image": "assets/items/Desc_FicsiteMesh_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_Fabric_C",
@@ -542,7 +542,7 @@
       "name": "Plastica",
       "category": "componenti-standard",
       "image": "assets/items/Desc_Plastic_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_Rubber_C",
@@ -550,7 +550,7 @@
       "name": "Gomma",
       "category": "componenti-standard",
       "image": "assets/items/Desc_Rubber_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_Rotor_C",
@@ -574,7 +574,7 @@
       "name": "Batteria",
       "category": "componenti-industriali",
       "image": "assets/items/Desc_Battery_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_Motor_C",
@@ -582,7 +582,7 @@
       "name": "Motore",
       "category": "componenti-industriali",
       "image": "assets/items/Desc_Motor_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_AluminumPlateReinforced_C",
@@ -606,7 +606,7 @@
       "name": "Motore turbo",
       "category": "componenti-industriali",
       "image": "assets/items/Desc_MotorLightweight_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_Wire_C",
@@ -614,7 +614,7 @@
       "name": "Filo",
       "category": "componenti-elettronici",
       "image": "assets/items/Desc_Wire_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_Cable_C",
@@ -622,7 +622,7 @@
       "name": "Cavo",
       "category": "componenti-elettronici",
       "image": "assets/items/Desc_Cable_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_HighSpeedWire_C",
@@ -630,7 +630,7 @@
       "name": "Filorapido",
       "category": "componenti-elettronici",
       "image": "assets/items/Desc_HighSpeedWire_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_CircuitBoard_C",
@@ -638,7 +638,7 @@
       "name": "Scheda a circuito",
       "category": "componenti-elettronici",
       "image": "assets/items/Desc_CircuitBoard_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_CircuitBoardHighSpeed_C",
@@ -678,7 +678,7 @@
       "name": "Computer",
       "category": "comunicazioni",
       "image": "assets/items/Desc_Computer_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_ComputerSuper_C",
@@ -686,7 +686,7 @@
       "name": "Supercomputer",
       "category": "comunicazioni",
       "image": "assets/items/Desc_ComputerSuper_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_ModularFrameLightweight_C",
@@ -694,7 +694,7 @@
       "name": "Unità di controllo radio",
       "category": "comunicazioni",
       "image": "assets/items/Desc_ModularFrameLightweight_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_CrystalOscillator_C",
@@ -718,7 +718,7 @@
       "name": "Diamanti",
       "category": "tecnologia-quantistica",
       "image": "assets/items/Desc_Diamond_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_TimeCrystal_C",
@@ -726,7 +726,7 @@
       "name": "Cristallo del tempo",
       "category": "tecnologia-quantistica",
       "image": "assets/items/Desc_TimeCrystal_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_DarkMatter_C",
@@ -734,7 +734,7 @@
       "name": "Cristalli di materia oscura",
       "category": "tecnologia-quantistica",
       "image": "assets/items/Desc_DarkMatter_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_SingularityCell_C",
@@ -742,7 +742,7 @@
       "name": "Cella di singolarità",
       "category": "tecnologia-quantistica",
       "image": "assets/items/Desc_SingularityCell_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_TemporalProcessor_C",
@@ -758,7 +758,7 @@
       "name": "Matrice energetica aliena",
       "category": "tecnologia-quantistica",
       "image": "assets/items/Desc_AlienPowerFuel_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_FluidCanister_C",
@@ -782,7 +782,7 @@
       "name": "Cubo convertitore di pressione",
       "category": "contenitori",
       "image": "assets/items/Desc_PressureConversionCube_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_PackagedWater_C",
@@ -830,7 +830,7 @@
       "name": "Foglie",
       "category": "carburante",
       "image": "assets/items/Desc_Leaves_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_Mycelia_C",
@@ -838,7 +838,7 @@
       "name": "Miceli",
       "category": "carburante",
       "image": "assets/items/Desc_Mycelia_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_FlowerPetals_C",
@@ -846,7 +846,7 @@
       "name": "Petali di fiori",
       "category": "carburante",
       "image": "assets/items/Desc_FlowerPetals_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_Wood_C",
@@ -854,7 +854,7 @@
       "name": "Legname",
       "category": "carburante",
       "image": "assets/items/Desc_Wood_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_GenericBiomass_C",
@@ -862,7 +862,7 @@
       "name": "Biomassa",
       "category": "carburante",
       "image": "assets/items/Desc_GenericBiomass_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_CompactedCoal_C",
@@ -894,7 +894,7 @@
       "name": "Biocarburante solido",
       "category": "carburante",
       "image": "assets/items/Desc_Biofuel_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_Fuel_C",
@@ -942,7 +942,7 @@
       "name": "Barra di combustibile di uranio",
       "category": "carburante",
       "image": "assets/items/Desc_NuclearFuelRod_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_PlutoniumFuelRod_C",
@@ -950,7 +950,7 @@
       "name": "Barra di combustibile di plutonio",
       "category": "carburante",
       "image": "assets/items/Desc_PlutoniumFuelRod_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_Gunpowder_C",
@@ -958,7 +958,7 @@
       "name": "Polvere da sparo",
       "category": "consumato",
       "image": "assets/items/Desc_Gunpowder_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_GunpowderMK2_C",
@@ -974,7 +974,7 @@
       "name": "Filtro del gas",
       "category": "consumato",
       "image": "assets/items/Desc_Filter_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_ColorCartridge_C",
@@ -982,7 +982,7 @@
       "name": "Cartuccia di colore",
       "category": "consumato",
       "image": "assets/items/Desc_ColorCartridge_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "BP_EquipmentDescriptorBeacon_C",
@@ -998,7 +998,7 @@
       "name": "Filtro allo iodio",
       "category": "consumato",
       "image": "assets/items/Desc_HazmatFilter_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpikedRebar_C",
@@ -1038,7 +1038,7 @@
       "name": "Munizioni per fucile",
       "category": "munizioni",
       "image": "assets/items/Desc_CartridgeStandard_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_CartridgeSmartProjectile_C",
@@ -1046,7 +1046,7 @@
       "name": "Munizioni con ricerca guidata per fucile",
       "category": "munizioni",
       "image": "assets/items/Desc_CartridgeSmartProjectile_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_CartridgeChaos_C",
@@ -1054,7 +1054,7 @@
       "name": "Turbomunizioni per fucile",
       "category": "munizioni",
       "image": "assets/items/Desc_CartridgeChaos_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_NobeliskExplosive_C",
@@ -1062,7 +1062,7 @@
       "name": "Nobelisco",
       "category": "munizioni",
       "image": "assets/items/Desc_NobeliskExplosive_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_NobeliskGas_C",
@@ -1070,7 +1070,7 @@
       "name": "Nobelisco a gas",
       "category": "munizioni",
       "image": "assets/items/Desc_NobeliskGas_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_NobeliskShockwave_C",
@@ -1078,7 +1078,7 @@
       "name": "Nobelisco a impulsi",
       "category": "munizioni",
       "image": "assets/items/Desc_NobeliskShockwave_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_NobeliskCluster_C",
@@ -1086,7 +1086,7 @@
       "name": "Nobelisco a grappolo",
       "category": "munizioni",
       "image": "assets/items/Desc_NobeliskCluster_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_NobeliskNuke_C",
@@ -1094,7 +1094,7 @@
       "name": "Nobelisco atomico",
       "category": "munizioni",
       "image": "assets/items/Desc_NobeliskNuke_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_ElectromagneticControlRod_C",
@@ -1110,7 +1110,7 @@
       "name": "Cella di uranio rivestita",
       "category": "nucleare",
       "image": "assets/items/Desc_UraniumCell_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_NonFissibleUranium_C",
@@ -1118,7 +1118,7 @@
       "name": "Uranio non fissile",
       "category": "nucleare",
       "image": "assets/items/Desc_NonFissibleUranium_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_PlutoniumPellet_C",
@@ -1134,7 +1134,7 @@
       "name": "Cella di plutonio rivestita",
       "category": "nucleare",
       "image": "assets/items/Desc_PlutoniumCell_C.png",
-      "stack_size": 100
+      "stack_size": 200
     },
     {
       "game_id": "Desc_Ficsonium_C",
@@ -1150,7 +1150,7 @@
       "name": "Barra di combustibile di ficsonio",
       "category": "nucleare",
       "image": "assets/items/Desc_FicsoniumFuelRod_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_NuclearWaste_C",
@@ -1158,7 +1158,7 @@
       "name": "Scorie di uranio",
       "category": "rifiuti",
       "image": "assets/items/Desc_NuclearWaste_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_PlutoniumWaste_C",
@@ -1166,7 +1166,7 @@
       "name": "Scorie di plutonio",
       "category": "rifiuti",
       "image": "assets/items/Desc_PlutoniumWaste_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_Crystal_C",
@@ -1174,7 +1174,7 @@
       "name": "Lumaca energetica blu",
       "category": "speciali",
       "image": "assets/items/Desc_Crystal_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_Crystal_mk2_C",
@@ -1182,7 +1182,7 @@
       "name": "Lumaca energetica gialla",
       "category": "speciali",
       "image": "assets/items/Desc_Crystal_mk2_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_Crystal_mk3_C",
@@ -1190,7 +1190,7 @@
       "name": "Lumaca energetica viola",
       "category": "speciali",
       "image": "assets/items/Desc_Crystal_mk3_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_CrystalShard_C",
@@ -1206,7 +1206,7 @@
       "name": "Coupon FICSIT",
       "category": "speciali",
       "image": "assets/items/Desc_ResourceSinkCoupon_C.png",
-      "stack_size": 100
+      "stack_size": 500
     },
     {
       "game_id": "Desc_SpaceElevatorPart_1_C",
@@ -1214,7 +1214,7 @@
       "name": "Lamiera intelligente",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_1_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_2_C",
@@ -1222,7 +1222,7 @@
       "name": "Struttura polivalente",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_2_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_3_C",
@@ -1230,7 +1230,7 @@
       "name": "Cablaggio automatico",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_3_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_4_C",
@@ -1238,7 +1238,7 @@
       "name": "Motore modulare",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_4_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_5_C",
@@ -1246,7 +1246,7 @@
       "name": "Unità di controllo adattiva",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_5_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_7_C",
@@ -1254,7 +1254,7 @@
       "name": "Sistema direttore di montaggio",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_7_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_6_C",
@@ -1262,7 +1262,7 @@
       "name": "Generatore di campi magnetici",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_6_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_8_C",
@@ -1270,7 +1270,7 @@
       "name": "Razzo a propulsione termica",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_8_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_9_C",
@@ -1278,7 +1278,7 @@
       "name": "Pasta nucleare",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_9_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_10_C",
@@ -1286,7 +1286,7 @@
       "name": "Scultore biochimico",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_10_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_11_C",
@@ -1294,7 +1294,7 @@
       "name": "Motore Warp balistico",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_11_C.png",
-      "stack_size": 100
+      "stack_size": 50
     },
     {
       "game_id": "Desc_SpaceElevatorPart_12_C",
@@ -1302,7 +1302,7 @@
       "name": "Server espansione IA",
       "category": "speciali",
       "image": "assets/items/Desc_SpaceElevatorPart_12_C.png",
-      "stack_size": 100
+      "stack_size": 50
     }
   ]
 }

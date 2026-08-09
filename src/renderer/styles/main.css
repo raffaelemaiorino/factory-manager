@@ -814,6 +814,10 @@ a:hover {
   background: linear-gradient(90deg, #e8590c, var(--accent));
 }
 
+.dashboard-bar-fill--transport {
+  background: linear-gradient(90deg, #f59e0b, #fb923c);
+}
+
 .dashboard-chart-section-label {
   margin: 0.35rem 0 0.1rem;
   font-size: 0.72rem;
@@ -909,8 +913,146 @@ a:hover {
 /* Feature grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   gap: 1rem;
+}
+
+.dashboard-project-thumb {
+  width: 1.35rem;
+  height: 1.35rem;
+  object-fit: contain;
+}
+
+.dashboard-transport-panel {
+  margin-bottom: 1rem;
+}
+
+.dashboard-transport-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dashboard-transport-fleet {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
+  gap: 0.85rem;
+}
+
+.dashboard-transport-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.25rem 0 0.35rem;
+}
+
+.dashboard-transport-card {
+  display: grid;
+  grid-template-columns: 5.25rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(145deg, rgba(255, 140, 0, 0.08), rgba(255, 255, 255, 0.02) 45%),
+    rgba(255, 255, 255, 0.02);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease, background 0.15s ease;
+}
+
+.dashboard-transport-card:hover {
+  border-color: rgba(255, 140, 0, 0.45);
+  transform: translateY(-1px);
+}
+
+.dashboard-transport-card-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5rem;
+  padding: 0.35rem;
+  border-radius: 0.45rem;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-transport-card-visual img {
+  width: 4.25rem;
+  height: 4.25rem;
+  object-fit: contain;
+}
+
+.dashboard-transport-card-fallback {
+  font-size: 1.6rem;
+  color: var(--accent-bright);
+}
+
+.dashboard-transport-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.dashboard-transport-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+}
+
+.dashboard-transport-card-name {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard-transport-card-vehicles {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  line-height: 1.2;
+}
+
+.dashboard-transport-card-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.dashboard-transport-card-cargo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.15rem;
+}
+
+.dashboard-transport-cargo-icon {
+  width: 1.55rem;
+  height: 1.55rem;
+  object-fit: contain;
+  padding: 0.15rem;
+  border-radius: 0.3rem;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.dashboard-transport-cargo-more {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.dashboard-transport-cargo-empty {
+  font-size: 0.78rem;
+  color: var(--text-muted);
 }
 
 .feature-card {
@@ -5439,6 +5581,15 @@ select.production-config-input option:checked {
     min-width: 0;
   }
 
+  .dashboard-transport-card {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+  }
+
+  .dashboard-transport-card-visual img {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
   .dashboard-panels {
     grid-template-columns: 1fr;
   }
@@ -5763,4 +5914,581 @@ select.production-config-input option:checked {
 .calculator-btn-eq:active {
   background: var(--accent-dim);
   color: #fff;
+}
+
+/* Trasporti */
+.transport-vehicle-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.transport-vehicle-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 1rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: center;
+  min-height: 8.5rem;
+}
+
+.transport-vehicle-option img {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+}
+
+.transport-vehicle-option-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.transport-vehicle-option-cap {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.transport-vehicle-option.is-selected,
+.transport-vehicle-option:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-glow);
+}
+
+#transport-create-modal .modal-wide {
+  width: min(100vw - 1.5rem, 860px);
+}
+
+.transport-config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+}
+
+.transport-settings-section,
+.transport-cargo-section {
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+.transport-cargo-section {
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--border);
+}
+
+.transport-settings-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.transport-settings-vehicle {
+  grid-column: 1 / -1;
+}
+
+.transport-create-times {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 700px) {
+  .transport-settings-fields,
+  .transport-create-times {
+    grid-template-columns: 1fr;
+  }
+}
+
+.transport-cargo-boxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.transport-cargo-box .production-extraction-header {
+  margin-bottom: 0.85rem;
+}
+
+.transport-cargo-config {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, 0.9fr);
+  gap: 0.85rem;
+}
+
+.transport-composition {
+  margin-top: 0.85rem;
+}
+
+.transport-composition-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.transport-composition-track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.4rem;
+  margin-bottom: 0.35rem;
+}
+
+.transport-composition-car {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+}
+
+button.transport-composition-car {
+  cursor: pointer;
+}
+
+button.transport-composition-car:hover,
+button.transport-composition-car:focus-visible {
+  border-color: var(--accent-bright);
+  outline: none;
+}
+
+.transport-composition-car img {
+  width: 1.85rem;
+  height: 1.85rem;
+  object-fit: contain;
+}
+
+.transport-composition-car--loco {
+  width: auto;
+  min-width: 2.75rem;
+  padding: 0 0.35rem;
+  background: rgba(255, 196, 72, 0.12);
+  border-color: rgba(255, 196, 72, 0.35);
+  cursor: default;
+}
+
+.transport-composition-car--loco img {
+  width: 2.1rem;
+  height: 2.1rem;
+}
+
+.transport-composition-car--mix {
+  width: auto;
+  min-width: 2.75rem;
+  padding: 0.25rem 0.35rem;
+  border-style: dashed;
+}
+
+.transport-composition-mix-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.transport-composition-mix-icons img {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.transport-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--slot-cols, 8), minmax(0, 1fr));
+  gap: 0.45rem;
+  margin: 0.85rem 0 0.5rem;
+}
+
+.transport-slot-grid--fluid {
+  max-width: 14rem;
+}
+
+.transport-slot-cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background:
+    linear-gradient(
+      to top,
+      rgba(90, 180, 255, 0.22) 0%,
+      rgba(90, 180, 255, 0.22) var(--slot-fill, 0%),
+      rgba(255, 255, 255, 0.03) var(--slot-fill, 0%),
+      rgba(255, 255, 255, 0.03) 100%
+    );
+  overflow: hidden;
+  padding: 0.25rem 0.2rem 0.3rem;
+  min-height: 4.25rem;
+}
+
+.transport-slot-cell--empty {
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0.55;
+}
+
+.transport-slot-cell--fluid {
+  aspect-ratio: 4 / 5;
+  min-height: 5.5rem;
+}
+
+.transport-slot-cell img {
+  width: 2.55rem;
+  height: 2.55rem;
+  object-fit: contain;
+}
+
+.transport-slot-fallback {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.transport-slot-amount {
+  font-size: 0.72rem;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--text-secondary);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transport-result-card .transport-slot-totals,
+.transport-slot-totals {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.transport-result-card .transport-slot-totals {
+  margin-bottom: 0.35rem;
+}
+
+.transport-slot-totals-title {
+  margin: 0 0 0.55rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.transport-slot-totals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.transport-slot-total-row {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.transport-slot-total-row img {
+  width: 2.25rem;
+  height: 2.25rem;
+  object-fit: contain;
+}
+
+.transport-slot-total-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.transport-slot-total-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transport-slot-total-car {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.transport-slot-total-qty {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  white-space: nowrap;
+}
+
+.transport-cargo-rate-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.transport-cargo-rate-row .production-target-rate-input,
+.transport-cargo-rate-row .production-config-decimal-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.transport-cargo-unit {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.transport-cargo-units-value {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent-bright);
+}
+
+.transport-result-card {
+  margin-top: 0.25rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.transport-result-card .production-section-header {
+  margin-bottom: 0.65rem;
+}
+
+.transport-result-card .transport-result-main {
+  margin-bottom: 0.75rem;
+}
+
+.transport-result-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  line-height: 1.2;
+}
+
+.transport-result-breakdown {
+  margin: 0.5rem 0 0.75rem;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.transport-result-warn .transport-result-value,
+.transport-result-warn .transport-cargo-units-value {
+  color: var(--warning);
+}
+
+.transport-cargo-row .page-subtitle {
+  display: block;
+  margin-top: 0.15rem;
+}
+
+@media (max-width: 900px) {
+  .transport-cargo-section {
+    padding-left: 0;
+    border-left: none;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .transport-cargo-config {
+    grid-template-columns: 1fr;
+  }
+}
+
+.production-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+}
+
+.production-card-icon img {
+  width: 2.25rem;
+  height: 2.25rem;
+  object-fit: contain;
+}
+
+.transport-card-thumb {
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
+  margin-right: 0.45rem;
+  vertical-align: middle;
+}
+
+.transport-card {
+  align-items: stretch;
+  padding: 1.1rem 1.25rem;
+}
+
+.transport-card-body {
+  align-items: stretch;
+  gap: 1.15rem;
+}
+
+.transport-card-vehicle {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6.5rem;
+  min-height: 6.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.transport-card-vehicle-img {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+}
+
+.transport-card-vehicle-placeholder {
+  width: 88px;
+  height: 88px;
+  border-radius: 0.35rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.transport-card-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.transport-card-heading h3 {
+  white-space: normal;
+}
+
+.transport-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.transport-card-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 7rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.transport-card-stat--accent {
+  border-color: rgba(255, 140, 0, 0.35);
+  background: rgba(255, 140, 0, 0.08);
+}
+
+.transport-card-stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.transport-card-stat-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.transport-card-stat--accent .transport-card-stat-value {
+  color: var(--accent-bright);
+}
+
+.transport-card-cargo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.transport-card-cargo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: 100%;
+  padding: 0.35rem 0.55rem 0.35rem 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.transport-card-cargo-chip img {
+  width: 1.85rem;
+  height: 1.85rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.transport-card-cargo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  min-width: 0;
+}
+
+.transport-card-cargo-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transport-card-cargo-rate {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.transport-card-cargo-mix {
+  margin-left: 0.35rem;
+  color: var(--accent-bright);
+  font-weight: 600;
+}
+
+.transport-card-cargo-empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.transport-card-updated {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 900px) {
+  .transport-card-body {
+    flex-direction: column;
+  }
+
+  .transport-card-vehicle {
+    width: 100%;
+    min-height: auto;
+  }
 }

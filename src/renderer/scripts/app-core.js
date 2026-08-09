@@ -5,6 +5,8 @@ const views = {
   'production-detail': document.getElementById('view-production-detail'),
   energy: document.getElementById('view-energy'),
   'energy-detail': document.getElementById('view-energy-detail'),
+  transport: document.getElementById('view-transport'),
+  'transport-detail': document.getElementById('view-transport-detail'),
   settings: document.getElementById('view-settings'),
 };
 
@@ -510,11 +512,13 @@ function switchView(viewName) {
   let navView = viewName;
   if (viewName === 'production-detail') navView = 'production';
   if (viewName === 'energy-detail') navView = 'energy';
+  if (viewName === 'transport-detail') navView = 'transport';
   document.querySelectorAll('.nav-item[data-view]').forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.view === navView);
   });
 
   Object.entries(views).forEach(([name, el]) => {
+    if (!el) return;
     el.classList.toggle('view-active', name === viewName);
   });
 
@@ -534,6 +538,10 @@ function switchView(viewName) {
 
   if (viewName === 'energy' && window.EnergyUI) {
     window.EnergyUI.loadEnergyChains();
+  }
+
+  if (viewName === 'transport' && window.TransportUI) {
+    window.TransportUI.loadTransportPlans();
   }
 
   if (viewName === 'settings') {

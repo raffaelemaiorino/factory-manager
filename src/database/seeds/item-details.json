@@ -1,7 +1,7 @@
 {
   "dataVersion": 1,
   "source": "https://satisfactory-calculator.com/it/items",
-  "importedAt": "2026-07-04T08:02:45.958Z",
+  "importedAt": "2026-08-08T19:04:53.328Z",
   "items": [
     {
       "game_id": "Desc_Stone_C",
@@ -2043,7 +2043,7 @@
       "slug": "water",
       "category": "liquidi",
       "description": "È acqua.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Acqua sfusa",
@@ -2382,7 +2382,7 @@
       "slug": "liquid-oil",
       "category": "liquidi",
       "description": "Raffinato per produrre tutte le risorse a base di petrolio, dal carburante alla plastica.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Petrolio sfuso",
@@ -2421,7 +2421,7 @@
       "slug": "heavy-oil-residue",
       "category": "liquidi",
       "description": "Un sottoprodotto della produzione di plastica e gomma. Si può raffinare ulteriormente in carburante e coke petrolifero.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Gomma",
@@ -2580,7 +2580,7 @@
       "slug": "liquid-fuel",
       "category": "liquidi",
       "description": "Può essere usato per generare energia o se imballato può essere usato come carburante per veicoli o jetpack.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Carburante",
@@ -2703,7 +2703,7 @@
       "slug": "liquid-biofuel",
       "category": "liquidi",
       "description": "Il biocarburante liquido può essere usato così com'è per generare energia o se imballato può essere usato come carburante per i veicoli.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Biocarburante liquido",
@@ -2772,7 +2772,7 @@
       "slug": "liquid-turbo-fuel",
       "category": "liquidi",
       "description": "Un'alternativa più efficiente al carburante. Può essere utilizzato così com'è per generare energia o imballato e usato come carburante per i veicoli.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Turbocarburante",
@@ -2913,7 +2913,7 @@
       "slug": "alumina-solution",
       "category": "liquidi",
       "description": "Allumina disciolta, estratta dalla bauxite. Si può raffinare ulteriormente in detriti di alluminio per poi creare lingotti di alluminio.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Soluzione di Allumina sfusa",
@@ -3018,7 +3018,7 @@
       "slug": "sulfuric-acid",
       "category": "liquidi",
       "description": "Prodotto combinando acqua e zolfo attraverso una reazione complessa. Usato principalmente in processi di raffinazione e nella produzione di batterie.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Acido solforico",
@@ -3129,7 +3129,7 @@
       "slug": "nitric-acid",
       "category": "liquidi",
       "description": "Prodotto quando l'azoto gassoso reagisce con l'acqua. La sue incredibili proprietà corrosive e ossidanti lo rendono una scelta eccellente per i processi di produzione del carburante o di raffinazione.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Acido nitrico",
@@ -3204,7 +3204,7 @@
       "slug": "dissolved-silica",
       "category": "liquidi",
       "description": "Silice dissolta in acqua, prodotta come parte del raffinamento alternativo del Quarzo grezzo. La silice può essere estratta dall'acqua per completare il processo di raffinazione.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Alternativo: Purificazione al quarzo",
@@ -3249,7 +3249,7 @@
       "slug": "nitrogen-gas",
       "category": "gas",
       "description": "Può essere usato in una varietà di modi, in metallurgia, nel raffreddamento e la produzione di acido nitrico. Su MESSAGGIO-2(AB)b può essere estratto dai giacimenti di gas sotterranei.",
-      "stack_size": 100,
+      "stack_size": null,
       "schemas": [
         {
           "name": "Azoto gassoso",
