@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.3] - 2026-08-09
+
+### Changed
+- Transport: more spacing between locomotive, cars, and Mk selectors in the composition strip
+
+## [2.6.2] - 2026-08-09
+
+### Changed
+- Vehicle contents dialog: highlight this car’s amount; show full-trip total underneath
+
+## [2.6.1] - 2026-08-09
+
+### Fixed
+- Transport: cargo is split evenly across cars (e.g. 12,000 Quickwire → 6,000+6,000), not all in the first car
+
+### Changed
+- Transport: belt/pipe Mk is chosen **per station** (under each car); one station = one vehicle
+
+## [2.6.0] - 2026-08-09
+
+### Added
+- Transport: choose station belt/pipe Mk (like Production); vehicles needed also respect the 2-port platform cap (`max(capacity, stations)`)
+- Result: stations/belts summary and a hint when platform ports—not vehicle capacity—are the limit
+
 ## [2.5.4] - 2026-08-09
 
 ### Fixed

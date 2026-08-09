@@ -5,11 +5,24 @@
  * Solidi: capienza = slot × stack_size
  * Fluidi: capienza = fluid_capacity (m³)
  *
- * Per ogni cargo solido: allow_mix
- * - false → vagoni dedicati solo a quell'item
- * - true  → condivide gli slot con gli altri solidi in mix
- * Fluidi: sempre dedicati (un fluido per vagone)
+ * Vincolo piattaforma (treni/camion, non droni):
+ * 1 stazione ↔ 1 vagone, 2 porte → throughput = 2 × rate(Mk)
+ * Mk nastro configurabile per stazione (station_belt_mks).
+ * Il carico viene sempre ripartito in modo uniforme sui vagoni assegnati.
  */
+
+const {
+  clampBeltMk,
+  clampPipeMk,
+  getBeltRate,
+  getPipeRate,
+  DEFAULT_MAX_BELT_MK,
+  DEFAULT_MAX_PIPE_MK,
+} = require('./transport');
+
+const DEFAULT_TRANSPORT_BELT_MK = 5;
+const DEFAULT_TRANSPORT_PIPE_MK = DEFAULT_MAX_PIPE_MK;
+const PORTS_PER_STATION = 2;
 
 function ceilPositive(value) {
   if (!Number.isFinite(value) || value <= 0) return 0;
@@ -46,136 +59,269 @@ function normalizeAllowMix(line, fluid) {
   return Boolean(line.allow_mix);
 }
 
-/**
- * Pack a solid cargo amount into dedicated cars (one stack per inventory slot).
- * @returns {Array<Array<object|null>>} cars → slots
- */
-function packSolidAmountAcrossCars(itemSlug, amount, stackSize, slotsPerCar, carCount) {
-  const cars = [];
-  let remaining = Number(amount) || 0;
-  const stack = Number(stackSize);
-  const slots = Number(slotsPerCar);
-  const nCars = Number(carCount);
-  if (!(stack > 0) || !(slots > 0) || !(nCars > 0)) return cars;
+function vehicleUsesStationPorts(vehicle) {
+  const slug = String(vehicle?.slug || '');
+  return slug !== 'drone-transport';
+}
 
-  for (let c = 0; c < nCars; c++) {
-    const grid = [];
-    for (let s = 0; s < slots; s++) {
-      if (remaining <= 1e-9) {
-        grid.push(null);
-        continue;
-      }
-      const qty = Math.min(stack, remaining);
-      grid.push({
-        item_slug: itemSlug,
-        amount: qty,
-        stack_size: stack,
-        fill_ratio: qty / stack,
-        is_fluid: false,
-      });
-      remaining -= qty;
-    }
-    cars.push(grid);
-  }
-  return cars;
+function resolveTransportMkOptions(options = {}) {
+  const beltMk = clampBeltMk(
+    options.belt_mk != null ? options.belt_mk : DEFAULT_TRANSPORT_BELT_MK,
+    DEFAULT_TRANSPORT_BELT_MK
+  );
+  const pipeMk = clampPipeMk(
+    options.pipe_mk != null ? options.pipe_mk : DEFAULT_TRANSPORT_PIPE_MK,
+    DEFAULT_TRANSPORT_PIPE_MK
+  );
+  const stationBeltMks = Array.isArray(options.station_belt_mks)
+    ? options.station_belt_mks.map((mk) => clampBeltMk(mk, beltMk))
+    : [];
+  return { beltMk, pipeMk, stationBeltMks };
+}
+
+function stationThroughputSolid(beltMk) {
+  return PORTS_PER_STATION * getBeltRate(beltMk);
+}
+
+function stationThroughputFluid(pipeMk) {
+  return PORTS_PER_STATION * getPipeRate(pipeMk);
+}
+
+function limitingFactor(carsFromCapacity, stationsNeeded) {
+  if (stationsNeeded > carsFromCapacity) return 'station';
+  return 'capacity';
 }
 
 /**
- * Pack mixed solids across shared cars in cargo order.
+ * Ripartisce `total` in `parts` quote il più uniformi possibile, ciascuna ≤ maxPerPart.
+ */
+function distributeEvenly(total, parts, maxPerPart = Infinity) {
+  const n = Math.max(0, Math.floor(Number(parts)) || 0);
+  const amount = Math.max(0, Number(total) || 0);
+  if (n <= 0) return [];
+  const shares = Array(n).fill(0);
+  if (amount <= 0) return shares;
+
+  const base = amount / n;
+  let allocated = 0;
+  for (let i = 0; i < n; i++) {
+    const ideal = i === n - 1 ? amount - allocated : base;
+    const qty = Math.min(maxPerPart, Math.max(0, ideal));
+    shares[i] = qty;
+    allocated += qty;
+  }
+  // Se il tetto maxPerPart ha lasciato residuo, non lo spingiamo oltre (carCount dovrebbe bastare)
+  return shares;
+}
+
+function packSolidIntoOneCar(itemSlug, amount, stackSize, slotsPerCar) {
+  const stack = Number(stackSize);
+  const slots = Number(slotsPerCar);
+  const grid = [];
+  let remaining = Math.max(0, Number(amount) || 0);
+  for (let s = 0; s < slots; s++) {
+    if (remaining <= 1e-9) {
+      grid.push(null);
+      continue;
+    }
+    const qty = Math.min(stack, remaining);
+    grid.push({
+      item_slug: itemSlug,
+      amount: qty,
+      stack_size: stack,
+      fill_ratio: qty / stack,
+      is_fluid: false,
+    });
+    remaining -= qty;
+  }
+  return grid;
+}
+
+/**
+ * Pack solidi: ripartizione uniforme sui vagoni (non riempie il primo e lascia vuoti gli altri).
+ */
+function packSolidAmountAcrossCars(itemSlug, amount, stackSize, slotsPerCar, carCount) {
+  const stack = Number(stackSize);
+  const slots = Number(slotsPerCar);
+  const nCars = Number(carCount);
+  if (!(stack > 0) || !(slots > 0) || !(nCars > 0)) return [];
+  const tripCap = slots * stack;
+  const shares = distributeEvenly(amount, nCars, tripCap);
+  return shares.map((share) => packSolidIntoOneCar(itemSlug, share, stack, slots));
+}
+
+/**
+ * Mix: ogni item ripartito uniformemente sui vagoni condivisi, poi pack per slot.
  */
 function packMixedAcrossCars(items, slotsPerCar, carCount) {
   const slots = Number(slotsPerCar);
   const nCars = Number(carCount);
   if (!(slots > 0) || !(nCars > 0)) return [];
 
-  const cars = Array.from({ length: nCars }, () => Array(slots).fill(null));
-  let carIdx = 0;
-  let slotIdx = 0;
-
+  const perCarItems = Array.from({ length: nCars }, () => []);
   for (const item of items || []) {
     const stack = Number(item.stack_size);
-    let remaining = Number(item.amount_per_trip) || 0;
-    if (!(stack > 0) || remaining <= 0) continue;
+    const amount = Number(item.amount_per_trip) || 0;
+    if (!(stack > 0) || amount <= 0) continue;
+    const tripCap = slots * stack;
+    const shares = distributeEvenly(amount, nCars, tripCap);
+    shares.forEach((share, idx) => {
+      if (share > 1e-9) {
+        perCarItems[idx].push({
+          item_slug: item.item_slug,
+          amount_per_trip: share,
+          stack_size: stack,
+        });
+      }
+    });
+  }
 
-    while (remaining > 1e-9 && carIdx < nCars) {
-      const qty = Math.min(stack, remaining);
-      cars[carIdx][slotIdx] = {
-        item_slug: item.item_slug,
-        amount: qty,
-        stack_size: stack,
-        fill_ratio: qty / stack,
-        is_fluid: false,
-      };
-      remaining -= qty;
-      slotIdx += 1;
-      if (slotIdx >= slots) {
-        slotIdx = 0;
-        carIdx += 1;
+  return perCarItems.map((carItems) => {
+    const grid = Array(slots).fill(null);
+    let slotIdx = 0;
+    for (const item of carItems) {
+      let remaining = Number(item.amount_per_trip) || 0;
+      const stack = Number(item.stack_size);
+      while (remaining > 1e-9 && slotIdx < slots) {
+        const qty = Math.min(stack, remaining);
+        grid[slotIdx] = {
+          item_slug: item.item_slug,
+          amount: qty,
+          stack_size: stack,
+          fill_ratio: qty / stack,
+          is_fluid: false,
+        };
+        remaining -= qty;
+        slotIdx += 1;
       }
     }
-  }
-  return cars;
+    return grid;
+  });
 }
 
 /**
- * Pack fluid into dedicated tank cars (one slot = whole tank).
+ * Fluidi: ripartizione uniforme tra i serbatoi.
  */
 function packFluidAcrossCars(itemSlug, amount, fluidCap, carCount) {
-  const cars = [];
-  let remaining = Number(amount) || 0;
   const cap = Number(fluidCap);
   const nCars = Number(carCount);
-  if (!(cap > 0) || !(nCars > 0)) return cars;
+  if (!(cap > 0) || !(nCars > 0)) return [];
+  const shares = distributeEvenly(amount, nCars, cap);
+  return shares.map((qty) => [
+    {
+      item_slug: itemSlug,
+      amount: qty,
+      stack_size: null,
+      capacity: cap,
+      fill_ratio: qty / cap,
+      is_fluid: true,
+    },
+  ]);
+}
 
-  for (let c = 0; c < nCars; c++) {
-    const qty = Math.min(cap, Math.max(0, remaining));
-    remaining -= qty;
-    cars.push([
-      {
-        item_slug: itemSlug,
-        amount: qty,
-        stack_size: null,
-        capacity: cap,
-        fill_ratio: qty / cap,
-        is_fluid: true,
-      },
-    ]);
+/**
+ * Quante stazioni servono per la portata, usando i Mk già scelti (se presenti) poi il default.
+ */
+function allocateStationsForRate(rate, {
+  applyStationLimit,
+  isFluid,
+  defaultBeltMk,
+  pipeMk,
+  preferredBelts,
+  startIndex,
+}) {
+  if (!applyStationLimit) {
+    return { count: 0, mks: [], nextIndex: startIndex };
   }
-  return cars;
+  const target = Number(rate) || 0;
+  if (target <= 0) return { count: 0, mks: [], nextIndex: startIndex };
+
+  let covered = 0;
+  const mks = [];
+  let idx = startIndex;
+  while (covered + 1e-9 < target) {
+    const mk = isFluid
+      ? clampPipeMk(
+          preferredBelts[idx] != null ? preferredBelts[idx] : pipeMk,
+          pipeMk
+        )
+      : clampBeltMk(
+          preferredBelts[idx] != null ? preferredBelts[idx] : defaultBeltMk,
+          defaultBeltMk
+        );
+    const thr = isFluid ? stationThroughputFluid(mk) : stationThroughputSolid(mk);
+    mks.push(mk);
+    covered += thr;
+    idx += 1;
+    if (mks.length > 200) break;
+  }
+  return { count: mks.length, mks, nextIndex: idx };
+}
+
+function padStationMks(mks, needed, defaultMk) {
+  const out = [...(mks || [])];
+  while (out.length < needed) out.push(defaultMk);
+  return out.slice(0, needed);
+}
+
+function emptyResult(extra = {}) {
+  return {
+    ok: false,
+    error: null,
+    round_trip_minutes: null,
+    vehicles_needed: 0,
+    stations_needed: 0,
+    belts_or_pipes_needed: 0,
+    ports_per_station: PORTS_PER_STATION,
+    belt_mk: DEFAULT_TRANSPORT_BELT_MK,
+    pipe_mk: DEFAULT_TRANSPORT_PIPE_MK,
+    station_belt_mks: [],
+    station_throughput_solid: stationThroughputSolid(DEFAULT_TRANSPORT_BELT_MK),
+    station_throughput_fluid: stationThroughputFluid(DEFAULT_TRANSPORT_PIPE_MK),
+    apply_station_limit: true,
+    breakdown: [],
+    composition: [],
+    slot_views: [],
+    ...extra,
+  };
 }
 
 /**
  * @param {object} vehicle
- * @param {Array<{ item_slug: string, rate: number, stack_size?: number|null, is_fluid?: boolean, allow_mix?: boolean }>} cargo
+ * @param {Array<object>} cargo
  * @param {number} outboundMinutes
  * @param {number} returnMinutes
+ * @param {{ belt_mk?: number, pipe_mk?: number, station_belt_mks?: number[] }} [options]
  */
-function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) {
+function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, options = {}) {
   const rtd = roundTripMinutes(outboundMinutes, returnMinutes);
   const lines = Array.isArray(cargo) ? cargo : [];
+  const { beltMk, pipeMk, stationBeltMks } = resolveTransportMkOptions(options);
+  const applyStationLimit = vehicleUsesStationPorts(vehicle);
+
+  const mkMeta = {
+    belt_mk: beltMk,
+    pipe_mk: pipeMk,
+    ports_per_station: PORTS_PER_STATION,
+    station_throughput_solid: stationThroughputSolid(beltMk),
+    station_throughput_fluid: stationThroughputFluid(pipeMk),
+    apply_station_limit: applyStationLimit,
+  };
 
   if (!vehicle) {
-    return {
-      ok: false,
+    return emptyResult({
       error: 'vehicle_required',
       round_trip_minutes: rtd,
-      vehicles_needed: 0,
-      breakdown: [],
-      composition: [],
-      slot_views: [],
-    };
+      ...mkMeta,
+    });
   }
 
   if (rtd == null) {
-    return {
-      ok: false,
+    return emptyResult({
       error: 'trip_times_required',
       round_trip_minutes: null,
-      vehicles_needed: 0,
-      breakdown: [],
-      composition: [],
-      slot_views: [],
-    };
+      ...mkMeta,
+    });
   }
 
   if (!lines.length) {
@@ -184,10 +330,14 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
       error: null,
       round_trip_minutes: rtd,
       vehicles_needed: 0,
+      stations_needed: 0,
+      belts_or_pipes_needed: 0,
+      station_belt_mks: [],
       breakdown: [],
       composition: [],
       slot_views: [],
       mode: 'per_cargo_mix',
+      ...mkMeta,
     };
   }
 
@@ -198,7 +348,15 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
   const mixPool = [];
   const composition = [];
   const slotViews = [];
+  const flatStationBeltMks = [];
   let vehiclesNeeded = 0;
+
+  const allocOpts = {
+    applyStationLimit,
+    defaultBeltMk: beltMk,
+    pipeMk,
+    preferredBelts: stationBeltMks,
+  };
 
   for (const line of lines) {
     const rate = Number(line.rate);
@@ -225,7 +383,15 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
         incompatibilities.push({ item_slug: line.item_slug, error: 'no_fluid_capacity' });
         continue;
       }
-      const needed = ceilPositive(amountPerTrip / fluidCap);
+      const carsFromCapacity = ceilPositive(amountPerTrip / fluidCap);
+      const alloc = allocateStationsForRate(rate, {
+        ...allocOpts,
+        isFluid: true,
+        startIndex: flatStationBeltMks.length,
+      });
+      const needed = Math.max(carsFromCapacity, alloc.count);
+      const mks = padStationMks(alloc.mks, needed, pipeMk);
+      flatStationBeltMks.push(...mks);
       breakdown.push({
         item_slug: line.item_slug,
         rate,
@@ -234,8 +400,12 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
         stack_size: null,
         amount_per_trip: amountPerTrip,
         trip_capacity: fluidCap,
+        cars_from_capacity: carsFromCapacity,
+        stations_needed: alloc.count,
         units_needed: needed,
+        limiting: limitingFactor(carsFromCapacity, alloc.count),
         mix_group: false,
+        station_mks: mks,
       });
       vehiclesNeeded += needed;
       if (needed > 0) {
@@ -246,12 +416,14 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
           is_fluid: true,
           count: needed,
           view_index: viewIndex,
+          station_mks: mks,
         });
         slotViews.push({
           kind: 'dedicated',
           item_slug: line.item_slug,
           is_fluid: true,
           cars: packFluidAcrossCars(line.item_slug, amountPerTrip, fluidCap, needed),
+          station_mks: mks,
         });
       }
       continue;
@@ -282,7 +454,16 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
       continue;
     }
 
-    const needed = ceilPositive(amountPerTrip / tripCapacity);
+    const carsFromCapacity = ceilPositive(amountPerTrip / tripCapacity);
+    const alloc = allocateStationsForRate(rate, {
+      ...allocOpts,
+      isFluid: false,
+      startIndex: flatStationBeltMks.length,
+    });
+    const needed = Math.max(carsFromCapacity, alloc.count);
+    const mks = padStationMks(alloc.mks, needed, beltMk);
+    flatStationBeltMks.push(...mks);
+
     breakdown.push({
       item_slug: line.item_slug,
       rate,
@@ -292,8 +473,12 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
       amount_per_trip: amountPerTrip,
       trip_capacity: tripCapacity,
       stacks_per_trip: stacksNeeded,
+      cars_from_capacity: carsFromCapacity,
+      stations_needed: alloc.count,
       units_needed: needed,
+      limiting: limitingFactor(carsFromCapacity, alloc.count),
       mix_group: false,
+      station_mks: mks,
     });
     vehiclesNeeded += needed;
     if (needed > 0) {
@@ -304,20 +489,30 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
         is_fluid: false,
         count: needed,
         view_index: viewIndex,
+        station_mks: mks,
       });
       slotViews.push({
         kind: 'dedicated',
         item_slug: line.item_slug,
         is_fluid: false,
         cars: packSolidAmountAcrossCars(line.item_slug, amountPerTrip, stack, slots, needed),
+        station_mks: mks,
       });
     }
   }
 
   if (mixPool.length) {
     const totalStacks = mixPool.reduce((sum, row) => sum + row.stacks_per_trip, 0);
-    const mixCars = slots > 0 ? ceilPositive(totalStacks / slots) : 0;
-    vehiclesNeeded += mixCars;
+    const carsFromCapacity = slots > 0 ? ceilPositive(totalStacks / slots) : 0;
+    const mixRate = mixPool.reduce((sum, row) => sum + row.rate, 0);
+    const alloc = allocateStationsForRate(mixRate, {
+      ...allocOpts,
+      isFluid: false,
+      startIndex: flatStationBeltMks.length,
+    });
+    const mixCars = Math.max(carsFromCapacity, alloc.count);
+    const mks = padStationMks(alloc.mks, mixCars, beltMk);
+    flatStationBeltMks.push(...mks);
 
     for (const row of mixPool) {
       breakdown.push({
@@ -329,12 +524,17 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
         amount_per_trip: row.amount_per_trip,
         trip_capacity: row.trip_capacity,
         stacks_per_trip: row.stacks_per_trip,
+        cars_from_capacity: carsFromCapacity,
+        stations_needed: alloc.count,
         units_needed: mixCars,
+        limiting: limitingFactor(carsFromCapacity, alloc.count),
         mix_group: true,
         mix_group_units: mixCars,
+        station_mks: mks,
       });
     }
 
+    vehiclesNeeded += mixCars;
     if (mixCars > 0) {
       const viewIndex = slotViews.length;
       composition.push({
@@ -343,15 +543,20 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
         is_fluid: false,
         count: mixCars,
         view_index: viewIndex,
+        station_mks: mks,
       });
       slotViews.push({
         kind: 'mixed',
         item_slugs: mixPool.map((row) => row.item_slug),
         is_fluid: false,
         cars: packMixedAcrossCars(mixPool, slots, mixCars),
+        station_mks: mks,
       });
     }
   }
+
+  const stationsDisplay = applyStationLimit ? vehiclesNeeded : 0;
+  const beltsOrPipesNeeded = applyStationLimit ? stationsDisplay * PORTS_PER_STATION : 0;
 
   if (incompatibilities.length && !breakdown.length) {
     return {
@@ -360,10 +565,14 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
       incompatibilities,
       round_trip_minutes: rtd,
       vehicles_needed: 0,
+      stations_needed: 0,
+      belts_or_pipes_needed: 0,
+      station_belt_mks: [],
       breakdown: [],
       composition: [],
       slot_views: [],
       mode: 'per_cargo_mix',
+      ...mkMeta,
     };
   }
 
@@ -373,6 +582,9 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
     incompatibilities,
     round_trip_minutes: rtd,
     vehicles_needed: vehiclesNeeded,
+    stations_needed: stationsDisplay,
+    belts_or_pipes_needed: beltsOrPipesNeeded,
+    station_belt_mks: applyStationLimit ? flatStationBeltMks : [],
     mode: 'per_cargo_mix',
     vehicle_slug: vehicle.slug,
     inventory_slots: vehicle.inventory_slots ?? null,
@@ -380,6 +592,7 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes) 
     breakdown,
     composition,
     slot_views: slotViews,
+    ...mkMeta,
   };
 }
 
@@ -388,9 +601,16 @@ module.exports = {
   roundTripMinutes,
   isFluidItem,
   ceilPositive,
+  distributeEvenly,
   vehicleAllowsSolid,
   vehicleAllowsFluid,
+  vehicleUsesStationPorts,
   packSolidAmountAcrossCars,
   packMixedAcrossCars,
   packFluidAcrossCars,
+  PORTS_PER_STATION,
+  DEFAULT_TRANSPORT_BELT_MK,
+  DEFAULT_TRANSPORT_PIPE_MK,
+  DEFAULT_MAX_BELT_MK,
+  DEFAULT_MAX_PIPE_MK,
 };

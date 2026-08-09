@@ -78,6 +78,31 @@
     return `${count} ${label}`;
   }
 
+  function mkOptionsHtml(maxMk, selected) {
+    const parts = [];
+    for (let mk = 1; mk <= maxMk; mk += 1) {
+      parts.push(
+        `<option value="${mk}" ${Number(selected) === mk ? 'selected' : ''}>Mk.${mk}</option>`
+      );
+    }
+    return parts.join('');
+  }
+
+  function calcIsStationLimited(calc) {
+    return (calc?.breakdown || []).some((row) => row.limiting === 'station');
+  }
+
+  function formatStationsSummary(calc) {
+    if (!calc?.apply_station_limit) return '';
+    const stations = Number(calc.stations_needed) || 0;
+    if (stations <= 0) return '';
+    const ports = Number(calc.belts_or_pipes_needed) || stations * 2;
+    return t('transport.stationsSummaryPerCar', {
+      stations,
+      ports,
+    });
+  }
+
   function vehicleImageSrc(vehicle) {
     if (!vehicle?.image) return '';
     return vehicle.image.startsWith('assets/') ? vehicle.image : `assets/${vehicle.image}`;
@@ -190,6 +215,14 @@
                     <span class="transport-card-stat-label">${escapeHtml(t('transport.cardVehicles'))}</span>
                     <span class="transport-card-stat-value">${escapeHtml(vehicleUnitLabel(vehicle, needed))}</span>
                   </div>
+                  ${
+                    calc.apply_station_limit && (calc.stations_needed || 0) > 0
+                      ? `<div class="transport-card-stat">
+                    <span class="transport-card-stat-label">${escapeHtml(t('transport.cardStations'))}</span>
+                    <span class="transport-card-stat-value">${escapeHtml(String(calc.stations_needed))}</span>
+                  </div>`
+                      : ''
+                  }
                   <div class="transport-card-stat">
                     <span class="transport-card-stat-label">${escapeHtml(t('transport.outboundMinutes'))}</span>
                     <span class="transport-card-stat-value">${escapeHtml(String(plan.outbound_minutes ?? '—'))} min</span>
@@ -203,6 +236,11 @@
                     <span class="transport-card-stat-value">${escapeHtml(rtd != null ? `${rtd} min` : '—')}</span>
                   </div>
                 </div>
+                ${
+                  calcIsStationLimited(calc)
+                    ? `<p class="transport-card-station-limit">${escapeHtml(t('transport.limitingStation'))}</p>`
+                    : ''
+                }
                 ${
                   cargoChips
                     ? `<div class="transport-card-cargo">${cargoChips}</div>`
@@ -264,9 +302,13 @@
     const nameInput = document.getElementById('transport-plan-name');
     const outboundInput = document.getElementById('transport-create-outbound');
     const returnInput = document.getElementById('transport-create-return');
+    const beltMkInput = document.getElementById('transport-create-belt-mk');
+    const pipeMkInput = document.getElementById('transport-create-pipe-mk');
     if (nameInput) nameInput.value = '';
     if (outboundInput) outboundInput.value = '';
     if (returnInput) returnInput.value = '';
+    if (beltMkInput) beltMkInput.value = '5';
+    if (pipeMkInput) pipeMkInput.value = '2';
     renderCreateVehicleGrid();
     transportCreateModal?.classList.remove('hidden');
     transportCreateModal?.setAttribute('aria-hidden', 'false');
@@ -330,6 +372,8 @@
     const returnMinutes = Number(
       String(document.getElementById('transport-create-return')?.value || '').replace(',', '.')
     );
+    const beltMk = Number(document.getElementById('transport-create-belt-mk')?.value || 5);
+    const pipeMk = Number(document.getElementById('transport-create-pipe-mk')?.value || 2);
     if (!name) {
       showCreateError(t('errors.nameRequired') || t('common.name'));
       return;
@@ -353,6 +397,8 @@
         vehicle_slug: selectedVehicleSlug,
         outbound_minutes: outbound,
         return_minutes: returnMinutes,
+        belt_mk: beltMk,
+        pipe_mk: pipeMk,
         cargo: [],
       });
       closeTransportCreateModal();
@@ -473,7 +519,12 @@
       })
       .join('');
 
-    const compositionHtml = renderCompositionStrip(calc.composition || [], cargoBySlug, vehicle);
+    const compositionHtml = renderCompositionStrip(
+      calc.composition || [],
+      cargoBySlug,
+      vehicle,
+      plan.station_belt_mks || calc.station_belt_mks || []
+    );
     const tripTotalsHtml = renderTripTotalsHtml(
       cargoBySlug,
       (plan.cargo || []).map((line) => {
@@ -495,6 +546,9 @@
         : vehicle?.cargo_kind === 'mixed'
           ? `${t('transport.slotsCount', { count: vehicle.inventory_slots })} · ${vehicle.fluid_capacity} m³`
           : t('transport.slotsCount', { count: vehicle?.inventory_slots ?? '—' });
+
+    const stationsSummary = formatStationsSummary(calc);
+    const stationLimited = calcIsStationLimited(calc);
 
     const body = document.getElementById('transport-detail-body');
     body.innerHTML = `
@@ -536,6 +590,23 @@
                 <p class="page-subtitle">
                   ${escapeHtml(t('transport.roundTrip', { minutes: calc.round_trip_minutes ?? '—' }))}
                 </p>
+                ${
+                  stationsSummary
+                    ? `<p class="page-subtitle transport-stations-summary">${escapeHtml(stationsSummary)}</p>`
+                    : ''
+                }
+                ${
+                  stationLimited
+                    ? `<p class="form-hint transport-limiting-hint">${escapeHtml(t('transport.limitingStation'))}</p>`
+                    : calc.apply_station_limit && (calc.vehicles_needed || 0) > 0
+                      ? `<p class="form-hint transport-limiting-hint">${escapeHtml(t('transport.limitingCapacity'))}</p>`
+                      : ''
+                }
+                ${
+                  calc.apply_station_limit
+                    ? `<p class="form-hint">${escapeHtml(t('transport.stationThroughputHint'))}</p>`
+                    : ''
+                }
               </div>
               ${
                 calc.error
@@ -563,7 +634,7 @@
       </section>`;
   }
 
-  function renderCompositionStrip(composition, cargoBySlug, vehicle) {
+  function renderCompositionStrip(composition, cargoBySlug, vehicle, stationBeltMks = []) {
     if (!composition.length) {
       return `<p class="form-hint">${escapeHtml(t('transport.compositionEmpty'))}</p>`;
     }
@@ -577,8 +648,12 @@
         </div>`);
     }
 
+    let stationIndex = 0;
+    const applyStationLimit = vehicle?.slug !== 'drone-transport';
+
     for (const block of composition) {
       const viewIndex = block.view_index;
+      const blockMks = block.station_mks || [];
       if (block.kind === 'mixed') {
         const icons = (block.item_slugs || [])
           .map((slug) => {
@@ -590,12 +665,25 @@
           })
           .join('');
         for (let i = 0; i < block.count; i++) {
+          const mk = stationBeltMks[stationIndex] ?? blockMks[i] ?? 5;
+          const mkSelect = applyStationLimit
+            ? `<label class="transport-station-mk">
+                <span>${escapeHtml(t('transport.stationBeltShort'))}</span>
+                <select data-station-belt-index="${stationIndex}" class="transport-station-mk-select" onclick="event.stopPropagation()">
+                  ${mkOptionsHtml(6, mk)}
+                </select>
+              </label>`
+            : '';
           cells.push(`
-            <button type="button" class="transport-composition-car transport-composition-car--mix transport-composition-car--clickable"
-              data-transport-view-index="${viewIndex}" data-transport-car-index="${i}"
-              title="${escapeHtml(t('transport.compositionMixed'))}">
-              <div class="transport-composition-mix-icons">${icons}</div>
-            </button>`);
+            <div class="transport-composition-unit">
+              <button type="button" class="transport-composition-car transport-composition-car--mix transport-composition-car--clickable"
+                data-transport-view-index="${viewIndex}" data-transport-car-index="${i}"
+                title="${escapeHtml(t('transport.compositionMixed'))}">
+                <div class="transport-composition-mix-icons">${icons}</div>
+              </button>
+              ${mkSelect}
+            </div>`);
+          stationIndex += 1;
         }
         continue;
       }
@@ -603,19 +691,36 @@
       const cargo = cargoBySlug.get(block.item_slug);
       const img = itemImageSrc(cargo);
       const name = cargo?.name || block.item_slug;
+      const isFluid = Boolean(block.is_fluid);
       for (let i = 0; i < block.count; i++) {
+        const mk = stationBeltMks[stationIndex] ?? blockMks[i] ?? (isFluid ? 2 : 5);
+        const mkSelect = applyStationLimit
+          ? `<label class="transport-station-mk">
+              <span>${escapeHtml(
+                isFluid ? t('transport.stationPipeShort') : t('transport.stationBeltShort')
+              )}</span>
+              <select data-station-belt-index="${stationIndex}" class="transport-station-mk-select" onclick="event.stopPropagation()">
+                ${mkOptionsHtml(isFluid ? 2 : 6, mk)}
+              </select>
+            </label>`
+          : '';
         cells.push(`
-          <button type="button" class="transport-composition-car transport-composition-car--clickable"
-            data-transport-view-index="${viewIndex}" data-transport-car-index="${i}"
-            title="${escapeHtml(name)}">
-            ${img ? `<img src="${escapeHtml(img)}" alt="" />` : `<span>${escapeHtml(name.slice(0, 2))}</span>`}
-          </button>`);
+          <div class="transport-composition-unit">
+            <button type="button" class="transport-composition-car transport-composition-car--clickable"
+              data-transport-view-index="${viewIndex}" data-transport-car-index="${i}"
+              title="${escapeHtml(name)}">
+              ${img ? `<img src="${escapeHtml(img)}" alt="" />` : `<span>${escapeHtml(name.slice(0, 2))}</span>`}
+            </button>
+            ${mkSelect}
+          </div>`);
+        stationIndex += 1;
       }
     }
 
     return `
       <div class="transport-composition">
         <h4 class="transport-composition-title">${escapeHtml(t('transport.compositionTitle'))}</h4>
+        <p class="form-hint">${escapeHtml(t('transport.stationBeltPerCarHint'))}</p>
         <div class="transport-composition-track">${cells.join('')}</div>
         <p class="form-hint">${escapeHtml(
           t('transport.compositionClickHint')
@@ -672,6 +777,7 @@
 
     const carTotals = opts.carTotals || null;
     const multiCar = Boolean(opts.multiCar);
+    const titleKey = carTotals ? 'transport.slotModalThisCarTitle' : 'transport.slotModalTotals';
 
     const htmlRows = list
       .map((row) => {
@@ -686,25 +792,25 @@
         const tripLabel = Number.isFinite(tripAmount)
           ? formatCargoQty(tripAmount, isFluid)
           : formatCargoQty(carAmount, isFluid);
-        const showCar =
+        const carLabel = formatCargoQty(carAmount, isFluid);
+        const showCarSplit =
           carTotals &&
           (multiCar || (Number.isFinite(tripAmount) && Math.abs(tripAmount - carAmount) > 1e-6));
+        // Nel popup mezzo: quantità di questo vagone in grande, totale viaggio sotto
+        const primaryLabel = showCarSplit ? carLabel : tripLabel;
+        const secondaryHtml = showCarSplit
+          ? `<span class="transport-slot-total-car">${escapeHtml(
+              t('transport.slotModalTripTotal', { amount: tripLabel })
+            )}</span>`
+          : '';
         return `
           <div class="transport-slot-total-row">
             ${img ? `<img src="${escapeHtml(img)}" alt="" />` : ''}
             <div class="transport-slot-total-meta">
               <span class="transport-slot-total-name">${escapeHtml(name)}</span>
-              ${
-                showCar
-                  ? `<span class="transport-slot-total-car">${escapeHtml(
-                      t('transport.slotModalCarTotal', {
-                        amount: formatCargoQty(carAmount, isFluid),
-                      })
-                    )}</span>`
-                  : ''
-              }
+              ${secondaryHtml}
             </div>
-            <span class="transport-slot-total-qty">${escapeHtml(tripLabel)}</span>
+            <span class="transport-slot-total-qty">${escapeHtml(primaryLabel)}</span>
           </div>`;
       })
       .join('');
@@ -712,7 +818,7 @@
     if (!htmlRows) return '';
     return `
       <div class="transport-slot-totals">
-        <h4 class="transport-slot-totals-title">${escapeHtml(t('transport.slotModalTotals'))}</h4>
+        <h4 class="transport-slot-totals-title">${escapeHtml(t(titleKey))}</h4>
         <div class="transport-slot-totals-list">${htmlRows}</div>
       </div>`;
   }
@@ -922,6 +1028,23 @@
       const vehicle = e.target.closest('#transport-detail-vehicle');
       if (vehicle) {
         persistDetailPatch({ vehicle_slug: vehicle.value }).catch(console.error);
+        return;
+      }
+      const stationBelt = e.target.closest('[data-station-belt-index]');
+      if (stationBelt && activeTransportDetail) {
+        const index = Number(stationBelt.dataset.stationBeltIndex);
+        const mk = Number(stationBelt.value);
+        if (!Number.isFinite(index) || index < 0 || !Number.isFinite(mk)) return;
+        const current =
+          activeTransportDetail.station_belt_mks ||
+          activeTransportDetail.calculation?.station_belt_mks ||
+          [];
+        const next = current.slice();
+        while (next.length <= index) {
+          next.push(activeTransportDetail.belt_mk || 5);
+        }
+        next[index] = mk;
+        persistDetailPatch({ station_belt_mks: next }).catch(console.error);
         return;
       }
       const rateInput = e.target.closest('[data-transport-rate]');

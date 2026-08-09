@@ -948,6 +948,32 @@
               </p>
             </div>
           </div>
+          <div class="transport-create-times">
+            <div class="form-field">
+              <label for="transport-create-belt-mk" data-i18n="transport.beltMk">Nastro stazione</label>
+              <select id="transport-create-belt-mk" class="production-config-input">
+                <option value="1">Mk.1</option>
+                <option value="2">Mk.2</option>
+                <option value="3">Mk.3</option>
+                <option value="4">Mk.4</option>
+                <option value="5" selected>Mk.5</option>
+                <option value="6">Mk.6</option>
+              </select>
+              <p class="form-hint" data-i18n="transport.beltMkHint">
+                Due porte per piattaforma: throughput max = 2 × nastro.
+              </p>
+            </div>
+            <div class="form-field">
+              <label for="transport-create-pipe-mk" data-i18n="transport.pipeMk">Tubo stazione</label>
+              <select id="transport-create-pipe-mk" class="production-config-input">
+                <option value="1">Mk.1</option>
+                <option value="2" selected>Mk.2</option>
+              </select>
+              <p class="form-hint" data-i18n="transport.pipeMkHint">
+                Per piattaforme fluide: throughput max = 2 × tubo.
+              </p>
+            </div>
+          </div>
           <p class="form-error hidden" id="transport-create-error"></p>
           <div class="modal-actions">
             <button type="button" class="btn btn-ghost" id="transport-create-cancel" data-i18n="common.cancel">

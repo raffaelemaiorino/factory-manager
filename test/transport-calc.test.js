@@ -4,29 +4,69 @@ const { calculateTransportNeed } = require('../src/database/transport-calc');
 const { getVehicleBySlug } = require('../src/database/seeds/vehicles');
 
 describe('transport-calc', () => {
-  it('Filorapido 3000/min, andata 3 + ritorno 3 → 2 vagoni (RtD 6)', () => {
+  it('Filorapido 3000/min, andata 3 + ritorno 3 → 2 vagoni (RtD 6, capacità)', () => {
     const vehicle = getVehicleBySlug('freight-wagon');
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
       3,
-      3
+      3,
+      { belt_mk: 5 }
     );
     assert.equal(result.ok, true);
     assert.equal(result.round_trip_minutes, 6);
     assert.equal(result.vehicles_needed, 2);
     assert.equal(result.breakdown[0].trip_capacity, 16000);
+    assert.equal(result.breakdown[0].cars_from_capacity, 2);
+    assert.equal(result.breakdown[0].stations_needed, 2);
   });
 
-  it('Filorapido 3000/min, andata 1.5 + ritorno 1.5 → 1 vagone (RtD 3)', () => {
+  it('Filorapido 3000/min RtD 4 Mk.5 → 2 vagoni (stazioni, non solo capienza)', () => {
     const vehicle = getVehicleBySlug('freight-wagon');
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
-      1.5,
-      1.5
+      2,
+      2,
+      { belt_mk: 5 }
     );
+    // Capienza: 3000*4/16000 = 0.75 → 1; stazioni: ceil(3000/1560)=2
+    assert.equal(result.breakdown[0].cars_from_capacity, 1);
+    assert.equal(result.breakdown[0].stations_needed, 2);
+    assert.equal(result.breakdown[0].limiting, 'station');
+    assert.equal(result.vehicles_needed, 2);
+    assert.equal(result.stations_needed, 2);
+    assert.equal(result.belts_or_pipes_needed, 4);
+    assert.equal(result.station_throughput_solid, 1560);
+  });
+
+  it('Filorapido 3000/min RtD 4 Mk.6 → ancora 2 (ceil(3000/2400)=2)', () => {
+    const vehicle = getVehicleBySlug('freight-wagon');
+    const result = calculateTransportNeed(
+      vehicle,
+      [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
+      2,
+      2,
+      { belt_mk: 6 }
+    );
+    assert.equal(result.station_throughput_solid, 2400);
+    assert.equal(result.breakdown[0].stations_needed, 2);
+    assert.equal(result.vehicles_needed, 2);
+  });
+
+  it('Filorapido 2000/min RtD 4 Mk.6 → 1 vagone (capienza e stazioni)', () => {
+    const vehicle = getVehicleBySlug('freight-wagon');
+    const result = calculateTransportNeed(
+      vehicle,
+      [{ item_slug: 'high-speed-wire', rate: 2000, stack_size: 500 }],
+      2,
+      2,
+      { belt_mk: 6 }
+    );
+    assert.equal(result.breakdown[0].cars_from_capacity, 1);
+    assert.equal(result.breakdown[0].stations_needed, 1);
     assert.equal(result.vehicles_needed, 1);
+    assert.equal(result.breakdown[0].limiting, 'capacity');
   });
 
   it('andata e ritorno asimmetrici: 2 + 4 = RtD 6', () => {
@@ -35,7 +75,8 @@ describe('transport-calc', () => {
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
       2,
-      4
+      4,
+      { belt_mk: 5 }
     );
     assert.equal(result.round_trip_minutes, 6);
     assert.equal(result.vehicles_needed, 2);
@@ -47,7 +88,8 @@ describe('transport-calc', () => {
       vehicle,
       [{ item_slug: 'water', rate: 600, stack_size: null, is_fluid: true }],
       3,
-      3
+      3,
+      { pipe_mk: 2 }
     );
     assert.equal(result.ok, true);
     assert.equal(result.vehicles_needed, 2); // 600*6/2400 = 1.5 → 2
@@ -63,13 +105,29 @@ describe('transport-calc', () => {
         { item_slug: 'water', rate: 600, stack_size: null, is_fluid: true },
       ],
       3,
-      3
+      3,
+      { belt_mk: 5, pipe_mk: 2 }
     );
     // 2 solidi + 2 fluidi
     assert.equal(result.ok, true);
     assert.equal(result.vehicles_needed, 4);
     assert.equal(result.breakdown.length, 2);
     assert.equal(result.composition.length, 2);
+  });
+
+  it('drone ignora vincolo porte stazione', () => {
+    const vehicle = getVehicleBySlug('drone-transport');
+    const result = calculateTransportNeed(
+      vehicle,
+      [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
+      2,
+      2,
+      { belt_mk: 5 }
+    );
+    assert.equal(result.apply_station_limit, false);
+    // 3000*4 / (9*500) = 12000/4500 → 3
+    assert.equal(result.breakdown[0].stations_needed, 0);
+    assert.equal(result.vehicles_needed, 3);
   });
 
   it('alias freight-wagon-fluid → freight-wagon', () => {
@@ -87,7 +145,8 @@ describe('transport-calc', () => {
         { item_slug: 'iron-rod', rate: 400, stack_size: 100 },
       ],
       3,
-      3
+      3,
+      { belt_mk: 5 }
     );
     assert.equal(result.mode, 'per_cargo_mix');
     assert.equal(result.vehicles_needed, 2);
@@ -103,7 +162,8 @@ describe('transport-calc', () => {
         { item_slug: 'iron-rod', rate: 400, stack_size: 100, allow_mix: true },
       ],
       3,
-      3
+      3,
+      { belt_mk: 5 }
     );
     assert.equal(result.vehicles_needed, 1);
     assert.equal(result.breakdown.every((b) => b.mix_group === true), true);
@@ -123,7 +183,8 @@ describe('transport-calc', () => {
         { item_slug: 'water', rate: 600, stack_size: null, is_fluid: true, allow_mix: true },
       ],
       3,
-      3
+      3,
+      { belt_mk: 5, pipe_mk: 2 }
     );
     // mix: (600+600)/100 = 12 stack → 1 vagone; wire: 2; water: 2 (fluido ignora allow_mix)
     assert.equal(result.ok, true);
@@ -136,24 +197,57 @@ describe('transport-calc', () => {
     assert.equal(water.allow_mix, false);
   });
 
-  it('slot_views: Filorapido riempie 32 slot × 2 vagoni', () => {
+  it('slot_views: Filorapido ripartito uniformemente su 2 vagoni', () => {
     const vehicle = getVehicleBySlug('freight-wagon');
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
       3,
-      3
+      3,
+      { belt_mk: 5 }
     );
     assert.equal(result.slot_views.length, 1);
     const cars = result.slot_views[0].cars;
     assert.equal(cars.length, 2);
     assert.equal(cars[0].length, 32);
-    assert.equal(cars[0].every((s) => s && s.amount === 500), true);
-    // secondo vagone: 18000 - 16000 = 2000 → 4 stack da 500
-    const filled = cars[1].filter(Boolean);
-    assert.equal(filled.length, 4);
-    assert.equal(filled.every((s) => s.amount === 500), true);
-    assert.equal(cars[1].slice(4).every((s) => s == null), true);
+    // 18000 / 2 = 9000 → 18 stack da 500 per vagone
+    const filled0 = cars[0].filter(Boolean);
+    const filled1 = cars[1].filter(Boolean);
+    assert.equal(filled0.length, 18);
+    assert.equal(filled1.length, 18);
+    assert.equal(filled0.every((s) => s.amount === 500), true);
+    assert.equal(filled1.every((s) => s.amount === 500), true);
+  });
+
+  it('slot_views: 12000 Filorapido su 2 stazioni → 6000+6000', () => {
+    const vehicle = getVehicleBySlug('freight-wagon');
+    const result = calculateTransportNeed(
+      vehicle,
+      [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
+      2,
+      2,
+      { belt_mk: 5 }
+    );
+    assert.equal(result.vehicles_needed, 2);
+    const cars = result.slot_views[0].cars;
+    const sum0 = cars[0].filter(Boolean).reduce((s, x) => s + x.amount, 0);
+    const sum1 = cars[1].filter(Boolean).reduce((s, x) => s + x.amount, 0);
+    assert.equal(sum0, 6000);
+    assert.equal(sum1, 6000);
+  });
+
+  it('station_belt_mks: Mk.4 su entrambe richiede più di 2 stazioni per 3000/min', () => {
+    const vehicle = getVehicleBySlug('freight-wagon');
+    // Mk.4 = 480 → 960/stazione; 3000/960 = 4 stazioni
+    const result = calculateTransportNeed(
+      vehicle,
+      [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
+      2,
+      2,
+      { belt_mk: 4, station_belt_mks: [4, 4, 4, 4] }
+    );
+    assert.equal(result.breakdown[0].stations_needed, 4);
+    assert.equal(result.vehicles_needed, 4);
   });
 
   it('slot_views misti: stack in ordine nei slot condivisi', () => {
@@ -165,7 +259,8 @@ describe('transport-calc', () => {
         { item_slug: 'iron-rod', rate: 400, stack_size: 100, allow_mix: true },
       ],
       3,
-      3
+      3,
+      { belt_mk: 5 }
     );
     const car = result.slot_views[0].cars[0];
     assert.equal(car.length, 48);

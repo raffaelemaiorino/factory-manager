@@ -9,6 +9,30 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [2.6.3] - 2026-08-09
+
+### Changed
+- Trasporti: più spazio tra locomotiva, vagoni e select Mk nella composizione
+
+## [2.6.2] - 2026-08-09
+
+### Changed
+- Popup contenuto mezzo: in evidenza la quantità di questo vagone; sotto il totale del viaggio completo
+
+## [2.6.1] - 2026-08-09
+
+### Fixed
+- Trasporti: il carico è ripartito in modo uniforme sui vagoni (es. 12000 Filorapido → 6000+6000), non più tutto sul primo
+
+### Changed
+- Trasporti: Mk nastro/tubo sceglibile **per ogni stazione** (sotto ciascun vagone); una stazione = un mezzo
+
+## [2.6.0] - 2026-08-09
+
+### Added
+- Trasporti: scelta Mk nastro/tubo stazione (come in Produzione); i mezzi necessari considerano anche il tetto di 2 porte per piattaforma (`max(capienza, stazioni)`)
+- Risultato: riepilogo stazioni/nastri e avviso se il limite è dalle porte, non dalla capienza del mezzo
+
 ## [2.5.4] - 2026-08-09
 
 ### Fixed

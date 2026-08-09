@@ -1,5 +1,10 @@
 const { getVehicleBySlug, getTransportVehicles, normalizeVehicleSlug } = require('./seeds/vehicles');
-const { calculateTransportNeed } = require('./transport-calc');
+const {
+  calculateTransportNeed,
+  DEFAULT_TRANSPORT_BELT_MK,
+  DEFAULT_TRANSPORT_PIPE_MK,
+} = require('./transport-calc');
+const { clampBeltMk, clampPipeMk } = require('./transport');
 
 function queryOne(db, sql, params = []) {
   const stmt = db.prepare(sql);
@@ -67,6 +72,15 @@ function ensureTransportPlansTables(db) {
   if (!planCols.has('return_minutes')) {
     db.run('ALTER TABLE transport_plans ADD COLUMN return_minutes REAL');
   }
+  if (!planCols.has('belt_mk')) {
+    db.run('ALTER TABLE transport_plans ADD COLUMN belt_mk INTEGER');
+  }
+  if (!planCols.has('pipe_mk')) {
+    db.run('ALTER TABLE transport_plans ADD COLUMN pipe_mk INTEGER');
+  }
+  if (!planCols.has('station_belt_mks')) {
+    db.run('ALTER TABLE transport_plans ADD COLUMN station_belt_mks TEXT');
+  }
   // Migrazione da one_way_minutes: andata = ritorno = andata legacy
   db.run(`
     UPDATE transport_plans
@@ -74,6 +88,12 @@ function ensureTransportPlansTables(db) {
         return_minutes = COALESCE(return_minutes, one_way_minutes, 1)
     WHERE outbound_minutes IS NULL OR return_minutes IS NULL
   `);
+  db.run(
+    `UPDATE transport_plans
+     SET belt_mk = COALESCE(belt_mk, ${DEFAULT_TRANSPORT_BELT_MK}),
+         pipe_mk = COALESCE(pipe_mk, ${DEFAULT_TRANSPORT_PIPE_MK})
+     WHERE belt_mk IS NULL OR pipe_mk IS NULL`
+  );
 }
 
 function listItemBySlug(db, slug, getItemById) {
@@ -112,8 +132,39 @@ function loadCargo(db, planId, getItemById) {
   });
 }
 
+function normalizePlanMk(plan) {
+  return {
+    belt_mk: clampBeltMk(plan?.belt_mk, DEFAULT_TRANSPORT_BELT_MK),
+    pipe_mk: clampPipeMk(plan?.pipe_mk, DEFAULT_TRANSPORT_PIPE_MK),
+  };
+}
+
+function parseStationBeltMks(raw) {
+  if (Array.isArray(raw)) {
+    return raw.map((mk) => clampBeltMk(mk, DEFAULT_TRANSPORT_BELT_MK));
+  }
+  if (typeof raw === 'string' && raw.trim()) {
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed.map((mk) => Number(mk)).filter((n) => Number.isFinite(n));
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+  return [];
+}
+
+function serializeStationBeltMks(list) {
+  if (!Array.isArray(list) || !list.length) return null;
+  return JSON.stringify(list.map((mk) => Number(mk)));
+}
+
 function attachCalculation(plan, cargo) {
   const vehicle = getVehicleBySlug(plan.vehicle_slug);
+  const { belt_mk: beltMk, pipe_mk: pipeMk } = normalizePlanMk(plan);
+  const stationBeltMks = parseStationBeltMks(plan.station_belt_mks);
   const calcCargo = cargo.map((line) => ({
     item_slug: line.item_slug,
     rate: line.rate,
@@ -123,11 +174,23 @@ function attachCalculation(plan, cargo) {
   }));
   const outbound = Number(plan.outbound_minutes);
   const ret = Number(plan.return_minutes);
-  const calculation = calculateTransportNeed(vehicle, calcCargo, outbound, ret);
+  const calculation = calculateTransportNeed(vehicle, calcCargo, outbound, ret, {
+    belt_mk: beltMk,
+    pipe_mk: pipeMk,
+    station_belt_mks: stationBeltMks,
+  });
+  // Persisti la lunghezza allineata al risultato (pad/truncate gestiti al save)
+  const resolvedStationMks =
+    calculation.station_belt_mks?.length
+      ? calculation.station_belt_mks
+      : stationBeltMks;
   return {
     ...plan,
     outbound_minutes: outbound,
     return_minutes: ret,
+    belt_mk: beltMk,
+    pipe_mk: pipeMk,
+    station_belt_mks: resolvedStationMks,
     vehicle,
     cargo,
     calculation,
@@ -148,14 +211,19 @@ function insertCargoLines(db, planId, cargoLines) {
   });
 }
 
+const PLAN_SELECT_COLS = `id, name, vehicle_slug,
+            COALESCE(outbound_minutes, one_way_minutes, 1) AS outbound_minutes,
+            COALESCE(return_minutes, one_way_minutes, 1) AS return_minutes,
+            COALESCE(belt_mk, ${DEFAULT_TRANSPORT_BELT_MK}) AS belt_mk,
+            COALESCE(pipe_mk, ${DEFAULT_TRANSPORT_PIPE_MK}) AS pipe_mk,
+            station_belt_mks,
+            one_way_minutes, notes, created_at, updated_at`;
+
 function listTransportPlans(db, getItemById) {
   ensureTransportPlansTables(db);
   const plans = queryAll(
     db,
-    `SELECT id, name, vehicle_slug,
-            COALESCE(outbound_minutes, one_way_minutes, 1) AS outbound_minutes,
-            COALESCE(return_minutes, one_way_minutes, 1) AS return_minutes,
-            one_way_minutes, notes, created_at, updated_at
+    `SELECT ${PLAN_SELECT_COLS}
      FROM transport_plans
      ORDER BY updated_at DESC, id DESC`
   );
@@ -170,10 +238,7 @@ function getTransportPlanById(db, id, getItemById) {
   ensureTransportPlansTables(db);
   const plan = queryOne(
     db,
-    `SELECT id, name, vehicle_slug,
-            COALESCE(outbound_minutes, one_way_minutes, 1) AS outbound_minutes,
-            COALESCE(return_minutes, one_way_minutes, 1) AS return_minutes,
-            one_way_minutes, notes, created_at, updated_at
+    `SELECT ${PLAN_SELECT_COLS}
      FROM transport_plans WHERE id = ?`,
     [id]
   );
@@ -225,6 +290,25 @@ function resolveTripTimes(data, existing = {}) {
   return { outbound, returnMinutes: ret };
 }
 
+function resolvePlanMk(data, existing = {}) {
+  const beltMk = clampBeltMk(
+    data.belt_mk != null ? data.belt_mk : existing.belt_mk,
+    DEFAULT_TRANSPORT_BELT_MK
+  );
+  const pipeMk = clampPipeMk(
+    data.pipe_mk != null ? data.pipe_mk : existing.pipe_mk,
+    DEFAULT_TRANSPORT_PIPE_MK
+  );
+  return { beltMk, pipeMk };
+}
+
+function resolveStationBeltMks(data, existing = {}) {
+  if (data.station_belt_mks !== undefined) {
+    return parseStationBeltMks(data.station_belt_mks);
+  }
+  return parseStationBeltMks(existing.station_belt_mks);
+}
+
 function createTransportPlan(db, persist, data = {}, getItemById) {
   ensureTransportPlansTables(db);
   const name = String(data.name ?? '').trim() || 'Nuovo trasporto';
@@ -235,11 +319,23 @@ function createTransportPlan(db, persist, data = {}, getItemById) {
   }
 
   const { outbound, returnMinutes } = resolveTripTimes(data);
+  const { beltMk, pipeMk } = resolvePlanMk(data);
+  const stationBeltMks = resolveStationBeltMks(data);
 
   db.run(
-    `INSERT INTO transport_plans (name, vehicle_slug, one_way_minutes, outbound_minutes, return_minutes, notes)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [name, vehicleSlug, outbound, outbound, returnMinutes, data.notes ?? null]
+    `INSERT INTO transport_plans (name, vehicle_slug, one_way_minutes, outbound_minutes, return_minutes, belt_mk, pipe_mk, station_belt_mks, notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      name,
+      vehicleSlug,
+      outbound,
+      outbound,
+      returnMinutes,
+      beltMk,
+      pipeMk,
+      serializeStationBeltMks(stationBeltMks),
+      data.notes ?? null,
+    ]
   );
   const id = db.exec('SELECT last_insert_rowid()')[0].values[0][0];
 
@@ -266,14 +362,28 @@ function updateTransportPlan(db, persist, id, data = {}, getItemById) {
   }
 
   const { outbound, returnMinutes } = resolveTripTimes(data, existing);
+  const { beltMk, pipeMk } = resolvePlanMk(data, existing);
+  const stationBeltMks = resolveStationBeltMks(data, existing);
   const notes = data.notes !== undefined ? data.notes : existing.notes;
 
   db.run(
     `UPDATE transport_plans
-     SET name = ?, vehicle_slug = ?, one_way_minutes = ?, outbound_minutes = ?, return_minutes = ?, notes = ?,
+     SET name = ?, vehicle_slug = ?, one_way_minutes = ?, outbound_minutes = ?, return_minutes = ?,
+         belt_mk = ?, pipe_mk = ?, station_belt_mks = ?, notes = ?,
          updated_at = datetime('now')
      WHERE id = ?`,
-    [name, vehicleSlug, outbound, outbound, returnMinutes, notes ?? null, id]
+    [
+      name,
+      vehicleSlug,
+      outbound,
+      outbound,
+      returnMinutes,
+      beltMk,
+      pipeMk,
+      serializeStationBeltMks(stationBeltMks),
+      notes ?? null,
+      id,
+    ]
   );
 
   if (Array.isArray(data.cargo)) {
@@ -304,6 +414,9 @@ function duplicateTransportPlan(db, persist, id, getItemById) {
       vehicle_slug: source.vehicle_slug,
       outbound_minutes: source.outbound_minutes,
       return_minutes: source.return_minutes,
+      belt_mk: source.belt_mk,
+      pipe_mk: source.pipe_mk,
+      station_belt_mks: source.station_belt_mks,
       notes: source.notes,
       cargo: source.cargo.map((line) => ({
         item_slug: line.item_slug,
