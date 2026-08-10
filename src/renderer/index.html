@@ -916,38 +916,63 @@
             <label data-i18n="transport.vehicleType">Tipo di trasporto</label>
             <div id="transport-create-vehicle-grid" class="transport-vehicle-grid"></div>
           </div>
-          <div class="transport-create-times">
-            <div class="form-field">
-              <label for="transport-create-outbound" data-i18n="transport.outboundMinutes">Tempo andata (min)</label>
+          <div class="transport-route-toolbar">
+            <span class="transport-route-toolbar-label" data-i18n="transport.timeUnitLabel">Unità tempo</span>
+            <div id="transport-create-time-unit" class="transport-time-unit" role="group" aria-label="Unità tempo">
+              <button type="button" class="transport-time-unit-btn is-active" data-time-unit="min" data-i18n="transport.timeUnitMin">min</button>
+              <button type="button" class="transport-time-unit-btn" data-time-unit="sec" data-i18n="transport.timeUnitSec">s</button>
+            </div>
+          </div>
+          <div class="transport-route-metrics transport-create-times transport-trip-times">
+            <div class="transport-metric">
+              <label for="transport-create-outbound" id="transport-create-outbound-label" data-i18n="transport.outboundShort">Andata</label>
               <input
                 type="text"
                 id="transport-create-outbound"
-                class="production-config-decimal-input"
+                class="transport-metric-input"
                 inputmode="decimal"
-                required
                 autocomplete="off"
                 value=""
               />
-              <p class="form-hint" data-i18n="transport.outboundHint">
-                Tempo della tratta di andata (può includere carichi intermedi).
-              </p>
             </div>
-            <div class="form-field">
-              <label for="transport-create-return" data-i18n="transport.returnMinutes">Tempo ritorno (min)</label>
+            <div class="transport-metric">
+              <label for="transport-create-return" id="transport-create-return-label" data-i18n="transport.returnShort">Ritorno</label>
               <input
                 type="text"
                 id="transport-create-return"
-                class="production-config-decimal-input"
+                class="transport-metric-input"
                 inputmode="decimal"
-                required
                 autocomplete="off"
                 value=""
               />
-              <p class="form-hint" data-i18n="transport.returnHint">
-                Tempo della tratta di ritorno (può essere diverso dall’andata).
-              </p>
+            </div>
+            <div class="transport-metric">
+              <label for="transport-create-total" id="transport-create-total-label" data-i18n="transport.totalShort">Totale</label>
+              <input
+                type="text"
+                id="transport-create-total"
+                class="transport-metric-input"
+                inputmode="decimal"
+                autocomplete="off"
+                value=""
+              />
+            </div>
+            <div class="transport-metric hidden" id="transport-create-train-count-field">
+              <label for="transport-create-train-count" data-i18n="transport.trainCountShort">Treni</label>
+              <input
+                type="number"
+                id="transport-create-train-count"
+                class="transport-metric-input"
+                min="1"
+                max="99"
+                step="1"
+                value="1"
+              />
             </div>
           </div>
+          <p class="form-hint transport-route-hint" data-i18n="transport.routeTimesHint">
+            Totale = andata + ritorno; se lo inserisci a mano, andata e ritorno diventano metà ciascuno. Con più treni il carico si divide.
+          </p>
           <div class="transport-create-times">
             <div class="form-field">
               <label for="transport-create-belt-mk" data-i18n="transport.beltMk">Nastro stazione</label>

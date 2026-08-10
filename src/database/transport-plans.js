@@ -3,6 +3,11 @@ const {
   calculateTransportNeed,
   DEFAULT_TRANSPORT_BELT_MK,
   DEFAULT_TRANSPORT_PIPE_MK,
+  DEFAULT_TIME_UNIT,
+  normalizeTimeUnit,
+  minutesFromSeconds,
+  secondsFromMinutes,
+  normalizeTrainCount,
 } = require('./transport-calc');
 const { clampBeltMk, clampPipeMk } = require('./transport');
 
@@ -72,6 +77,15 @@ function ensureTransportPlansTables(db) {
   if (!planCols.has('return_minutes')) {
     db.run('ALTER TABLE transport_plans ADD COLUMN return_minutes REAL');
   }
+  if (!planCols.has('outbound_seconds')) {
+    db.run('ALTER TABLE transport_plans ADD COLUMN outbound_seconds REAL');
+  }
+  if (!planCols.has('return_seconds')) {
+    db.run('ALTER TABLE transport_plans ADD COLUMN return_seconds REAL');
+  }
+  if (!planCols.has('time_unit')) {
+    db.run(`ALTER TABLE transport_plans ADD COLUMN time_unit TEXT DEFAULT '${DEFAULT_TIME_UNIT}'`);
+  }
   if (!planCols.has('belt_mk')) {
     db.run('ALTER TABLE transport_plans ADD COLUMN belt_mk INTEGER');
   }
@@ -81,6 +95,9 @@ function ensureTransportPlansTables(db) {
   if (!planCols.has('station_belt_mks')) {
     db.run('ALTER TABLE transport_plans ADD COLUMN station_belt_mks TEXT');
   }
+  if (!planCols.has('train_count')) {
+    db.run('ALTER TABLE transport_plans ADD COLUMN train_count INTEGER NOT NULL DEFAULT 1');
+  }
   // Migrazione da one_way_minutes: andata = ritorno = andata legacy
   db.run(`
     UPDATE transport_plans
@@ -88,11 +105,36 @@ function ensureTransportPlansTables(db) {
         return_minutes = COALESCE(return_minutes, one_way_minutes, 1)
     WHERE outbound_minutes IS NULL OR return_minutes IS NULL
   `);
+  // Canonical: secondi. Piani esistenti: minutes × 60
+  db.run(`
+    UPDATE transport_plans
+    SET outbound_seconds = ROUND(COALESCE(outbound_minutes, one_way_minutes, 1) * 60),
+        return_seconds = ROUND(COALESCE(return_minutes, one_way_minutes, 1) * 60)
+    WHERE outbound_seconds IS NULL OR return_seconds IS NULL
+  `);
+  db.run(`
+    UPDATE transport_plans
+    SET time_unit = COALESCE(NULLIF(TRIM(time_unit), ''), '${DEFAULT_TIME_UNIT}')
+    WHERE time_unit IS NULL OR TRIM(COALESCE(time_unit, '')) = ''
+  `);
+  // Tieni i minuti allineati ai secondi (derivati, per compat dashboard)
+  db.run(`
+    UPDATE transport_plans
+    SET outbound_minutes = outbound_seconds / 60.0,
+        return_minutes = return_seconds / 60.0,
+        one_way_minutes = outbound_seconds / 60.0
+    WHERE outbound_seconds IS NOT NULL AND return_seconds IS NOT NULL
+  `);
   db.run(
     `UPDATE transport_plans
      SET belt_mk = COALESCE(belt_mk, ${DEFAULT_TRANSPORT_BELT_MK}),
          pipe_mk = COALESCE(pipe_mk, ${DEFAULT_TRANSPORT_PIPE_MK})
      WHERE belt_mk IS NULL OR pipe_mk IS NULL`
+  );
+  db.run(
+    `UPDATE transport_plans
+     SET train_count = 1
+     WHERE train_count IS NULL OR train_count < 1`
   );
 }
 
@@ -172,22 +214,38 @@ function attachCalculation(plan, cargo) {
     is_fluid: line.is_fluid,
     allow_mix: Boolean(line.allow_mix),
   }));
-  const outbound = Number(plan.outbound_minutes);
-  const ret = Number(plan.return_minutes);
-  const calculation = calculateTransportNeed(vehicle, calcCargo, outbound, ret, {
+  const outboundSeconds = Number(
+    plan.outbound_seconds != null
+      ? plan.outbound_seconds
+      : secondsFromMinutes(plan.outbound_minutes ?? plan.one_way_minutes)
+  );
+  const returnSeconds = Number(
+    plan.return_seconds != null
+      ? plan.return_seconds
+      : secondsFromMinutes(plan.return_minutes ?? plan.one_way_minutes)
+  );
+  const timeUnit = normalizeTimeUnit(plan.time_unit);
+  const trainCount = normalizeTrainCount(plan.train_count, vehicle);
+  const calculation = calculateTransportNeed(vehicle, calcCargo, outboundSeconds, returnSeconds, {
     belt_mk: beltMk,
     pipe_mk: pipeMk,
     station_belt_mks: stationBeltMks,
+    train_count: trainCount,
   });
-  // Persisti la lunghezza allineata al risultato (pad/truncate gestiti al save)
   const resolvedStationMks =
     calculation.station_belt_mks?.length
       ? calculation.station_belt_mks
       : stationBeltMks;
+  const outboundMinutes = minutesFromSeconds(outboundSeconds);
+  const returnMinutes = minutesFromSeconds(returnSeconds);
   return {
     ...plan,
-    outbound_minutes: outbound,
-    return_minutes: ret,
+    outbound_seconds: outboundSeconds,
+    return_seconds: returnSeconds,
+    outbound_minutes: outboundMinutes,
+    return_minutes: returnMinutes,
+    time_unit: timeUnit,
+    train_count: trainCount,
     belt_mk: beltMk,
     pipe_mk: pipeMk,
     station_belt_mks: resolvedStationMks,
@@ -212,8 +270,16 @@ function insertCargoLines(db, planId, cargoLines) {
 }
 
 const PLAN_SELECT_COLS = `id, name, vehicle_slug,
+            COALESCE(outbound_seconds,
+              ROUND(COALESCE(outbound_minutes, one_way_minutes, 1) * 60)
+            ) AS outbound_seconds,
+            COALESCE(return_seconds,
+              ROUND(COALESCE(return_minutes, one_way_minutes, 1) * 60)
+            ) AS return_seconds,
             COALESCE(outbound_minutes, one_way_minutes, 1) AS outbound_minutes,
             COALESCE(return_minutes, one_way_minutes, 1) AS return_minutes,
+            COALESCE(NULLIF(TRIM(time_unit), ''), '${DEFAULT_TIME_UNIT}') AS time_unit,
+            COALESCE(train_count, 1) AS train_count,
             COALESCE(belt_mk, ${DEFAULT_TRANSPORT_BELT_MK}) AS belt_mk,
             COALESCE(pipe_mk, ${DEFAULT_TRANSPORT_PIPE_MK}) AS pipe_mk,
             station_belt_mks,
@@ -247,7 +313,7 @@ function getTransportPlanById(db, id, getItemById) {
   return attachCalculation(plan, cargo);
 }
 
-function parsePositiveMinutes(value, label) {
+function parsePositiveNumber(value, label) {
   const n = Number(value);
   if (!Number.isFinite(n) || n <= 0) {
     throw new Error(label);
@@ -255,29 +321,57 @@ function parsePositiveMinutes(value, label) {
   return n;
 }
 
-function resolveTripTimes(data, existing = {}) {
+function resolveExistingSeconds(existing = {}) {
   let outbound =
-    existing.outbound_minutes != null
-      ? Number(existing.outbound_minutes)
-      : Number(existing.one_way_minutes);
+    existing.outbound_seconds != null
+      ? Number(existing.outbound_seconds)
+      : secondsFromMinutes(existing.outbound_minutes ?? existing.one_way_minutes);
   let ret =
-    existing.return_minutes != null
-      ? Number(existing.return_minutes)
-      : Number(existing.one_way_minutes);
+    existing.return_seconds != null
+      ? Number(existing.return_seconds)
+      : secondsFromMinutes(existing.return_minutes ?? existing.one_way_minutes);
+  return { outbound, returnSeconds: ret };
+}
 
-  if (data.outbound_minutes != null) {
-    outbound = parsePositiveMinutes(data.outbound_minutes, 'Tempo di andata non valido');
+/**
+ * Accetta secondi (preferito), oppure minuti legacy, più time_unit UI.
+ * Restituisce sempre secondi canonici.
+ */
+function resolveTripTimes(data, existing = {}) {
+  const { outbound: existingOutbound, returnSeconds: existingReturn } = resolveExistingSeconds(existing);
+  let outbound = existingOutbound;
+  let ret = existingReturn;
+  let timeUnit = normalizeTimeUnit(
+    data.time_unit != null ? data.time_unit : existing.time_unit || DEFAULT_TIME_UNIT
+  );
+
+  if (data.outbound_seconds != null) {
+    outbound = parsePositiveNumber(data.outbound_seconds, 'Tempo di andata non valido');
+  } else if (data.outbound_minutes != null) {
+    outbound = secondsFromMinutes(
+      parsePositiveNumber(data.outbound_minutes, 'Tempo di andata non valido')
+    );
   }
-  if (data.return_minutes != null) {
-    ret = parsePositiveMinutes(data.return_minutes, 'Tempo di ritorno non valido');
+
+  if (data.return_seconds != null) {
+    ret = parsePositiveNumber(data.return_seconds, 'Tempo di ritorno non valido');
+  } else if (data.return_minutes != null) {
+    ret = secondsFromMinutes(
+      parsePositiveNumber(data.return_minutes, 'Tempo di ritorno non valido')
+    );
   }
-  // Compat: un solo one_way → andata = ritorno
+
+  // Compat: un solo one_way → andata = ritorno (in minuti legacy)
   if (
     data.one_way_minutes != null &&
+    data.outbound_seconds == null &&
+    data.return_seconds == null &&
     data.outbound_minutes == null &&
     data.return_minutes == null
   ) {
-    outbound = parsePositiveMinutes(data.one_way_minutes, 'Tempo di andata non valido');
+    outbound = secondsFromMinutes(
+      parsePositiveNumber(data.one_way_minutes, 'Tempo di andata non valido')
+    );
     ret = outbound;
   }
 
@@ -287,7 +381,13 @@ function resolveTripTimes(data, existing = {}) {
   if (!Number.isFinite(ret) || ret <= 0) {
     throw new Error('Tempo di ritorno non valido');
   }
-  return { outbound, returnMinutes: ret };
+  return {
+    outboundSeconds: outbound,
+    returnSeconds: ret,
+    outboundMinutes: minutesFromSeconds(outbound),
+    returnMinutes: minutesFromSeconds(ret),
+    timeUnit,
+  };
 }
 
 function resolvePlanMk(data, existing = {}) {
@@ -309,6 +409,16 @@ function resolveStationBeltMks(data, existing = {}) {
   return parseStationBeltMks(existing.station_belt_mks);
 }
 
+function resolveTrainCount(data, existing = {}, vehicle) {
+  const raw =
+    data.train_count != null
+      ? data.train_count
+      : existing.train_count != null
+        ? existing.train_count
+        : 1;
+  return normalizeTrainCount(raw, vehicle);
+}
+
 function createTransportPlan(db, persist, data = {}, getItemById) {
   ensureTransportPlansTables(db);
   const name = String(data.name ?? '').trim() || 'Nuovo trasporto';
@@ -318,19 +428,29 @@ function createTransportPlan(db, persist, data = {}, getItemById) {
     throw new Error('Tipo di trasporto non valido');
   }
 
-  const { outbound, returnMinutes } = resolveTripTimes(data);
+  const { outboundSeconds, returnSeconds, outboundMinutes, returnMinutes, timeUnit } =
+    resolveTripTimes(data);
   const { beltMk, pipeMk } = resolvePlanMk(data);
   const stationBeltMks = resolveStationBeltMks(data);
+  const trainCount = resolveTrainCount(data, {}, vehicle);
 
   db.run(
-    `INSERT INTO transport_plans (name, vehicle_slug, one_way_minutes, outbound_minutes, return_minutes, belt_mk, pipe_mk, station_belt_mks, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO transport_plans (
+       name, vehicle_slug, one_way_minutes, outbound_minutes, return_minutes,
+       outbound_seconds, return_seconds, time_unit, train_count,
+       belt_mk, pipe_mk, station_belt_mks, notes
+     )
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       name,
       vehicleSlug,
-      outbound,
-      outbound,
+      outboundMinutes,
+      outboundMinutes,
       returnMinutes,
+      outboundSeconds,
+      returnSeconds,
+      timeUnit,
+      trainCount,
       beltMk,
       pipeMk,
       serializeStationBeltMks(stationBeltMks),
@@ -361,23 +481,31 @@ function updateTransportPlan(db, persist, id, data = {}, getItemById) {
     }
   }
 
-  const { outbound, returnMinutes } = resolveTripTimes(data, existing);
+  const { outboundSeconds, returnSeconds, outboundMinutes, returnMinutes, timeUnit } =
+    resolveTripTimes(data, existing);
+  const vehicleForCount = getVehicleBySlug(vehicleSlug);
   const { beltMk, pipeMk } = resolvePlanMk(data, existing);
   const stationBeltMks = resolveStationBeltMks(data, existing);
+  const trainCount = resolveTrainCount(data, existing, vehicleForCount);
   const notes = data.notes !== undefined ? data.notes : existing.notes;
 
   db.run(
     `UPDATE transport_plans
      SET name = ?, vehicle_slug = ?, one_way_minutes = ?, outbound_minutes = ?, return_minutes = ?,
+         outbound_seconds = ?, return_seconds = ?, time_unit = ?, train_count = ?,
          belt_mk = ?, pipe_mk = ?, station_belt_mks = ?, notes = ?,
          updated_at = datetime('now')
      WHERE id = ?`,
     [
       name,
       vehicleSlug,
-      outbound,
-      outbound,
+      outboundMinutes,
+      outboundMinutes,
       returnMinutes,
+      outboundSeconds,
+      returnSeconds,
+      timeUnit,
+      trainCount,
       beltMk,
       pipeMk,
       serializeStationBeltMks(stationBeltMks),
@@ -412,8 +540,10 @@ function duplicateTransportPlan(db, persist, id, getItemById) {
     {
       name: `${source.name} (copia)`,
       vehicle_slug: source.vehicle_slug,
-      outbound_minutes: source.outbound_minutes,
-      return_minutes: source.return_minutes,
+      outbound_seconds: source.outbound_seconds,
+      return_seconds: source.return_seconds,
+      time_unit: source.time_unit,
+      train_count: source.train_count,
       belt_mk: source.belt_mk,
       pipe_mk: source.pipe_mk,
       station_belt_mks: source.station_belt_mks,

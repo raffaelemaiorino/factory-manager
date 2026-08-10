@@ -9,6 +9,24 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-08-10
+
+Major release: Trasporti maturi — tempi in secondi, toggle min/s, tempo totale, numero treni, elenco e form percorso rifiniti.
+
+### Added
+- Trasporti: toggle minuti/secondi in creazione e dettaglio (i tempi restano salvati in secondi)
+- Trasporti: campo tempo totale (andata + ritorno); se lo inserisci a mano, andata e ritorno diventano metà ciascuno
+- Trasporti (solo treni): campo «numero treni» — il carico si divide sui convogli (es. 2 treni ≈ metà vagoni per treno)
+
+### Changed
+- Trasporti: elenco più leggibile (card su una riga; riepilogo compact); messaggio giallo sulle porte di nuovo visibile
+- Trasporti: form percorso più compatto (campi numerici stretti, toggle min/s a pillola accanto al titolo)
+- Trasporti: traduzioni complete in tutte le lingue UI (toggle tempo, totale, numero treni, placeholder)
+
+### Fixed
+- Migrazione automatica dei piani esistenti: tempi in minuti convertiti in secondi
+- Elenco Trasporti: la matita rinomina il piano con il modal (come in Produzione); prima `prompt` non funzionava in Electron
+
 ## [2.6.3] - 2026-08-09
 
 ### Changed

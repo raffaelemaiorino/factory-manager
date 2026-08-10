@@ -1,14 +1,8 @@
 /**
  * Calcolo mezzi/vagoni necessari per un piano di trasporto.
  *
- * RtD = tempo andata + tempo ritorno (minuti)
- * Solidi: capienza = slot × stack_size
- * Fluidi: capienza = fluid_capacity (m³)
- *
- * Vincolo piattaforma (treni/camion, non droni):
- * 1 stazione ↔ 1 vagone, 2 porte → throughput = 2 × rate(Mk)
- * Mk nastro configurabile per stazione (station_belt_mks).
- * Il carico viene sempre ripartito in modo uniforme sui vagoni assegnati.
+ * Tempi interni in **secondi**; la portata è /min → quantità/viaggio = rate × (RtD_s / 60).
+ * ...
  */
 
 const {
@@ -23,6 +17,7 @@ const {
 const DEFAULT_TRANSPORT_BELT_MK = 5;
 const DEFAULT_TRANSPORT_PIPE_MK = DEFAULT_MAX_PIPE_MK;
 const PORTS_PER_STATION = 2;
+const DEFAULT_TIME_UNIT = 'min'; // 'min' | 'sec' — solo preferenza UI
 
 function ceilPositive(value) {
   if (!Number.isFinite(value) || value <= 0) return 0;
@@ -36,12 +31,37 @@ function isFluidItem(item) {
   return false;
 }
 
+function roundTripSeconds(outboundSeconds, returnSeconds) {
+  const outbound = Number(outboundSeconds);
+  const ret = Number(returnSeconds);
+  if (!Number.isFinite(outbound) || outbound <= 0) return null;
+  if (!Number.isFinite(ret) || ret <= 0) return null;
+  return outbound + ret;
+}
+
+/** @deprecated Usa roundTripSeconds; tenuto per compat test/chiamate legacy in minuti. */
 function roundTripMinutes(outboundMinutes, returnMinutes) {
   const outbound = Number(outboundMinutes);
   const ret = Number(returnMinutes);
   if (!Number.isFinite(outbound) || outbound <= 0) return null;
   if (!Number.isFinite(ret) || ret <= 0) return null;
   return outbound + ret;
+}
+
+function minutesFromSeconds(seconds) {
+  const s = Number(seconds);
+  if (!Number.isFinite(s)) return null;
+  return s / 60;
+}
+
+function secondsFromMinutes(minutes) {
+  const m = Number(minutes);
+  if (!Number.isFinite(m)) return null;
+  return m * 60;
+}
+
+function normalizeTimeUnit(unit) {
+  return String(unit || DEFAULT_TIME_UNIT).toLowerCase() === 'sec' ? 'sec' : 'min';
 }
 
 function vehicleAllowsSolid(vehicle) {
@@ -62,6 +82,18 @@ function normalizeAllowMix(line, fluid) {
 function vehicleUsesStationPorts(vehicle) {
   const slug = String(vehicle?.slug || '');
   return slug !== 'drone-transport';
+}
+
+/** Solo freight-wagon (treno): numero di convogli sulla tratta. */
+function isTrainVehicle(vehicle) {
+  return String(vehicle?.slug || '') === 'freight-wagon';
+}
+
+function normalizeTrainCount(value, vehicle) {
+  if (!isTrainVehicle(vehicle)) return 1;
+  const n = Math.floor(Number(value));
+  if (!Number.isFinite(n) || n < 1) return 1;
+  return Math.min(n, 99);
 }
 
 function resolveTransportMkOptions(options = {}) {
@@ -264,12 +296,25 @@ function padStationMks(mks, needed, defaultMk) {
   return out.slice(0, needed);
 }
 
+function tripTimeMeta(rtdSeconds) {
+  if (rtdSeconds == null) {
+    return { round_trip_seconds: null, round_trip_minutes: null };
+  }
+  return {
+    round_trip_seconds: rtdSeconds,
+    round_trip_minutes: rtdSeconds / 60,
+  };
+}
+
 function emptyResult(extra = {}) {
   return {
     ok: false,
     error: null,
+    round_trip_seconds: null,
     round_trip_minutes: null,
+    train_count: 1,
     vehicles_needed: 0,
+    vehicles_needed_fleet: 0,
     stations_needed: 0,
     belts_or_pipes_needed: 0,
     ports_per_station: PORTS_PER_STATION,
@@ -289,15 +334,18 @@ function emptyResult(extra = {}) {
 /**
  * @param {object} vehicle
  * @param {Array<object>} cargo
- * @param {number} outboundMinutes
- * @param {number} returnMinutes
- * @param {{ belt_mk?: number, pipe_mk?: number, station_belt_mks?: number[] }} [options]
+ * @param {number} outboundSeconds
+ * @param {number} returnSeconds
+ * @param {{ belt_mk?: number, pipe_mk?: number, station_belt_mks?: number[], train_count?: number }} [options]
  */
-function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, options = {}) {
-  const rtd = roundTripMinutes(outboundMinutes, returnMinutes);
+function calculateTransportNeed(vehicle, cargo, outboundSeconds, returnSeconds, options = {}) {
+  const rtdSeconds = roundTripSeconds(outboundSeconds, returnSeconds);
+  const rtdMinutes = rtdSeconds == null ? null : rtdSeconds / 60;
+  const tripMeta = tripTimeMeta(rtdSeconds);
   const lines = Array.isArray(cargo) ? cargo : [];
   const { beltMk, pipeMk, stationBeltMks } = resolveTransportMkOptions(options);
   const applyStationLimit = vehicleUsesStationPorts(vehicle);
+  const trainCount = normalizeTrainCount(options.train_count, vehicle);
 
   const mkMeta = {
     belt_mk: beltMk,
@@ -306,20 +354,21 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
     station_throughput_solid: stationThroughputSolid(beltMk),
     station_throughput_fluid: stationThroughputFluid(pipeMk),
     apply_station_limit: applyStationLimit,
+    train_count: trainCount,
   };
 
   if (!vehicle) {
     return emptyResult({
       error: 'vehicle_required',
-      round_trip_minutes: rtd,
+      ...tripMeta,
       ...mkMeta,
     });
   }
 
-  if (rtd == null) {
+  if (rtdSeconds == null || rtdMinutes == null) {
     return emptyResult({
       error: 'trip_times_required',
-      round_trip_minutes: null,
+      ...tripTimeMeta(null),
       ...mkMeta,
     });
   }
@@ -328,8 +377,10 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
     return {
       ok: true,
       error: null,
-      round_trip_minutes: rtd,
+      ...tripMeta,
+      train_count: trainCount,
       vehicles_needed: 0,
+      vehicles_needed_fleet: 0,
       stations_needed: 0,
       belts_or_pipes_needed: 0,
       station_belt_mks: [],
@@ -375,7 +426,8 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
       continue;
     }
 
-    const amountPerTrip = rate * rtd;
+    const ratePerTrain = rate / trainCount;
+    const amountPerTrip = ratePerTrain * rtdMinutes;
     const allowMix = normalizeAllowMix(line, fluid);
 
     if (fluid) {
@@ -384,7 +436,7 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
         continue;
       }
       const carsFromCapacity = ceilPositive(amountPerTrip / fluidCap);
-      const alloc = allocateStationsForRate(rate, {
+      const alloc = allocateStationsForRate(ratePerTrain, {
         ...allocOpts,
         isFluid: true,
         startIndex: flatStationBeltMks.length,
@@ -395,6 +447,7 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
       breakdown.push({
         item_slug: line.item_slug,
         rate,
+        rate_per_train: ratePerTrain,
         is_fluid: true,
         allow_mix: false,
         stack_size: null,
@@ -446,6 +499,7 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
       mixPool.push({
         item_slug: line.item_slug,
         rate,
+        rate_per_train: ratePerTrain,
         stack_size: stack,
         amount_per_trip: amountPerTrip,
         trip_capacity: tripCapacity,
@@ -455,7 +509,7 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
     }
 
     const carsFromCapacity = ceilPositive(amountPerTrip / tripCapacity);
-    const alloc = allocateStationsForRate(rate, {
+    const alloc = allocateStationsForRate(ratePerTrain, {
       ...allocOpts,
       isFluid: false,
       startIndex: flatStationBeltMks.length,
@@ -467,6 +521,7 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
     breakdown.push({
       item_slug: line.item_slug,
       rate,
+      rate_per_train: ratePerTrain,
       is_fluid: false,
       allow_mix: false,
       stack_size: stack,
@@ -504,7 +559,7 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
   if (mixPool.length) {
     const totalStacks = mixPool.reduce((sum, row) => sum + row.stacks_per_trip, 0);
     const carsFromCapacity = slots > 0 ? ceilPositive(totalStacks / slots) : 0;
-    const mixRate = mixPool.reduce((sum, row) => sum + row.rate, 0);
+    const mixRate = mixPool.reduce((sum, row) => sum + (row.rate_per_train ?? row.rate), 0);
     const alloc = allocateStationsForRate(mixRate, {
       ...allocOpts,
       isFluid: false,
@@ -518,6 +573,7 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
       breakdown.push({
         item_slug: row.item_slug,
         rate: row.rate,
+        rate_per_train: row.rate_per_train ?? row.rate,
         is_fluid: false,
         allow_mix: true,
         stack_size: row.stack_size,
@@ -563,8 +619,10 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
       ok: false,
       error: incompatibilities[0].error,
       incompatibilities,
-      round_trip_minutes: rtd,
+      ...tripMeta,
+      train_count: trainCount,
       vehicles_needed: 0,
+      vehicles_needed_fleet: 0,
       stations_needed: 0,
       belts_or_pipes_needed: 0,
       station_belt_mks: [],
@@ -580,8 +638,10 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
     ok: incompatibilities.length === 0,
     error: incompatibilities.length ? incompatibilities[0].error : null,
     incompatibilities,
-    round_trip_minutes: rtd,
+    ...tripMeta,
+    train_count: trainCount,
     vehicles_needed: vehiclesNeeded,
+    vehicles_needed_fleet: vehiclesNeeded * trainCount,
     stations_needed: stationsDisplay,
     belts_or_pipes_needed: beltsOrPipesNeeded,
     station_belt_mks: applyStationLimit ? flatStationBeltMks : [],
@@ -598,13 +658,20 @@ function calculateTransportNeed(vehicle, cargo, outboundMinutes, returnMinutes, 
 
 module.exports = {
   calculateTransportNeed,
+  roundTripSeconds,
   roundTripMinutes,
+  minutesFromSeconds,
+  secondsFromMinutes,
+  normalizeTimeUnit,
+  DEFAULT_TIME_UNIT,
   isFluidItem,
   ceilPositive,
   distributeEvenly,
   vehicleAllowsSolid,
   vehicleAllowsFluid,
   vehicleUsesStationPorts,
+  isTrainVehicle,
+  normalizeTrainCount,
   packSolidAmountAcrossCars,
   packMixedAcrossCars,
   packFluidAcrossCars,

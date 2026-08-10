@@ -1218,6 +1218,8 @@ function openSchemaRenameModal({ kind, id, name, title, onSaved, groupKey }) {
     title ??
     (kind === 'energy'
       ? t('modals.renameEnergyPlan')
+      : kind === 'transport'
+        ? t('modals.renameTransportPlan')
       : kind === 'step-group' || kind === 'rename-step-group'
         ? t('modals.renameGroup')
         : t('modals.renameProductionPlan'));
@@ -1268,6 +1270,13 @@ function setupSchemaRenameModal() {
       if (kind === 'rename-step-group') {
         await handleProductionStepGroupRename(schemaRenameGroupKey, name);
         schemaRenameOnSaved?.(activeProductionDetail);
+        closeSchemaRenameModal();
+        return;
+      }
+
+      if (kind === 'transport') {
+        const updated = await window.satisfactory.updateTransportPlan(id, { name });
+        schemaRenameOnSaved?.(updated);
         closeSchemaRenameModal();
         return;
       }

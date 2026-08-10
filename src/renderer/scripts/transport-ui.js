@@ -6,6 +6,7 @@
   let activeTransportPlanId = null;
   let activeTransportDetail = null;
   let selectedVehicleSlug = null;
+  let createTimeUnit = 'min';
 
   const transportCreateModal = document.getElementById('transport-create-modal');
   const transportCreateForm = document.getElementById('transport-create-form');
@@ -14,12 +15,144 @@
   const LOCOMOTIVE_IMAGE = 'assets/vehicles/Desc_Locomotive_C.png';
 
   function escapeHtml(text) {
+    if (text == null) return '';
     return String(text)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+  function normalizeTimeUnit(unit) {
+    return String(unit || 'min').toLowerCase() === 'sec' ? 'sec' : 'min';
+  }
+
+  function formatDisplayNumber(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return '—';
+    if (Number.isInteger(n)) return String(n);
+    const trimmed = Number(n.toFixed(4));
+    return window.NumberFormat?.formatDisplayNumber?.(trimmed) ?? String(trimmed);
+  }
+
+  /** Valore mostrato nell'input a partire dai secondi salvati. */
+  function displayFromSeconds(seconds, unit) {
+    const s = Number(seconds);
+    if (!Number.isFinite(s)) return '';
+    if (normalizeTimeUnit(unit) === 'sec') return String(Math.round(s));
+    return formatDisplayNumber(s / 60);
+  }
+
+  function secondsFromDisplay(value, unit) {
+    const n = Number(String(value ?? '').replace(',', '.'));
+    if (!Number.isFinite(n) || n <= 0) return null;
+    return normalizeTimeUnit(unit) === 'sec' ? n : n * 60;
+  }
+
+  function formatDuration(seconds, unit) {
+    const s = Number(seconds);
+    if (!Number.isFinite(s)) return '—';
+    if (normalizeTimeUnit(unit) === 'sec') {
+      return t('transport.durationSec', { value: Math.round(s) });
+    }
+    return t('transport.durationMin', { value: formatDisplayNumber(s / 60) });
+  }
+
+  function timeUnitToggleHtml(selectedUnit, groupName) {
+    const unit = normalizeTimeUnit(selectedUnit);
+    return `
+      <div class="transport-time-unit" role="group" aria-label="${escapeHtml(t('transport.timeUnitLabel'))}">
+        <button type="button" class="transport-time-unit-btn${unit === 'min' ? ' is-active' : ''}"
+          data-time-unit="min" data-time-unit-group="${escapeHtml(groupName)}">${escapeHtml(t('transport.timeUnitMin'))}</button>
+        <button type="button" class="transport-time-unit-btn${unit === 'sec' ? ' is-active' : ''}"
+          data-time-unit="sec" data-time-unit-group="${escapeHtml(groupName)}">${escapeHtml(t('transport.timeUnitSec'))}</button>
+      </div>`;
+  }
+
+  function outboundLabel() {
+    return t('transport.outboundShort');
+  }
+
+  function returnLabel() {
+    return t('transport.returnShort');
+  }
+
+  function totalLabel() {
+    return t('transport.totalShort');
+  }
+
+  /** Spezza il totale a metà (andata = ritorno). */
+  function splitTotalSeconds(totalSeconds) {
+    const total = Number(totalSeconds);
+    if (!Number.isFinite(total) || total <= 0) return null;
+    const half = total / 2;
+    return { outboundSeconds: half, returnSeconds: half };
+  }
+
+  function readCreateTripSeconds() {
+    return {
+      outbound: secondsFromDisplay(
+        document.getElementById('transport-create-outbound')?.value,
+        createTimeUnit
+      ),
+      returnSec: secondsFromDisplay(
+        document.getElementById('transport-create-return')?.value,
+        createTimeUnit
+      ),
+      total: secondsFromDisplay(
+        document.getElementById('transport-create-total')?.value,
+        createTimeUnit
+      ),
+    };
+  }
+
+  function setCreateTripDisplay({ outboundSeconds, returnSeconds, totalSeconds }) {
+    const outboundInput = document.getElementById('transport-create-outbound');
+    const returnInput = document.getElementById('transport-create-return');
+    const totalInput = document.getElementById('transport-create-total');
+    if (outboundInput && outboundSeconds != null) {
+      outboundInput.value = displayFromSeconds(outboundSeconds, createTimeUnit);
+    }
+    if (returnInput && returnSeconds != null) {
+      returnInput.value = displayFromSeconds(returnSeconds, createTimeUnit);
+    }
+    if (totalInput && totalSeconds != null) {
+      totalInput.value = displayFromSeconds(totalSeconds, createTimeUnit);
+    }
+  }
+
+  function syncCreateTotalFromLegs() {
+    const { outbound, returnSec } = readCreateTripSeconds();
+    if (outbound == null || returnSec == null) return;
+    const totalInput = document.getElementById('transport-create-total');
+    if (totalInput) {
+      totalInput.value = displayFromSeconds(outbound + returnSec, createTimeUnit);
+    }
+  }
+
+  function applyCreateTotalSplit() {
+    const { total } = readCreateTripSeconds();
+    if (total == null) return;
+    const split = splitTotalSeconds(total);
+    if (!split) return;
+    const outboundInput = document.getElementById('transport-create-outbound');
+    const returnInput = document.getElementById('transport-create-return');
+    if (outboundInput) {
+      outboundInput.value = displayFromSeconds(split.outboundSeconds, createTimeUnit);
+    }
+    if (returnInput) {
+      returnInput.value = displayFromSeconds(split.returnSeconds, createTimeUnit);
+    }
+  }
+
+  function formatTripTimesLine(outboundSeconds, returnSeconds, totalSeconds, unit) {
+    return t('transport.listTripTimes', {
+      outbound: displayFromSeconds(outboundSeconds, unit) || '—',
+      return: displayFromSeconds(returnSeconds, unit) || '—',
+      total: displayFromSeconds(totalSeconds, unit) || '—',
+      unit: normalizeTimeUnit(unit) === 'sec' ? t('transport.unitSecShort') : t('transport.unitMinShort'),
+    });
   }
 
   function formatDateTime(iso) {
@@ -76,6 +209,24 @@
       ? vehicle.unit_label_it || vehicleDisplayName(vehicle)
       : vehicle.unit_label_en || vehicleDisplayName(vehicle);
     return `${count} ${label}`;
+  }
+
+  function isTrainVehicleSlug(slugOrVehicle) {
+    const slug =
+      typeof slugOrVehicle === 'string'
+        ? slugOrVehicle
+        : slugOrVehicle?.slug || '';
+    return String(slug) === 'freight-wagon';
+  }
+
+  function formatVehiclesNeededLabel(vehicle, calc, trainCount) {
+    const needed = calc?.vehicles_needed ?? 0;
+    const base = vehicleUnitLabel(vehicle, needed);
+    const trains = Number(trainCount) || calc?.train_count || 1;
+    if (isTrainVehicleSlug(vehicle) && trains > 1) {
+      return t('transport.vehiclesPerTrain', { vehicles: base, trains });
+    }
+    return base;
   }
 
   function mkOptionsHtml(maxMk, selected) {
@@ -159,8 +310,10 @@
       .map((plan) => {
         const vehicle = plan.vehicle || vehiclesCatalog.find((v) => v.slug === plan.vehicle_slug);
         const calc = plan.calculation || {};
-        const needed = calc.vehicles_needed ?? 0;
-        const rtd = calc.round_trip_minutes;
+        const timeUnit = normalizeTimeUnit(plan.time_unit);
+        const rtdSeconds =
+          calc.round_trip_seconds ??
+          (Number(plan.outbound_seconds) || 0) + (Number(plan.return_seconds) || 0);
         const img = vehicleImageSrc(vehicle);
         const vehicleCap =
           vehicle?.cargo_kind === 'fluid'
@@ -170,6 +323,23 @@
               : vehicle?.inventory_slots != null
                 ? t('transport.slotsCount', { count: vehicle.inventory_slots })
                 : '';
+
+        const summaryParts = [
+          formatVehiclesNeededLabel(vehicle, calc, plan.train_count || calc.train_count || 1),
+        ];
+        if (calc.apply_station_limit && (calc.stations_needed || 0) > 0) {
+          summaryParts.push(
+            t('transport.cardStationsCount', { count: calc.stations_needed })
+          );
+        }
+        summaryParts.push(
+          formatTripTimesLine(
+            plan.outbound_seconds,
+            plan.return_seconds,
+            rtdSeconds,
+            timeUnit
+          )
+        );
 
         const cargoChips = (plan.cargo || [])
           .map((line) => {
@@ -191,6 +361,8 @@
           })
           .join('');
 
+        const stationLimited = calcIsStationLimited(calc);
+
         return `
           <article class="production-card transport-card" data-transport-id="${plan.id}">
             <div class="production-card-body transport-card-body" role="button" tabindex="0" data-transport-open="${plan.id}">
@@ -209,46 +381,21 @@
                       vehicleCap ? ` · ${escapeHtml(vehicleCap)}` : ''
                     }
                   </p>
-                </div>
-                <div class="transport-card-stats">
-                  <div class="transport-card-stat transport-card-stat--accent">
-                    <span class="transport-card-stat-label">${escapeHtml(t('transport.cardVehicles'))}</span>
-                    <span class="transport-card-stat-value">${escapeHtml(vehicleUnitLabel(vehicle, needed))}</span>
-                  </div>
+                  <p class="transport-card-summary">${escapeHtml(summaryParts.join(' · '))}</p>
                   ${
-                    calc.apply_station_limit && (calc.stations_needed || 0) > 0
-                      ? `<div class="transport-card-stat">
-                    <span class="transport-card-stat-label">${escapeHtml(t('transport.cardStations'))}</span>
-                    <span class="transport-card-stat-value">${escapeHtml(String(calc.stations_needed))}</span>
-                  </div>`
+                    stationLimited
+                      ? `<p class="transport-card-station-limit">${escapeHtml(t('transport.limitingStation'))}</p>`
                       : ''
                   }
-                  <div class="transport-card-stat">
-                    <span class="transport-card-stat-label">${escapeHtml(t('transport.outboundMinutes'))}</span>
-                    <span class="transport-card-stat-value">${escapeHtml(String(plan.outbound_minutes ?? '—'))} min</span>
-                  </div>
-                  <div class="transport-card-stat">
-                    <span class="transport-card-stat-label">${escapeHtml(t('transport.returnMinutes'))}</span>
-                    <span class="transport-card-stat-value">${escapeHtml(String(plan.return_minutes ?? '—'))} min</span>
-                  </div>
-                  <div class="transport-card-stat">
-                    <span class="transport-card-stat-label">${escapeHtml(t('transport.cardRoundTrip'))}</span>
-                    <span class="transport-card-stat-value">${escapeHtml(rtd != null ? `${rtd} min` : '—')}</span>
-                  </div>
+                  <p class="transport-card-updated">${escapeHtml(
+                    t('time.updated', { when: formatDateTime(plan.updated_at) })
+                  )}</p>
                 </div>
-                ${
-                  calcIsStationLimited(calc)
-                    ? `<p class="transport-card-station-limit">${escapeHtml(t('transport.limitingStation'))}</p>`
-                    : ''
-                }
                 ${
                   cargoChips
                     ? `<div class="transport-card-cargo">${cargoChips}</div>`
                     : `<p class="transport-card-cargo-empty">${escapeHtml(t('transport.cargoEmptyHint'))}</p>`
                 }
-                <p class="transport-card-updated">${escapeHtml(
-                  t('time.updated', { when: formatDateTime(plan.updated_at) })
-                )}</p>
               </div>
             </div>
             <div class="production-card-actions">
@@ -267,6 +414,17 @@
       .join('');
 
     container.innerHTML = `<section class="card"><div class="production-list">${cards}</div></section>`;
+  }
+
+  function syncCreateTrainCountVisibility() {
+    const field = document.getElementById('transport-create-train-count-field');
+    if (!field) return;
+    const isTrain = isTrainVehicleSlug(selectedVehicleSlug);
+    field.classList.toggle('hidden', !isTrain);
+    if (!isTrain) {
+      const input = document.getElementById('transport-create-train-count');
+      if (input) input.value = '1';
+    }
   }
 
   function renderCreateVehicleGrid() {
@@ -293,22 +451,44 @@
           </button>`;
       })
       .join('');
+    syncCreateTrainCountVisibility();
+  }
+
+  function syncCreateTimeLabels() {
+    const outboundLabelEl = document.getElementById('transport-create-outbound-label');
+    const returnLabelEl = document.getElementById('transport-create-return-label');
+    const totalLabelEl = document.getElementById('transport-create-total-label');
+    if (outboundLabelEl) outboundLabelEl.textContent = outboundLabel();
+    if (returnLabelEl) returnLabelEl.textContent = returnLabel();
+    if (totalLabelEl) totalLabelEl.textContent = totalLabel();
+    const toggle = document.getElementById('transport-create-time-unit');
+    if (toggle) {
+      toggle.querySelectorAll('[data-time-unit]').forEach((btn) => {
+        btn.classList.toggle('is-active', btn.dataset.timeUnit === createTimeUnit);
+      });
+    }
   }
 
   async function openTransportCreateModal() {
     await ensureVehicles();
     selectedVehicleSlug = vehiclesCatalog[0]?.slug || null;
+    createTimeUnit = 'min';
     showCreateError('');
     const nameInput = document.getElementById('transport-plan-name');
     const outboundInput = document.getElementById('transport-create-outbound');
     const returnInput = document.getElementById('transport-create-return');
+    const totalInput = document.getElementById('transport-create-total');
     const beltMkInput = document.getElementById('transport-create-belt-mk');
     const pipeMkInput = document.getElementById('transport-create-pipe-mk');
     if (nameInput) nameInput.value = '';
     if (outboundInput) outboundInput.value = '';
     if (returnInput) returnInput.value = '';
+    if (totalInput) totalInput.value = '';
     if (beltMkInput) beltMkInput.value = '5';
     if (pipeMkInput) pipeMkInput.value = '2';
+    const trainCountInput = document.getElementById('transport-create-train-count');
+    if (trainCountInput) trainCountInput.value = '1';
+    syncCreateTimeLabels();
     renderCreateVehicleGrid();
     transportCreateModal?.classList.remove('hidden');
     transportCreateModal?.setAttribute('aria-hidden', 'false');
@@ -366,14 +546,30 @@
     event.preventDefault();
     showCreateError('');
     const name = document.getElementById('transport-plan-name')?.value?.trim() || '';
-    const outbound = Number(
-      String(document.getElementById('transport-create-outbound')?.value || '').replace(',', '.')
-    );
-    const returnMinutes = Number(
-      String(document.getElementById('transport-create-return')?.value || '').replace(',', '.')
-    );
+    let { outbound: outboundSeconds, returnSec: returnSeconds, total: totalSeconds } =
+      readCreateTripSeconds();
+    // Solo totale compilato → metà e metà
+    if ((outboundSeconds == null || returnSeconds == null) && totalSeconds != null) {
+      const split = splitTotalSeconds(totalSeconds);
+      if (split) {
+        outboundSeconds = split.outboundSeconds;
+        returnSeconds = split.returnSeconds;
+        setCreateTripDisplay({
+          outboundSeconds,
+          returnSeconds,
+          totalSeconds,
+        });
+      }
+    }
     const beltMk = Number(document.getElementById('transport-create-belt-mk')?.value || 5);
     const pipeMk = Number(document.getElementById('transport-create-pipe-mk')?.value || 2);
+    let trainCount = 1;
+    if (isTrainVehicleSlug(selectedVehicleSlug)) {
+      trainCount = Math.floor(
+        Number(document.getElementById('transport-create-train-count')?.value || 1)
+      );
+      if (!Number.isFinite(trainCount) || trainCount < 1) trainCount = 1;
+    }
     if (!name) {
       showCreateError(t('errors.nameRequired') || t('common.name'));
       return;
@@ -382,11 +578,11 @@
       showCreateError(t('transport.vehicleRequired'));
       return;
     }
-    if (!Number.isFinite(outbound) || outbound <= 0) {
+    if (outboundSeconds == null) {
       showCreateError(t('transport.outboundInvalid'));
       return;
     }
-    if (!Number.isFinite(returnMinutes) || returnMinutes <= 0) {
+    if (returnSeconds == null) {
       showCreateError(t('transport.returnInvalid'));
       return;
     }
@@ -395,8 +591,10 @@
       const plan = await window.satisfactory.createTransportPlan({
         name,
         vehicle_slug: selectedVehicleSlug,
-        outbound_minutes: outbound,
-        return_minutes: returnMinutes,
+        outbound_seconds: outboundSeconds,
+        return_seconds: returnSeconds,
+        time_unit: createTimeUnit,
+        train_count: trainCount,
         belt_mk: beltMk,
         pipe_mk: pipeMk,
         cargo: [],
@@ -455,10 +653,17 @@
 
     document.getElementById('transport-detail-breadcrumb').textContent = plan.name;
     document.getElementById('transport-detail-heading').textContent = plan.name;
+    const timeUnit = normalizeTimeUnit(plan.time_unit);
     document.getElementById('transport-detail-meta').textContent = [
       vehicleDisplayName(vehicle) || plan.vehicle_slug,
-      t('transport.metaOutbound', { minutes: plan.outbound_minutes }),
-      t('transport.metaReturn', { minutes: plan.return_minutes }),
+      t('transport.metaOutbound', {
+        value: displayFromSeconds(plan.outbound_seconds, timeUnit),
+        unit: timeUnit === 'sec' ? t('transport.unitSecShort') : t('transport.unitMinShort'),
+      }),
+      t('transport.metaReturn', {
+        value: displayFromSeconds(plan.return_seconds, timeUnit),
+        unit: timeUnit === 'sec' ? t('transport.unitSecShort') : t('transport.unitMinShort'),
+      }),
       t('time.updated', { when: formatDateTime(plan.updated_at) }),
     ].join(' · ');
 
@@ -555,20 +760,43 @@
       <section class="card production-detail-main production-columns-card">
         <div class="production-detail-columns transport-detail-columns">
           <section class="transport-settings-section">
-            <h3 class="production-section-header">${escapeHtml(t('transport.sectionConfig'))}</h3>
+            <div class="transport-route-header">
+              <h3 class="production-section-header">${escapeHtml(t('transport.sectionConfig'))}</h3>
+              ${timeUnitToggleHtml(timeUnit, 'detail')}
+            </div>
             <div class="transport-settings-fields">
-              <div class="form-field production-config-field">
-                <label for="transport-detail-outbound">${escapeHtml(t('transport.outboundMinutes'))}</label>
-                <input type="text" id="transport-detail-outbound" class="production-config-decimal-input"
-                  inputmode="decimal" value="${escapeHtml(String(plan.outbound_minutes))}" />
-                <p class="form-hint">${escapeHtml(t('transport.outboundHint'))}</p>
+              <div class="transport-route-metrics">
+                <div class="transport-metric">
+                  <label for="transport-detail-outbound" id="transport-detail-outbound-label">${escapeHtml(outboundLabel())}</label>
+                  <input type="text" id="transport-detail-outbound" class="transport-metric-input"
+                    inputmode="decimal" value="${escapeHtml(displayFromSeconds(plan.outbound_seconds, timeUnit))}" />
+                </div>
+                <div class="transport-metric">
+                  <label for="transport-detail-return" id="transport-detail-return-label">${escapeHtml(returnLabel())}</label>
+                  <input type="text" id="transport-detail-return" class="transport-metric-input"
+                    inputmode="decimal" value="${escapeHtml(displayFromSeconds(plan.return_seconds, timeUnit))}" />
+                </div>
+                <div class="transport-metric">
+                  <label for="transport-detail-total" id="transport-detail-total-label">${escapeHtml(totalLabel())}</label>
+                  <input type="text" id="transport-detail-total" class="transport-metric-input"
+                    inputmode="decimal" value="${escapeHtml(
+                      displayFromSeconds(
+                        (Number(plan.outbound_seconds) || 0) + (Number(plan.return_seconds) || 0),
+                        timeUnit
+                      )
+                    )}" />
+                </div>
+                ${
+                  isTrainVehicleSlug(vehicle)
+                    ? `<div class="transport-metric">
+                  <label for="transport-detail-train-count">${escapeHtml(t('transport.trainCountShort'))}</label>
+                  <input type="number" id="transport-detail-train-count" class="transport-metric-input"
+                    min="1" max="99" step="1" value="${escapeHtml(String(plan.train_count || 1))}" />
+                </div>`
+                    : ''
+                }
               </div>
-              <div class="form-field production-config-field">
-                <label for="transport-detail-return">${escapeHtml(t('transport.returnMinutes'))}</label>
-                <input type="text" id="transport-detail-return" class="production-config-decimal-input"
-                  inputmode="decimal" value="${escapeHtml(String(plan.return_minutes))}" />
-                <p class="form-hint">${escapeHtml(t('transport.returnHint'))}</p>
-              </div>
+              <p class="form-hint transport-route-hint">${escapeHtml(t('transport.routeTimesHint'))}</p>
               <div class="form-field production-config-field transport-settings-vehicle">
                 <label for="transport-detail-vehicle">${escapeHtml(t('transport.vehicleType'))}</label>
                 <select id="transport-detail-vehicle" class="production-config-input">
@@ -586,9 +814,19 @@
             <div class="transport-result-card ${resultClass}">
               <h3 class="production-section-header">${escapeHtml(t('transport.sectionResult'))}</h3>
               <div class="transport-result-main">
-                <div class="transport-result-value">${escapeHtml(vehicleUnitLabel(vehicle, calc.vehicles_needed || 0))}</div>
+                <div class="transport-result-value">${escapeHtml(
+                  formatVehiclesNeededLabel(vehicle, calc, plan.train_count || calc.train_count || 1)
+                )}</div>
                 <p class="page-subtitle">
-                  ${escapeHtml(t('transport.roundTrip', { minutes: calc.round_trip_minutes ?? '—' }))}
+                  ${escapeHtml(
+                    t('transport.roundTrip', {
+                      value: displayFromSeconds(calc.round_trip_seconds, timeUnit) || '—',
+                      unit:
+                        timeUnit === 'sec'
+                          ? t('transport.unitSecShort')
+                          : t('transport.unitMinShort'),
+                    })
+                  )}
                 </p>
                 ${
                   stationsSummary
@@ -940,27 +1178,32 @@
   }
 
   async function handleListClick(event) {
-    const openBtn = event.target.closest('[data-transport-open]');
-    if (openBtn) {
-      await openTransportDetail(Number(openBtn.dataset.transportOpen));
-      return;
-    }
-
     const renameBtn = event.target.closest('[data-transport-rename]');
     if (renameBtn) {
+      event.preventDefault();
+      event.stopPropagation();
       const id = Number(renameBtn.dataset.transportRename);
       const plan = transportPlans.find((p) => p.id === id);
-      const next = window.prompt(t('common.name'), plan?.name || '');
-      if (next == null) return;
-      const name = next.trim();
-      if (!name) return;
-      await window.satisfactory.updateTransportPlan(id, { name });
-      await loadTransportPlans();
+      if (!window.openSchemaRenameModal) {
+        console.error('openSchemaRenameModal non disponibile');
+        return;
+      }
+      window.openSchemaRenameModal({
+        kind: 'transport',
+        id,
+        name: plan?.name || '',
+        title: t('modals.renameTransportPlan'),
+        onSaved: async () => {
+          await loadTransportPlans();
+        },
+      });
       return;
     }
 
     const dupBtn = event.target.closest('[data-transport-duplicate]');
     if (dupBtn) {
+      event.preventDefault();
+      event.stopPropagation();
       await window.satisfactory.duplicateTransportPlan(Number(dupBtn.dataset.transportDuplicate));
       await loadTransportPlans();
       return;
@@ -968,16 +1211,24 @@
 
     const delBtn = event.target.closest('[data-transport-delete]');
     if (delBtn) {
+      event.preventDefault();
+      event.stopPropagation();
       const id = Number(delBtn.dataset.transportDelete);
       const plan = transportPlans.find((p) => p.id === id);
       const ok = await showConfirm({
-        title: t('transport.title'),
+        title: t('confirm.deleteTransportPlanTitle'),
         message: t('transport.confirmDelete', { name: plan?.name || id }),
         confirmLabel: t('common.confirm'),
       });
       if (!ok) return;
       await window.satisfactory.deleteTransportPlan(id);
       await loadTransportPlans();
+      return;
+    }
+
+    const openBtn = event.target.closest('[data-transport-open]');
+    if (openBtn) {
+      await openTransportDetail(Number(openBtn.dataset.transportOpen));
     }
   }
 
@@ -988,6 +1239,37 @@
     document.getElementById('transport-create-modal-close')?.addEventListener('click', closeTransportCreateModal);
     document.getElementById('transport-create-cancel')?.addEventListener('click', closeTransportCreateModal);
     transportCreateForm?.addEventListener('submit', submitCreate);
+
+    document.getElementById('transport-create-time-unit')?.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-time-unit]');
+      if (!btn) return;
+      const nextUnit = normalizeTimeUnit(btn.dataset.timeUnit);
+      if (nextUnit === createTimeUnit) return;
+      const { outbound, returnSec } = readCreateTripSeconds();
+      createTimeUnit = nextUnit;
+      if (outbound != null || returnSec != null) {
+        setCreateTripDisplay({
+          outboundSeconds: outbound,
+          returnSeconds: returnSec,
+          totalSeconds:
+            outbound != null && returnSec != null ? outbound + returnSec : null,
+        });
+      }
+      syncCreateTimeLabels();
+    });
+
+    const createTimesRoot = document.querySelector('.transport-create-times.transport-trip-times');
+    createTimesRoot?.addEventListener('input', (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (target.id === 'transport-create-outbound' || target.id === 'transport-create-return') {
+        syncCreateTotalFromLegs();
+        return;
+      }
+      if (target.id === 'transport-create-total') {
+        applyCreateTotalSplit();
+      }
+    });
 
     document.getElementById('transport-create-vehicle-grid')?.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-vehicle-slug]');
@@ -1010,24 +1292,55 @@
       window.openResourcePickerWithMode?.('transport-detail-cargo', 'modals.selectResource');
     });
 
+    document.getElementById('transport-detail-body')?.addEventListener('click', (e) => {
+      const unitBtn = e.target.closest('[data-time-unit-group="detail"][data-time-unit]');
+      if (!unitBtn || !activeTransportDetail) return;
+      const nextUnit = normalizeTimeUnit(unitBtn.dataset.timeUnit);
+      if (nextUnit === normalizeTimeUnit(activeTransportDetail.time_unit)) return;
+      persistDetailPatch({ time_unit: nextUnit }).catch(console.error);
+    });
+
     document.getElementById('transport-detail-body')?.addEventListener('change', (e) => {
       const outbound = e.target.closest('#transport-detail-outbound');
-      if (outbound) {
-        const value = Number(String(outbound.value).replace(',', '.'));
-        if (!Number.isFinite(value) || value <= 0) return;
-        persistDetailPatch({ outbound_minutes: value }).catch(console.error);
+      if (outbound && activeTransportDetail) {
+        const seconds = secondsFromDisplay(outbound.value, activeTransportDetail.time_unit);
+        if (seconds == null) return;
+        persistDetailPatch({ outbound_seconds: seconds }).catch(console.error);
         return;
       }
       const returnInput = e.target.closest('#transport-detail-return');
-      if (returnInput) {
-        const value = Number(String(returnInput.value).replace(',', '.'));
-        if (!Number.isFinite(value) || value <= 0) return;
-        persistDetailPatch({ return_minutes: value }).catch(console.error);
+      if (returnInput && activeTransportDetail) {
+        const seconds = secondsFromDisplay(returnInput.value, activeTransportDetail.time_unit);
+        if (seconds == null) return;
+        persistDetailPatch({ return_seconds: seconds }).catch(console.error);
+        return;
+      }
+      const totalInput = e.target.closest('#transport-detail-total');
+      if (totalInput && activeTransportDetail) {
+        const totalSeconds = secondsFromDisplay(totalInput.value, activeTransportDetail.time_unit);
+        if (totalSeconds == null) return;
+        const split = splitTotalSeconds(totalSeconds);
+        if (!split) return;
+        persistDetailPatch({
+          outbound_seconds: split.outboundSeconds,
+          return_seconds: split.returnSeconds,
+        }).catch(console.error);
         return;
       }
       const vehicle = e.target.closest('#transport-detail-vehicle');
       if (vehicle) {
-        persistDetailPatch({ vehicle_slug: vehicle.value }).catch(console.error);
+        const patch = { vehicle_slug: vehicle.value };
+        if (!isTrainVehicleSlug(vehicle.value)) {
+          patch.train_count = 1;
+        }
+        persistDetailPatch(patch).catch(console.error);
+        return;
+      }
+      const trainCountInput = e.target.closest('#transport-detail-train-count');
+      if (trainCountInput && activeTransportDetail) {
+        const n = Math.floor(Number(trainCountInput.value));
+        if (!Number.isFinite(n) || n < 1) return;
+        persistDetailPatch({ train_count: n }).catch(console.error);
         return;
       }
       const stationBelt = e.target.closest('[data-station-belt-index]');

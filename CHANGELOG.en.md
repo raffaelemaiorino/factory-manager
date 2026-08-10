@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-08-10
+
+Major release: Transport matured — times in seconds, min/s toggle, total trip time, train count, refined list and route form.
+
+### Added
+- Transport: minutes/seconds toggle in create and detail (times are always stored in seconds)
+- Transport: total trip time field (outbound + return); typing it splits outbound and return in half
+- Transport (trains only): “number of trains” field — load is split across trains (e.g. 2 trains ≈ half the cars per train)
+
+### Changed
+- Transport: clearer list cards (one-row layout; compact summary); yellow platform-port limit message visible again
+- Transport: more compact route form (narrow numeric fields, pill min/s toggle beside the section title)
+- Transport: full UI translations across all locales (time toggle, total time, train count, placeholders)
+
+### Fixed
+- Automatic migration of existing plans: minute times converted to seconds
+- Transport list: pencil renames the plan via the modal (like Production); `prompt` previously failed in Electron
+
 ## [2.6.3] - 2026-08-09
 
 ### Changed

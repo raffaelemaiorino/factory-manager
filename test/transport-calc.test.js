@@ -4,16 +4,17 @@ const { calculateTransportNeed } = require('../src/database/transport-calc');
 const { getVehicleBySlug } = require('../src/database/seeds/vehicles');
 
 describe('transport-calc', () => {
-  it('Filorapido 3000/min, andata 3 + ritorno 3 → 2 vagoni (RtD 6, capacità)', () => {
+  it('Filorapido 3000/min, andata 180s + ritorno 180s → 2 vagoni (RtD 6 min, capacità)', () => {
     const vehicle = getVehicleBySlug('freight-wagon');
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
-      3,
-      3,
+      180,
+      180,
       { belt_mk: 5 }
     );
     assert.equal(result.ok, true);
+    assert.equal(result.round_trip_seconds, 360);
     assert.equal(result.round_trip_minutes, 6);
     assert.equal(result.vehicles_needed, 2);
     assert.equal(result.breakdown[0].trip_capacity, 16000);
@@ -21,13 +22,13 @@ describe('transport-calc', () => {
     assert.equal(result.breakdown[0].stations_needed, 2);
   });
 
-  it('Filorapido 3000/min RtD 4 Mk.5 → 2 vagoni (stazioni, non solo capienza)', () => {
+  it('Filorapido 3000/min RtD 4 min Mk.5 → 2 vagoni (stazioni, non solo capienza)', () => {
     const vehicle = getVehicleBySlug('freight-wagon');
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
-      2,
-      2,
+      120,
+      120,
       { belt_mk: 5 }
     );
     // Capienza: 3000*4/16000 = 0.75 → 1; stazioni: ceil(3000/1560)=2
@@ -40,13 +41,13 @@ describe('transport-calc', () => {
     assert.equal(result.station_throughput_solid, 1560);
   });
 
-  it('Filorapido 3000/min RtD 4 Mk.6 → ancora 2 (ceil(3000/2400)=2)', () => {
+  it('Filorapido 3000/min RtD 4 min Mk.6 → ancora 2 (ceil(3000/2400)=2)', () => {
     const vehicle = getVehicleBySlug('freight-wagon');
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
-      2,
-      2,
+      120,
+      120,
       { belt_mk: 6 }
     );
     assert.equal(result.station_throughput_solid, 2400);
@@ -54,13 +55,13 @@ describe('transport-calc', () => {
     assert.equal(result.vehicles_needed, 2);
   });
 
-  it('Filorapido 2000/min RtD 4 Mk.6 → 1 vagone (capienza e stazioni)', () => {
+  it('Filorapido 2000/min RtD 4 min Mk.6 → 1 vagone (capienza e stazioni)', () => {
     const vehicle = getVehicleBySlug('freight-wagon');
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 2000, stack_size: 500 }],
-      2,
-      2,
+      120,
+      120,
       { belt_mk: 6 }
     );
     assert.equal(result.breakdown[0].cars_from_capacity, 1);
@@ -69,15 +70,16 @@ describe('transport-calc', () => {
     assert.equal(result.breakdown[0].limiting, 'capacity');
   });
 
-  it('andata e ritorno asimmetrici: 2 + 4 = RtD 6', () => {
+  it('andata e ritorno asimmetrici: 120s + 240s = RtD 6 min', () => {
     const vehicle = getVehicleBySlug('freight-wagon');
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
-      2,
-      4,
+      120,
+      240,
       { belt_mk: 5 }
     );
+    assert.equal(result.round_trip_seconds, 360);
     assert.equal(result.round_trip_minutes, 6);
     assert.equal(result.vehicles_needed, 2);
   });
@@ -87,8 +89,8 @@ describe('transport-calc', () => {
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'water', rate: 600, stack_size: null, is_fluid: true }],
-      3,
-      3,
+      180,
+      180,
       { pipe_mk: 2 }
     );
     assert.equal(result.ok, true);
@@ -104,8 +106,8 @@ describe('transport-calc', () => {
         { item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 },
         { item_slug: 'water', rate: 600, stack_size: null, is_fluid: true },
       ],
-      3,
-      3,
+      180,
+      180,
       { belt_mk: 5, pipe_mk: 2 }
     );
     // 2 solidi + 2 fluidi
@@ -120,8 +122,8 @@ describe('transport-calc', () => {
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
-      2,
-      2,
+      120,
+      120,
       { belt_mk: 5 }
     );
     assert.equal(result.apply_station_limit, false);
@@ -144,8 +146,8 @@ describe('transport-calc', () => {
         { item_slug: 'iron-plate', rate: 400, stack_size: 100 },
         { item_slug: 'iron-rod', rate: 400, stack_size: 100 },
       ],
-      3,
-      3,
+      180,
+      180,
       { belt_mk: 5 }
     );
     assert.equal(result.mode, 'per_cargo_mix');
@@ -161,8 +163,8 @@ describe('transport-calc', () => {
         { item_slug: 'iron-plate', rate: 400, stack_size: 100, allow_mix: true },
         { item_slug: 'iron-rod', rate: 400, stack_size: 100, allow_mix: true },
       ],
-      3,
-      3,
+      180,
+      180,
       { belt_mk: 5 }
     );
     assert.equal(result.vehicles_needed, 1);
@@ -182,8 +184,8 @@ describe('transport-calc', () => {
         { item_slug: 'high-speed-wire', rate: 3000, stack_size: 500, allow_mix: false },
         { item_slug: 'water', rate: 600, stack_size: null, is_fluid: true, allow_mix: true },
       ],
-      3,
-      3,
+      180,
+      180,
       { belt_mk: 5, pipe_mk: 2 }
     );
     // mix: (600+600)/100 = 12 stack → 1 vagone; wire: 2; water: 2 (fluido ignora allow_mix)
@@ -202,8 +204,8 @@ describe('transport-calc', () => {
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
-      3,
-      3,
+      180,
+      180,
       { belt_mk: 5 }
     );
     assert.equal(result.slot_views.length, 1);
@@ -224,8 +226,8 @@ describe('transport-calc', () => {
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
-      2,
-      2,
+      120,
+      120,
       { belt_mk: 5 }
     );
     assert.equal(result.vehicles_needed, 2);
@@ -242,12 +244,35 @@ describe('transport-calc', () => {
     const result = calculateTransportNeed(
       vehicle,
       [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
-      2,
-      2,
+      120,
+      120,
       { belt_mk: 4, station_belt_mks: [4, 4, 4, 4] }
     );
     assert.equal(result.breakdown[0].stations_needed, 4);
     assert.equal(result.vehicles_needed, 4);
+  });
+
+  it('2 treni: Filorapido 3000/min RtD 4 Mk.5 → 1 vagone per treno (carico dimezzato)', () => {
+    const vehicle = getVehicleBySlug('freight-wagon');
+    const one = calculateTransportNeed(
+      vehicle,
+      [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
+      120,
+      120,
+      { belt_mk: 5, train_count: 1 }
+    );
+    const two = calculateTransportNeed(
+      vehicle,
+      [{ item_slug: 'high-speed-wire', rate: 3000, stack_size: 500 }],
+      120,
+      120,
+      { belt_mk: 5, train_count: 2 }
+    );
+    assert.equal(one.vehicles_needed, 2);
+    assert.equal(two.train_count, 2);
+    assert.equal(two.vehicles_needed, 1);
+    assert.equal(two.vehicles_needed_fleet, 2);
+    assert.equal(two.breakdown[0].rate_per_train, 1500);
   });
 
   it('slot_views misti: stack in ordine nei slot condivisi', () => {
@@ -258,8 +283,8 @@ describe('transport-calc', () => {
         { item_slug: 'iron-plate', rate: 400, stack_size: 100, allow_mix: true },
         { item_slug: 'iron-rod', rate: 400, stack_size: 100, allow_mix: true },
       ],
-      3,
-      3,
+      180,
+      180,
       { belt_mk: 5 }
     );
     const car = result.slot_views[0].cars[0];

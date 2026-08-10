@@ -324,8 +324,18 @@ function buildTransportProjectSummary(plan) {
   if (vehicleName) metrics.push(vehicleName);
   if (vehiclesNeeded > 0) metrics.push(formatTransportUnitLabel(vehicle, vehiclesNeeded));
   if (cargoCount > 0) metrics.push(t('transport.metaCargo', { count: cargoCount }));
-  if (calc.round_trip_minutes != null) {
-    metrics.push(t('transport.roundTrip', { minutes: calc.round_trip_minutes }));
+  if (calc.round_trip_seconds != null || calc.round_trip_minutes != null) {
+    const unit = String(plan.time_unit || 'min').toLowerCase() === 'sec' ? 'sec' : 'min';
+    const value =
+      unit === 'sec'
+        ? Math.round(Number(calc.round_trip_seconds ?? calc.round_trip_minutes * 60))
+        : calc.round_trip_minutes;
+    metrics.push(
+      t('transport.roundTrip', {
+        value,
+        unit: unit === 'sec' ? t('transport.unitSecShort') : t('transport.unitMinShort'),
+      })
+    );
   }
 
   return {
@@ -339,9 +349,13 @@ function buildTransportProjectSummary(plan) {
     vehicle,
     vehiclesNeeded,
     cargoCount,
+    outbound_seconds: plan.outbound_seconds,
+    return_seconds: plan.return_seconds,
     outbound_minutes: plan.outbound_minutes,
     return_minutes: plan.return_minutes,
+    round_trip_seconds: calc.round_trip_seconds,
     round_trip_minutes: calc.round_trip_minutes,
+    time_unit: plan.time_unit || 'min',
   };
 }
 
@@ -1037,11 +1051,36 @@ function renderDashboardTransportFleet(projects) {
             <div class="dashboard-transport-card-meta">
               ${escapeHtml(vehicleDisplayName(project.vehicle) || '—')}
               · ${escapeHtml(
-                t('transport.listTripTimes', {
-                  outbound: String(project.outbound_minutes ?? '—'),
-                  return: String(project.return_minutes ?? '—'),
-                  total: String(project.round_trip_minutes ?? '—'),
-                })
+                (() => {
+                  const unit =
+                    String(project.time_unit || 'min').toLowerCase() === 'sec' ? 'sec' : 'min';
+                  const unitLabel =
+                    unit === 'sec' ? t('transport.unitSecShort') : t('transport.unitMinShort');
+                  const toDisplay = (seconds, minutes) => {
+                    if (unit === 'sec') {
+                      const s =
+                        seconds != null
+                          ? Number(seconds)
+                          : minutes != null
+                            ? Number(minutes) * 60
+                            : null;
+                      return s != null && Number.isFinite(s) ? String(Math.round(s)) : '—';
+                    }
+                    const m =
+                      minutes != null
+                        ? Number(minutes)
+                        : seconds != null
+                          ? Number(seconds) / 60
+                          : null;
+                    return m != null && Number.isFinite(m) ? String(m) : '—';
+                  };
+                  return t('transport.listTripTimes', {
+                    outbound: toDisplay(project.outbound_seconds, project.outbound_minutes),
+                    return: toDisplay(project.return_seconds, project.return_minutes),
+                    total: toDisplay(project.round_trip_seconds, project.round_trip_minutes),
+                    unit: unitLabel,
+                  });
+                })()
               )}
             </div>
             <div class="dashboard-transport-card-cargo">
