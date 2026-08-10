@@ -11,21 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.0] - 2026-08-10
 
-Major release: Transport matured — times in seconds, min/s toggle, total trip time, train count, refined list and route form.
+Major: Transport — definitive train planning support (time units, total trip time, convoy count, list and route form).
 
 ### Added
-- Transport: minutes/seconds toggle in create and detail (times are always stored in seconds)
-- Transport: total trip time field (outbound + return); typing it splits outbound and return in half
-- Transport (trains only): “number of trains” field — load is split across trains (e.g. 2 trains ≈ half the cars per train)
+- Transport: minutes/seconds time-unit selector in create and detail (always stored as seconds)
+- Transport: total trip time field (outbound + return); manual entry sets outbound and return to half each
+- Transport (trains only): convoy count field; load is split across trains (e.g. 2 trains ≈ half the cars per train)
 
 ### Changed
-- Transport: clearer list cards (one-row layout; compact summary); yellow platform-port limit message visible again
-- Transport: more compact route form (narrow numeric fields, pill min/s toggle beside the section title)
-- Transport: full UI translations across all locales (time toggle, total time, train count, placeholders)
+- Transport: plan list uses a single-row layout with a compact summary; platform port-limit warning visible again
+- Transport: more compact route form (narrower numeric inputs; min/s selector next to the section title)
+- Transport: complete UI strings in all supported locales (time units, total, train count, placeholders)
 
 ### Fixed
-- Automatic migration of existing plans: minute times converted to seconds
-- Transport list: pencil renames the plan via the modal (like Production); `prompt` previously failed in Electron
+- Existing plan migration: automatic conversion of times from minutes to seconds
+- Transport list: rename plan via modal (same as Production); `window.prompt` was not usable in Electron
 
 ## [2.6.3] - 2026-08-09
 

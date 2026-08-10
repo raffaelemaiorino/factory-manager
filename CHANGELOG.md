@@ -11,21 +11,21 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [3.0.0] - 2026-08-10
 
-Major release: Trasporti maturi — tempi in secondi, toggle min/s, tempo totale, numero treni, elenco e form percorso rifiniti.
+Major: sezione Trasporti — versione treni definitiva (unità di tempo, tempo totale di viaggio, numero di convogli, elenco e form percorso).
 
 ### Added
-- Trasporti: toggle minuti/secondi in creazione e dettaglio (i tempi restano salvati in secondi)
-- Trasporti: campo tempo totale (andata + ritorno); se lo inserisci a mano, andata e ritorno diventano metà ciascuno
-- Trasporti (solo treni): campo «numero treni» — il carico si divide sui convogli (es. 2 treni ≈ metà vagoni per treno)
+- Trasporti: selettore unità di tempo minuti/secondi in creazione e dettaglio (persistenza sempre in secondi)
+- Trasporti: campo tempo totale di viaggio (andata + ritorno); valorizzazione manuale → andata e ritorno impostati a metà ciascuno
+- Trasporti (solo treni): campo numero di convogli; il carico viene ripartito tra i treni (es. 2 treni ≈ metà vagoni per treno)
 
 ### Changed
-- Trasporti: elenco più leggibile (card su una riga; riepilogo compact); messaggio giallo sulle porte di nuovo visibile
-- Trasporti: form percorso più compatto (campi numerici stretti, toggle min/s a pillola accanto al titolo)
-- Trasporti: traduzioni complete in tutte le lingue UI (toggle tempo, totale, numero treni, placeholder)
+- Trasporti: elenco piani su layout a riga singola con riepilogo compatto; avviso limite porte piattaforma di nuovo visibile
+- Trasporti: form percorso più compatto (input numerici ridotti; selettore min/s accanto al titolo sezione)
+- Trasporti: stringhe UI complete in tutte le lingue supportate (unità di tempo, totale, numero treni, placeholder)
 
 ### Fixed
-- Migrazione automatica dei piani esistenti: tempi in minuti convertiti in secondi
-- Elenco Trasporti: la matita rinomina il piano con il modal (come in Produzione); prima `prompt` non funzionava in Electron
+- Migrazione piani esistenti: conversione automatica dei tempi da minuti a secondi
+- Elenco Trasporti: rinomina piano tramite modal (come in Produzione); `window.prompt` non era utilizzabile in Electron
 
 ## [2.6.3] - 2026-08-09
 
