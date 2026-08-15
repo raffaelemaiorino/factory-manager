@@ -9,6 +9,36 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [3.9.4] - 2026-08-15
+
+### Fixed
+- Produzione: «Collega da produzione» resta disponibile anche se quello schema è già collegato a Energia (i due collegamenti non sono esclusivi)
+
+## [3.9.3] - 2026-08-15
+
+### Fixed
+- Energia: il testo di «Crea produzione combustibile collegata» resta su una riga
+- Energia: «Collega da produzione» resta disponibile anche se quello schema è già collegato a un altro piano di produzione
+- Energia: la spunta verde sotto l’input mostra di nuovo «Coperto dalle estrazioni» invece della chiave di traduzione
+
+## [3.9.2] - 2026-08-15
+
+### Changed
+- Produzione ed Energia: la lista schemi compare subito (nomi e card) e i riepiloghi si riempiono dopo, senza restare su «Caricamento schemi…»
+
+## [3.9.1] - 2026-08-15
+
+### Fixed
+- Produzione ed Energia: il caricamento della lista schemi è di nuovo immediato (i collegamenti tra piani non ricalcolano più tutti gli schemi a ogni apertura)
+
+## [3.9.0] - 2026-08-15
+
+### Added
+- Produzione: puoi collegare l’input di uno schema a un surplus di un altro piano («Collega da produzione»), senza escludere i collegamenti verso Energia
+
+### Fixed
+- Energia: il flag «Collega da produzione» sui generatori si salva correttamente anche quando ci sono estrazioni collegate
+
 ## [3.8.0] - 2026-08-15
 
 ### Added

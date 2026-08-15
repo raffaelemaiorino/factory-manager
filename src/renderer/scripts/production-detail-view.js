@@ -465,7 +465,9 @@ async function openProductionDetail(chainId) {
     if (!pickerResourcesData.length) {
       await ensurePickerResourcesData();
     }
-    activeProductionDetail = await window.satisfactory.getProductionChainDetail(chainId);
+    activeProductionDetail = await window.satisfactory.getProductionChainDetail(chainId, {
+      includeProductionObjectives: true,
+    });
     renderProductionDetailContent(activeProductionDetail);
   } catch (err) {
     productionDetailBody.innerHTML = `<section class="card production-detail-main"><p class="detail-empty">${escapeHtml(t('production.errorDetailLoad'))}</p></section>`;
@@ -830,7 +832,8 @@ async function refreshProductionDetail() {
 
   try {
     activeProductionDetail = await window.satisfactory.getProductionChainDetail(
-      activeProductionChainId
+      activeProductionChainId,
+      { includeProductionObjectives: true }
     );
     renderProductionDetailContent(activeProductionDetail);
   } catch (err) {
@@ -947,10 +950,16 @@ async function handleResourceSelection(itemId) {
 
 async function loadProductionChains() {
   const container = document.getElementById('production-container');
-  container.innerHTML = `<p class="loading">${escapeHtml(t('common.loadingSchemas'))}</p>`;
+  const hasRenderedList = Boolean(
+    container.querySelector('.production-list, .production-empty')
+  );
+  if (!hasRenderedList) {
+    container.innerHTML = `<p class="loading">${escapeHtml(t('common.loadingSchemas'))}</p>`;
+  }
 
   try {
     productionChains = await window.satisfactory.getProductionChains();
+    renderProductionChains();
     await loadProductionChainSummaries();
     renderProductionChains();
   } catch (err) {

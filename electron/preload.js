@@ -36,7 +36,7 @@ contextBridge.exposeInMainWorld('satisfactory', {
   duplicateProductionChain: (id) => ipcRenderer.invoke('production:duplicate', id),
   exportProductionChain: (id) => ipcRenderer.invoke('production:export', id),
   importProductionChain: () => ipcRenderer.invoke('production:import'),
-  getProductionChainDetail: (id) => ipcRenderer.invoke('production:get', id),
+  getProductionChainDetail: (id, options) => ipcRenderer.invoke('production:get', id, options),
   addProductionChainStep: (chainId, data) =>
     ipcRenderer.invoke('production:add-step', chainId, data),
   updateProductionChainStep: (stepId, data) =>
@@ -82,7 +82,7 @@ contextBridge.exposeInMainWorld('satisfactory', {
   deleteEnergyChain: (id) => ipcRenderer.invoke('energy:delete', id),
   exportEnergyChain: (id) => ipcRenderer.invoke('energy:export', id),
   importEnergyChain: () => ipcRenderer.invoke('energy:import'),
-  getEnergyChainDetail: (id) => ipcRenderer.invoke('energy:get', id),
+  getEnergyChainDetail: (id, options) => ipcRenderer.invoke('energy:get', id, options),
   getEnergyGeneratorCatalog: () => ipcRenderer.invoke('energy:generator-catalog'),
   addEnergyExtraction: (chainId, data) =>
     ipcRenderer.invoke('energy:add-extraction', chainId, data),

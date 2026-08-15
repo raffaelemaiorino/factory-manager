@@ -111,7 +111,8 @@ async function refreshAfterLocaleChange() {
   if (currentView === 'production-detail' && activeProductionChainId) {
     try {
       activeProductionDetail = await window.satisfactory.getProductionChainDetail(
-        activeProductionChainId
+        activeProductionChainId,
+        { includeProductionObjectives: true }
       );
       renderProductionDetailContent(activeProductionDetail);
     } catch (err) {

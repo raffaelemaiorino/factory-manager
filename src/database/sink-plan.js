@@ -351,7 +351,11 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
     context.sink_byproducts != null
       ? Boolean(Number(context.sink_byproducts))
       : Boolean(Number(chain.sink_byproducts));
-  if (!sinkEnabled) return getProductionChainDetail(db, chainId, getItemById);
+  if (!sinkEnabled) {
+    return getProductionChainDetail(db, chainId, getItemById, {
+      includeProductionObjectives: true,
+    });
+  }
 
   const noopPersist = () => {};
   const extractionBySlug = new Map(context.extractionBySlug || []);
@@ -595,7 +599,7 @@ function appendSinkByproducts(db, persist, chainId, getItemById, context = {}) {
   }
 
   persist();
-  return getProductionChainDetail(db, chainId, getItemById);
+  return getProductionChainDetail(db, chainId, getItemById, { includeProductionObjectives: true });
 }
 
 module.exports = {

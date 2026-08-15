@@ -449,7 +449,7 @@ function autoPlanProductionChain(db, persist, chainId, options, getItemById) {
   }
 
   persist();
-  return getProductionChainDetail(db, chainId, getItemById);
+  return getProductionChainDetail(db, chainId, getItemById, { includeProductionObjectives: true });
 }
 
 function setProductionChainTargetsAndReplan(db, persist, chainId, targets, getItemById) {
@@ -459,7 +459,9 @@ function setProductionChainTargetsAndReplan(db, persist, chainId, targets, getIt
     ensureProductionChainTargetsTable(db);
     clearProductionChainContents(db, chainId);
     replaceChainTargets(db, persist, chainId, [], getItemById);
-    return getProductionChainDetail(db, chainId, getItemById);
+    return getProductionChainDetail(db, chainId, getItemById, {
+      includeProductionObjectives: true,
+    });
   }
 
   return autoPlanProductionChain(

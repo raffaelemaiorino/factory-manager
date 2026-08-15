@@ -476,7 +476,7 @@ ipcMain.handle('production:import', async () => {
   const chain = importProductionChain(opened.payload);
   return { canceled: false, chain, filePath: opened.filePath };
 });
-ipcMain.handle('production:get', (_event, id) => fetchProductionChainDetail(id));
+ipcMain.handle('production:get', (_event, id, options) => fetchProductionChainDetail(id, options));
 ipcMain.handle('production:add-step', (_event, chainId, data) =>
   addProductionChainStep(chainId, data)
 );
@@ -554,7 +554,7 @@ ipcMain.handle('energy:import', async () => {
   const chain = importEnergyChain(opened.payload);
   return { canceled: false, chain, filePath: opened.filePath };
 });
-ipcMain.handle('energy:get', (_event, id) => fetchEnergyChainDetail(id));
+ipcMain.handle('energy:get', (_event, id, options) => fetchEnergyChainDetail(id, options));
 ipcMain.handle('energy:generator-catalog', () => fetchEnergyGeneratorCatalog());
 ipcMain.handle('energy:add-extraction', (_event, chainId, data) =>
   addEnergyChainExtraction(chainId, data)

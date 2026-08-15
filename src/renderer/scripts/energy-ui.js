@@ -280,11 +280,18 @@
   function getEnergyDemandForProductionStep(stepId, itemSlug) {
     const round = (value) => window.ProductionScale.roundProduction(value);
     let demand = 0;
+    const seen = new Set();
 
     for (const generator of activeEnergyDetail?.generators ?? []) {
       for (const link of getLinkedProductionForInput(generator, itemSlug)) {
-        if (Number(link.producer_production_step_id) === Number(stepId)) {
-          demand += link.producer_rate ?? 0;
+        if (Number(link.producer_production_step_id) !== Number(stepId)) continue;
+        const key = Number(generator.id);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        if (itemSlug === 'water') {
+          demand += generator.water_consumption ?? 0;
+        } else {
+          demand += generator.fuel_consumption ?? generator.target_fuel_input ?? 0;
         }
       }
     }
@@ -294,7 +301,6 @@
 
   function formatEnergyProductionLinkRate(objective, generator, itemSlug) {
     const UI = productionUi();
-    const normalize = UI.normalizeLinkDelta ?? ((delta) => Math.max(0, Number(delta) || 0));
     const unit = objective.is_fluid ? 'm³/min' : '/min';
     const formatRate = (value) => (UI.formatRateWithUnit ?? formatProductionValue)(value, unit);
     const linkedHere = getLinkedProductionForInput(generator, itemSlug).some(
@@ -304,10 +310,12 @@
       return formatRate(objective.rate);
     }
 
-    const productionSurplus = objective.excess_rate ?? normalize(objective.rate, objective.rate);
-    const energyDemand = getEnergyDemandForProductionStep(objective.step_id, itemSlug);
-    const available = normalize(productionSurplus - energyDemand, productionSurplus);
-    if (energyDemand > 0 && available > 0 && available + (UI.LINK_BALANCE_TOLERANCE ?? 0.05) < objective.rate) {
+    // excess_rate already subtracts other production + energy outbound demand
+    const available = objective.excess_rate ?? objective.rate ?? 0;
+    if (
+      available > 0 &&
+      available + (UI.LINK_BALANCE_TOLERANCE ?? 0.05) < objective.rate
+    ) {
       return `${formatRate(available)} liberi`;
     }
 
@@ -315,24 +323,24 @@
   }
 
   function getProductionObjectivesForSlug(itemSlug, generator) {
-    const UI = productionUi();
-    const normalize = UI.normalizeLinkDelta ?? ((delta) => Math.max(0, Number(delta) || 0));
+    const fromObjectives = (activeEnergyDetail?.production_objectives ?? []).filter(
+      (objective) => objective.item_slug === itemSlug
+    );
 
-    return (activeEnergyDetail?.production_objectives ?? [])
-      .filter((objective) => objective.item_slug === itemSlug)
-      .filter((objective) => {
-        const linkedHere = getLinkedProductionForInput(generator, itemSlug).some(
-          (link) => link.producer_production_step_id === objective.step_id
-        );
-        if (linkedHere) return true;
+    const seen = new Set(fromObjectives.map((objective) => Number(objective.step_id)));
+    const fromLinks = getLinkedProductionForInput(generator, itemSlug)
+      .filter((link) => !seen.has(Number(link.producer_production_step_id)))
+      .map((link) => ({
+        step_id: link.producer_production_step_id,
+        chain_name: link.producer_chain_name,
+        step_name: link.producer_step_name,
+        item_slug: itemSlug,
+        rate: link.producer_rate,
+        excess_rate: 0,
+        is_fluid: itemSlug === 'water',
+      }));
 
-        const productionSurplus =
-          objective.excess_rate ??
-          normalize(objective.rate, objective.rate);
-        const energyDemand = getEnergyDemandForProductionStep(objective.step_id, itemSlug);
-        const available = normalize(productionSurplus - energyDemand, productionSurplus);
-        return available > 0;
-      });
+    return [...fromObjectives, ...fromLinks];
   }
 
   function getLinkedProductionForInput(generator, itemSlug) {
@@ -565,7 +573,7 @@
           ? `<div class="production-input-linked">
               ${
                 linkState === 'balanced'
-                  ? `<span class="production-link-covered">${escapeHtml(t('production.linkCoveredByExtracted'))}</span>`
+                  ? `<span class="production-link-covered">${escapeHtml(t('production.linkCoveredByExtractions'))}</span>`
                   : linkState === 'excess'
                     ? `<span class="production-link-external">${escapeHtml(
                         t('production.linkChainExcess', {
@@ -1270,10 +1278,16 @@
 
   async function loadEnergyChains() {
     const container = document.getElementById('energy-container');
-    container.innerHTML = `<p class="loading">${escapeHtml(t('common.loadingSchemas'))}</p>`;
+    const hasRenderedList = Boolean(
+      container.querySelector('.production-list, .production-empty')
+    );
+    if (!hasRenderedList) {
+      container.innerHTML = `<p class="loading">${escapeHtml(t('common.loadingSchemas'))}</p>`;
+    }
 
     try {
       energyChains = await window.satisfactory.getEnergyChains();
+      renderEnergyChains();
       await loadEnergyChainSummaries();
       renderEnergyChains();
     } catch (err) {
@@ -1931,7 +1945,9 @@
 
     try {
       await ensureItemNameCache();
-      activeEnergyDetail = await window.satisfactory.getEnergyChainDetail(chainId);
+      activeEnergyDetail = await window.satisfactory.getEnergyChainDetail(chainId, {
+        includeProductionObjectives: true,
+      });
       renderEnergyDetailContent(activeEnergyDetail);
     } catch (err) {
       energyDetailBody.innerHTML = `<section class="card production-detail-main"><p class="detail-empty">${escapeHtml(t('energy.errorDetailLoad'))}</p></section>`;
@@ -2178,7 +2194,10 @@
           console.error('Energy generator update error:', err);
           if (activeEnergyChainId) {
             try {
-              activeEnergyDetail = await window.satisfactory.getEnergyChainDetail(activeEnergyChainId);
+              activeEnergyDetail = await window.satisfactory.getEnergyChainDetail(
+                activeEnergyChainId,
+                { includeProductionObjectives: true }
+              );
               renderEnergyDetailContent(activeEnergyDetail);
             } catch (reloadErr) {
               console.error('Energy generator reload error:', reloadErr);
@@ -2221,12 +2240,18 @@
     }
   }
 
+  function getEnergyGeneratorElement(generatorId) {
+    return energyDetailBody.querySelector(
+      `.energy-generator[data-generator-id="${generatorId}"]`
+    );
+  }
+
   function updateGeneratorDomFromState(generatorId) {
     const generator = activeEnergyDetail?.generators?.find((item) => item.id === generatorId);
     if (!generator) return;
 
     const UI = productionUi();
-    const card = energyDetailBody.querySelector(`[data-generator-id="${generatorId}"]`);
+    const card = getEnergyGeneratorElement(generatorId);
     if (!card) return;
 
     syncEnergyBalanceCache();
@@ -2674,19 +2699,28 @@
   async function handleEnergyProductionLinkChange(checkbox) {
     const generatorId = Number(checkbox.dataset.generatorId);
     const itemSlug = checkbox.dataset.itemSlug;
-    const generatorEl = energyDetailBody.querySelector(`[data-generator-id="${generatorId}"]`);
-    if (!generatorEl) return;
+    const stepId = Number(checkbox.dataset.producerStepId);
+    if (!generatorId || !itemSlug || !stepId) return;
 
-    const checkboxes = generatorEl.querySelectorAll('.energy-production-link-checkbox');
-    const producerStepIds = [...checkboxes]
-      .filter((input) => input.dataset.itemSlug === itemSlug && input.checked)
-      .map((input) => Number(input.dataset.producerStepId));
+    const generator = activeEnergyDetail?.generators?.find((item) => item.id === generatorId);
+    if (!generator) return;
+
+    const currentIds = getLinkedProductionForInput(generator, itemSlug)
+      .map((link) => Number(link.producer_production_step_id))
+      .filter(Boolean);
+
+    let nextIds;
+    if (checkbox.checked) {
+      nextIds = [...new Set([...currentIds, stepId])];
+    } else {
+      nextIds = currentIds.filter((id) => id !== stepId);
+    }
 
     try {
       activeEnergyDetail = await window.satisfactory.setEnergyGeneratorProductionLinks(
         generatorId,
         itemSlug,
-        producerStepIds
+        nextIds
       );
       renderEnergyDetailContent(activeEnergyDetail);
     } catch (err) {
@@ -3031,16 +3065,6 @@
     });
 
     energyDetailBody.addEventListener('change', async (e) => {
-      const UI = productionUi();
-      const configInput = UI.resolveConfigNumberInput?.(e.target);
-      const field = configInput ? UI.getConfigInputField?.(configInput) : null;
-      if (field) {
-        commitEnergyConfigInputFromField(configInput, field);
-        UI.rememberConfigInputValue?.(configInput);
-      }
-    });
-
-    energyDetailBody.addEventListener('click', async (e) => {
       const productionLinkCheckbox = e.target.closest('.energy-production-link-checkbox');
       if (productionLinkCheckbox) {
         await handleEnergyProductionLinkChange(productionLinkCheckbox);
@@ -3055,6 +3079,16 @@
         return;
       }
 
+      const UI = productionUi();
+      const configInput = UI.resolveConfigNumberInput?.(e.target);
+      const field = configInput ? UI.getConfigInputField?.(configInput) : null;
+      if (field) {
+        commitEnergyConfigInputFromField(configInput, field);
+        UI.rememberConfigInputValue?.(configInput);
+      }
+    });
+
+    energyDetailBody.addEventListener('click', async (e) => {
       const UI = productionUi();
       const themeSelectOption = e.target.closest('.theme-select-option');
       if (themeSelectOption) {
@@ -3181,7 +3215,9 @@
     reloadActiveDetail: async () => {
       if (!activeEnergyChainId) return null;
       await ensureItemNameCache();
-      activeEnergyDetail = await window.satisfactory.getEnergyChainDetail(activeEnergyChainId);
+      activeEnergyDetail = await window.satisfactory.getEnergyChainDetail(activeEnergyChainId, {
+        includeProductionObjectives: true,
+      });
       renderEnergyDetailContent(activeEnergyDetail);
       return activeEnergyDetail;
     },

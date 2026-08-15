@@ -338,7 +338,7 @@ function autoPlanEnergyChain(db, persist, chainId, options = {}, getItemById) {
 
   db.run(`UPDATE energy_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
-  return getEnergyChainDetail(db, chainId, getItemById);
+  return getEnergyChainDetail(db, chainId, getItemById, { includeProductionObjectives: true });
 }
 
 function setEnergyChainTargetsAndReplan(db, persist, chainId, options, getItemById) {

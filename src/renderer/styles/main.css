@@ -3430,8 +3430,15 @@ select.production-config-input option:checked {
   align-items: flex-start;
 }
 
-.energy-targets-section .energy-plan-link-fuel-option .form-option-hint {
-  max-width: 52rem;
+.energy-targets-section .energy-plan-link-fuel-option .form-option-copy {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.energy-targets-section .energy-plan-link-fuel-option .form-option-hint,
+#energy-create-link-fuel-option .form-option-hint {
+  max-width: none;
+  white-space: nowrap;
 }
 
 .production-plan-constraint {

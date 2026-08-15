@@ -433,6 +433,9 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
                   allSteps,
                   unit
                 );
+                const label = producer.is_external_producer
+                  ? producer.chain_name || producer.name
+                  : producer.name;
                 return `
                   <label class="production-link-option">
                     <input
@@ -443,7 +446,7 @@ function renderProductionInputWithLinks(step, io, ioOptions, allSteps) {
                       data-producer-step-id="${producer.id}"
                       ${checked ? 'checked' : ''}
                     />
-                    <span>${escapeHtml(producer.name)}</span>
+                    <span>${escapeHtml(label)}</span>
                     <span class="production-link-rate">(${rateLabel})</span>
                   </label>`;
               })

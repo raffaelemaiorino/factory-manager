@@ -417,8 +417,8 @@ function importProductionChain(payload) {
   return loadProductionChainImport(getDb(), persist, payload, getItemById);
 }
 
-function fetchProductionChainDetail(id) {
-  return loadProductionChainDetail(getDb(), id, getItemById);
+function fetchProductionChainDetail(id, options) {
+  return loadProductionChainDetail(getDb(), id, getItemById, options);
 }
 
 function addProductionChainStep(chainId, data) {
@@ -494,24 +494,30 @@ function setProductionStepExtractionLinks(consumerStepId, itemSlug, producerExtr
   );
 }
 
+function productionEditorDetail(chainId) {
+  return loadProductionChainDetail(getDb(), chainId, getItemById, {
+    includeProductionObjectives: true,
+  });
+}
+
 function addMineralExtraction(chainId, data) {
   insertMineralExtraction(getDb(), persist, chainId, data, getItemById);
-  return loadProductionChainDetail(getDb(), chainId, getItemById);
+  return productionEditorDetail(chainId);
 }
 
 function updateMineralExtraction(extractionId, data) {
   const extraction = patchMineralExtraction(getDb(), persist, extractionId, data, getItemById);
-  return loadProductionChainDetail(getDb(), extraction.chain_id, getItemById);
+  return productionEditorDetail(extraction.chain_id);
 }
 
 function deleteMineralExtraction(extractionId) {
   const result = removeMineralExtraction(getDb(), persist, extractionId);
-  return loadProductionChainDetail(getDb(), result.chain_id, getItemById);
+  return productionEditorDetail(result.chain_id);
 }
 
 function resetMineralExtraction(extractionId) {
   const extraction = resetChainExtraction(getDb(), persist, extractionId, getItemById);
-  return loadProductionChainDetail(getDb(), extraction.chain_id, getItemById);
+  return productionEditorDetail(extraction.chain_id);
 }
 
 function getEnergyChains() {
@@ -595,52 +601,58 @@ function importEnergyChain(payload) {
   return loadEnergyChainImport(getDb(), persist, payload, getItemById);
 }
 
-function fetchEnergyChainDetail(id) {
-  return loadEnergyChainDetail(getDb(), id, getItemById);
+function fetchEnergyChainDetail(id, options) {
+  return loadEnergyChainDetail(getDb(), id, getItemById, options);
 }
 
 function fetchEnergyGeneratorCatalog() {
   return getEnergyGeneratorCatalog(getDb());
 }
 
+function energyEditorDetail(chainId) {
+  return loadEnergyChainDetail(getDb(), chainId, getItemById, {
+    includeProductionObjectives: true,
+  });
+}
+
 function addEnergyChainExtraction(chainId, data) {
   insertEnergyExtraction(getDb(), persist, chainId, data, getItemById);
-  return loadEnergyChainDetail(getDb(), chainId, getItemById);
+  return energyEditorDetail(chainId);
 }
 
 function updateEnergyChainExtraction(extractionId, data) {
   const extraction = patchEnergyExtraction(getDb(), persist, extractionId, data, getItemById);
-  return loadEnergyChainDetail(getDb(), extraction.chain_id, getItemById);
+  return energyEditorDetail(extraction.chain_id);
 }
 
 function deleteEnergyChainExtraction(extractionId) {
   const result = removeEnergyExtraction(getDb(), persist, extractionId);
-  return loadEnergyChainDetail(getDb(), result.chain_id, getItemById);
+  return energyEditorDetail(result.chain_id);
 }
 
 function resetEnergyChainExtraction(extractionId) {
   const extraction = resetChainEnergyExtraction(getDb(), persist, extractionId, getItemById);
-  return loadEnergyChainDetail(getDb(), extraction.chain_id, getItemById);
+  return energyEditorDetail(extraction.chain_id);
 }
 
 function addEnergyChainGenerator(chainId, data) {
   insertEnergyGenerator(getDb(), persist, chainId, data, getItemById);
-  return loadEnergyChainDetail(getDb(), chainId, getItemById);
+  return energyEditorDetail(chainId);
 }
 
 function updateEnergyChainGenerator(generatorId, data) {
   const generator = patchEnergyGenerator(getDb(), persist, generatorId, data, getItemById);
-  return loadEnergyChainDetail(getDb(), generator.chain_id, getItemById);
+  return energyEditorDetail(generator.chain_id);
 }
 
 function deleteEnergyChainGenerator(generatorId) {
   const result = removeEnergyGenerator(getDb(), persist, generatorId);
-  return loadEnergyChainDetail(getDb(), result.chain_id, getItemById);
+  return energyEditorDetail(result.chain_id);
 }
 
 function resetEnergyChainGenerator(generatorId) {
   const generator = resetChainGenerator(getDb(), persist, generatorId, getItemById);
-  return loadEnergyChainDetail(getDb(), generator.chain_id, getItemById);
+  return energyEditorDetail(generator.chain_id);
 }
 
 function setEnergyGeneratorInputLinks(consumerGeneratorId, itemSlug, producerExtractionIds) {

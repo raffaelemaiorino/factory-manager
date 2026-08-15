@@ -9,6 +9,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.4] - 2026-08-15
+
+### Fixed
+- Production: «Link from production» still appears when that plan is already linked to Power (the two links are not exclusive)
+
+## [3.9.3] - 2026-08-15
+
+### Fixed
+- Power: «Create linked fuel production» hint stays on one line
+- Power: «Link from production» still appears when that plan is already linked to another Production plan
+- Power: the green input badge shows «Covered by extractions» again instead of the translation key
+
+## [3.9.2] - 2026-08-15
+
+### Changed
+- Production and Power: the plan list appears immediately (names and cards), then summaries fill in — no lingering «Loading plans…»
+
+## [3.9.1] - 2026-08-15
+
+### Fixed
+- Production and Power: plan list loading is instant again (cross-plan links no longer recompute every plan on each list open)
+
+## [3.9.0] - 2026-08-15
+
+### Added
+- Production: link a step’s input to surplus from another plan («Link from production»), without excluding links to Power
+
+### Fixed
+- Power: the «Link from production» checkbox on generators now saves correctly even when extractions are linked
+
 ## [3.8.0] - 2026-08-15
 
 ### Added

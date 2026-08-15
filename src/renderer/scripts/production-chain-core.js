@@ -73,16 +73,17 @@ function renderProductionChainCard(chain) {
 }
 
 async function loadProductionChainSummaries() {
-  await ensurePickerResourcesData();
-
-  const summaries = await Promise.all(
-    productionChains.map((chain) =>
-      window.satisfactory.getProductionChainDetail(chain.id).catch((err) => {
-        console.error('Production summary load error:', chain.id, err);
-        return null;
-      })
-    )
-  );
+  const [summaries] = await Promise.all([
+    Promise.all(
+      productionChains.map((chain) =>
+        window.satisfactory.getProductionChainDetail(chain.id).catch((err) => {
+          console.error('Production summary load error:', chain.id, err);
+          return null;
+        })
+      )
+    ),
+    ensurePickerResourcesData(),
+  ]);
 
   productionChainSummaries = new Map();
   productionChains.forEach((chain, index) => {
@@ -1768,6 +1769,11 @@ function getConsumerProducerCoveredRate(consumer, itemSlug, allSteps) {
     const producer = allSteps.find((step) => Number(step.id) === Number(link.producer_step_id));
     if (producer) {
       total += getProducerAttributedDemand(producer, consumer, itemSlug, allSteps);
+    } else {
+      const required = getStepInputRateForItem(consumer, itemSlug);
+      total += window.ProductionScale.roundProduction(
+        Math.min(Number(link.producer_rate) || 0, required || Number(link.producer_rate) || 0)
+      );
     }
   }
   return window.ProductionScale.roundProduction(total);
@@ -1784,6 +1790,11 @@ function getConsumerLinkedInputRate(consumer, itemSlug, allSteps, allExtractions
       );
       if (producer) {
         total += getProducerAttributedDemand(producer, consumer, itemSlug, allSteps);
+      } else {
+        const required = getStepInputRateForItem(consumer, itemSlug);
+        total += window.ProductionScale.roundProduction(
+          Math.min(Number(link.producer_rate) || 0, required || Number(link.producer_rate) || 0)
+        );
       }
       continue;
     }
@@ -1830,8 +1841,20 @@ function isProducerAvailableForLink(producer, consumerStepId, itemSlug, allSteps
 }
 
 function formatProducerLinkOptionRate(producer, consumerStepId, itemSlug, allSteps, unit) {
-  const outputRate = getStepOutputRateForItem(producer, itemSlug);
   const consumer = allSteps.find((step) => Number(step.id) === Number(consumerStepId));
+  if (producer.is_external_producer) {
+    const outputRate = Number(producer.rate) || Number(producer.excess_rate) || 0;
+    if (isProducerLinkedToConsumer(consumer, producer.id, itemSlug)) {
+      return formatRateWithUnit(outputRate, unit);
+    }
+    const surplus = Number(producer.excess_rate) || 0;
+    if (surplus > 0 && surplus + LINK_BALANCE_TOLERANCE < outputRate) {
+      return t('production.surplusFree', { rate: formatRateWithUnit(surplus, unit) });
+    }
+    return formatRateWithUnit(outputRate || surplus, unit);
+  }
+
+  const outputRate = getStepOutputRateForItem(producer, itemSlug);
   if (isProducerLinkedToConsumer(consumer, producer.id, itemSlug)) {
     return formatRateWithUnit(outputRate, unit);
   }
@@ -1845,10 +1868,65 @@ function formatProducerLinkOptionRate(producer, consumerStepId, itemSlug, allSte
   return formatRateWithUnit(outputRate, unit);
 }
 
+function getExternalProducerCandidates(consumerStepId, itemSlug, allSteps, allExtractions = []) {
+  const objectives = activeProductionDetail?.production_objectives ?? [];
+  const consumer = allSteps.find((step) => Number(step.id) === Number(consumerStepId));
+
+  const fromObjectives = objectives
+    .filter((objective) => objective.item_slug === itemSlug)
+    .filter((objective) => {
+      if (isProducerLinkedToConsumer(consumer, objective.step_id, itemSlug)) return true;
+      if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
+      return true;
+    })
+    .map((objective) => ({
+      id: objective.step_id,
+      name: objective.chain_name || objective.step_name,
+      step_name: objective.step_name,
+      chain_id: objective.chain_id,
+      chain_name: objective.chain_name,
+      is_external_producer: true,
+      excess_rate: objective.excess_rate,
+      rate: objective.rate,
+      scaled_outputs: [
+        {
+          item_slug: objective.item_slug,
+          item_name: objective.item_name,
+          is_fluid: objective.is_fluid,
+        },
+      ],
+    }));
+
+  const seen = new Set(fromObjectives.map((candidate) => Number(candidate.id)));
+  const fromLinks = (consumer?.input_links?.[itemSlug] ?? [])
+    .filter((link) => link.producer_step_id && link.producer_chain_name)
+    .filter((link) => !seen.has(Number(link.producer_step_id)))
+    .map((link) => ({
+      id: link.producer_step_id,
+      name: link.producer_chain_name || link.producer_name,
+      chain_id: link.producer_chain_id,
+      chain_name: link.producer_chain_name,
+      is_external_producer: true,
+      excess_rate: 0,
+      rate: link.producer_rate,
+      scaled_outputs: [{ item_slug: itemSlug }],
+    }));
+
+  return [...fromObjectives, ...fromLinks];
+}
+
 function getProducerCandidates(allSteps, consumerStepId, itemSlug, allExtractions = []) {
-  return allSteps.filter((candidate) =>
+  const local = allSteps.filter((candidate) =>
     isProducerAvailableForLink(candidate, consumerStepId, itemSlug, allSteps, allExtractions)
   );
+  const localIds = new Set(local.map((step) => Number(step.id)));
+  const external = getExternalProducerCandidates(
+    consumerStepId,
+    itemSlug,
+    allSteps,
+    allExtractions
+  ).filter((candidate) => !localIds.has(Number(candidate.id)));
+  return [...local, ...external];
 }
 
 function getLinkedConsumersUnmetDemand(extraction, itemSlug, allSteps, allExtractions = []) {
@@ -2106,12 +2184,20 @@ function getLinkedProducersForInput(step, itemSlug, allSteps) {
   const links = (step.input_links?.[itemSlug] ?? []).filter((link) => link.producer_step_id);
   return links.map((link) => {
     const producer = allSteps.find((candidate) => candidate.id === link.producer_step_id);
+    const required = getStepInputRateForItem(step, itemSlug);
+    const attributed = producer
+      ? getProducerAttributedDemand(producer, step, itemSlug, allSteps)
+      : window.ProductionScale.roundProduction(
+          Math.min(Number(link.producer_rate) || 0, required || Number(link.producer_rate) || 0)
+        );
+    const displayName =
+      link.producer_chain_name ||
+      producer?.name ||
+      link.producer_name;
     return {
       ...link,
-      producer_name: producer?.name ?? link.producer_name,
-      producer_rate: producer
-        ? getProducerAttributedDemand(producer, step, itemSlug, allSteps)
-        : link.producer_rate,
+      producer_name: displayName,
+      producer_rate: attributed,
     };
   });
 }

@@ -7,7 +7,7 @@ const {
 const {
   getStepById,
   getStepOutputRateForItem,
-  listAllProductionObjectives,
+  listProductionObjectives,
   getProductionChainById,
 } = require('./production-chains');
 const {
@@ -372,7 +372,18 @@ function getEnergyChainById(db, id) {
   return row ? mapChain(row) : null;
 }
 
-function getEnergyChainDetail(db, chainId, getItemById) {
+function collectGeneratorInputSlugs(generators) {
+  const slugs = new Set();
+  for (const generator of generators ?? []) {
+    if (generator.fuel_item_slug) slugs.add(generator.fuel_item_slug);
+    if ((generator.water_consumption ?? 0) > 0 || (generator.water_rate_base ?? 0) > 0) {
+      slugs.add('water');
+    }
+  }
+  return [...slugs];
+}
+
+function getEnergyChainDetail(db, chainId, getItemById, options = {}) {
   ensureEnergyChainsTable(db);
   const chain = getEnergyChainById(db, chainId);
   if (!chain) return null;
@@ -383,9 +394,18 @@ function getEnergyChainDetail(db, chainId, getItemById) {
   const productionLinks = loadChainProductionLinks(db, chainId);
   attachLinksToGenerators(generators, extractions, links);
   attachProductionLinksToGenerators(generators, productionLinks, getItemById, db);
-  const production_objectives = listAllProductionObjectives(db, getItemById);
+  const production_objectives = options.includeProductionObjectives
+    ? listProductionObjectives(db, getItemById, {
+        itemSlugs: collectGeneratorInputSlugs(generators),
+        includeAllocated: true,
+      })
+    : [];
 
   return { chain, extractions, generators, links, production_objectives };
+}
+
+function getEnergyChainEditorDetail(db, chainId, getItemById) {
+  return getEnergyChainDetail(db, chainId, getItemById, { includeProductionObjectives: true });
 }
 
 function createEnergyChain(
@@ -821,7 +841,7 @@ function setEnergyGeneratorInputLinks(
 
   db.run(`UPDATE energy_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
-  return getEnergyChainDetail(db, chainId, getItemById);
+  return getEnergyChainEditorDetail(db, chainId, getItemById);
 }
 
 function setEnergyGeneratorProductionLinks(
@@ -887,7 +907,7 @@ function setEnergyGeneratorProductionLinks(
 
   db.run(`UPDATE energy_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
-  return getEnergyChainDetail(db, chainId, getItemById);
+  return getEnergyChainEditorDetail(db, chainId, getItemById);
 }
 
 function exportEnergyChain(db, sourceId, getItemById, { appVersion = null } = {}) {

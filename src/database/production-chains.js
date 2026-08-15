@@ -342,29 +342,63 @@ function loadChainLinks(db, chainId) {
   );
 }
 
-function attachLinksToSteps(steps, links, extractions = []) {
-  const stepMap = new Map(steps.map((step) => [step.id, step]));
+function attachLinksToSteps(steps, links, extractions = [], options = {}) {
+  const { db = null, getItemById = null } = options;
+  const stepMap = new Map(steps.map((step) => [Number(step.id), step]));
   const extractionMap = new Map(extractions.map((extraction) => [extraction.id, extraction]));
+  const foreignProducerCache = new Map();
+  const chainNameCache = new Map();
+
+  if (db && getItemById) {
+    const missingIds = [];
+    for (const link of links) {
+      const producerId = Number(link.producer_step_id);
+      if (!producerId || stepMap.has(producerId)) continue;
+      missingIds.push(producerId);
+    }
+    for (const producer of loadStepsByIds(db, missingIds, getItemById)) {
+      foreignProducerCache.set(Number(producer.id), producer);
+    }
+  }
+
+  const resolveProducer = (producerStepId) => {
+    const id = Number(producerStepId);
+    return stepMap.get(id) ?? foreignProducerCache.get(id) ?? null;
+  };
+
+  const resolveChainName = (chainId) => {
+    if (chainId == null || !db) return null;
+    if (chainNameCache.has(chainId)) return chainNameCache.get(chainId);
+    const chain = getProductionChainById(db, chainId);
+    const name = chain?.name ?? null;
+    chainNameCache.set(chainId, name);
+    return name;
+  };
 
   steps.forEach((step) => {
     step.input_links = {};
   });
 
   for (const link of links) {
-    const consumer = stepMap.get(link.consumer_step_id);
+    const consumer = stepMap.get(Number(link.consumer_step_id));
     if (!consumer) continue;
 
     let entry = null;
 
     if (link.producer_step_id) {
-      const producer = stepMap.get(link.producer_step_id);
+      const producer = resolveProducer(link.producer_step_id);
       if (!producer) continue;
+
+      const producerChainId = Number(producer.chain_id);
+      const isExternal = producerChainId !== Number(consumer.chain_id);
 
       entry = {
         id: link.id,
         item_slug: link.item_slug,
         producer_step_id: link.producer_step_id,
         producer_name: producer.name,
+        producer_chain_id: producerChainId,
+        producer_chain_name: isExternal ? resolveChainName(producerChainId) : null,
         producer_rate: getStepOutputRateForItem(producer, link.item_slug),
       };
     } else if (link.producer_extraction_id) {
@@ -552,6 +586,15 @@ function loadChainSteps(db, chainId, getItemById) {
   });
 }
 
+function mapStepRow(row, getItemById, db) {
+  const item = getItemById(db, row.item_id);
+  if (Number(row.is_sink) === 1) {
+    return mapSinkStep(row, item, db);
+  }
+  const schema = getItemSchemaById(db, row.item_schema_id);
+  return mapStep(row, item, schema);
+}
+
 function getStepById(db, stepId, getItemById) {
   const row = queryOne(
     db,
@@ -561,13 +604,21 @@ function getStepById(db, stepId, getItemById) {
     [stepId]
   );
   if (!row) return null;
+  return mapStepRow(row, getItemById, db);
+}
 
-  const item = getItemById(db, row.item_id);
-  if (Number(row.is_sink) === 1) {
-    return mapSinkStep(row, item, db);
-  }
-  const schema = getItemSchemaById(db, row.item_schema_id);
-  return mapStep(row, item, schema);
+function loadStepsByIds(db, stepIds, getItemById) {
+  const ids = [...new Set((stepIds ?? []).map((id) => Number(id)).filter(Boolean))];
+  if (!ids.length) return [];
+  const placeholders = ids.map(() => '?').join(',');
+  const rows = queryAll(
+    db,
+    `SELECT ${STEP_SELECT}
+     FROM production_chain_steps
+     WHERE id IN (${placeholders})`,
+    ids
+  );
+  return rows.map((row) => mapStepRow(row, getItemById, db));
 }
 
 function listProductionChains(db) {
@@ -594,7 +645,7 @@ function getProductionChainById(db, id) {
   return row ? mapChain(row) : null;
 }
 
-function getProductionChainDetail(db, chainId, getItemById) {
+function getProductionChainDetail(db, chainId, getItemById, options = {}) {
   ensureProductionChainStepsTable(db);
   const chain = getProductionChainById(db, chainId);
   if (!chain) return null;
@@ -605,10 +656,23 @@ function getProductionChainDetail(db, chainId, getItemById) {
   const steps = loadChainSteps(db, chainId, getItemById);
   const extractions = loadChainExtractions(db, chainId, getItemById);
   const links = loadChainLinks(db, chainId);
-  attachLinksToSteps(steps, links, extractions);
+  attachLinksToSteps(steps, links, extractions, { db, getItemById });
   const group_marks = loadGroupMarks(db, chainId);
   const targets = loadChainTargets(db, chainId, getItemById);
-  return { chain, steps, extractions, links, group_marks, targets };
+  const production_objectives = options.includeProductionObjectives
+    ? listProductionObjectives(db, getItemById, {
+        excludeChainId: chainId,
+        itemSlugs: collectStepInputSlugs(steps),
+        includeAllocated: true,
+      })
+    : [];
+  return { chain, steps, extractions, links, group_marks, targets, production_objectives };
+}
+
+function getProductionChainEditorDetail(db, chainId, getItemById) {
+  return getProductionChainDetail(db, chainId, getItemById, {
+    includeProductionObjectives: true,
+  });
 }
 
 function createProductionChain(
@@ -885,7 +949,7 @@ function setProductionStepMarked(db, persist, stepId, marked, getItemById) {
   }
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [existing.chain_id]);
   persist();
-  return getProductionChainDetail(db, existing.chain_id, getItemById);
+  return getProductionChainEditorDetail(db, existing.chain_id, getItemById);
 }
 
 function setProductionGroupMarked(db, persist, chainId, groupName, marked, getItemById) {
@@ -921,7 +985,7 @@ function setProductionGroupMarked(db, persist, chainId, groupName, marked, getIt
   );
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
-  return getProductionChainDetail(db, chainId, getItemById);
+  return getProductionChainEditorDetail(db, chainId, getItemById);
 }
 
 function resetProductionChainStep(db, persist, stepId, getItemById) {
@@ -946,7 +1010,7 @@ function resetProductionChainStep(db, persist, stepId, getItemById) {
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [step.chain_id]);
   persist();
 
-  return getProductionChainDetail(db, step.chain_id, getItemById);
+  return getProductionChainEditorDetail(db, step.chain_id, getItemById);
 }
 
 function deleteProductionChainStep(db, persist, stepId) {
@@ -998,7 +1062,7 @@ function reorderProductionChainSteps(db, persist, chainId, orderedStepIds, getIt
 
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
-  return getProductionChainDetail(db, chainId, getItemById);
+  return getProductionChainEditorDetail(db, chainId, getItemById);
 }
 
 function reorderProductionChainStepsInGroup(
@@ -1122,7 +1186,7 @@ function setProductionStepGroupName(db, persist, stepId, groupName, getItemById)
   const newGroup = normalizeGroupName(groupName);
   const oldGroup = normalizeGroupName(row.group_name);
   if (newGroup === oldGroup) {
-    return getProductionChainDetail(db, row.chain_id, getItemById);
+    return getProductionChainEditorDetail(db, row.chain_id, getItemById);
   }
 
   db.run('UPDATE production_chain_steps SET group_name = ? WHERE id = ?', [newGroup, stepId]);
@@ -1158,7 +1222,7 @@ function setProductionStepGroupName(db, persist, stepId, groupName, getItemById)
 
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [row.chain_id]);
   persist();
-  return getProductionChainDetail(db, row.chain_id, getItemById);
+  return getProductionChainEditorDetail(db, row.chain_id, getItemById);
 }
 
 function renameProductionStepGroup(db, persist, chainId, oldGroupName, newGroupName, getItemById) {
@@ -1179,7 +1243,7 @@ function renameProductionStepGroup(db, persist, chainId, oldGroupName, newGroupN
     throw new Error('Il nome del raggruppamento è obbligatorio');
   }
   if (oldGroup === newGroup) {
-    return getProductionChainDetail(db, chainId, getItemById);
+    return getProductionChainEditorDetail(db, chainId, getItemById);
   }
 
   const steps = loadChainSteps(db, chainId, getItemById);
@@ -1209,7 +1273,7 @@ function renameProductionStepGroup(db, persist, chainId, oldGroupName, newGroupN
   );
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
-  return getProductionChainDetail(db, chainId, getItemById);
+  return getProductionChainEditorDetail(db, chainId, getItemById);
 }
 
 function setProductionStepInputLinks(
@@ -1247,7 +1311,7 @@ function setProductionStepInputLinks(
     }
 
     const producer = getStepById(db, producerId, getItemById);
-    if (!producer || producer.chain_id !== chainId) {
+    if (!producer) {
       throw new Error('Schema produttore non valido');
     }
 
@@ -1277,7 +1341,7 @@ function setProductionStepInputLinks(
   persist();
   // Auto-plan/sink call this many times; rebuilding full detail each link freezes large plans.
   if (options.skipDetail) return null;
-  return getProductionChainDetail(db, chainId, getItemById);
+  return getProductionChainEditorDetail(db, chainId, getItemById);
 }
 
 function setProductionStepExtractionLinks(
@@ -1340,7 +1404,7 @@ function setProductionStepExtractionLinks(
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
   if (options.skipDetail) return null;
-  return getProductionChainDetail(db, chainId, getItemById);
+  return getProductionChainEditorDetail(db, chainId, getItemById);
 }
 
 function getLinkedConsumerStepIds(links, consumerStepId, itemSlug, producerStepId) {
@@ -1352,51 +1416,193 @@ function getLinkedConsumerStepIds(links, consumerStepId, itemSlug, producerStepI
   );
 }
 
-function computeChainObjectives(steps, links) {
-  attachLinksToSteps(steps, links);
-  const objectives = [];
-
-  for (const step of steps) {
-    for (const io of step.scaled_outputs ?? []) {
-      const rate = getStepOutputRateForItem(step, io.item_slug);
-      if (!rate) continue;
-
-      const totalDemand = getTotalDemandForOutput(step, io.item_slug, steps);
-      const excessRate = normalizeLinkDelta(rate - totalDemand, rate);
-      if (excessRate <= 0) continue;
-
-      objectives.push({
-        step_id: step.id,
-        step_name: step.name,
-        item_slug: io.item_slug,
-        item_name: io.item_name || io.item_slug,
-        item_image: io.item_image ?? null,
-        is_fluid: Boolean(io.is_fluid),
-        rate,
-        excess_rate: excessRate,
-      });
+function collectStepInputSlugs(steps) {
+  const slugs = new Set();
+  for (const step of steps ?? []) {
+    for (const io of step.scaled_inputs ?? []) {
+      if (io.item_slug) slugs.add(io.item_slug);
     }
   }
-
-  return objectives;
+  return [...slugs];
 }
 
-function listAllProductionObjectives(db, getItemById) {
+function energyProductionLinksTableExists(db) {
+  if (db.__hasEnergyProductionLinks != null) return db.__hasEnergyProductionLinks;
+  try {
+    const rows = db.exec(
+      `SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'energy_chain_production_links'`
+    );
+    db.__hasEnergyProductionLinks = Boolean(rows?.[0]?.values?.length);
+  } catch {
+    db.__hasEnergyProductionLinks = false;
+  }
+  return db.__hasEnergyProductionLinks;
+}
+
+function loadAllProducerStepLinks(db) {
+  ensureStepLinksTable(db);
+  return queryAll(
+    db,
+    `SELECT consumer_step_id, producer_step_id, item_slug
+     FROM production_chain_step_links
+     WHERE producer_step_id IS NOT NULL`
+  );
+}
+
+function loadAllEnergyProductionLinkRows(db) {
+  if (!energyProductionLinksTableExists(db)) return [];
+  return queryAll(
+    db,
+    `SELECT l.producer_production_step_id, l.item_slug, l.consumer_generator_id,
+            g.building_slug, g.fuel_slug, g.machine_count, g.overclock,
+            g.target_fuel_input, g.target_power
+     FROM energy_chain_production_links l
+     JOIN energy_chain_generators g ON g.id = l.consumer_generator_id`
+  );
+}
+
+function demandKey(producerStepId, itemSlug) {
+  return `${Number(producerStepId)}\0${itemSlug}`;
+}
+
+function computeProductionDemandMap(links, stepById) {
+  const consumersByKey = new Map();
+
+  for (const link of links) {
+    const producerId = Number(link.producer_step_id);
+    const consumerId = Number(link.consumer_step_id);
+    const slug = link.item_slug;
+    if (!producerId || !consumerId || !slug) continue;
+    const key = demandKey(producerId, slug);
+    if (!consumersByKey.has(key)) consumersByKey.set(key, []);
+    const list = consumersByKey.get(key);
+    if (list.some((step) => Number(step.id) === consumerId)) continue;
+    const consumer = stepById.get(consumerId);
+    if (consumer) list.push(consumer);
+  }
+
+  const demandByKey = new Map();
+  for (const [key, consumers] of consumersByKey) {
+    const [producerId, itemSlug] = key.split('\0');
+    const producer = stepById.get(Number(producerId));
+    const outputRate = producer ? getStepOutputRateForItem(producer, itemSlug) : 0;
+    if (!outputRate) {
+      demandByKey.set(key, 0);
+      continue;
+    }
+
+    consumers.sort(
+      (left, right) =>
+        (left.sort_order ?? 0) - (right.sort_order ?? 0) || Number(left.id) - Number(right.id)
+    );
+
+    let remaining = outputRate;
+    let demand = 0;
+    for (const consumer of consumers) {
+      const required = getStepInputRateForItem(consumer, itemSlug);
+      const take = roundProduction(Math.min(remaining, required));
+      if (take <= 0) continue;
+      demand = roundProduction(demand + take);
+      remaining = roundProduction(Math.max(0, remaining - take));
+      if (remaining <= LINK_BALANCE_TOLERANCE) break;
+    }
+    demandByKey.set(key, demand);
+  }
+
+  return demandByKey;
+}
+
+function computeEnergyDemandMap(energyLinks) {
+  const { resolveGeneratorProduction } = require('./energy-scale');
+  const demandByKey = new Map();
+  const seen = new Set();
+
+  for (const row of energyLinks) {
+    const producerId = Number(row.producer_production_step_id);
+    const generatorId = Number(row.consumer_generator_id);
+    const slug = row.item_slug;
+    if (!producerId || !generatorId || !slug) continue;
+    const seenKey = `${producerId}\0${slug}\0${generatorId}`;
+    if (seen.has(seenKey)) continue;
+    seen.add(seenKey);
+
+    const resolved = resolveGeneratorProduction(row.building_slug, {
+      fuel_slug: row.fuel_slug,
+      machine_count: row.machine_count,
+      overclock: row.overclock,
+      target_fuel_input: row.target_fuel_input,
+      target_power: row.target_power,
+    });
+
+    let add = 0;
+    if (slug === 'water') {
+      add = resolved.water_consumption ?? 0;
+    } else if (slug === resolved.fuel_item_slug || slug === row.fuel_slug) {
+      add = resolved.fuel_consumption ?? 0;
+    }
+    if (!add) continue;
+
+    const key = demandKey(producerId, slug);
+    demandByKey.set(key, roundProduction((demandByKey.get(key) ?? 0) + add));
+  }
+
+  return demandByKey;
+}
+
+function listProductionObjectives(
+  db,
+  getItemById,
+  { excludeChainId = null, itemSlugs = null, includeAllocated = false } = {}
+) {
   ensureProductionChainStepsTable(db);
+  const slugFilter = itemSlugs == null ? null : new Set(itemSlugs);
+  if (slugFilter && slugFilter.size === 0) return [];
+
   const chains = listProductionChains(db);
-  const results = [];
+  const stepById = new Map();
+  const chainSteps = [];
 
   for (const chain of chains) {
     const steps = loadChainSteps(db, chain.id, getItemById);
-    const links = loadChainLinks(db, chain.id);
-    const objectives = computeChainObjectives(steps, links);
+    chainSteps.push({ chain, steps });
+    for (const step of steps) {
+      stepById.set(Number(step.id), step);
+    }
+  }
 
-    for (const objective of objectives) {
-      results.push({
-        ...objective,
-        chain_id: chain.id,
-        chain_name: chain.name,
-      });
+  const productionDemand = computeProductionDemandMap(loadAllProducerStepLinks(db), stepById);
+  const energyDemand = computeEnergyDemandMap(loadAllEnergyProductionLinkRows(db));
+  const results = [];
+
+  for (const { chain, steps } of chainSteps) {
+    if (excludeChainId != null && Number(chain.id) === Number(excludeChainId)) continue;
+
+    for (const step of steps) {
+      for (const io of step.scaled_outputs ?? []) {
+        if (slugFilter && !slugFilter.has(io.item_slug)) continue;
+        const rate = getStepOutputRateForItem(step, io.item_slug);
+        if (!rate) continue;
+
+        const key = demandKey(step.id, io.item_slug);
+        const totalDemand = roundProduction(
+          (productionDemand.get(key) ?? 0) + (energyDemand.get(key) ?? 0)
+        );
+        const excessRate = normalizeLinkDelta(rate - totalDemand, rate);
+        if (excessRate <= 0 && !includeAllocated) continue;
+
+        results.push({
+          step_id: step.id,
+          step_name: step.name,
+          item_slug: io.item_slug,
+          item_name: io.item_name || io.item_slug,
+          item_image: io.item_image ?? null,
+          is_fluid: Boolean(io.is_fluid),
+          rate,
+          excess_rate: excessRate,
+          chain_id: chain.id,
+          chain_name: chain.name,
+        });
+      }
     }
   }
 
@@ -1407,6 +1613,10 @@ function listAllProductionObjectives(db, getItemById) {
     if (stepCmp !== 0) return stepCmp;
     return a.item_name.localeCompare(b.item_name, 'it');
   });
+}
+
+function listAllProductionObjectives(db, getItemById) {
+  return listProductionObjectives(db, getItemById);
 }
 
 function deleteProductionChain(db, persist, id) {
@@ -1851,6 +2061,7 @@ module.exports = {
   exportProductionChain,
   importProductionChain,
   listAllProductionObjectives,
+  listProductionObjectives,
   getStepById,
   getStepOutputRateForItem,
   parseSinkByproductsFlag,
