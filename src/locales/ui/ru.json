@@ -177,8 +177,8 @@
     "backToEditorPlan": "К редактору плана",
     "treeViewTitle": "Показать всю цепочку деревом",
     "treeViewGroupsTitle": "Цепочка по группам (основные входы/выходы)",
-    "addExtraction": "Добавить добычу",
-    "addResourceStep": "Добавить шаг ресурса",
+    "addExtraction": "Добыча",
+    "addResourceStep": "Схема ресурса Input",
     "sectionExtractions": "Добыча ресурсов",
     "sectionResourceSteps": "Шаги ресурсов",
     "groupMinerals": "Руды",
@@ -235,6 +235,7 @@
     "summaryStep": "Шаг",
     "noProductionObjectives": "Нет целей производства",
     "inputsPerMachine": "Вход / машина",
+    "outputsPerMachine": "Выход / машина",
     "addResourceStepFor": "Добавить шаг для {name}",
     "addAnotherExtraction": "Ещё одна добыча этого ресурса",
     "addAnotherExtractionAria": "Ещё одна добыча {name}",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Схема ресурса Output",
+    "addResourceStepOutputFor": "Схема ресурса Output для {name}"
   },
   "energy": {
     "title": "Энергия",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Новый транспорт",
-    "transportCreatePlaceholder": "напр. Гипертруба → завод"
+    "transportCreatePlaceholder": "напр. Гипертруба → завод",
+    "selectResourceSubConsume": "Выберите ресурс для использования или утилизации",
+    "selectSchemaConsumeHint": "Выберите рецепт, использующий этот ресурс как вход."
   },
   "legal": {
     "title": "Правовая информация, атрибуция и отказ от ответственности",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Ресурсы не найдены."
+    "noResources": "Ресурсы не найдены.",
+    "history": "История (последние просмотренные ресурсы)"
   },
   "_meta": {
     "locale": "ru",

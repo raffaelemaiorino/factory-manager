@@ -171,14 +171,14 @@
     "emptyList": "Ingen produktionsplaner.",
     "emptyListHint": "Opret din første plan med «Ny plan».",
     "errorLoadList": "Fejl ved indlæsning af produktionsplaner.",
-    "treeView": "Trævisning",
-    "treeViewGroups": "Grupperet trævisning",
+    "treeView": "Træ",
+    "treeViewGroups": "Gruppetræ",
     "backToEditor": "Tilbage til editor",
     "backToEditorPlan": "Tilbage til plan-editor",
     "treeViewTitle": "Vis hele kæden som træ",
     "treeViewGroupsTitle": "Kæde efter grupper (kun hoved-input/output)",
-    "addExtraction": "Tilføj udvinding",
-    "addResourceStep": "Tilføj ressourcetrin",
+    "addExtraction": "Udvinding",
+    "addResourceStep": "Ressourceskema Input",
     "sectionExtractions": "Ressourceudvinding",
     "sectionResourceSteps": "Ressourcetrin",
     "groupMinerals": "Malme",
@@ -202,7 +202,7 @@
     "expandGroup": "Udvid gruppe",
     "collapseGroup": "Fold gruppe sammen",
     "treeViewOfGroup": "Trævisning af {name}",
-    "treeViewButton": "Trævisning",
+    "treeViewButton": "Træ",
     "highlightStep": "Fremhæv trin",
     "highlightStepTitle": "Fremhæv trin med grøn baggrund",
     "highlightGroup": "Fremhæv gruppe",
@@ -235,6 +235,7 @@
     "summaryStep": "Trin",
     "noProductionObjectives": "Ingen produktionsmål",
     "inputsPerMachine": "Input / maskine",
+    "outputsPerMachine": "Output / maskine",
     "addResourceStepFor": "Tilføj ressourcetrin for {name}",
     "addAnotherExtraction": "Tilføj endnu en udvinding for denne ressource",
     "addAnotherExtractionAria": "Tilføj endnu en udvinding af {name}",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Ressourceskema Output",
+    "addResourceStepOutputFor": "Ressourceskema Output for {name}"
   },
   "energy": {
     "title": "Strøm",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Ny transport",
-    "transportCreatePlaceholder": "fx Hyperrør → fabrik"
+    "transportCreatePlaceholder": "fx Hyperrør → fabrik",
+    "selectResourceSubConsume": "Vælg ressource at bruge eller bortskaffe",
+    "selectSchemaConsumeHint": "Vælg en opskrift der bruger denne ressource som input."
   },
   "legal": {
     "title": "Juridisk information, attribution og ansvarsfraskrivelse",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Ingen ressourcer fundet."
+    "noResources": "Ingen ressourcer fundet.",
+    "history": "Historik (senest viste ressourcer)"
   },
   "_meta": {
     "locale": "da",

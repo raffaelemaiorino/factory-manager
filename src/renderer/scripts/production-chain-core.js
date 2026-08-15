@@ -2382,8 +2382,10 @@ async function ensurePickerResourcesData() {
   pickerResourcesData = await window.satisfactory.getResources();
 }
 
-async function addProductionStepForItem(itemId) {
-  const detail = await window.satisfactory.getResourceDetail(itemId);
+async function addProductionStepForItem(itemId, { byInput = false } = {}) {
+  const detail = byInput
+    ? await window.satisfactory.getResourceConsumeDetail(itemId)
+    : await window.satisfactory.getResourceDetail(itemId);
   if (!detail?.item) {
     pendingInsertAfterStepId = null;
     return;
@@ -2396,11 +2398,13 @@ async function addProductionStepForItem(itemId) {
   }
 
   if (schemas.length === 1) {
-    await addProductionStep(itemId, schemas[0].id);
+    const schema = schemas[0];
+    const stepItemId = byInput ? Number(schema.item_id) : itemId;
+    await addProductionStep(stepItemId, schema.id);
     return;
   }
 
-  openSchemaPickerModal(detail.item, schemas);
+  openSchemaPickerModal(detail.item, schemas, { byInput });
 }
 
 async function addProductionStepForInputSlug(itemSlug) {
@@ -2414,13 +2418,38 @@ async function addProductionStepForInputSlug(itemSlug) {
     const itemId = findResourceItemIdBySlug(itemSlug);
     if (!itemId) {
       console.warn('Resource not found:', itemSlug);
+      pendingInsertAfterStepId = null;
       return;
     }
 
+    rememberResourcePickerSelection?.(itemId);
     await addProductionStepForItem(itemId);
   } catch (err) {
     pendingInsertAfterStepId = null;
     console.error('Add production step from input error:', err);
+  }
+}
+
+async function addProductionStepForOutputSlug(itemSlug) {
+  if (!itemSlug || !activeProductionChainId) return;
+
+  try {
+    if (!pickerResourcesData.length) {
+      await ensurePickerResourcesData();
+    }
+
+    const itemId = findResourceItemIdBySlug(itemSlug);
+    if (!itemId) {
+      console.warn('Resource not found:', itemSlug);
+      pendingInsertAfterStepId = null;
+      return;
+    }
+
+    rememberResourcePickerSelection?.(itemId);
+    await addProductionStepForItem(itemId, { byInput: true });
+  } catch (err) {
+    pendingInsertAfterStepId = null;
+    console.error('Add production step from output error:', err);
   }
 }
 
@@ -2581,6 +2610,7 @@ function updateProductionTreeButtonState() {
   const groupBtn = document.getElementById('btn-production-group-tree-view');
   const addExtractionBtn = document.getElementById('btn-add-extraction');
   const addResourceStepBtn = document.getElementById('btn-add-resource-step');
+  const addResourceStepOutputBtn = document.getElementById('btn-add-resource-step-output');
   const actionsEl = document.querySelector('#view-production-detail .production-detail-actions');
   if (!btn) return;
 
@@ -2613,6 +2643,7 @@ function updateProductionTreeButtonState() {
   actionsEl?.classList.toggle('production-detail-actions--tree-view', isAnyTree);
   addExtractionBtn?.toggleAttribute('hidden', isAnyTree);
   addResourceStepBtn?.toggleAttribute('hidden', isAnyTree);
+  addResourceStepOutputBtn?.toggleAttribute('hidden', isAnyTree);
   document.getElementById('view-production-detail')?.classList.toggle('view--tree-mode', isAnyTree);
 }
 
@@ -3545,6 +3576,7 @@ function renderProductionStep(step, allSteps = []) {
           output_unit: outputUnit,
           schema,
           scaled_inputs: scaledInputs,
+          scaled_outputs: scaledOutputs,
           somersloop_mask: step.somersloop_mask,
           power_consumption: schema?.power_consumption,
         },
@@ -3777,9 +3809,10 @@ function updateStepConfigInputs(stepEl, config, step) {
 
   const inputsPanelEl = stepEl.querySelector('.craft-building-inputs-panel');
   if (inputsPanelEl && step?.schema) {
-    inputsPanelEl.innerHTML = renderBuildingInputsContent({
+    inputsPanelEl.innerHTML = renderBuildingIoPanelContent({
       schema: step.schema,
       scaled_inputs: step.scaled_inputs,
+      scaled_outputs: step.scaled_outputs,
       machine_count: config.machine_count,
     });
   }
@@ -3978,6 +4011,7 @@ function getConfigInputField(input) {
   if (input.classList.contains('production-extraction-overclock-input')) return 'extraction-overclock';
   if (input.classList.contains('production-extraction-nodes-input')) return 'extraction-nodes';
   if (input.classList.contains('production-io-rate-input')) return 'io-rate';
+  if (input.classList.contains('energy-generator-io-rate-input')) return 'energy-io-rate';
   if (input.classList.contains('energy-generator-fuel-input')) return 'energy-fuel';
   if (input.classList.contains('energy-generator-overclock-input')) return 'energy-overclock';
   if (input.classList.contains('energy-generator-machines-input')) return 'energy-machines';
@@ -4000,19 +4034,36 @@ function applyConfigInputNudge(input, field, delta, commit = commitConfigInputCh
     const max = getConfigInputNudgeMax(input, field, value);
     if (max != null) value = Math.min(max, value);
     formatted = formatOverclockInputValue(value);
-  } else if (field === 'output' || field === 'extraction-output' || field === 'energy-fuel' || field === 'io-rate') {
+  } else if (
+    field === 'output' ||
+    field === 'extraction-output' ||
+    field === 'energy-fuel' ||
+    field === 'io-rate' ||
+    field === 'energy-io-rate'
+  ) {
     const fractionalOutput =
-      (field === 'output' || field === 'extraction-output' || field === 'io-rate') &&
+      (field === 'output' ||
+        field === 'extraction-output' ||
+        field === 'io-rate' ||
+        field === 'energy-io-rate') &&
       input.classList.contains('production-config-decimal-input');
     const nudgeStep =
-      field === 'output' || field === 'extraction-output' || field === 'io-rate'
+      field === 'output' ||
+      field === 'extraction-output' ||
+      field === 'io-rate' ||
+      field === 'energy-io-rate'
         ? fractionalOutput
           ? 0.001
           : 1
         : stepSize;
     value = (Number(parseConfigNumberInput(input.value)) || Number(input.value) || 0) + delta * nudgeStep;
     if (!Number.isFinite(value)) value = Math.max(1, delta > 0 ? 1 : 0);
-    if (field === 'output' || field === 'extraction-output' || field === 'io-rate') {
+    if (
+      field === 'output' ||
+      field === 'extraction-output' ||
+      field === 'io-rate' ||
+      field === 'energy-io-rate'
+    ) {
       value = fractionalOutput
         ? window.ProductionScale.roundProduction(value)
         : Math.round(value);
@@ -4021,7 +4072,7 @@ function applyConfigInputNudge(input, field, delta, commit = commitConfigInputCh
     const max = getConfigInputNudgeMax(input, field, value);
     if (max != null) value = Math.min(max, value);
     formatted =
-      field === 'output' || field === 'io-rate'
+      field === 'output' || field === 'io-rate' || field === 'energy-io-rate'
         ? formatOutputInputValue(value)
         : field === 'extraction-output'
           ? formatExtractionOutputInputValue(value, getExtractionOverclockForConfigInput(input))

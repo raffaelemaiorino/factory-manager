@@ -556,8 +556,16 @@ function renderProductionOutputWithLinks(step, io, ioOptions, allSteps) {
   return `
     <div class="craft-io-item craft-io-item--with-links ${linkStateClass}" data-item-slug="${escapeHtml(itemSlug)}">
       <div class="craft-io-item-row">
-        ${img}
-        <span>${escapeHtml(io.item_name || io.item_slug)}</span>
+        <button
+          type="button"
+          class="production-output-add-trigger"
+          data-item-slug="${escapeHtml(itemSlug)}"
+          title="${escapeHtml(t('production.addResourceStepOutputFor', { name: io.item_name || itemSlug }))}"
+          aria-label="${escapeHtml(t('production.addResourceStepOutputFor', { name: io.item_name || itemSlug }))}"
+        >
+          ${img}
+          <span>${escapeHtml(io.item_name || itemSlug)}</span>
+        </button>
         ${rateControl}
       </div>
       ${linkedBadge}
@@ -597,14 +605,14 @@ function renderBuildingNameOnly(schema) {
   return `<span class="craft-building">${escapeHtml(schema?.building_name || '—')}</span>`;
 }
 
-function getBuildingInputRates(schema, scaledInputs, machineCount) {
-  if (!schema?.inputs?.length) return [];
+function getBuildingRatesFromSchema(schemaList, scaledList, machineCount, schemaDuration) {
+  if (!schemaList?.length) return [];
 
-  const duration = schema.duration ?? 1;
+  const duration = schemaDuration ?? 1;
   const machines = Math.max(1, Math.round(Number(machineCount) || 1));
-  const scaledBySlug = new Map((scaledInputs ?? []).map((io) => [io.item_slug, io]));
+  const scaledBySlug = new Map((scaledList ?? []).map((io) => [io.item_slug, io]));
 
-  return schema.inputs.map((schemaIo) => {
+  return schemaList.map((schemaIo) => {
     const scaledIo = scaledBySlug.get(schemaIo.item_slug) ?? schemaIo;
     const basePerMin = window.ProductionScale.outputPerMinute(schemaIo.amount, duration);
     const totalCurrent = window.ProductionScale.outputPerMinute(scaledIo.amount, duration);
@@ -621,6 +629,46 @@ function getBuildingInputRates(schema, scaledInputs, machineCount) {
   });
 }
 
+function getBuildingInputRates(schema, scaledInputs, machineCount) {
+  return getBuildingRatesFromSchema(
+    schema?.inputs,
+    scaledInputs,
+    machineCount,
+    schema?.duration
+  );
+}
+
+function getBuildingOutputRates(schema, scaledOutputs, machineCount) {
+  return getBuildingRatesFromSchema(
+    schema?.outputs,
+    scaledOutputs,
+    machineCount,
+    schema?.duration
+  );
+}
+
+function renderBuildingRateItems(rates) {
+  return rates
+    .map((rate) => {
+      const unit = rate.unit || (rate.is_fluid ? 'm³/min' : '/min');
+      const icon = rate.item_image
+        ? `<img class="craft-building-io-icon" src="${escapeHtml(rate.item_image)}" alt="" />`
+        : rate.unit === 'MW' || rate.item_slug === 'power'
+          ? '<span class="craft-building-io-icon craft-building-io-icon--power" aria-hidden="true">⚡</span>'
+          : '<span class="craft-building-io-icon craft-building-io-icon--placeholder"></span>';
+
+      return `
+        <div class="craft-building-io-item">
+          ${icon}
+          <div class="craft-building-io-rates">
+            <span class="craft-building-io-current"><strong>${escapeHtml(formatRateWithUnit(rate.current_per_min, unit))}</strong></span>
+            <span class="craft-building-io-base">${escapeHtml(t('common.base'))}: ${escapeHtml(formatRateWithUnit(rate.base_per_min, unit))}</span>
+          </div>
+        </div>`;
+    })
+    .join('');
+}
+
 function renderBuildingInputsContent(buildingConfig) {
   const rates = buildingConfig?.input_rates?.length
     ? buildingConfig.input_rates
@@ -631,29 +679,32 @@ function renderBuildingInputsContent(buildingConfig) {
       );
   if (!rates.length) return '';
 
-  const items = rates
-    .map((input) => {
-      const unit = input.is_fluid ? 'm³/min' : '/min';
-      const icon = input.item_image
-        ? `<img class="craft-building-input-icon" src="${escapeHtml(input.item_image)}" alt="" />`
-        : '<span class="craft-building-input-icon craft-building-input-icon--placeholder"></span>';
+  return `
+    <div class="craft-building-io craft-building-inputs">
+      <span class="craft-building-io-label">${escapeHtml(t('production.inputsPerMachine'))}</span>
+      ${renderBuildingRateItems(rates)}
+    </div>`;
+}
 
-      return `
-        <div class="craft-building-input-item">
-          ${icon}
-          <div class="craft-building-input-rates">
-            <span class="craft-building-input-current"><strong>${escapeHtml(formatRateWithUnit(input.current_per_min, unit))}</strong></span>
-            <span class="craft-building-input-base">${escapeHtml(t('common.base'))}: ${escapeHtml(formatRateWithUnit(input.base_per_min, unit))}</span>
-          </div>
-        </div>`;
-    })
-    .join('');
+function renderBuildingOutputsContent(buildingConfig) {
+  const rates = buildingConfig?.output_rates?.length
+    ? buildingConfig.output_rates
+    : getBuildingOutputRates(
+        buildingConfig?.schema,
+        buildingConfig?.scaled_outputs,
+        buildingConfig?.machine_count
+      );
+  if (!rates.length) return '';
 
   return `
-    <div class="craft-building-inputs">
-      <span class="craft-building-inputs-label">${escapeHtml(t('production.inputsPerMachine'))}</span>
-      ${items}
+    <div class="craft-building-io craft-building-outputs">
+      <span class="craft-building-io-label">${escapeHtml(t('production.outputsPerMachine'))}</span>
+      ${renderBuildingRateItems(rates)}
     </div>`;
+}
+
+function renderBuildingIoPanelContent(buildingConfig) {
+  return `${renderBuildingInputsContent(buildingConfig)}${renderBuildingOutputsContent(buildingConfig)}`;
 }
 
 function formatBuildingConfigContent(config, outputUnit = '/min') {
@@ -684,7 +735,7 @@ function renderBuildingPanel(schema, buildingConfig = null) {
     buildingConfig?.base_per_min != null
       ? `<span class="craft-building-base">${escapeHtml(t('common.base'))}: ${escapeHtml(formatRateWithUnit(buildingConfig.base_per_min, buildingConfig.output_unit || '/min'))}</span>`
       : '';
-  const inputsPanel = renderBuildingInputsContent(buildingConfig);
+  const ioPanel = renderBuildingIoPanelContent(buildingConfig);
   const powerShards =
     buildingConfig != null
       ? renderBuildingPowerShards({
@@ -705,7 +756,7 @@ function renderBuildingPanel(schema, buildingConfig = null) {
           ${renderBuildingNameOnly(schema)}
           ${configLine}
           ${baseLine}
-          <div class="craft-building-inputs-panel">${inputsPanel}</div>
+          <div class="craft-building-inputs-panel">${ioPanel}</div>
           ${powerShards}
         </div>
       </aside>`;
@@ -723,7 +774,7 @@ function renderBuildingPanel(schema, buildingConfig = null) {
         <span class="craft-building-name">${escapeHtml(schema.building_name || '—')}</span>
         ${configLine}
         ${baseLine}
-        <div class="craft-building-inputs-panel">${inputsPanel}</div>
+        <div class="craft-building-inputs-panel">${ioPanel}</div>
         ${powerShards}
       </div>
     </aside>`;

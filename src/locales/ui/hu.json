@@ -175,14 +175,14 @@
     "emptyList": "Nincs termelési terv.",
     "emptyListHint": "Hozd létre az első terved a «Új terv» gombbal.",
     "errorLoadList": "Hiba a termelési tervek betöltésekor.",
-    "treeView": "Fanézet",
-    "treeViewGroups": "Csoportos fanézet",
+    "treeView": "Fa",
+    "treeViewGroups": "Csoportfa",
     "backToEditor": "Vissza a szerkesztőhöz",
     "backToEditorPlan": "Vissza a tervszerkesztőhöz",
     "treeViewTitle": "Teljes lánc megjelenítése faként",
     "treeViewGroupsTitle": "Lánc csoportok szerint (csak fő be-/kimenetek)",
-    "addExtraction": "Kitermelés hozzáadása",
-    "addResourceStep": "Erőforrás-lépés hozzáadása",
+    "addExtraction": "Kitermelés",
+    "addResourceStep": "Erőforrás-séma Input",
     "sectionExtractions": "Erőforrás-kitermelés",
     "sectionResourceSteps": "Erőforrás-lépések",
     "groupMinerals": "Ásványok",
@@ -206,7 +206,7 @@
     "expandGroup": "Csoport kinyitása",
     "collapseGroup": "Csoport összecsukása",
     "treeViewOfGroup": "Fanézet: {name}",
-    "treeViewButton": "Fanézet",
+    "treeViewButton": "Fa",
     "highlightStep": "Lépés kiemelése",
     "highlightStepTitle": "Lépés kiemelése zöld háttérrel",
     "highlightGroup": "Csoport kiemelése",
@@ -239,6 +239,7 @@
     "summaryStep": "Lépés",
     "noProductionObjectives": "Nincs termelési cél",
     "inputsPerMachine": "Bemenet / gép",
+    "outputsPerMachine": "Kimenet / gép",
     "addResourceStepFor": "Erőforrás-lépés hozzáadása: {name}",
     "addAnotherExtraction": "További kitermelés ugyanahhoz az erőforráshoz",
     "addAnotherExtractionAria": "További kitermelés: {name}",
@@ -332,7 +333,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Erőforrás-séma Output",
+    "addResourceStepOutputFor": "Erőforrás-séma Output: {name}"
   },
   "energy": {
     "title": "Energia",
@@ -461,7 +464,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Új szállítás",
-    "transportCreatePlaceholder": "pl. Hipercső → gyár"
+    "transportCreatePlaceholder": "pl. Hipercső → gyár",
+    "selectResourceSubConsume": "Válaszd ki a felhasználandó vagy elhelyezendő erőforrást",
+    "selectSchemaConsumeHint": "Válassz receptet, amely ezt az erőforrást bemenetként használja."
   },
   "legal": {
     "title": "Jogi információk, attribúciók és felelősségkizárás",
@@ -620,7 +625,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Nem található erőforrás."
+    "noResources": "Nem található erőforrás.",
+    "history": "Előzmények (legutóbb megtekintett erőforrások)"
   },
   "update": {
     "available": "Új verzió érhető el: {latest} (jelenlegi: {current}).",

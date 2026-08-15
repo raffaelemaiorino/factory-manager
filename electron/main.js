@@ -75,6 +75,7 @@ const {
   getResourceById,
   saveResource,
   getResourceDetail,
+  getResourceConsumeDetail,
   restoreDefaultResources,
   getResourcesDataInfo,
   getProductionChains,
@@ -334,6 +335,7 @@ ipcMain.handle('resources:categories', () => getResourceCategories());
 ipcMain.handle('resources:search', (_event, query) => findResources(query));
 ipcMain.handle('resources:get', (_event, id) => getResourceById(id));
 ipcMain.handle('resources:detail', (_event, id) => getResourceDetail(id));
+ipcMain.handle('resources:consume-detail', (_event, id) => getResourceConsumeDetail(id));
 ipcMain.handle('resources:update', (_event, id, data) => saveResource(id, data));
 ipcMain.handle('db:restore-default-resources', () => restoreDefaultResources());
 ipcMain.handle('db:resources-info', () => getResourcesDataInfo());

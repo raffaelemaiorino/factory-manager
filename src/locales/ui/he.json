@@ -171,14 +171,14 @@
     "emptyList": "אין תוכניות ייצור.",
     "emptyListHint": "צור תוכנית ראשונה בלחצן «תוכנית חדשה».",
     "errorLoadList": "שגיאה בטעינת תוכניות ייצור.",
-    "treeView": "תצוגת עץ",
+    "treeView": "עץ",
     "treeViewGroups": "עץ קבוצות",
     "backToEditor": "חזרה לעורך",
     "backToEditorPlan": "חזרה לעורך התוכנית",
     "treeViewTitle": "הצג את כל השרשרת כעץ",
     "treeViewGroupsTitle": "הצג את השרשרת לפי קבוצות (קלט/פלט ראשיים בלבד)",
-    "addExtraction": "הוסף כרייה",
-    "addResourceStep": "הוסף שלב משאב",
+    "addExtraction": "כרייה",
+    "addResourceStep": "סכמת משאב Input",
     "sectionExtractions": "כריית משאבים",
     "sectionResourceSteps": "שלבי משאב",
     "groupMinerals": "מינרלים",
@@ -202,7 +202,7 @@
     "expandGroup": "הרחב קבוצה",
     "collapseGroup": "כווץ קבוצה",
     "treeViewOfGroup": "עץ של {name}",
-    "treeViewButton": "תצוגת עץ",
+    "treeViewButton": "עץ",
     "highlightStep": "הדגש שלב",
     "highlightStepTitle": "הדגש שלב ברקע ירוק",
     "highlightGroup": "הדגש קבוצה",
@@ -235,6 +235,7 @@
     "summaryStep": "שלב",
     "noProductionObjectives": "אין יעדי ייצור",
     "inputsPerMachine": "קלט / מכונה",
+    "outputsPerMachine": "פלט / מכונה",
     "addResourceStepFor": "הוסף שלב משאב עבור {name}",
     "addAnotherExtraction": "הוסף כרייה נוספת למשאב זה",
     "addAnotherExtractionAria": "הוסף כרייה נוספת של {name}",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "סכמת משאב Output",
+    "addResourceStepOutputFor": "סכמת משאב Output עבור {name}"
   },
   "energy": {
     "title": "אנרגיה",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "תובלה חדשה",
-    "transportCreatePlaceholder": "לדוגמה: צינור היפר → מפעל"
+    "transportCreatePlaceholder": "לדוגמה: צינור היפר → מפעל",
+    "selectResourceSubConsume": "בחר משאב לשימוש או לסילוק",
+    "selectSchemaConsumeHint": "בחר מתכון שמשתמש במשאב זה כקלט."
   },
   "legal": {
     "title": "מידע משפטי, ייחוסים והצהרת אחריות",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "לא נמצאו משאבים."
+    "noResources": "לא נמצאו משאבים.",
+    "history": "היסטוריה (משאבים אחרונים שהוצגו)"
   },
   "_meta": {
     "locale": "he",

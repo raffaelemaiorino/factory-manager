@@ -105,6 +105,31 @@ function clampTargetFuelToMax(targetFuel, fuelRatePerMin, machineCount) {
   return clampTargetFuelToRange(targetFuel, fuelRatePerMin, machineCount);
 }
 
+/**
+ * Minimum machines to reach target fuel at ≤250% OC (mirrors production output bump).
+ */
+function computeMachinesForTargetFuel(
+  targetFuel,
+  fuelRatePerMin,
+  maxMachines = ENERGY_MACHINE_SLIDER_MAX
+) {
+  const rate = Number(fuelRatePerMin);
+  const target = Number(targetFuel);
+  const cap = Math.max(
+    1,
+    Math.min(ENERGY_MACHINE_SLIDER_MAX, Math.round(Number(maxMachines) || ENERGY_MACHINE_SLIDER_MAX))
+  );
+  if (!rate || !Number.isFinite(target) || target <= 0) return DEFAULT_MACHINE_COUNT;
+  const perMachineMax = rate * (OVERCLOCK_MAX / 100);
+  if (!(perMachineMax > 0)) return DEFAULT_MACHINE_COUNT;
+  let machines = Math.max(1, Math.ceil(target / perMachineMax - 1e-9));
+  machines = Math.min(cap, machines);
+  while (computeMaxTargetFuel(rate, machines) + 1e-9 < target && machines < cap) {
+    machines += 1;
+  }
+  return clampMachineCount(machines);
+}
+
 function normalizeGeneratorOverclock(rawOverclock) {
   const n = Number(rawOverclock);
   if (!Number.isFinite(n)) return DEFAULT_OVERCLOCK;
@@ -113,6 +138,23 @@ function normalizeGeneratorOverclock(rawOverclock) {
     return Math.min(OVERCLOCK_MAX, Math.max(OVERCLOCK_MIN, nearestInt));
   }
   return clampOverclock(n);
+}
+
+/**
+ * Apply a fuel target: bump machines if needed (like production output), then OC.
+ */
+function applyFuelTarget(targetFuel, fuelRatePerMin, machineCount, maxMachines = ENERGY_MACHINE_SLIDER_MAX) {
+  const rate = Number(fuelRatePerMin);
+  let fuel = Number(targetFuel);
+  let machines = clampMachineCount(machineCount);
+  if (!rate || !Number.isFinite(fuel) || fuel <= 0) return null;
+
+  if (fuel > computeMaxTargetFuel(rate, machines) + 1e-9) {
+    machines = computeMachinesForTargetFuel(fuel, rate, maxMachines);
+  }
+  fuel = clampTargetFuelToRange(fuel, rate, machines);
+  const overclock = computeGeneratorOverclockFromFuel(fuel, rate, machines);
+  return { machine_count: machines, overclock, target_fuel_input: fuel };
 }
 
 function computeWasteOutput(fuelConsumption, wastePerRod) {
@@ -181,12 +223,47 @@ function applyGeneratorChange(buildingSlug, current, changedField, rawValue) {
   let machine_count = clampMachineCount(current.machine_count);
   let overclock = clampOverclock(current.overclock);
   let target_fuel_input = Number(current.target_fuel_input);
+  let fuelFromInput = false;
 
   if (changedField === 'fuel' || changedField === 'target_fuel_input') {
-    target_fuel_input = Number(rawValue);
-    if (!Number.isFinite(target_fuel_input) || target_fuel_input <= 0) return null;
-    target_fuel_input = clampTargetFuelToRange(target_fuel_input, rate, machine_count);
-    overclock = computeGeneratorOverclockFromFuel(target_fuel_input, rate, machine_count);
+    const applied = applyFuelTarget(rawValue, rate, machine_count);
+    if (!applied) return null;
+    machine_count = applied.machine_count;
+    overclock = applied.overclock;
+    target_fuel_input = applied.target_fuel_input;
+    fuelFromInput = true;
+  } else if (changedField === 'water') {
+    const waterRate = Number(definition.waterPerMin) || 0;
+    if (!(waterRate > 0)) return null;
+    const targetWater = Number(rawValue);
+    if (!Number.isFinite(targetWater) || targetWater <= 0) return null;
+    // Same machines×OC scale as fuel: fuel = water × (fuelRate / waterRate)
+    const applied = applyFuelTarget(targetWater * (rate / waterRate), rate, machine_count);
+    if (!applied) return null;
+    machine_count = applied.machine_count;
+    overclock = applied.overclock;
+    target_fuel_input = applied.target_fuel_input;
+    fuelFromInput = true;
+  } else if (changedField === 'power' || changedField === 'mw') {
+    const targetMw = Number(rawValue);
+    if (!Number.isFinite(targetMw) || targetMw <= 0 || !(basePower > 0)) return null;
+    const applied = applyFuelTarget(targetMw * (rate / basePower), rate, machine_count);
+    if (!applied) return null;
+    machine_count = applied.machine_count;
+    overclock = applied.overclock;
+    target_fuel_input = applied.target_fuel_input;
+    fuelFromInput = true;
+  } else if (changedField === 'waste') {
+    const wastePerRod = Number(fuelOption.wastePerRod) || 0;
+    if (!(wastePerRod > 0)) return null;
+    const targetWaste = Number(rawValue);
+    if (!Number.isFinite(targetWaste) || targetWaste <= 0) return null;
+    const applied = applyFuelTarget(targetWaste / wastePerRod, rate, machine_count);
+    if (!applied) return null;
+    machine_count = applied.machine_count;
+    overclock = applied.overclock;
+    target_fuel_input = applied.target_fuel_input;
+    fuelFromInput = true;
   } else if (changedField === 'machines') {
     machine_count = clampMachineCount(rawValue);
     target_fuel_input = computeFuelConsumption(rate, machine_count, overclock);
@@ -207,7 +284,7 @@ function applyGeneratorChange(buildingSlug, current, changedField, rawValue) {
     machine_count,
     overclock,
     target_fuel_input,
-    fuelFromInput: changedField === 'fuel' || changedField === 'target_fuel_input',
+    fuelFromInput,
   });
 }
 
@@ -317,6 +394,85 @@ function sizeGeneratorsForTargetMw({
       fuel_slug: fuelOption.slug,
       machine_count: resolved.machine_count,
       overclock: neededOc,
+    });
+  }
+
+  return resolved;
+}
+
+/**
+ * Size generators to hit a target fuel consumption rate for a given building + fuel.
+ * Same prefer-100% vs max-OC policy as sizeGeneratorsForTargetMw.
+ */
+function sizeGeneratorsForTargetFuel({
+  building_slug,
+  fuel_slug,
+  target_fuel_rate,
+  prefer100oc = true,
+  maxMachines = ENERGY_MACHINE_SLIDER_MAX,
+} = {}) {
+  const definition = getGeneratorDefinition(building_slug);
+  if (!definition) {
+    throw new Error('Generatore non supportato');
+  }
+  const fuelOption = getFuelOption(definition, fuel_slug) || getFuelOption(definition, getDefaultFuelSlug(definition));
+  if (!fuelOption) {
+    throw new Error('Combustibile non supportato');
+  }
+
+  const rate = Number(fuelOption.ratePerMin);
+  const targetFuel = Number(target_fuel_rate);
+  if (!(rate > 0) || !Number.isFinite(targetFuel) || targetFuel <= 0) {
+    throw new Error('Target combustibile non valido');
+  }
+
+  const maxCount = Math.max(
+    1,
+    Math.min(ENERGY_MACHINE_SLIDER_MAX, Math.round(Number(maxMachines) || ENERGY_MACHINE_SLIDER_MAX))
+  );
+
+  let machine_count;
+  let overclock;
+
+  if (prefer100oc) {
+    machine_count = Math.max(1, Math.ceil(targetFuel / rate - 1e-9));
+    machine_count = Math.min(maxCount, machine_count);
+    const fuelAt100 = computeFuelConsumption(rate, machine_count, DEFAULT_OVERCLOCK);
+    if (fuelAt100 + 1e-6 < targetFuel) {
+      overclock = Math.min(
+        OVERCLOCK_MAX,
+        Math.max(DEFAULT_OVERCLOCK, (targetFuel / (rate * machine_count)) * 100)
+      );
+    } else {
+      overclock = DEFAULT_OVERCLOCK;
+    }
+  } else {
+    machine_count = Math.max(1, Math.ceil(targetFuel / (rate * (OVERCLOCK_MAX / 100)) - 1e-9));
+    machine_count = Math.min(maxCount, machine_count);
+    overclock = Math.min(
+      OVERCLOCK_MAX,
+      Math.max(OVERCLOCK_MIN, (targetFuel / (rate * machine_count)) * 100)
+    );
+  }
+
+  overclock = normalizeGeneratorOverclock(overclock);
+  const resolved = resolveGeneratorProduction(definition.slug, {
+    fuel_slug: fuelOption.slug,
+    machine_count,
+    overclock,
+  });
+
+  // Nudge so actual fuel rate is at least the target when possible
+  if (resolved.fuel_consumption + 1e-6 < targetFuel) {
+    const neededOc = Math.min(
+      OVERCLOCK_MAX,
+      Math.max(OVERCLOCK_MIN, (targetFuel / (rate * resolved.machine_count)) * 100)
+    );
+    return resolveGeneratorProduction(definition.slug, {
+      fuel_slug: fuelOption.slug,
+      machine_count: resolved.machine_count,
+      overclock: neededOc,
+      target_fuel_input: clampTargetFuelToRange(targetFuel, rate, resolved.machine_count),
     });
   }
 
@@ -477,15 +633,18 @@ module.exports = {
   computeMaxTargetFuel,
   computeMinTargetFuel,
   computeMaxTargetPower,
+  computeMachinesForTargetFuel,
   computeGeneratorOverclockFromFuel,
   computeTargetPower,
   computeFuelConsumption,
   computeWaterConsumption,
   computeWasteOutput,
+  applyFuelTarget,
   applyGeneratorChange,
   resolveGeneratorProduction,
   scaleGeneratorForUpdate,
   sizeGeneratorsForTargetMw,
+  sizeGeneratorsForTargetFuel,
   DEFAULT_OVERCLOCK,
   DEFAULT_MACHINE_COUNT,
   OVERCLOCK_MIN,

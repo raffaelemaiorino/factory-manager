@@ -175,14 +175,14 @@
     "emptyList": "Üretim planı yok.",
     "emptyListHint": "«Yeni plan» ile ilk planınızı oluşturun.",
     "errorLoadList": "Üretim planları yüklenirken hata.",
-    "treeView": "Ağaç görünümü",
-    "treeViewGroups": "Gruplu ağaç görünümü",
+    "treeView": "Ağaç",
+    "treeViewGroups": "Grup ağacı",
     "backToEditor": "Düzenleyiciye dön",
     "backToEditorPlan": "Plan düzenleyiciye dön",
     "treeViewTitle": "Tüm zinciri ağaç olarak göster",
     "treeViewGroupsTitle": "Zinciri gruplara göre (yalnızca ana girdi/çıktılar)",
-    "addExtraction": "Çıkarma ekle",
-    "addResourceStep": "Kaynak adımı ekle",
+    "addExtraction": "Çıkarma",
+    "addResourceStep": "Kaynak şeması Input",
     "sectionExtractions": "Kaynak çıkarma",
     "sectionResourceSteps": "Kaynak adımları",
     "groupMinerals": "Cevherler",
@@ -206,7 +206,7 @@
     "expandGroup": "Grubu genişlet",
     "collapseGroup": "Grubu daralt",
     "treeViewOfGroup": "{name} ağaç görünümü",
-    "treeViewButton": "Ağaç görünümü",
+    "treeViewButton": "Ağaç",
     "highlightStep": "Adımı vurgula",
     "highlightStepTitle": "Adımı yeşil arka planla vurgula",
     "highlightGroup": "Grubu vurgula",
@@ -239,6 +239,7 @@
     "summaryStep": "Adım",
     "noProductionObjectives": "Üretim hedefi yok",
     "inputsPerMachine": "Girdi / makine",
+    "outputsPerMachine": "Çıktı / makine",
     "addResourceStepFor": "{name} için kaynak adımı ekle",
     "addAnotherExtraction": "Bu kaynak için başka çıkarma ekle",
     "addAnotherExtractionAria": "{name} için başka çıkarma ekle",
@@ -332,7 +333,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Kaynak şeması Output",
+    "addResourceStepOutputFor": "{name} için Kaynak şeması Output"
   },
   "energy": {
     "title": "Enerji",
@@ -461,7 +464,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Yeni taşıma",
-    "transportCreatePlaceholder": "örn. Hiper tüp → fabrika"
+    "transportCreatePlaceholder": "örn. Hiper tüp → fabrika",
+    "selectResourceSubConsume": "Kullanılacak veya bertaraf edilecek kaynağı seçin",
+    "selectSchemaConsumeHint": "Bu kaynağı girdi olarak kullanan bir tarif seçin."
   },
   "legal": {
     "title": "Yasal bilgiler, atıflar ve sorumluluk reddi",
@@ -620,7 +625,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Kaynak bulunamadı."
+    "noResources": "Kaynak bulunamadı.",
+    "history": "Geçmiş (son görüntülenen kaynaklar)"
   },
   "update": {
     "available": "Yeni bir sürüm mevcut: {latest} (sizin sürümünüz {current}).",

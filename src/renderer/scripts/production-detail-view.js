@@ -494,6 +494,68 @@ function renderExtractionPickerItem(item) {
     </button>`;
 }
 
+const RESOURCE_PICKER_RECENT_KEY = 'satisfactory-resource-picker-recent';
+const RESOURCE_PICKER_RECENT_MAX = 4;
+
+function loadRecentResourcePickerIds() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(RESOURCE_PICKER_RECENT_KEY) || '[]');
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map((id) => Number(id))
+      .filter((id) => Number.isFinite(id) && id > 0)
+      .slice(0, RESOURCE_PICKER_RECENT_MAX);
+  } catch {
+    return [];
+  }
+}
+
+function rememberResourcePickerSelection(itemId) {
+  const id = Number(itemId);
+  if (!Number.isFinite(id) || id <= 0) return;
+  const next = [id, ...loadRecentResourcePickerIds().filter((existing) => existing !== id)].slice(
+    0,
+    RESOURCE_PICKER_RECENT_MAX
+  );
+  try {
+    localStorage.setItem(RESOURCE_PICKER_RECENT_KEY, JSON.stringify(next));
+  } catch {
+    /* storage pieno o disabilitato */
+  }
+}
+
+function findPickerItemById(categories, itemId) {
+  const id = Number(itemId);
+  for (const cat of categories || []) {
+    for (const item of cat.items || []) {
+      if (Number(item.id) === id) return item;
+    }
+  }
+  return null;
+}
+
+function getRecentPickerItems(categories, { filter } = {}) {
+  const items = [];
+  for (const id of loadRecentResourcePickerIds()) {
+    const item = findPickerItemById(categories, id);
+    if (!item) continue;
+    if (typeof filter === 'function' && !filter(item)) continue;
+    items.push(item);
+  }
+  return items;
+}
+
+function renderResourcePickerHistorySection(items, renderItem = renderResourcePickerItem) {
+  if (!items.length) return '';
+  return `
+    <section class="picker-category picker-category--history">
+      <h4>${escapeHtml(t('picker.history'))}</h4>
+      <div class="picker-grid">
+        ${items.map(renderItem).join('')}
+      </div>
+    </section>`;
+}
+
 function renderExtractionPickerList(categories) {
   const mineralCategory = categories.find((cat) => cat.slug === 'minerali');
   const liquidiCategory = categories.find((cat) => cat.slug === 'liquidi');
@@ -511,7 +573,12 @@ function renderExtractionPickerList(categories) {
     return;
   }
 
-  const sections = [];
+  const sections = [
+    renderResourcePickerHistorySection(
+      getRecentPickerItems(categories, { filter: isExtractionPickerItem }),
+      renderExtractionPickerItem
+    ),
+  ];
 
   if (mineralItems.length) {
     sections.push(`
@@ -545,7 +612,11 @@ function renderMineralPickerList(categories) {
 }
 
 function renderResourcePickerItem(item) {
-  const hasSchemas = Number(item.schema_count) > 0;
+  const schemaCount =
+    resourcePickerMode === 'step-output'
+      ? Number(item.input_schema_count)
+      : Number(item.schema_count);
+  const hasSchemas = schemaCount > 0;
   return `
     <button
       type="button"
@@ -568,7 +639,8 @@ function renderResourcePickerCategories(categories) {
     return `<p class="empty-state">${escapeHtml(t('picker.noResources'))}</p>`;
   }
 
-  return categories
+  const history = renderResourcePickerHistorySection(getRecentPickerItems(categories));
+  const categoriesHtml = categories
     .filter((cat) => cat.items.length)
     .map(
       (cat) => `
@@ -580,6 +652,8 @@ function renderResourcePickerCategories(categories) {
       </section>`
     )
     .join('');
+
+  return `${history}${categoriesHtml}`;
 }
 
 function renderResourcePickerSearchResults(items) {
@@ -629,6 +703,8 @@ function renderResourcePickerList(categories) {
 async function openExtractionPickerModal() {
   resourcePickerMode = 'extraction';
   document.getElementById('resource-picker-modal-title').textContent = t('modals.selectResourceExtract');
+  const subEl = document.getElementById('resource-picker-modal-sub');
+  if (subEl) subEl.textContent = t('modals.selectResourceExtract');
   document.getElementById('resource-picker-search').value = '';
   document.getElementById('resource-picker-count').textContent = '';
   document.getElementById('resource-picker-list').innerHTML =
@@ -654,13 +730,27 @@ async function openMineralPickerModal() {
 }
 
 async function openResourcePickerModal() {
-  return openResourcePickerWithMode('step');
+  return openResourcePickerWithMode('step', 'modals.selectResource', 'modals.selectResourceSub');
 }
 
-async function openResourcePickerWithMode(mode = 'step', titleKey = 'modals.selectResource') {
+async function openResourceOutputPickerModal() {
+  return openResourcePickerWithMode(
+    'step-output',
+    'modals.selectResource',
+    'modals.selectResourceSubConsume'
+  );
+}
+
+async function openResourcePickerWithMode(
+  mode = 'step',
+  titleKey = 'modals.selectResource',
+  subKey = 'modals.selectResourceSub'
+) {
   pendingInsertAfterStepId = null;
   resourcePickerMode = mode;
   document.getElementById('resource-picker-modal-title').textContent = t(titleKey);
+  const subEl = document.getElementById('resource-picker-modal-sub');
+  if (subEl) subEl.textContent = subKey ? t(subKey) : '';
   document.getElementById('resource-picker-search').value = '';
   document.getElementById('resource-picker-count').textContent = '';
   document.getElementById('resource-picker-list').innerHTML =
@@ -682,6 +772,7 @@ async function openResourcePickerWithMode(mode = 'step', titleKey = 'modals.sele
 }
 
 window.openResourcePickerWithMode = openResourcePickerWithMode;
+window.openResourceOutputPickerModal = openResourceOutputPickerModal;
 
 function closeResourcePickerModal() {
   resourcePickerModal.classList.add('hidden');
@@ -692,17 +783,24 @@ function closeResourcePickerModal() {
 
 function renderSelectableCraftSchema(schema) {
   return `
-    <button type="button" class="picker-schema-btn" data-schema-id="${schema.id}">
+    <button
+      type="button"
+      class="picker-schema-btn"
+      data-schema-id="${schema.id}"
+      data-item-id="${schema.item_id}"
+    >
       ${renderCraftSchema(schema, schema.is_alternative, { compact: true })}
     </button>`;
 }
 
-function openSchemaPickerModal(item, schemas) {
+function openSchemaPickerModal(item, schemas, { byInput = false } = {}) {
   pendingPickerItemId = item.id;
   document.getElementById('schema-picker-modal-title').textContent = t('modals.selectSchemaFor', {
     name: item.name,
   });
-  document.getElementById('schema-picker-item-meta').textContent = t('modals.selectSchemaAltHint');
+  document.getElementById('schema-picker-item-meta').textContent = byInput
+    ? t('modals.selectSchemaConsumeHint')
+    : t('modals.selectSchemaAltHint');
 
   const imgEl = document.getElementById('schema-picker-item-image');
   if (item.image) {
@@ -839,7 +937,9 @@ async function handleResourceSelection(itemId) {
   }
 
   try {
-    await addProductionStepForItem(itemId);
+    await addProductionStepForItem(itemId, {
+      byInput: resourcePickerMode === 'step-output',
+    });
   } catch (err) {
     console.error('Resource selection error:', err);
   }

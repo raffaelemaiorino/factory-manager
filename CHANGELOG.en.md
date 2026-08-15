@@ -9,6 +9,74 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.0] - 2026-08-15
+
+### Added
+- Machine panel (Production and Power): «Output / machine» section with per-machine rates (including byproducts/waste), matching «Input / machine»
+
+## [3.7.1] - 2026-08-15
+
+### Fixed
+- Extractions (Production and Power): typing an output above the max at 250% OC now auto-increases extractors/nodes (prefer even) and overclock, same as Production machines
+
+## [3.7.0] - 2026-08-15
+
+### Added
+- Power: extractions can link to generators («Link to generator»), and generators can link extractions («Link from extraction»), same as Production
+
+## [3.6.1] - 2026-08-15
+
+### Changed
+- Power: «Create linked fuel production» option sits below the target controls, full width
+
+## [3.6.0] - 2026-08-15
+
+### Added
+- Power: «Create linked fuel production» option when creating or rebuilding a plan — for crafted fuels you choose whether to also generate a Production plan
+
+### Changed
+- Power: with the option off, auto-plan only builds generators and extractions (water/coal); it no longer creates Production plans by surprise
+
+## [3.5.0] - 2026-08-15
+
+### Added
+- Power: generator input/output rates (fuel, water, MW, waste) are editable like Production — they recalculate machines and overclock
+- Power: if fuel (or a linked rate) exceeds the max at 250% OC, generator count increases automatically
+
+## [3.4.1] - 2026-08-15
+
+### Fixed
+- Power: extractions now flag surplus or shortfall against generator demand (border and message, same as Production)
+- Power: with production links, generator inputs show chain surplus instead of «Fully covered» when extractions overproduce
+
+## [3.4.0] - 2026-08-15
+
+### Added
+- Power: auto-plan target can be MW or fuel consumption /min (e.g. 200 compacted coal)
+
+## [3.3.0] - 2026-08-15
+
+### Added
+- Production: clicking a step output opens «Resource Schema Output» (recipes that consume that product), mirroring input clicks that find how to produce it
+
+## [3.2.0] - 2026-08-15
+
+### Added
+- Production: resource picker shows a «History» section with the last 4 selected resources (above categories)
+
+## [3.1.1] - 2026-08-15
+
+### Fixed
+- Production: «Resource Schema Output» no longer lists duplicate recipes (copies owned by byproducts, e.g. water)
+
+## [3.1.0] - 2026-08-15
+
+### Added
+- Production: «Resource Schema Output» button — pick a resource to use or dispose of and add a recipe that consumes it as input (e.g. uranium waste)
+
+### Changed
+- Production: shorter labels — «Tree», «Group tree», «Extraction», «Resource Schema Input» (all locales)
+
 ## [3.0.0] - 2026-08-10
 
 Major: Transport — definitive train planning support (time units, total trip time, convoy count, list and route form).

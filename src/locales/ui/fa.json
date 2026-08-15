@@ -171,14 +171,14 @@
     "emptyList": "طرح تولیدی نیست.",
     "emptyListHint": "اولین طرح را با دکمه «طرح جدید» بسازید.",
     "errorLoadList": "خطا در بارگذاری طرح‌های تولید.",
-    "treeView": "نمای درختی",
+    "treeView": "درخت",
     "treeViewGroups": "درخت گروه‌ها",
     "backToEditor": "بازگشت به ویرایشگر",
     "backToEditorPlan": "بازگشت به ویرایشگر طرح",
     "treeViewTitle": "نمایش کل زنجیره به‌صورت درخت",
     "treeViewGroupsTitle": "نمایش زنجیره بر اساس گروه‌ها (فقط ورودی/خروجی اصلی)",
-    "addExtraction": "افزودن استخراج",
-    "addResourceStep": "افزودن گام منبع",
+    "addExtraction": "استخراج",
+    "addResourceStep": "طرح منبع Input",
     "sectionExtractions": "استخراج منابع",
     "sectionResourceSteps": "گام‌های منبع",
     "groupMinerals": "مواد معدنی",
@@ -202,7 +202,7 @@
     "expandGroup": "باز کردن گروه",
     "collapseGroup": "جمع کردن گروه",
     "treeViewOfGroup": "درخت {name}",
-    "treeViewButton": "نمای درختی",
+    "treeViewButton": "درخت",
     "highlightStep": "برجسته‌سازی گام",
     "highlightStepTitle": "برجسته‌سازی گام با پس‌زمینه سبز",
     "highlightGroup": "برجسته‌سازی گروه",
@@ -235,6 +235,7 @@
     "summaryStep": "گام",
     "noProductionObjectives": "هدف تولیدی نیست",
     "inputsPerMachine": "ورودی / ماشین",
+    "outputsPerMachine": "خروجی / ماشین",
     "addResourceStepFor": "افزودن گام منبع برای {name}",
     "addAnotherExtraction": "استخراج دیگر برای این منبع",
     "addAnotherExtractionAria": "استخراج دیگر {name}",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "طرح منبع Output",
+    "addResourceStepOutputFor": "طرح منبع Output برای {name}"
   },
   "energy": {
     "title": "انرژی",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "حمل جدید",
-    "transportCreatePlaceholder": "مثلاً لوله هایپر → کارخانه"
+    "transportCreatePlaceholder": "مثلاً لوله هایپر → کارخانه",
+    "selectResourceSubConsume": "منبعی برای استفاده یا دفع انتخاب کنید",
+    "selectSchemaConsumeHint": "دستورالعملی را انتخاب کنید که این منبع را به‌عنوان ورودی مصرف می‌کند."
   },
   "legal": {
     "title": "اطلاعات حقوقی، منبع‌یابی و سلب مسئولیت",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "منبعی یافت نشد."
+    "noResources": "منبعی یافت نشد.",
+    "history": "تاریخچه (آخرین منابع مشاهده‌شده)"
   },
   "_meta": {
     "locale": "fa",

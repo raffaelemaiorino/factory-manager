@@ -339,7 +339,13 @@ function setupNumberInputWheelBlock() {
         event.preventDefault();
         const field = getConfigInputField(target);
         if (field) {
-          applyConfigInputNudge(target, field, event.deltaY < 0 ? 1 : -1);
+          const commit =
+            typeof field === 'string' &&
+            field.startsWith('energy-') &&
+            typeof window.EnergyUI?.commitEnergyConfigInputChange === 'function'
+              ? window.EnergyUI.commitEnergyConfigInputChange
+              : commitConfigInputChange;
+          applyConfigInputNudge(target, field, event.deltaY < 0 ? 1 : -1, commit);
         }
       }
     },

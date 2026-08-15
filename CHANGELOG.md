@@ -9,6 +9,74 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [3.8.0] - 2026-08-15
+
+### Added
+- Pannello macchina (Produzione ed Energia): sezione «Output / macchina» con rate per macchina (e byproduct/scorie), allineata a «Input / macchina»
+
+## [3.7.1] - 2026-08-15
+
+### Fixed
+- Estrazioni (Produzione ed Energia): se digiti un output oltre il massimo a 250% OC, aumentano automaticamente estrattori/nodi (numero pari) e l’overclock, come per le macchine in Produzione
+
+## [3.7.0] - 2026-08-15
+
+### Added
+- Energia: sulle estrazioni puoi collegare generatori («Collega a generatore»), e sui generatori collegare estrazioni («Collega da estrazione»), come in Produzione
+
+## [3.6.1] - 2026-08-15
+
+### Changed
+- Energia: l’opzione «Crea produzione combustibile collegata» sta sotto i controlli obiettivo, a tutta larghezza
+
+## [3.6.0] - 2026-08-15
+
+### Added
+- Energia: opzione «Crea produzione combustibile collegata» in creazione e ricostruzione schema — per combustibili craftati puoi scegliere se generare anche lo schema in Produzione
+
+### Changed
+- Energia: senza l’opzione attiva, l’auto-plan crea solo generatori ed estrazioni (acqua/carbone); non aggiunge più piani produzione a sorpresa
+
+## [3.5.0] - 2026-08-15
+
+### Added
+- Energia: i rate di input/output dei generatori (combustibile, acqua, MW, scorie) sono editabili come in Produzione — ricalcolano macchine e overclock
+- Energia: se il combustibile (o un rate collegato) supera il massimo a 250% OC, aumenta automaticamente il numero di generatori
+
+## [3.4.1] - 2026-08-15
+
+### Fixed
+- Energia: le estrazioni segnalano eccedenza o carenza rispetto al fabbisogno dei generatori (bordo e messaggio, come in Produzione)
+- Energia: con collegamenti da produzione, l’input del generatore mostra l’eccedenza in catena invece di «Coperto completamente» se le estrazioni producono troppo
+
+## [3.4.0] - 2026-08-15
+
+### Added
+- Energia: nello schema automatico puoi impostare l’obiettivo come MW oppure come consumo combustibile /min (es. 200 carbone compatto)
+
+## [3.3.0] - 2026-08-15
+
+### Added
+- Produzione: click sull’output di uno schema apre «Schema Risorsa Output» (ricette che consumano quel prodotto), come il click sull’input per produrlo
+
+## [3.2.0] - 2026-08-15
+
+### Added
+- Produzione: nel selettore risorse, sezione «Cronologia» con le ultime 4 risorse selezionate (sopra le categorie)
+
+## [3.1.1] - 2026-08-15
+
+### Fixed
+- Produzione: «Schema Risorsa Output» non elenca più ricette duplicate (copie assegnate a sottoprodotti, es. acqua)
+
+## [3.1.0] - 2026-08-15
+
+### Added
+- Produzione: pulsante «Schema Risorsa Output» — scegli una risorsa da usare o smaltire e aggiungi uno schema che la consuma come input (es. scorie di uranio)
+
+### Changed
+- Produzione: etichette più corte — «Albero», «Albero a Gruppi», «Estrazione», «Schema Risorsa Input» (in tutte le lingue)
+
 ## [3.0.0] - 2026-08-10
 
 Major: sezione Trasporti — versione treni definitiva (unità di tempo, tempo totale di viaggio, numero di convogli, elenco e form percorso).

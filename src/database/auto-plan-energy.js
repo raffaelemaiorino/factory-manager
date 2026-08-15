@@ -9,6 +9,7 @@ const {
 } = require('./energy-chains');
 const {
   sizeGeneratorsForTargetMw,
+  sizeGeneratorsForTargetFuel,
   getGeneratorDefinition,
   getFuelOption,
   isSupportedGeneratorSlug,
@@ -57,20 +58,13 @@ function clearEnergyChainContents(db, chainId) {
 function sizeExtractionForRate(item, neededRate) {
   const defaults = getDefaultEnergyExtractionConfig(item);
   const base = getBaseExtractionPerNode(defaults.miner_slug, defaults.purity, item);
-  let nodeCount = Math.max(1, Math.ceil(neededRate / Math.max(base, 1e-9)));
-  while (
-    computeExtractionTargetOutput(base, nodeCount, 100) + 1e-9 < neededRate &&
-    nodeCount < 500
-  ) {
-    nodeCount += 1;
-  }
   const config = applyExtractionChange(
     item,
     {
       ...defaults,
-      node_count: normalizeNodeCount(nodeCount),
+      node_count: 1,
       overclock: 100,
-      target_output: computeExtractionTargetOutput(base, nodeCount, 100),
+      target_output: base,
     },
     'output',
     neededRate
@@ -81,12 +75,8 @@ function sizeExtractionForRate(item, neededRate) {
   return {
     ...config,
     node_count: normalizeNodeCount(config.node_count),
-    overclock: 100,
-    target_output: computeExtractionTargetOutput(
-      getBaseExtractionPerNode(config.miner_slug, config.purity, item),
-      normalizeNodeCount(config.node_count),
-      100
-    ),
+    overclock: config.overclock,
+    target_output: config.target_output,
   };
 }
 
@@ -104,7 +94,7 @@ function ensureSizedEnergyExtraction(db, noopPersist, chainId, item, neededRate,
 }
 
 /**
- * Rebuild an energy chain from target MW + generator + fuel.
+ * Rebuild an energy chain from target MW or fuel rate + generator + fuel.
  * Coal/water use energy extractions; other fuels get a companion production plan.
  */
 function autoPlanEnergyChain(db, persist, chainId, options = {}, getItemById) {
@@ -113,15 +103,15 @@ function autoPlanEnergyChain(db, persist, chainId, options = {}, getItemById) {
     throw new Error('Schema energia non trovato');
   }
 
-  const targetMw = Number(options.target_power_mw ?? chain.target_power_mw);
+  const targetMode =
+    String(options.target_mode ?? chain.target_mode ?? 'mw').trim().toLowerCase() === 'fuel'
+      ? 'fuel'
+      : 'mw';
   const buildingSlug = String(
     options.target_building_slug ?? chain.target_building_slug ?? ''
   ).trim();
   const fuelSlug = String(options.target_fuel_slug ?? chain.target_fuel_slug ?? '').trim();
 
-  if (!Number.isFinite(targetMw) || targetMw <= 0) {
-    throw new Error('Target MW non valido');
-  }
   if (!isSupportedGeneratorSlug(buildingSlug)) {
     throw new Error('Generatore non supportato');
   }
@@ -129,6 +119,17 @@ function autoPlanEnergyChain(db, persist, chainId, options = {}, getItemById) {
   const fuelOption = getFuelOption(definition, fuelSlug);
   if (!fuelOption) {
     throw new Error('Combustibile non supportato');
+  }
+
+  const targetMwInput = Number(options.target_power_mw ?? chain.target_power_mw);
+  const targetFuelInput = Number(options.target_fuel_rate ?? chain.target_fuel_rate);
+
+  if (targetMode === 'fuel') {
+    if (!Number.isFinite(targetFuelInput) || targetFuelInput <= 0) {
+      throw new Error('Target combustibile non valido');
+    }
+  } else if (!Number.isFinite(targetMwInput) || targetMwInput <= 0) {
+    throw new Error('Target MW non valido');
   }
 
   const noopPersist = () => {};
@@ -141,7 +142,9 @@ function autoPlanEnergyChain(db, persist, chainId, options = {}, getItemById) {
   const prefer100oc = !isPowerShardUnlimited(shardLimit);
 
   updateEnergyChain(db, noopPersist, chainId, {
-    target_power_mw: targetMw,
+    target_power_mw: targetMode === 'mw' ? targetMwInput : chain.target_power_mw,
+    target_fuel_rate: targetMode === 'fuel' ? targetFuelInput : chain.target_fuel_rate,
+    target_mode: targetMode,
     target_building_slug: buildingSlug,
     target_fuel_slug: fuelOption.slug,
     power_shard_limit: shardLimit,
@@ -149,11 +152,29 @@ function autoPlanEnergyChain(db, persist, chainId, options = {}, getItemById) {
 
   clearEnergyChainContents(db, chainId);
 
-  const sized = sizeGeneratorsForTargetMw({
-    building_slug: buildingSlug,
-    fuel_slug: fuelOption.slug,
-    target_mw: targetMw,
-    prefer100oc,
+  const sized =
+    targetMode === 'fuel'
+      ? sizeGeneratorsForTargetFuel({
+          building_slug: buildingSlug,
+          fuel_slug: fuelOption.slug,
+          target_fuel_rate: targetFuelInput,
+          prefer100oc,
+        })
+      : sizeGeneratorsForTargetMw({
+          building_slug: buildingSlug,
+          fuel_slug: fuelOption.slug,
+          target_mw: targetMwInput,
+          prefer100oc,
+        });
+
+  // Persist both derived targets so UI can show either mode later
+  updateEnergyChain(db, noopPersist, chainId, {
+    target_power_mw: sized.power_output_mw,
+    target_fuel_rate: sized.fuel_consumption,
+    target_mode: targetMode,
+    target_building_slug: buildingSlug,
+    target_fuel_slug: fuelOption.slug,
+    power_shard_limit: shardLimit,
   });
 
   const generator = addEnergyGenerator(
@@ -210,6 +231,7 @@ function autoPlanEnergyChain(db, persist, chainId, options = {}, getItemById) {
   }
 
   let linkedProductionChainId = null;
+  const linkFuelProduction = options.link_fuel_production !== false;
 
   if (ENERGY_EXTRACTION_SLUGS.includes(fuelItemSlug)) {
     const fuelItem = findItemBySlug(db, getItemById, fuelItemSlug);
@@ -230,7 +252,14 @@ function autoPlanEnergyChain(db, persist, chainId, options = {}, getItemById) {
       [fuelExtractionId],
       getItemById
     );
-  } else if (fuelRate > 0) {
+    if (previousLinkedId) {
+      try {
+        deleteProductionChain(db, noopPersist, previousLinkedId);
+      } catch {
+        /* companion may already be gone */
+      }
+    }
+  } else if (fuelRate > 0 && linkFuelProduction) {
     const fuelItem = findItemBySlug(db, getItemById, fuelItemSlug);
     if (!fuelItem) throw new Error(`Risorsa combustibile non trovata: ${fuelItemSlug}`);
 
@@ -298,11 +327,9 @@ function autoPlanEnergyChain(db, persist, chainId, options = {}, getItemById) {
       }
     }
   } else if (previousLinkedId) {
-    try {
-      deleteProductionChain(db, noopPersist, previousLinkedId);
-    } catch {
-      /* ignore */
-    }
+    // Crafted fuel without companion production, or link disabled: drop ownership link.
+    // Keep the production plan in the list so the user can delete or reuse it.
+    linkedProductionChainId = null;
   }
 
   updateEnergyChain(db, noopPersist, chainId, {
@@ -322,4 +349,5 @@ module.exports = {
   autoPlanEnergyChain,
   setEnergyChainTargetsAndReplan,
   sizeGeneratorsForTargetMw,
+  sizeGeneratorsForTargetFuel,
 };

@@ -171,14 +171,14 @@
     "emptyList": "Geen productieplannen.",
     "emptyListHint": "Maak je eerste plan met «Nieuw plan».",
     "errorLoadList": "Fout bij laden productieplannen.",
-    "treeView": "Boomaanzicht",
-    "treeViewGroups": "Boomaanzicht groepen",
+    "treeView": "Boom",
+    "treeViewGroups": "Groepenboom",
     "backToEditor": "Terug naar editor",
     "backToEditorPlan": "Terug naar plan-editor",
     "treeViewTitle": "Toon de hele keten als boom",
     "treeViewGroupsTitle": "Keten per groep (hoofd-inputs/outputs)",
-    "addExtraction": "Winning toevoegen",
-    "addResourceStep": "Grondstofstap toevoegen",
+    "addExtraction": "Winning",
+    "addResourceStep": "Grondstofschema Input",
     "sectionExtractions": "Winning",
     "sectionResourceSteps": "Grondstofstappen",
     "groupMinerals": "Ertsen",
@@ -202,7 +202,7 @@
     "expandGroup": "Groep uitklappen",
     "collapseGroup": "Groep inklappen",
     "treeViewOfGroup": "Boomaanzicht van {name}",
-    "treeViewButton": "Boomaanzicht",
+    "treeViewButton": "Boom",
     "highlightStep": "Stap markeren",
     "highlightStepTitle": "Markeer stap met groene achtergrond",
     "highlightGroup": "Groep markeren",
@@ -235,6 +235,7 @@
     "summaryStep": "Stap",
     "noProductionObjectives": "Geen productiedoelen",
     "inputsPerMachine": "Input / machine",
+    "outputsPerMachine": "Output / machine",
     "addResourceStepFor": "Grondstofstap voor {name}",
     "addAnotherExtraction": "Nog een winning voor deze grondstof",
     "addAnotherExtractionAria": "Nog een winning van {name}",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Grondstofschema Output",
+    "addResourceStepOutputFor": "Grondstofschema Output voor {name}"
   },
   "energy": {
     "title": "Stroom",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Nieuw transport",
-    "transportCreatePlaceholder": "bijv. Hyperbuis → fabriek"
+    "transportCreatePlaceholder": "bijv. Hyperbuis → fabriek",
+    "selectResourceSubConsume": "Kies de grondstof om te gebruiken of af te voeren",
+    "selectSchemaConsumeHint": "Kies een recept dat deze grondstof als input gebruikt."
   },
   "legal": {
     "title": "Juridische informatie, attributies en disclaimer",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Geen grondstoffen gevonden."
+    "noResources": "Geen grondstoffen gevonden.",
+    "history": "Geschiedenis (laatst bekeken grondstoffen)"
   },
   "_meta": {
     "locale": "nl",

@@ -1,6 +1,6 @@
 {
   "name": "factory-manager",
-  "version": "3.0.0",
+  "version": "3.8.0",
   "description": "Unofficial local production planner for Satisfactory — chains, machines, rates, and power on your PC.",
   "productName": "Factory Manager",
   "desktopName": "factory-manager.desktop",

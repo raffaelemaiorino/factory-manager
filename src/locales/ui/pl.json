@@ -171,14 +171,14 @@
     "emptyList": "Brak planów produkcji.",
     "emptyListHint": "Utwórz pierwszy plan przyciskiem «Nowy plan».",
     "errorLoadList": "Błąd ładowania planów produkcji.",
-    "treeView": "Widok drzewa",
+    "treeView": "Drzewo",
     "treeViewGroups": "Drzewo grup",
     "backToEditor": "Wróć do edytora",
     "backToEditorPlan": "Wróć do edytora planu",
     "treeViewTitle": "Pokaż cały łańcuch jako drzewo",
     "treeViewGroupsTitle": "Łańcuch wg grup (główne wejścia/wyjścia)",
-    "addExtraction": "Dodaj wydobycie",
-    "addResourceStep": "Dodaj krok zasobu",
+    "addExtraction": "Wydobycie",
+    "addResourceStep": "Schemat zasobu Input",
     "sectionExtractions": "Wydobycie",
     "sectionResourceSteps": "Kroki zasobów",
     "groupMinerals": "Minerały",
@@ -202,7 +202,7 @@
     "expandGroup": "Rozwiń grupę",
     "collapseGroup": "Zwiń grupę",
     "treeViewOfGroup": "Drzewo {name}",
-    "treeViewButton": "Widok drzewa",
+    "treeViewButton": "Drzewo",
     "highlightStep": "Podświetl krok",
     "highlightStepTitle": "Podświetl krok na zielono",
     "highlightGroup": "Podświetl grupę",
@@ -235,6 +235,7 @@
     "summaryStep": "Krok",
     "noProductionObjectives": "Brak celów produkcji",
     "inputsPerMachine": "Wejście / maszyna",
+    "outputsPerMachine": "Wyjście / maszyna",
     "addResourceStepFor": "Dodaj krok dla {name}",
     "addAnotherExtraction": "Dodaj kolejne wydobycie tego zasobu",
     "addAnotherExtractionAria": "Dodaj kolejne wydobycie {name}",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Schemat zasobu Output",
+    "addResourceStepOutputFor": "Schemat zasobu Output dla {name}"
   },
   "energy": {
     "title": "Energia",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Nowy transport",
-    "transportCreatePlaceholder": "np. Hiperrura → fabryka"
+    "transportCreatePlaceholder": "np. Hiperrura → fabryka",
+    "selectResourceSubConsume": "Wybierz zasób do użycia lub utylizacji",
+    "selectSchemaConsumeHint": "Wybierz recepturę, która używa tego zasobu jako wejścia."
   },
   "legal": {
     "title": "Informacje prawne, atrybucje i wyłączenie odpowiedzialności",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Nie znaleziono zasobów."
+    "noResources": "Nie znaleziono zasobów.",
+    "history": "Historia (ostatnio wyświetlane zasoby)"
   },
   "_meta": {
     "locale": "pl",

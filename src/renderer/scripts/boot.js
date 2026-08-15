@@ -100,6 +100,7 @@ window.ProductionUI = {
   PURITY_OPTIONS,
   getLinkBalanceState,
   getLinkStateClass,
+  getExtractionLinkStateClass,
   resolveInputLinkBalance,
   normalizeLinkDelta,
   LINK_BALANCE_TOLERANCE,

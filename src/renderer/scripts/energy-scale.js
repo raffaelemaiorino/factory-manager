@@ -68,6 +68,42 @@
     return clampTargetFuelToRange(targetFuel, fuelRatePerMin, machineCount);
   }
 
+  function computeMachinesForTargetFuel(
+    targetFuel,
+    fuelRatePerMin,
+    maxMachines = ENERGY_MACHINE_SLIDER_MAX
+  ) {
+    const rate = Number(fuelRatePerMin);
+    const target = Number(targetFuel);
+    const cap = Math.max(
+      1,
+      Math.min(ENERGY_MACHINE_SLIDER_MAX, Math.round(Number(maxMachines) || ENERGY_MACHINE_SLIDER_MAX))
+    );
+    if (!rate || !Number.isFinite(target) || target <= 0) return PS().DEFAULT_MACHINE_COUNT;
+    const perMachineMax = rate * (PS().OVERCLOCK_MAX / 100);
+    if (!(perMachineMax > 0)) return PS().DEFAULT_MACHINE_COUNT;
+    let machines = Math.max(1, Math.ceil(target / perMachineMax - 1e-9));
+    machines = Math.min(cap, machines);
+    while (computeMaxTargetFuel(rate, machines) + 1e-9 < target && machines < cap) {
+      machines += 1;
+    }
+    return PS().clampMachineCount(machines);
+  }
+
+  function applyFuelTarget(targetFuel, fuelRatePerMin, machineCount, maxMachines = ENERGY_MACHINE_SLIDER_MAX) {
+    const rate = Number(fuelRatePerMin);
+    let fuel = Number(targetFuel);
+    let machines = PS().clampMachineCount(machineCount);
+    if (!rate || !Number.isFinite(fuel) || fuel <= 0) return null;
+
+    if (fuel > computeMaxTargetFuel(rate, machines) + 1e-9) {
+      machines = computeMachinesForTargetFuel(fuel, rate, maxMachines);
+    }
+    fuel = clampTargetFuelToRange(fuel, rate, machines);
+    const overclock = computeGeneratorOverclockFromFuel(fuel, rate, machines);
+    return { machine_count: machines, overclock, target_fuel_input: fuel };
+  }
+
   function computeGeneratorOverclockFromFuel(targetFuel, fuelRatePerMin, machineCount) {
     const rate = Number(fuelRatePerMin);
     const target = Number(targetFuel);
@@ -177,12 +213,46 @@
     let machine_count = PS().clampMachineCount(current.machine_count);
     let overclock = PS().clampOverclock(current.overclock);
     let target_fuel_input = Number(current.target_fuel_input);
+    let fuelFromInput = false;
 
     if (changedField === 'fuel' || changedField === 'target_fuel_input') {
-      target_fuel_input = Number(rawValue);
-      if (!Number.isFinite(target_fuel_input) || target_fuel_input <= 0) return null;
-      target_fuel_input = clampTargetFuelToRange(target_fuel_input, rate, machine_count);
-      overclock = computeGeneratorOverclockFromFuel(target_fuel_input, rate, machine_count);
+      const applied = applyFuelTarget(rawValue, rate, machine_count);
+      if (!applied) return null;
+      machine_count = applied.machine_count;
+      overclock = applied.overclock;
+      target_fuel_input = applied.target_fuel_input;
+      fuelFromInput = true;
+    } else if (changedField === 'water') {
+      const waterRate = Number(definition.waterPerMin) || 0;
+      if (!(waterRate > 0)) return null;
+      const targetWater = Number(rawValue);
+      if (!Number.isFinite(targetWater) || targetWater <= 0) return null;
+      const applied = applyFuelTarget(targetWater * (rate / waterRate), rate, machine_count);
+      if (!applied) return null;
+      machine_count = applied.machine_count;
+      overclock = applied.overclock;
+      target_fuel_input = applied.target_fuel_input;
+      fuelFromInput = true;
+    } else if (changedField === 'power' || changedField === 'mw') {
+      const targetMw = Number(rawValue);
+      if (!Number.isFinite(targetMw) || targetMw <= 0 || !(basePower > 0)) return null;
+      const applied = applyFuelTarget(targetMw * (rate / basePower), rate, machine_count);
+      if (!applied) return null;
+      machine_count = applied.machine_count;
+      overclock = applied.overclock;
+      target_fuel_input = applied.target_fuel_input;
+      fuelFromInput = true;
+    } else if (changedField === 'waste') {
+      const wastePerRod = Number(fuelOption.wastePerRod) || 0;
+      if (!(wastePerRod > 0)) return null;
+      const targetWaste = Number(rawValue);
+      if (!Number.isFinite(targetWaste) || targetWaste <= 0) return null;
+      const applied = applyFuelTarget(targetWaste / wastePerRod, rate, machine_count);
+      if (!applied) return null;
+      machine_count = applied.machine_count;
+      overclock = applied.overclock;
+      target_fuel_input = applied.target_fuel_input;
+      fuelFromInput = true;
     } else if (changedField === 'machines') {
       machine_count = PS().clampMachineCount(rawValue);
       target_fuel_input = computeFuelConsumption(rate, machine_count, overclock);
@@ -203,7 +273,7 @@
       machine_count,
       overclock,
       target_fuel_input,
-      fuelFromInput: changedField === 'fuel' || changedField === 'target_fuel_input',
+      fuelFromInput,
     });
   }
 
@@ -338,6 +408,8 @@
     computeTargetPower,
     computeFuelConsumption,
     computeMaxTargetPower,
+    computeMachinesForTargetFuel,
+    applyFuelTarget,
     applyGeneratorChange,
     resolveGeneratorProduction,
     scaleGeneratorForUpdate,

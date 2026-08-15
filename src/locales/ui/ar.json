@@ -171,14 +171,14 @@
     "emptyList": "لا مخططات إنتاج.",
     "emptyListHint": "أنشئ أول مخطط بزر «مخطط جديد».",
     "errorLoadList": "خطأ في تحميل مخططات الإنتاج.",
-    "treeView": "عرض شجري",
+    "treeView": "شجرة",
     "treeViewGroups": "شجرة المجموعات",
     "backToEditor": "العودة للمحرّر",
     "backToEditorPlan": "العودة لمحرّر المخطط",
     "treeViewTitle": "عرض السلسلة كاملة كشجرة",
     "treeViewGroupsTitle": "عرض السلسلة حسب المجموعات (المداخل/المخرجات الرئيسية فقط)",
-    "addExtraction": "إضافة استخراج",
-    "addResourceStep": "إضافة خطوة مورد",
+    "addExtraction": "استخراج",
+    "addResourceStep": "مخطط مورد Input",
     "sectionExtractions": "استخراج الموارد",
     "sectionResourceSteps": "خطوات الموارد",
     "groupMinerals": "معادن",
@@ -202,7 +202,7 @@
     "expandGroup": "توسيع المجموعة",
     "collapseGroup": "طي المجموعة",
     "treeViewOfGroup": "شجرة {name}",
-    "treeViewButton": "عرض شجري",
+    "treeViewButton": "شجرة",
     "highlightStep": "تمييز الخطوة",
     "highlightStepTitle": "تمييز الخطوة بخلفية خضراء",
     "highlightGroup": "تمييز المجموعة",
@@ -235,6 +235,7 @@
     "summaryStep": "خطوة",
     "noProductionObjectives": "لا أهداف إنتاج",
     "inputsPerMachine": "مدخل / آلة",
+    "outputsPerMachine": "مخرج / آلة",
     "addResourceStepFor": "إضافة خطوة مورد لـ {name}",
     "addAnotherExtraction": "إضافة استخراج آخر لهذا المورد",
     "addAnotherExtractionAria": "إضافة استخراج آخر لـ {name}",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "مخطط مورد Output",
+    "addResourceStepOutputFor": "مخطط مورد Output لـ {name}"
   },
   "energy": {
     "title": "الطاقة",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "نقل جديد",
-    "transportCreatePlaceholder": "مثال: أنبوب فائق → مصنع"
+    "transportCreatePlaceholder": "مثال: أنبوب فائق → مصنع",
+    "selectResourceSubConsume": "اختر المورد للاستخدام أو التخلص",
+    "selectSchemaConsumeHint": "اختر وصفة تستخدم هذا المورد كمدخل."
   },
   "legal": {
     "title": "معلومات قانونية وإسنادات وإخلاء مسؤولية",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "لا موارد."
+    "noResources": "لا موارد.",
+    "history": "السجل (آخر الموارد المعروضة)"
   },
   "_meta": {
     "locale": "ar",

@@ -2815,6 +2815,16 @@ select.production-config-input option:checked {
   margin-bottom: 1.25rem;
 }
 
+.picker-category--history {
+  padding-bottom: 0.85rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.picker-category--history h4 {
+  color: var(--border-accent);
+}
+
 .picker-category h4 {
   margin: 0 0 0.65rem;
   font-size: 0.8rem;
@@ -3410,6 +3420,20 @@ select.production-config-input option:checked {
   margin-top: 0.75rem;
 }
 
+.energy-plan-link-fuel-option {
+  margin-top: 0.85rem;
+  max-width: none;
+  width: 100%;
+}
+
+.energy-targets-section .energy-plan-link-fuel-option .form-option-label {
+  align-items: flex-start;
+}
+
+.energy-targets-section .energy-plan-link-fuel-option .form-option-hint {
+  max-width: 52rem;
+}
+
 .production-plan-constraint {
   display: flex;
   flex-direction: column;
@@ -3881,7 +3905,9 @@ select.production-config-input option:checked {
   width: 100%;
 }
 
-.craft-building-inputs {
+.craft-building-io,
+.craft-building-inputs,
+.craft-building-outputs {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -3892,7 +3918,9 @@ select.production-config-input option:checked {
   border-top: 1px solid var(--border);
 }
 
-.craft-building-inputs-label {
+.craft-building-io-label,
+.craft-building-inputs-label,
+.craft-building-outputs-label {
   font-size: 0.62rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -3901,6 +3929,7 @@ select.production-config-input option:checked {
   text-align: center;
 }
 
+.craft-building-io-item,
 .craft-building-input-item {
   display: flex;
   align-items: flex-start;
@@ -3908,6 +3937,7 @@ select.production-config-input option:checked {
   width: 100%;
 }
 
+.craft-building-io-icon,
 .craft-building-input-icon {
   width: 22px;
   height: 22px;
@@ -3915,6 +3945,7 @@ select.production-config-input option:checked {
   flex-shrink: 0;
 }
 
+.craft-building-io-icon--placeholder,
 .craft-building-input-icon--placeholder {
   display: inline-block;
   border-radius: 3px;
@@ -3922,6 +3953,15 @@ select.production-config-input option:checked {
   border: 1px solid var(--border);
 }
 
+.craft-building-io-icon--power {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.craft-building-io-rates,
 .craft-building-input-rates {
   display: flex;
   flex-direction: column;
@@ -3930,6 +3970,7 @@ select.production-config-input option:checked {
   flex: 1;
 }
 
+.craft-building-io-current,
 .craft-building-input-current {
   font-size: 0.72rem;
   font-weight: 600;
@@ -3937,10 +3978,12 @@ select.production-config-input option:checked {
   line-height: 1.25;
 }
 
+.craft-building-io-current strong,
 .craft-building-input-current strong {
   font-weight: 700;
 }
 
+.craft-building-io-base,
 .craft-building-input-base {
   font-size: 0.62rem;
   line-height: 1.3;
@@ -4231,7 +4274,8 @@ select.production-config-input option:checked {
   padding: 0.55rem 0.65rem;
 }
 
-.production-input-add-trigger {
+.production-input-add-trigger,
+.production-output-add-trigger {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -4249,16 +4293,19 @@ select.production-config-input option:checked {
   border-radius: 4px;
 }
 
-.production-input-add-trigger:hover {
+.production-input-add-trigger:hover,
+.production-output-add-trigger:hover {
   background: rgba(255, 140, 0, 0.08);
 }
 
-.production-input-add-trigger:focus-visible {
+.production-input-add-trigger:focus-visible,
+.production-output-add-trigger:focus-visible {
   outline: 2px solid var(--accent-dim);
   outline-offset: 1px;
 }
 
-.production-input-add-trigger .amount {
+.production-input-add-trigger .amount,
+.production-output-add-trigger .amount {
   margin-left: auto;
 }
 

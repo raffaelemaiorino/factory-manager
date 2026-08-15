@@ -196,6 +196,12 @@ function ensureEnergyChainTargetColumns(db) {
   if (!cols.has('target_fuel_slug')) {
     db.run('ALTER TABLE energy_chains ADD COLUMN target_fuel_slug TEXT');
   }
+  if (!cols.has('target_fuel_rate')) {
+    db.run('ALTER TABLE energy_chains ADD COLUMN target_fuel_rate REAL');
+  }
+  if (!cols.has('target_mode')) {
+    db.run(`ALTER TABLE energy_chains ADD COLUMN target_mode TEXT NOT NULL DEFAULT 'mw'`);
+  }
   if (!cols.has('linked_production_chain_id')) {
     db.run('ALTER TABLE energy_chains ADD COLUMN linked_production_chain_id INTEGER');
   }
@@ -227,6 +233,10 @@ function ensureEnergyGeneratorsTable(db) {
   }
 }
 
+function normalizeEnergyTargetMode(raw) {
+  return String(raw ?? '').trim().toLowerCase() === 'fuel' ? 'fuel' : 'mw';
+}
+
 function mapChain(row) {
   const { parsePowerShardLimit, isPowerShardUnlimited, DEFAULT_POWER_SHARD_LIMIT } = require('./transport');
   const powerShardLimit = parsePowerShardLimit(row.power_shard_limit, DEFAULT_POWER_SHARD_LIMIT);
@@ -237,6 +247,8 @@ function mapChain(row) {
     target_power_mw: row.target_power_mw != null ? Number(row.target_power_mw) : null,
     target_building_slug: row.target_building_slug ?? null,
     target_fuel_slug: row.target_fuel_slug ?? null,
+    target_fuel_rate: row.target_fuel_rate != null ? Number(row.target_fuel_rate) : null,
+    target_mode: normalizeEnergyTargetMode(row.target_mode),
     linked_production_chain_id:
       row.linked_production_chain_id != null ? Number(row.linked_production_chain_id) : null,
     power_shard_limit: powerShardLimit,
@@ -339,7 +351,8 @@ function listEnergyChains(db) {
   return queryAll(
     db,
     `SELECT id, name, notes, target_power_mw, target_building_slug, target_fuel_slug,
-            linked_production_chain_id, power_shard_limit, created_at, updated_at
+            target_fuel_rate, target_mode, linked_production_chain_id, power_shard_limit,
+            created_at, updated_at
      FROM energy_chains
      ORDER BY updated_at DESC, name ASC`
   ).map(mapChain);
@@ -350,7 +363,8 @@ function getEnergyChainById(db, id) {
   const row = queryOne(
     db,
     `SELECT id, name, notes, target_power_mw, target_building_slug, target_fuel_slug,
-            linked_production_chain_id, power_shard_limit, created_at, updated_at
+            target_fuel_rate, target_mode, linked_production_chain_id, power_shard_limit,
+            created_at, updated_at
      FROM energy_chains
      WHERE id = ?`,
     [id]
@@ -382,6 +396,8 @@ function createEnergyChain(
     target_power_mw = null,
     target_building_slug = null,
     target_fuel_slug = null,
+    target_fuel_rate = null,
+    target_mode = 'mw',
     linked_production_chain_id = null,
     power_shard_limit = 0,
   } = {}
@@ -395,6 +411,8 @@ function createEnergyChain(
   const { parsePowerShardLimit } = require('./transport');
   const targetMw =
     target_power_mw != null && target_power_mw !== '' ? Number(target_power_mw) : null;
+  const targetFuelRate =
+    target_fuel_rate != null && target_fuel_rate !== '' ? Number(target_fuel_rate) : null;
   const buildingSlug = target_building_slug ? String(target_building_slug).trim() : null;
   const fuelSlug = target_fuel_slug ? String(target_fuel_slug).trim() : null;
   const linkedId =
@@ -402,17 +420,20 @@ function createEnergyChain(
       ? Number(linked_production_chain_id)
       : null;
   const shardLimit = parsePowerShardLimit(power_shard_limit, 0);
+  const mode = normalizeEnergyTargetMode(target_mode);
 
   db.run(
     `INSERT INTO energy_chains
-      (name, target_power_mw, target_building_slug, target_fuel_slug, linked_production_chain_id,
-       power_shard_limit, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`,
+      (name, target_power_mw, target_building_slug, target_fuel_slug, target_fuel_rate, target_mode,
+       linked_production_chain_id, power_shard_limit, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`,
     [
       trimmed,
       Number.isFinite(targetMw) && targetMw > 0 ? targetMw : null,
       buildingSlug || null,
       fuelSlug || null,
+      Number.isFinite(targetFuelRate) && targetFuelRate > 0 ? targetFuelRate : null,
+      mode,
       Number.isFinite(linkedId) && linkedId > 0 ? linkedId : null,
       shardLimit,
     ]
@@ -432,6 +453,8 @@ function updateEnergyChain(
     target_power_mw,
     target_building_slug,
     target_fuel_slug,
+    target_fuel_rate,
+    target_mode,
     linked_production_chain_id,
     power_shard_limit,
   } = {}
@@ -455,6 +478,12 @@ function updateEnergyChain(
         ? Number(target_power_mw)
         : null
       : chain.target_power_mw;
+  const nextFuelRate =
+    target_fuel_rate !== undefined
+      ? target_fuel_rate != null && target_fuel_rate !== ''
+        ? Number(target_fuel_rate)
+        : null
+      : chain.target_fuel_rate;
   const nextBuilding =
     target_building_slug !== undefined
       ? target_building_slug
@@ -467,6 +496,8 @@ function updateEnergyChain(
         ? String(target_fuel_slug).trim()
         : null
       : chain.target_fuel_slug;
+  const nextMode =
+    target_mode !== undefined ? normalizeEnergyTargetMode(target_mode) : chain.target_mode;
   const nextLinked =
     linked_production_chain_id !== undefined
       ? linked_production_chain_id != null && linked_production_chain_id !== ''
@@ -481,13 +512,16 @@ function updateEnergyChain(
   db.run(
     `UPDATE energy_chains
      SET name = ?, target_power_mw = ?, target_building_slug = ?, target_fuel_slug = ?,
-         linked_production_chain_id = ?, power_shard_limit = ?, updated_at = datetime('now')
+         target_fuel_rate = ?, target_mode = ?, linked_production_chain_id = ?,
+         power_shard_limit = ?, updated_at = datetime('now')
      WHERE id = ?`,
     [
       nextName,
       Number.isFinite(nextMw) && nextMw > 0 ? nextMw : null,
       nextBuilding || null,
       nextFuel || null,
+      Number.isFinite(nextFuelRate) && nextFuelRate > 0 ? nextFuelRate : null,
+      nextMode,
       Number.isFinite(nextLinked) && nextLinked > 0 ? nextLinked : null,
       nextShard,
       id,

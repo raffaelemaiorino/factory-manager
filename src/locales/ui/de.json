@@ -171,14 +171,14 @@
     "emptyList": "Keine Produktionspläne.",
     "emptyListHint": "Erstelle deinen ersten Plan mit «Neuer Plan».",
     "errorLoadList": "Fehler beim Laden der Produktionspläne.",
-    "treeView": "Baumansicht",
-    "treeViewGroups": "Gruppen-Baumansicht",
+    "treeView": "Baum",
+    "treeViewGroups": "Gruppenbaum",
     "backToEditor": "Zurück zum Editor",
     "backToEditorPlan": "Zurück zum Plan-Editor",
     "treeViewTitle": "Gesamte Kette als Baumdiagramm anzeigen",
     "treeViewGroupsTitle": "Kette nach Gruppen (nur Haupt-Ein-/Ausgänge)",
-    "addExtraction": "Abbau hinzufügen",
-    "addResourceStep": "Ressourcenschritt hinzufügen",
+    "addExtraction": "Abbau",
+    "addResourceStep": "Ressourcenschema Input",
     "sectionExtractions": "Ressourcenabbau",
     "sectionResourceSteps": "Ressourcenschritte",
     "groupMinerals": "Erze",
@@ -202,7 +202,7 @@
     "expandGroup": "Gruppe ausklappen",
     "collapseGroup": "Gruppe einklappen",
     "treeViewOfGroup": "Baumansicht von {name}",
-    "treeViewButton": "Baumansicht",
+    "treeViewButton": "Baum",
     "highlightStep": "Schritt hervorheben",
     "highlightStepTitle": "Schritt mit grünem Hintergrund hervorheben",
     "highlightGroup": "Gruppe hervorheben",
@@ -235,6 +235,7 @@
     "summaryStep": "Schritt",
     "noProductionObjectives": "Keine Produktionsziele",
     "inputsPerMachine": "Eingang / Maschine",
+    "outputsPerMachine": "Ausgang / Maschine",
     "addResourceStepFor": "Ressourcenschritt für {name}",
     "addAnotherExtraction": "Weiteren Abbau für diese Ressource",
     "addAnotherExtractionAria": "Weiteren Abbau von {name}",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Ressourcenschema Output",
+    "addResourceStepOutputFor": "Ressourcenschema Output für {name}"
   },
   "energy": {
     "title": "Strom",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Neuer Transport",
-    "transportCreatePlaceholder": "z. B. Schnelldraht → Fabrik"
+    "transportCreatePlaceholder": "z. B. Schnelldraht → Fabrik",
+    "selectResourceSubConsume": "Ressource zum Verbrauchen oder Entsorgen wählen",
+    "selectSchemaConsumeHint": "Rezept wählen, das diese Ressource als Input nutzt."
   },
   "legal": {
     "title": "Rechtliche Hinweise, Attributionen und Haftungsausschluss",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Keine Ressourcen gefunden."
+    "noResources": "Keine Ressourcen gefunden.",
+    "history": "Verlauf (zuletzt angezeigte Ressourcen)"
   },
   "_meta": {
     "locale": "de",

@@ -419,7 +419,7 @@
                   aria-pressed="false"
                 >
                   <i class="fa-solid fa-code-fork" aria-hidden="true"></i>
-                  <span data-i18n="production.treeView">Visualizzazione ad albero</span>
+                  <span data-i18n="production.treeView">Albero</span>
                 </button>
                 <button
                   type="button"
@@ -429,15 +429,19 @@
                   hidden
                 >
                   <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
-                  <span data-i18n="production.treeViewGroups">Visualizzazione ad albero Gruppi</span>
+                  <span data-i18n="production.treeViewGroups">Albero a Gruppi</span>
                 </button>
                 <button type="button" class="btn btn-primary" id="btn-add-extraction">
                   <i class="fa-solid fa-hammer" aria-hidden="true"></i>
-                  <span data-i18n="production.addExtraction">Aggiungi estrazione</span>
+                  <span data-i18n="production.addExtraction">Estrazione</span>
                 </button>
                 <button type="button" class="btn btn-primary" id="btn-add-resource-step">
                   <i class="fa-solid fa-braille" aria-hidden="true"></i>
-                  <span data-i18n="production.addResourceStep">Aggiungi schema risorsa</span>
+                  <span data-i18n="production.addResourceStep">Schema Risorsa Input</span>
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-add-resource-step-output">
+                  <i class="fa-solid fa-recycle" aria-hidden="true"></i>
+                  <span data-i18n="production.addResourceStepOutput">Schema Risorsa Output</span>
                 </button>
               </div>
               <div id="production-detail-external-summary" class="production-external-summary"></div>
@@ -845,8 +849,14 @@
             <input type="text" id="energy-chain-name" required autocomplete="off" placeholder="Es. Centrale a carbone" data-i18n-placeholder="modals.energyCreatePlaceholder" />
           </div>
           <div class="form-field">
-            <label for="energy-create-target-mw" data-i18n="energy.targetMw">Target MW</label>
-            <input type="text" id="energy-create-target-mw" class="production-config-decimal-input" inputmode="decimal" autocomplete="off" placeholder="750" />
+            <label for="energy-create-target-mode" data-i18n="energy.targetMode">Obiettivo</label>
+            <div class="production-plan-constraint-controls">
+              <select id="energy-create-target-mode">
+                <option value="mw" data-i18n="energy.targetModeMw" selected>MW</option>
+                <option value="fuel" data-i18n="energy.targetModeFuel">Combustibile /min</option>
+              </select>
+              <input type="text" id="energy-create-target-value" class="production-config-decimal-input production-target-rate-input" inputmode="decimal" autocomplete="off" placeholder="750" />
+            </div>
           </div>
           <div class="form-field">
             <label for="energy-create-generator" data-i18n="energy.generatorType">Generator</label>
@@ -876,7 +886,18 @@
               />
             </div>
           </div>
-          <p class="form-hint" data-i18n="energy.autoPlanHint">Leave MW blank for an empty plan. With MW + fuel, generators and supply are auto-built.</p>
+          <p class="form-hint" data-i18n="energy.autoPlanHint">Leave the target blank for an empty plan. With a target + fuel, generators and supply are auto-built.</p>
+          <div class="form-option" id="energy-create-link-fuel-option">
+            <label class="form-option-label" for="energy-create-link-fuel-production">
+              <input type="checkbox" id="energy-create-link-fuel-production" checked />
+              <span class="form-option-copy">
+                <span class="form-option-title" data-i18n="energy.linkFuelProduction">Create linked fuel production</span>
+                <span class="form-option-hint" data-i18n="energy.linkFuelProductionHint">
+                  For crafted fuels (not coal), also build a Production plan and link it to the generators. Water/coal still use extractions here.
+                </span>
+              </span>
+            </label>
+          </div>
           <p class="form-error hidden" id="energy-create-error"></p>
           <div class="modal-actions">
             <button type="button" class="btn btn-ghost" id="energy-create-cancel" data-i18n="common.cancel">Annulla</button>
@@ -1095,7 +1116,7 @@
         <header class="modal-header">
           <div>
             <h3 id="resource-picker-modal-title" data-i18n="modals.selectResource">Seleziona risorsa</h3>
-            <p class="detail-item-meta" data-i18n="modals.selectResourceSub">Scegli la risorsa da produrre</p>
+            <p class="detail-item-meta" id="resource-picker-modal-sub" data-i18n="modals.selectResourceSub">Scegli la risorsa da produrre</p>
           </div>
           <button
             type="button"

@@ -175,14 +175,14 @@
     "emptyList": "Ei tuotantosuunnitelmia.",
     "emptyListHint": "Luo ensimmäinen suunnitelma painikkeella «Uusi suunnitelma».",
     "errorLoadList": "Virhe tuotantosuunnitelmien latauksessa.",
-    "treeView": "Puu-näkymä",
-    "treeViewGroups": "Ryhmäpuu-näkymä",
+    "treeView": "Puu",
+    "treeViewGroups": "Ryhmäpuu",
     "backToEditor": "Takaisin editoriin",
     "backToEditorPlan": "Takaisin suunnitelma-editoriin",
     "treeViewTitle": "Näytä koko ketju puukaaviona",
     "treeViewGroupsTitle": "Ketju ryhmittäin (vain pääsyötteet/-tuotteet)",
-    "addExtraction": "Lisää louhinta",
-    "addResourceStep": "Lisää resurssivaihe",
+    "addExtraction": "Louhinta",
+    "addResourceStep": "Resurssikaavio Input",
     "sectionExtractions": "Resurssien louhinta",
     "sectionResourceSteps": "Resurssivaiheet",
     "groupMinerals": "Malmit",
@@ -206,7 +206,7 @@
     "expandGroup": "Laajenna ryhmä",
     "collapseGroup": "Tiivistä ryhmä",
     "treeViewOfGroup": "Puu-näkymä: {name}",
-    "treeViewButton": "Puu-näkymä",
+    "treeViewButton": "Puu",
     "highlightStep": "Korosta vaihe",
     "highlightStepTitle": "Korosta vaihe vihreällä taustalla",
     "highlightGroup": "Korosta ryhmä",
@@ -239,6 +239,7 @@
     "summaryStep": "Vaihe",
     "noProductionObjectives": "Ei tuotantotavoitteita",
     "inputsPerMachine": "Syöte / kone",
+    "outputsPerMachine": "Tuotos / kone",
     "addResourceStepFor": "Lisää resurssivaihe: {name}",
     "addAnotherExtraction": "Lisää toinen louhinta tälle resurssille",
     "addAnotherExtractionAria": "Lisää toinen louhinta: {name}",
@@ -332,7 +333,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Resurssikaavio Output",
+    "addResourceStepOutputFor": "Resurssikaavio Output: {name}"
   },
   "energy": {
     "title": "Sähkö",
@@ -461,7 +464,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Uusi kuljetus",
-    "transportCreatePlaceholder": "esim. Hyperputki → tehdas"
+    "transportCreatePlaceholder": "esim. Hyperputki → tehdas",
+    "selectResourceSubConsume": "Valitse käytettävä tai hävitettävä resurssi",
+    "selectSchemaConsumeHint": "Valitse resepti, joka käyttää tätä resurssia syötteenä."
   },
   "legal": {
     "title": "Oikeudelliset tiedot, attribuutiot ja vastuuvapauslauseke",
@@ -620,7 +625,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Resursseja ei löytynyt."
+    "noResources": "Resursseja ei löytynyt.",
+    "history": "Historia (viimeksi näytetyt resurssit)"
   },
   "update": {
     "available": "Uusi versio on saatavilla: {latest} (sinulla on {current}).",

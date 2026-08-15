@@ -175,14 +175,14 @@
     "emptyList": "Inga produktionsplaner.",
     "emptyListHint": "Skapa din första plan med «Ny plan».",
     "errorLoadList": "Fel vid laddning av produktionsplaner.",
-    "treeView": "Trädvy",
-    "treeViewGroups": "Grupperad trädvy",
+    "treeView": "Träd",
+    "treeViewGroups": "Gruppträd",
     "backToEditor": "Tillbaka till editorn",
     "backToEditorPlan": "Tillbaka till planeditorn",
     "treeViewTitle": "Visa hela kedjan som träd",
     "treeViewGroupsTitle": "Kedja per grupp (endast huvud-in/ut)",
-    "addExtraction": "Lägg till utvinning",
-    "addResourceStep": "Lägg till resurssteg",
+    "addExtraction": "Utvinning",
+    "addResourceStep": "Resursschema Input",
     "sectionExtractions": "Resursutvinning",
     "sectionResourceSteps": "Resurssteg",
     "groupMinerals": "Malmer",
@@ -206,7 +206,7 @@
     "expandGroup": "Expandera grupp",
     "collapseGroup": "Fäll ihop grupp",
     "treeViewOfGroup": "Trädvy för {name}",
-    "treeViewButton": "Trädvy",
+    "treeViewButton": "Träd",
     "highlightStep": "Markera steg",
     "highlightStepTitle": "Markera steg med grön bakgrund",
     "highlightGroup": "Markera grupp",
@@ -239,6 +239,7 @@
     "summaryStep": "Steg",
     "noProductionObjectives": "Inga produktionsmål",
     "inputsPerMachine": "Input / maskin",
+    "outputsPerMachine": "Output / maskin",
     "addResourceStepFor": "Lägg till resurssteg för {name}",
     "addAnotherExtraction": "Lägg till utvinning för samma resurs",
     "addAnotherExtractionAria": "Lägg till utvinning av {name}",
@@ -332,7 +333,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Resursschema Output",
+    "addResourceStepOutputFor": "Resursschema Output för {name}"
   },
   "energy": {
     "title": "El",
@@ -461,7 +464,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Ny transport",
-    "transportCreatePlaceholder": "t.ex. Hyperrör → fabrik"
+    "transportCreatePlaceholder": "t.ex. Hyperrör → fabrik",
+    "selectResourceSubConsume": "Välj resurs att använda eller göra dig av med",
+    "selectSchemaConsumeHint": "Välj ett recept som använder denna resurs som input."
   },
   "legal": {
     "title": "Juridisk information, attribution och ansvarsfriskrivning",
@@ -620,7 +625,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Inga resurser hittades."
+    "noResources": "Inga resurser hittades.",
+    "history": "Historik (senast visade resurser)"
   },
   "update": {
     "available": "En ny version finns tillgänglig: {latest} (du har {current}).",

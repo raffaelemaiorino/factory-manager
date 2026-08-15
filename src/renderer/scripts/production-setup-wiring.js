@@ -187,6 +187,9 @@ function setupProduction() {
     .getElementById('btn-production-group-tree-view')
     .addEventListener('click', toggleProductionGroupTreeView);
   document.getElementById('btn-add-resource-step').addEventListener('click', openResourcePickerModal);
+  document
+    .getElementById('btn-add-resource-step-output')
+    .addEventListener('click', openResourceOutputPickerModal);
   document.getElementById('btn-add-extraction').addEventListener('click', openExtractionPickerModal);
 
   productionDetailBody.addEventListener('pointerdown', (e) => {
@@ -502,6 +505,16 @@ function setupProduction() {
       return;
     }
 
+    const outputAddTrigger = e.target.closest('.production-output-add-trigger');
+    if (outputAddTrigger) {
+      e.preventDefault();
+      e.stopPropagation();
+      const sourceStepEl = outputAddTrigger.closest('.production-step');
+      pendingInsertAfterStepId = sourceStepEl ? Number(sourceStepEl.dataset.stepId) : null;
+      addProductionStepForOutputSlug(outputAddTrigger.dataset.itemSlug);
+      return;
+    }
+
     const themeSelectOption = e.target.closest('.theme-select-option');
     if (themeSelectOption) {
       e.preventDefault();
@@ -659,7 +672,9 @@ function setupProduction() {
   document.getElementById('resource-picker-list').addEventListener('click', (e) => {
     const btn = e.target.closest('.picker-item:not([disabled])');
     if (!btn) return;
-    handleResourceSelection(Number(btn.dataset.id));
+    const itemId = Number(btn.dataset.id);
+    rememberResourcePickerSelection(itemId);
+    handleResourceSelection(itemId);
   });
 
   const pickerSearch = document.getElementById('resource-picker-search');
@@ -730,7 +745,8 @@ function setupProduction() {
   document.getElementById('schema-picker-list').addEventListener('click', (e) => {
     const btn = e.target.closest('.picker-schema-btn');
     if (!btn || !pendingPickerItemId) return;
-    addProductionStep(pendingPickerItemId, Number(btn.dataset.schemaId));
+    const stepItemId = Number(btn.dataset.itemId) || pendingPickerItemId;
+    addProductionStep(stepItemId, Number(btn.dataset.schemaId));
   });
 
   productionCreateForm.addEventListener('submit', async (e) => {

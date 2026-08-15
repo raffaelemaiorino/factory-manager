@@ -171,14 +171,14 @@
     "emptyList": "ไม่มีแผนการผลิต",
     "emptyListHint": "สร้างแผนแรกด้วยปุ่ม «แผนใหม่»",
     "errorLoadList": "โหลดแผนการผลิตไม่สำเร็จ",
-    "treeView": "มุมมองแบบต้นไม้",
+    "treeView": "ต้นไม้",
     "treeViewGroups": "ต้นไม้ตามกลุ่ม",
     "backToEditor": "กลับไปที่ตัวแก้ไข",
     "backToEditorPlan": "กลับไปที่ตัวแก้ไขแผน",
     "treeViewTitle": "ดูทั้งสายเป็นต้นไม้",
     "treeViewGroupsTitle": "ดูสายตามกลุ่ม (อินพุต/เอาต์พุตหลักเท่านั้น)",
-    "addExtraction": "เพิ่มการขุด",
-    "addResourceStep": "เพิ่มขั้นตอนทรัพยากร",
+    "addExtraction": "การขุด",
+    "addResourceStep": "สคีมาทรัพยากร Input",
     "sectionExtractions": "การขุดทรัพยากร",
     "sectionResourceSteps": "ขั้นตอนทรัพยากร",
     "groupMinerals": "แร่",
@@ -202,7 +202,7 @@
     "expandGroup": "ขยายกลุ่ม",
     "collapseGroup": "ยุบกลุ่ม",
     "treeViewOfGroup": "ต้นไม้ของ {name}",
-    "treeViewButton": "มุมมองต้นไม้",
+    "treeViewButton": "ต้นไม้",
     "highlightStep": "เน้นขั้นตอน",
     "highlightStepTitle": "เน้นขั้นตอนด้วยพื้นหลังสีเขียว",
     "highlightGroup": "เน้นกลุ่ม",
@@ -235,6 +235,7 @@
     "summaryStep": "ขั้นตอน",
     "noProductionObjectives": "ไม่มีเป้าหมายการผลิต",
     "inputsPerMachine": "อินพุต / เครื่อง",
+    "outputsPerMachine": "เอาต์พุต / เครื่อง",
     "addResourceStepFor": "เพิ่มขั้นตอนสำหรับ {name}",
     "addAnotherExtraction": "เพิ่มการขุดอีกสำหรับทรัพยากรนี้",
     "addAnotherExtractionAria": "เพิ่มการขุด {name} อีก",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "สคีมาทรัพยากร Output",
+    "addResourceStepOutputFor": "สคีมาทรัพยากร Output สำหรับ {name}"
   },
   "energy": {
     "title": "พลังงาน",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "ขนส่งใหม่",
-    "transportCreatePlaceholder": "เช่น ท่อไฮเปอร์ → โรงงาน"
+    "transportCreatePlaceholder": "เช่น ท่อไฮเปอร์ → โรงงาน",
+    "selectResourceSubConsume": "เลือกทรัพยากรที่จะใช้หรือกำจัด",
+    "selectSchemaConsumeHint": "เลือกสูตรที่ใช้ทรัพยากรนี้เป็นอินพุต"
   },
   "legal": {
     "title": "ข้อมูลทางกฎหมาย การระบุที่มา และข้อจำกัดความรับผิด",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "ไม่พบทรัพยากร"
+    "noResources": "ไม่พบทรัพยากร",
+    "history": "ประวัติ (ทรัพยากรที่ดูล่าสุด)"
   },
   "_meta": {
     "locale": "th",

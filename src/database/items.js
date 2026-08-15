@@ -169,7 +169,14 @@ function localizedItemSelect() {
   COALESCE(it.name, i.name) AS name,
   i.category, i.game_id, i.image, i.stack_size,
   COALESCE(it.description, i.description) AS description,
-  (SELECT COUNT(*) FROM item_schemas s WHERE s.item_id = i.id) AS schema_count
+  (SELECT COUNT(*) FROM item_schemas s WHERE s.item_id = i.id) AS schema_count,
+  (SELECT COUNT(*) FROM item_schemas s
+   JOIN items owner ON owner.id = s.item_id
+   JOIN schema_io sio
+     ON sio.schema_id = s.id AND sio.is_output = 0 AND sio.item_slug = i.slug
+   JOIN schema_io primary_out
+     ON primary_out.schema_id = s.id AND primary_out.is_output = 1 AND primary_out.slot = 1
+   WHERE primary_out.item_slug = owner.slug) AS input_schema_count
 `;
 }
 

@@ -18,12 +18,12 @@ Plan chains, machines, rates, and layouts locally. Fan-made. Independent. Not af
 
 Pick one or more products and a rate per minute — the app builds the chain for you: default recipes, raw extractions, and supply links, with shared intermediates combined instead of duplicated. Edit targets anytime; the tree rebuilds.
 
-Same idea for **power**: set a MW target, generator type, and fuel. Generators are sized automatically, with coal/water extractions or a linked companion production plan for crafted fuels.
+Same idea for **power**: set a target as **MW** or as **fuel consumption /min** (e.g. 200 compacted coal), choose generator and fuel. Generators and fuel/water extractions are sized automatically. For crafted fuels you can optionally create a linked Production plan, or keep power-only (generators + extractions).
 
 ### Constraints that match the factory floor
 
 - **Power shard budget** — limited (default 0 → prefer 100% clock) or unlimited
-- **Highest belt / pipe Mk** — edges and Complex tree mode use these limits
+- **Highest belt / pipe Mk** — edges, Complex tree mode, and per-step/per-station Mk selectors use these limits
 - **Sink byproducts** — optional disposal lines for unused secondary outputs (package fluids, sink solids)
 
 ### Tree view you can actually navigate
@@ -31,33 +31,50 @@ Same idea for **power**: set a MW target, generator type, and fuel. Generators a
 - Left-to-right graph of extractions → steps → targets (and power: extractions → generators → MW)
 - **Simple / Complex** — Complex splits steps into manifold banks when belt/pipe throughput needs multiple lines
 - **Pan, zoom, fit, fullscreen** — scroll to zoom (sharp CSS zoom), drag empty space to pan, Fit to frame, fullscreen for big plans
+- Drag nodes freely; layout is kept across Simple ↔ Complex and rebuilds
+- Toolbar: **Belts/pipes** Mk hints on edges (off by default); export graph as **PNG**
 - Compact header in tree mode so the canvas gets the screen
 - Machine count @ clock highlighted on nodes and plan steps; build summary by building type
 
-### Production and power plans
+### Production plans
 
-- Browse the game item catalog and recipes
-- Plan production chains: inputs, outputs, machine counts, rates, overclock, Somersloop
-- Set up extractions and power (generators + fuel)
+- Browse the game item catalog and recipes; resource picker with a recent **History** section
+- Plan chains: inputs, outputs, machine counts, rates, overclock, Somersloop
+- Editable input/output rates (including byproducts) — recalculate machines and overclock
+- **Resource Schema Input / Output** — add a recipe that produces or consumes a chosen item (e.g. dispose of uranium waste)
+- Extractions with multi-source link allocation; auto-scale extractors/nodes when output exceeds max at 250% OC
+- Line schematic, per-step belt/pipe Mk, align-machines helper, Input/Output per machine panels
 - Save projects and reopen them later
+
+### Power plans
+
+- Generators + fuel, with editable rates (fuel, water, MW, waste) like Production
+- Link extractions ↔ generators; surplus/shortfall flags on extractions
+- Optional linked fuel Production plan when creating or rebuilding
+- Extractions auto-scale when typed output exceeds max at 250% OC
+
+### Transport plans
+
+- Saved routes with vehicle type (train, drone, truck, …), cargo, outbound/return times (min or s)
+- Automatic vehicle / freight-car counts; station belt/pipe Mk; 2-port platform cap awareness
+- Trains: convoy count splits load across trains; composition preview and per-car contents
+- Dashboard fleet overview (KPIs, cards, chart) and Transport shortcut
 
 ### Share and restore plans
 
-Export and import JSON for both production and power (extractions, generators, links). One file = a backup or something you can send a friend. Imports are labeled `(import)` so they don’t get mixed up with your originals. The importer checks that the file is really a Factory Manager export before writing to the database.
+Export and import JSON for production and power (extractions, generators, links). One file = a backup or something you can send a friend. Imports are labeled `(import)` so they don’t get mixed up with your originals. The importer checks that the file is really a Factory Manager export before writing to the database.
 
-In tree view, export the whole graph as a **PNG** (zoom toolbar) to share a snapshot on Discord, Facebook, or elsewhere.
-
-### Power and power shards
+### Power metrics and power shards
 
 - Base MW use in the catalog for extractors and production machines
 - Calculated use on plans and extractions (overclock + Somersloop)
-- Power shards needed in the side summary, plus a total in Info
+- Power shards and Somersloops in the side summary, plus totals in Info
 - Dashboard KPIs for use / balance, production vs use chart, top chains, and a warning if you burn more than you produce
 - Clear status: Covered / Deficit / Uncovered, with MW of headroom or shortfall
 
 ### Languages
 
-Italian and English first, then the full SCIM catalog set (German, French, Spanish, Polish, Portuguese, Dutch, and more) — UI strings plus resource, building, and recipe names. Your language choice is kept across restarts. Arabic, Hebrew, and Persian get basic RTL layout. If a UI string is missing, it falls back to English without breaking the app. New installs default to English UI and en-US number format.
+Italian and English first, then the full SCIM catalog set (German, French, Spanish, Polish, Portuguese, Dutch, and more) — UI strings plus resource, building, recipe, and transport names. Your language choice is kept across restarts. Arabic, Hebrew, and Persian get basic RTL layout. If a UI string is missing, it falls back to English without breaking the app. New installs default to English UI and en-US number format.
 
 ### Desktop app, data on your PC
 
@@ -72,7 +89,7 @@ Footer shows the Coffee Stain disclaimer and attribution. Custom window chrome (
 - Sticky menu while you scroll
 - Dashboard KPIs in a four-column layout; hover-delete on projects
 - Settings: raise the caps for machines and generators; number format (IT / US)
-- Floating calculator; Electron hardening, sandbox, file limits
+- Floating, draggable calculator and modals; Electron hardening, sandbox, file limits
 
 ### Update check
 

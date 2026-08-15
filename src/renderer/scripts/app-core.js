@@ -126,7 +126,7 @@ function deficitHealthLabel(deficitCount) {
 }
 
 const NODES_SLIDER_MAX = 25;
-const WATER_NODES_SLIDER_MAX = 500;
+const WATER_NODES_SLIDER_MAX = 2000;
 const LINK_BALANCE_TOLERANCE = 0.05;
 
 let resourcesData = [];

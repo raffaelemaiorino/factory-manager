@@ -5,6 +5,7 @@ const {
   clampOverclockSlider,
   isIntegerOverclock,
   roundTargetOutput,
+  roundUpPreferEven,
   OVERCLOCK_MIN,
   OVERCLOCK_MAX,
   DEFAULT_OVERCLOCK,
@@ -47,12 +48,30 @@ function normalizePurity(purity, item) {
   return PURITY_VALUES.includes(purity) ? purity : 'normal';
 }
 
-const NODE_COUNT_MAX = 500;
+const NODE_COUNT_MAX = 2000;
 
 function normalizeNodeCount(nodeCount) {
   const value = Math.round(Number(nodeCount));
   if (!Number.isFinite(value) || value < 1) return 1;
   return Math.min(NODE_COUNT_MAX, value);
+}
+
+/**
+ * Extractors/nodes needed for target rate at ≤250% OC (prefer even, like production machines).
+ */
+function computeNodesForTargetOutput(targetOutput, basePerNode, maxNodes = NODE_COUNT_MAX) {
+  const base = Number(basePerNode);
+  const target = Number(targetOutput);
+  const cap = Math.max(1, Math.min(NODE_COUNT_MAX, Math.round(Number(maxNodes) || NODE_COUNT_MAX)));
+  if (!base || !Number.isFinite(target) || target <= 0) return 1;
+  const perNodeMax = base * (OVERCLOCK_MAX / 100);
+  if (!(perNodeMax > 0)) return 1;
+  let nodes = roundUpPreferEven(target / perNodeMax);
+  nodes = Math.min(cap, nodes);
+  while (computeMaxExtractionOutput(base, nodes) + 1e-9 < target && nodes < cap) {
+    nodes += nodes === 1 ? 1 : 2;
+  }
+  return normalizeNodeCount(nodes);
 }
 
 function getBaseExtractionPerNode(extractorSlug, purity, item = null) {
@@ -177,6 +196,9 @@ function applyExtractionChange(item, current, changedField, rawValue) {
     const parsed = Number(rawValue);
     if (!Number.isFinite(parsed) || parsed <= 0) return null;
     target_output = roundTargetOutput(parsed, overclock);
+    if (target_output > computeMaxExtractionOutput(basePerNode, node_count) + 1e-9) {
+      node_count = computeNodesForTargetOutput(target_output, basePerNode);
+    }
     target_output = clampExtractionTargetToRange(target_output, basePerNode, node_count);
     target_output = roundTargetOutput(target_output, overclock);
     overclock = computeExtractionOverclock(target_output, basePerNode, node_count);
@@ -250,6 +272,7 @@ module.exports = {
   getBaseExtractionPerNode,
   computeMinExtractionOutput,
   computeMaxExtractionOutput,
+  computeNodesForTargetOutput,
   computeExtractionOverclock,
   computeExtractionTargetOutput,
   clampExtractionTargetToRange,
@@ -257,4 +280,5 @@ module.exports = {
   applyExtractionChange,
   mergeExtractionStored,
   computeExtractionRate,
+  NODE_COUNT_MAX,
 };

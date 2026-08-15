@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld('satisfactory', {
   getResourceCategories: () => ipcRenderer.invoke('resources:categories'),
   getResource: (id) => ipcRenderer.invoke('resources:get', id),
   getResourceDetail: (id) => ipcRenderer.invoke('resources:detail', id),
+  getResourceConsumeDetail: (id) => ipcRenderer.invoke('resources:consume-detail', id),
   updateResource: (id, data) => ipcRenderer.invoke('resources:update', id, data),
   searchResources: (query) => ipcRenderer.invoke('resources:search', query),
   restoreDefaultResources: () => ipcRenderer.invoke('db:restore-default-resources'),

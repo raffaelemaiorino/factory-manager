@@ -171,14 +171,14 @@
     "emptyList": "生産プランがありません。",
     "emptyListHint": "「新規プラン」で最初のプランを作成。",
     "errorLoadList": "生産プランの読み込みエラー。",
-    "treeView": "ツリー表示",
+    "treeView": "ツリー",
     "treeViewGroups": "グループツリー",
     "backToEditor": "エディターに戻る",
     "backToEditorPlan": "プランエディターに戻る",
     "treeViewTitle": "チェーン全体をツリーで表示",
     "treeViewGroupsTitle": "グループ別（主要入出力のみ）",
-    "addExtraction": "採掘を追加",
-    "addResourceStep": "リソースステップを追加",
+    "addExtraction": "採掘",
+    "addResourceStep": "リソーススキーマ Input",
     "sectionExtractions": "資源採掘",
     "sectionResourceSteps": "リソースステップ",
     "groupMinerals": "鉱物",
@@ -202,7 +202,7 @@
     "expandGroup": "グループを展開",
     "collapseGroup": "グループを折りたたむ",
     "treeViewOfGroup": "{name} のツリー",
-    "treeViewButton": "ツリー表示",
+    "treeViewButton": "ツリー",
     "highlightStep": "ステップを強調",
     "highlightStepTitle": "ステップを緑背景で強調",
     "highlightGroup": "グループを強調",
@@ -235,6 +235,7 @@
     "summaryStep": "ステップ",
     "noProductionObjectives": "生産目標なし",
     "inputsPerMachine": "入力 / 機械",
+    "outputsPerMachine": "出力 / 機械",
     "addResourceStepFor": "{name} のステップを追加",
     "addAnotherExtraction": "このリソースの採掘を追加",
     "addAnotherExtractionAria": "{name} の採掘を追加",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "リソーススキーマ Output",
+    "addResourceStepOutputFor": "{name} のリソーススキーマ Output"
   },
   "energy": {
     "title": "電力",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "新規輸送",
-    "transportCreatePlaceholder": "例: ハイパーループ → 工場"
+    "transportCreatePlaceholder": "例: ハイパーループ → 工場",
+    "selectResourceSubConsume": "使用または処理するリソースを選択",
+    "selectSchemaConsumeHint": "このリソースを入力として使うレシピを選んでください。"
   },
   "legal": {
     "title": "法的情報、帰属、免責事項",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "リソースが見つかりません。"
+    "noResources": "リソースが見つかりません。",
+    "history": "履歴（最近表示したリソース）"
   },
   "_meta": {
     "locale": "ja",

@@ -171,14 +171,14 @@
     "emptyList": "暂无生产方案。",
     "emptyListHint": "使用「新建方案」创建第一个方案。",
     "errorLoadList": "加载生产方案失败。",
-    "treeView": "树状视图",
-    "treeViewGroups": "分组树状视图",
+    "treeView": "树状图",
+    "treeViewGroups": "分组树状图",
     "backToEditor": "返回编辑器",
     "backToEditorPlan": "返回方案编辑器",
     "treeViewTitle": "以树图查看整条生产链",
     "treeViewGroupsTitle": "按分组查看（仅主要输入/输出）",
-    "addExtraction": "添加开采",
-    "addResourceStep": "添加资源步骤",
+    "addExtraction": "开采",
+    "addResourceStep": "资源方案 Input",
     "sectionExtractions": "资源开采",
     "sectionResourceSteps": "资源步骤",
     "groupMinerals": "矿物",
@@ -202,7 +202,7 @@
     "expandGroup": "展开分组",
     "collapseGroup": "收起分组",
     "treeViewOfGroup": "{name} 的树状视图",
-    "treeViewButton": "树状视图",
+    "treeViewButton": "树状图",
     "highlightStep": "高亮步骤",
     "highlightStepTitle": "以绿色背景高亮步骤",
     "highlightGroup": "高亮分组",
@@ -235,6 +235,7 @@
     "summaryStep": "步骤",
     "noProductionObjectives": "无生产目标",
     "inputsPerMachine": "输入 / 机器",
+    "outputsPerMachine": "输出 / 机器",
     "addResourceStepFor": "为 {name} 添加资源步骤",
     "addAnotherExtraction": "为该资源再添加一处开采",
     "addAnotherExtractionAria": "再添加 {name} 的开采",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "资源方案 Output",
+    "addResourceStepOutputFor": "{name} 的资源方案 Output"
   },
   "energy": {
     "title": "电力",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "新建运输",
-    "transportCreatePlaceholder": "例如：超导管 → 工厂"
+    "transportCreatePlaceholder": "例如：超导管 → 工厂",
+    "selectResourceSubConsume": "选择要使用或处理的资源",
+    "selectSchemaConsumeHint": "选择以该资源为输入的配方。"
   },
   "legal": {
     "title": "法律信息、归属与免责声明",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "未找到资源。"
+    "noResources": "未找到资源。",
+    "history": "历史（最近查看的资源）"
   },
   "_meta": {
     "locale": "zh",

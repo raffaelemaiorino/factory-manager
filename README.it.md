@@ -18,12 +18,12 @@ Pianifica catene, macchine, rate e layout in locale. Fan-made. Indipendente. Non
 
 Scegli uno o più prodotti e un rate al minuto: l’app costruisce la catena (ricette default, estrazioni, collegamenti), unendo gli intermedi condivisi invece di duplicarli. Modifica gli obiettivi quando vuoi: l’albero si ricostruisce.
 
-Stessa logica per l’**energia**: target MW, tipo di generatore e combustibile. I generatori si dimensionano da soli, con estrazioni carbone/acqua oppure un piano di produzione combustibile collegato.
+Stessa logica per l’**energia**: obiettivo in **MW** oppure in **consumo combustibile /min** (es. 200 carbone compatto), tipo di generatore e combustibile. Generatori ed estrazioni combustibile/acqua si dimensionano da soli. Per i combustibili craftati puoi creare opzionalmente uno schema Produzione collegato, oppure restare solo energia (generatori + estrazioni).
 
 ### Vincoli da fabbrica vera
 
 - **Budget power shard** — limitato (default 0 → preferisci clock al 100%) oppure illimitato
-- **Nastro / tubo Mk massimi** — usati sugli archi e nella modalità Complesso
+- **Nastro / tubo Mk massimi** — usati sugli archi, in modalità Complesso e nei selettori Mk per step/stazione
 - **Sink sottoprodotti** — linee opzionali per smaltire gli output secondari non usati (packaging fluidi, sink solidi)
 
 ### Vista ad albero navigabile
@@ -31,33 +31,50 @@ Stessa logica per l’**energia**: target MW, tipo di generatore e combustibile.
 - Grafo sinistra → destra: estrazioni → passi → obiettivi (e in energia: estrazioni → generatori → MW)
 - **Semplice / Complesso** — Complesso divide gli step in banchi manifold quando nastro/tubo non reggono tutto il flusso
 - **Pan, zoom, adatta, schermo intero** — scroll per zoom nitido, trascina lo sfondo per spostarti, Fit per inquadrare, fullscreen per i piani grandi
+- Nodi trascinabili; layout conservato tra Semplice ↔ Complesso e ai ri-render
+- Toolbar: suggerimenti Mk **Nastri/tubi** sugli archi (off di default); export grafo in **PNG**
 - Header compatto in modalità albero così il canvas prende lo schermo
 - Conteggio macchine @ clock in evidenza su nodi e passi; riepilogo costruzione per edificio
 
-### Produzione ed energia
+### Schemi di produzione
 
-- Catalogo oggetti e ricette del gioco
-- Catene di produzione: input, output, numero macchine, rate, overclock, Somersloop
-- Estrazioni e potenza (generatori + combustibile)
+- Catalogo oggetti e ricette; selettore risorse con sezione **Cronologia**
+- Catene: input, output, numero macchine, rate, overclock, Somersloop
+- Rate input/output editabili (anche byproduct) — ricalcolano macchine e overclock
+- **Schema Risorsa Input / Output** — aggiungi una ricetta che produce o consuma un oggetto scelto (es. smaltire scorie di uranio)
+- Estrazioni con riparto multi-fonte; auto-scala estrattori/nodi se l’output supera il max a 250% OC
+- Schema linee, Mk nastro/tubo per step, allinea-macchine, pannelli Input/Output per macchina
 - Salva i progetti e riaprili dopo
+
+### Schemi energia
+
+- Generatori + combustibile, con rate editabili (combustibile, acqua, MW, scorie) come in Produzione
+- Collegamenti estrazioni ↔ generatori; segnalazione eccedenza/carenza sulle estrazioni
+- Opzione schema Produzione combustibile collegato in creazione/ricostruzione
+- Estrazioni che auto-scalano se digiti un output oltre il max a 250% OC
+
+### Piani di trasporto
+
+- Percorsi salvati con tipo mezzo (treno, drone, camion, …), cargo, tempi andata/ritorno (min o s)
+- Conteggio automatico mezzi/vagoni; Mk nastro/tubo per stazione; rispetto del tetto 2 porte piattaforma
+- Treni: numero di convogli ripartisce il carico; anteprima composizione e contenuto per vagone
+- Dashboard flotta (KPI, card, grafico) e scorciatoia Trasporti
 
 ### Condividi e riprendi gli schemi
 
 Esporta e importa in JSON sia la produzione sia l’energia (estrazioni, generatori, collegamenti). Un file = un backup o uno scambio con un amico. Gli import arrivano etichettati `(import)` così non confondi gli originali. Prima di scrivere nel database, l’import verifica che il file sia davvero un export Factory Manager.
 
-Nella vista ad albero puoi esportare tutto il grafo come **PNG** (toolbar dello zoom) per condividerlo su Discord, Facebook o altrove.
-
-### Energia e Power Shards
+### Metriche energia e Power Shards
 
 - Consumo base (MW) nel catalogo per estrattori e macchine di produzione
 - Consumo calcolato su schemi ed estrazioni con overclock e Somersloop
-- Frammenti energetici necessari nel riepilogo laterale e totale nel box Info
+- Frammenti energetici e Somersloop nel riepilogo laterale e totali nel box Info
 - Dashboard con KPI consumo/bilancio, grafico produzione vs consumo, top catene e avviso se sprechi più di quanto produci
 - Stato chiaro: Coperta / Deficit / Non coperta, con MW di margine o di deficit
 
 ### Multilingua
 
-Parti da italiano e inglese, poi tutte le lingue del catalogo SCIM (tedesco, francese, spagnolo, polacco, portoghese, olandese e altre): interfaccia + nomi di risorse, edifici e ricette. La preferenza resta al riavvio. Per arabo, ebraico e persiano c’è un layout RTL di base. Se manca un pezzo di UI, si cade in inglese senza rompere l’app. Le nuove installazioni partono da UI inglese e formato numeri en-US.
+Parti da italiano e inglese, poi tutte le lingue del catalogo SCIM (tedesco, francese, spagnolo, polacco, portoghese, olandese e altre): interfaccia + nomi di risorse, edifici, ricette e mezzi di trasporto. La preferenza resta al riavvio. Per arabo, ebraico e persiano c’è un layout RTL di base. Se manca un pezzo di UI, si cade in inglese senza rompere l’app. Le nuove installazioni partono da UI inglese e formato numeri en-US.
 
 ### Desktop, dati sul tuo PC
 
@@ -72,7 +89,7 @@ In footer trovi disclaimer e attribuzione Coffee Stain. Logo aggiornato, interfa
 - Menu sticky mentre scorri
 - Dashboard KPI a 4 colonne; elimina progetto al passaggio del mouse
 - In Impostazioni: tetti macchine/generatori e formato numeri (IT / US)
-- Calcolatrice flottante; hardening Electron, sandbox, limiti sui file
+- Calcolatrice e popup flottanti/trascinabili; hardening Electron, sandbox, limiti sui file
 
 ### Aggiornamenti
 

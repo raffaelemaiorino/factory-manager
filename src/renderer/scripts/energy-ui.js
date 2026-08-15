@@ -39,7 +39,7 @@
     ];
   }
   const NODES_SLIDER_MAX = 25;
-  const WATER_NODES_SLIDER_MAX = 500;
+  const WATER_NODES_SLIDER_MAX = 2000;
 
   let energyChains = [];
   let energyChainSummaries = new Map();
@@ -100,6 +100,32 @@
 
   function formatMw(value) {
     return (productionUi().formatRateWithUnit ?? formatProductionValue)(value, 'MW');
+  }
+
+  function formatEnergyIoRateInputValue(rate, overclock = null) {
+    const UI = productionUi();
+    if (UI.formatOutputInputValue) {
+      return UI.formatOutputInputValue(rate, overclock);
+    }
+    return formatEnergyFuelInputValue(rate);
+  }
+
+  function renderEnergyGeneratorIoRateInput(generator, kind, rate, unit, label) {
+    const value = formatEnergyIoRateInputValue(rate, generator?.overclock);
+    return `
+      <span class="production-io-rate">
+        <input
+          type="text"
+          class="production-config-input production-config-decimal-input energy-generator-io-rate-input"
+          inputmode="decimal"
+          readonly
+          data-generator-id="${generator.id}"
+          data-io-kind="${escapeHtml(kind)}"
+          value="${escapeHtml(value)}"
+          aria-label="${escapeHtml(label)} (${escapeHtml(unit)})"
+        />
+        <span class="production-io-rate-unit">${escapeHtml(unit)}</span>
+      </span>`;
   }
 
   function generatorUsesWater(generator) {
@@ -462,9 +488,25 @@
 
       if (linkState === 'deficit' && externalRate > 0 && isEnergyBalanceSlug(itemSlug)) {
         const chainBalanceEntry = getEnergyBalanceEntry(itemSlug);
-        if (chainBalanceEntry && chainBalanceEntry.missing <= (UI.LINK_BALANCE_TOLERANCE ?? 0.05)) {
-          linkState = 'balanced';
-          externalCovered = true;
+        const tolerance = UI.LINK_BALANCE_TOLERANCE ?? 0.05;
+        if (chainBalanceEntry && chainBalanceEntry.missing <= tolerance) {
+          const chainState = UI.getLinkBalanceState?.(
+            chainBalanceEntry.produced,
+            chainBalanceEntry.demand
+          );
+          const chainExcess =
+            UI.normalizeLinkDelta?.(
+              chainBalanceEntry.produced - chainBalanceEntry.demand,
+              chainBalanceEntry.produced
+            ) ?? 0;
+          if (chainState === 'excess' && chainExcess > tolerance) {
+            linkState = 'excess';
+            linkedExcessRate = chainExcess;
+            externalCovered = true;
+          } else {
+            linkState = 'balanced';
+            externalCovered = true;
+          }
         }
       }
 
@@ -483,7 +525,14 @@
       ? `<img src="${escapeHtml(itemMeta.image)}" alt="" />`
       : '<span class="resource-img resource-img--placeholder" style="width:28px;height:28px"></span>';
 
-    const amountLabel = formatRate(requiredRate);
+    const ioKind = itemSlug === 'water' ? 'water' : 'fuel';
+    const rateInput = renderEnergyGeneratorIoRateInput(
+      generator,
+      ioKind,
+      requiredRate,
+      unit,
+      itemMeta.name ?? itemSlug
+    );
 
     const chainBalanceEntry = isEnergyBalanceSlug(itemSlug) ? getEnergyBalanceEntry(itemSlug) : null;
 
@@ -500,13 +549,16 @@
               linkState === 'balanced' && externalCovered && externalRate > 0
                 ? `<span class="production-link-covered">${escapeHtml(t('production.linkFromExtractionRate', { rate: formatRate(externalRate) }))}</span>
                    <span class="production-link-covered">${escapeHtml(t('production.linkFullyCovered'))}</span>`
-                : linkState === 'balanced'
-                  ? `<span class="production-link-covered">${escapeHtml(t('production.linkFullyCovered'))}</span>`
-                  : linkState === 'excess'
-                    ? `<span class="production-link-external">${escapeHtml(t('production.linkExcessLinked', { rate: formatRate(linkedExcessRate) }))}</span>`
-                    : externalRate > 0
-                      ? `<span class="production-link-deficit">${escapeHtml(t('production.linkExternal', { rate: formatRate(externalRate) }))}</span>`
-                      : `<span class="production-link-deficit">${escapeHtml(t('production.linkMissing', { rate: formatRate(Math.max(0, requiredRate - linkedProductionRate)) }))}</span>`
+                : linkState === 'excess' && externalCovered && externalRate > 0
+                  ? `<span class="production-link-covered">${escapeHtml(t('production.linkFromExtractionRate', { rate: formatRate(externalRate) }))}</span>
+                     <span class="production-link-external">${escapeHtml(t('production.linkChainExcess', { rate: formatRate(linkedExcessRate) }))}</span>`
+                  : linkState === 'balanced'
+                    ? `<span class="production-link-covered">${escapeHtml(t('production.linkFullyCovered'))}</span>`
+                    : linkState === 'excess'
+                      ? `<span class="production-link-external">${escapeHtml(t('production.linkExcessLinked', { rate: formatRate(linkedExcessRate) }))}</span>`
+                      : externalRate > 0
+                        ? `<span class="production-link-deficit">${escapeHtml(t('production.linkExternal', { rate: formatRate(externalRate) }))}</span>`
+                        : `<span class="production-link-deficit">${escapeHtml(t('production.linkMissing', { rate: formatRate(Math.max(0, requiredRate - linkedProductionRate)) }))}</span>`
             }
           </div>`
         : chainBalanceEntry && linkState
@@ -559,57 +611,128 @@
           </div>`
         : '';
 
+    const allExtractions = activeEnergyDetail?.extractions ?? [];
+    const linkedExtractionEntries = generator.input_links?.[itemSlug] ?? [];
+    const extractionCandidates = allExtractions.filter((extraction) => {
+      if (extraction.item?.slug !== itemSlug) return false;
+      if (isExtractionLinkedToGenerator(generator, extraction.id, itemSlug)) return true;
+      return getEnergyExtractionConsumerCandidates(
+        extraction,
+        activeEnergyDetail?.generators ?? [],
+        allExtractions
+      ).some((candidate) => Number(candidate.id) === Number(generator.id));
+    });
+
+    const extractionBadges =
+      linkedExtractionEntries.length > 0
+        ? linkedExtractionEntries
+            .map((link) => {
+              const extraction = allExtractions.find(
+                (item) => Number(item.id) === Number(link.producer_extraction_id)
+              );
+              const name = extraction
+                ? getExtractionDisplayName(extraction, allExtractions)
+                : link.producer_name || itemSlug;
+              const rate = extraction?.output_rate ?? link.producer_rate ?? 0;
+              return `<span class="production-link-badge">← ${escapeHtml(name)} (${formatRate(rate)})</span>`;
+            })
+            .join('')
+        : '';
+
+    const extractionLinkSection =
+      extractionCandidates.length > 0
+        ? `<div class="production-input-links">
+            <span class="production-input-links-label">${escapeHtml(t('production.linkFromExtraction'))}</span>
+            <div class="production-link-options">
+              ${extractionCandidates
+                .map((extraction) => {
+                  const checked = isExtractionLinkedToGenerator(
+                    generator,
+                    extraction.id,
+                    itemSlug
+                  );
+                  const rateLabel = formatEnergyExtractionConsumerLinkRate(
+                    generator,
+                    extraction,
+                    itemSlug,
+                    allExtractions,
+                    unit
+                  );
+                  return `
+                  <label class="production-link-option">
+                    <input
+                      type="checkbox"
+                      class="energy-extraction-link-checkbox"
+                      data-generator-id="${generator.id}"
+                      data-extraction-id="${extraction.id}"
+                      data-item-slug="${escapeHtml(itemSlug)}"
+                      ${checked ? 'checked' : ''}
+                    />
+                    <span>${escapeHtml(getExtractionDisplayName(extraction, allExtractions))}</span>
+                    <span class="production-link-rate">(${rateLabel})</span>
+                  </label>`;
+                })
+                .join('')}
+            </div>
+          </div>`
+        : '';
+
     return `
       <div class="craft-io-item craft-io-item--with-links ${linkStateClass}" data-item-slug="${escapeHtml(itemSlug)}">
         <div class="production-input-add-trigger production-input-static">
           ${img}
           <span>${escapeHtml(itemMeta.name ?? itemSlug)}</span>
-          <span class="amount">${amountLabel}</span>
+          ${rateInput}
         </div>
+        ${
+          extractionBadges
+            ? `<div class="production-input-linked">${extractionBadges}</div>`
+            : ''
+        }
         ${linkedBadge}
+        ${extractionLinkSection}
         ${productionLinkSection}
       </div>`;
   }
 
   function renderEnergyGeneratorOutputs(generator) {
-    const UI = productionUi();
+    const powerLabel = 'Elettricità';
     const parts = [
       `
       <div class="craft-io-item">
         <span class="craft-io-icon" aria-hidden="true">⚡</span>
-        <span>Elettricità</span>
-        <span class="amount">${formatMw(generator.power_output_mw)}</span>
+        <span>${escapeHtml(powerLabel)}</span>
+        ${renderEnergyGeneratorIoRateInput(
+          generator,
+          'power',
+          generator.power_output_mw ?? 0,
+          'MW',
+          powerLabel
+        )}
       </div>`,
     ];
 
     if ((generator.waste_output ?? 0) > 0 && generator.waste_item_slug) {
-      const unit = '/min';
-      const rate = (UI.formatRateWithUnit ?? formatProductionValue)(
-        generator.waste_output,
-        unit
-      );
-      parts.push(
-        renderEnergyIoItem(
-          generator.waste_item?.name ?? generator.waste_label ?? generator.waste_item_slug,
-          generator.waste_item?.image ?? null,
-          rate
-        )
-      );
+      const wasteName =
+        generator.waste_item?.name ?? generator.waste_label ?? generator.waste_item_slug;
+      const img = generator.waste_item?.image
+        ? `<img src="${escapeHtml(generator.waste_item.image)}" alt="" />`
+        : '<span class="resource-img resource-img--placeholder" style="width:28px;height:28px"></span>';
+      parts.push(`
+      <div class="craft-io-item">
+        ${img}
+        <span>${escapeHtml(wasteName)}</span>
+        ${renderEnergyGeneratorIoRateInput(
+          generator,
+          'waste',
+          generator.waste_output ?? 0,
+          '/min',
+          wasteName
+        )}
+      </div>`);
     }
 
     return parts.join('');
-  }
-
-  function renderEnergyIoItem(name, image, amountLabel) {
-    const img = image
-      ? `<img src="${escapeHtml(image)}" alt="" />`
-      : '<span class="resource-img resource-img--placeholder" style="width:28px;height:28px"></span>';
-    return `
-      <div class="craft-io-item">
-        ${img}
-        <span>${escapeHtml(name)}</span>
-        <span class="amount">${amountLabel}</span>
-      </div>`;
   }
 
   function getExtractionDisplayName(extraction, allExtractions = []) {
@@ -620,6 +743,371 @@
     if (sameItem.length <= 1) return baseName;
     const index = sameItem.findIndex((item) => item.id === extraction.id);
     return index >= 0 ? `${baseName} #${index + 1}` : baseName;
+  }
+
+  /**
+   * Explicit extraction→generator links (same idea as production extraction→step).
+   * When no links exist on this extraction, unused output is treated as excess.
+   */
+  function getGeneratorDemandForSlug(generator, itemSlug) {
+    if (!generator || !itemSlug) return 0;
+    if (itemSlug === 'water') return generator.water_consumption ?? 0;
+    if (itemSlug === generator.fuel_item_slug) return generator.fuel_consumption ?? 0;
+    return 0;
+  }
+
+  function getGeneratorRemainingNeedFromExtraction(generator, itemSlug) {
+    const UI = productionUi();
+    const normalize = UI.normalizeLinkDelta ?? ((delta) => Math.max(0, Number(delta) || 0));
+    const need = getGeneratorDemandForSlug(generator, itemSlug);
+    const fromProduction = getLinkedProductionRate(generator, itemSlug);
+    return normalize(need - fromProduction, need);
+  }
+
+  function isExtractionLinkedToGenerator(generator, extractionId, itemSlug) {
+    return (generator.input_links?.[itemSlug] ?? []).some(
+      (link) => Number(link.producer_extraction_id) === Number(extractionId)
+    );
+  }
+
+  function getGeneratorDisplayName(generator, allGenerators = []) {
+    const base = generator.building_name || generator.building_slug || t('common.generator');
+    const same = allGenerators
+      .filter((item) => item.building_slug === generator.building_slug)
+      .sort((a, b) => a.sort_order - b.sort_order || a.id - b.id);
+    if (same.length <= 1) return `${base} (${formatMw(generator.power_output_mw)})`;
+    const index = same.findIndex((item) => item.id === generator.id);
+    const suffix = index >= 0 ? ` #${index + 1}` : '';
+    return `${base}${suffix} (${formatMw(generator.power_output_mw)})`;
+  }
+
+  function getLinkedGeneratorsForExtraction(
+    extraction,
+    generators = activeEnergyDetail?.generators ?? []
+  ) {
+    const itemSlug = extraction.item?.slug;
+    if (!itemSlug) return [];
+    return generators.filter((generator) =>
+      isExtractionLinkedToGenerator(generator, extraction.id, itemSlug)
+    );
+  }
+
+  function getEnergyExtractionAttributedDemand(
+    extraction,
+    generators = activeEnergyDetail?.generators ?? [],
+    allExtractions = activeEnergyDetail?.extractions ?? []
+  ) {
+    const UI = productionUi();
+    const round = (value) => window.ProductionScale.roundProduction(value);
+    const itemSlug = extraction.item?.slug;
+    if (!itemSlug) return 0;
+
+    let demand = 0;
+    for (const generator of getLinkedGeneratorsForExtraction(extraction, generators)) {
+      const remaining = getGeneratorRemainingNeedFromExtraction(generator, itemSlug);
+      const linkedExtractions = allExtractions.filter((candidate) =>
+        isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
+      );
+      const totalOutput = linkedExtractions.reduce(
+        (sum, candidate) => sum + (candidate.output_rate ?? candidate.target_output ?? 0),
+        0
+      );
+      const outputRate = extraction.output_rate ?? extraction.target_output ?? 0;
+      const share =
+        totalOutput > 0 ? (outputRate / totalOutput) * remaining : remaining / Math.max(1, linkedExtractions.length);
+      demand = round(demand + share);
+    }
+    return demand;
+  }
+
+  function getEnergyExtractionOutputSurplus(extraction, generators, allExtractions) {
+    const UI = productionUi();
+    const normalize = UI.normalizeLinkDelta ?? ((delta) => Math.max(0, Number(delta) || 0));
+    const outputRate = extraction.output_rate ?? extraction.target_output ?? 0;
+    const demand = getEnergyExtractionAttributedDemand(extraction, generators, allExtractions);
+    return normalize(outputRate - demand, outputRate);
+  }
+
+  function getEnergyExtractionLinkedShortfall(extraction, generators, allExtractions) {
+    const UI = productionUi();
+    const normalize = UI.normalizeLinkDelta ?? ((delta) => Math.max(0, Number(delta) || 0));
+    const itemSlug = extraction.item?.slug;
+    if (!itemSlug) return 0;
+
+    let shortfall = 0;
+    for (const generator of getLinkedGeneratorsForExtraction(extraction, generators)) {
+      const remaining = getGeneratorRemainingNeedFromExtraction(generator, itemSlug);
+      const linkedExtractions = allExtractions.filter((candidate) =>
+        isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
+      );
+      const covered = linkedExtractions.reduce(
+        (sum, candidate) => sum + (candidate.output_rate ?? candidate.target_output ?? 0),
+        0
+      );
+      shortfall += normalize(remaining - covered, remaining);
+    }
+    return shortfall;
+  }
+
+  function getEnergyExtractionConsumerCandidates(
+    extraction,
+    generators = activeEnergyDetail?.generators ?? [],
+    allExtractions = activeEnergyDetail?.extractions ?? []
+  ) {
+    const UI = productionUi();
+    const tolerance = UI.LINK_BALANCE_TOLERANCE ?? 0.05;
+    const itemSlug = extraction.item?.slug;
+    if (!itemSlug || !isEnergyBalanceSlug(itemSlug)) return [];
+
+    return generators.filter((generator) => {
+      const demand = getGeneratorDemandForSlug(generator, itemSlug);
+      if (demand <= tolerance) return false;
+      if (isExtractionLinkedToGenerator(generator, extraction.id, itemSlug)) return true;
+
+      const remaining = getGeneratorRemainingNeedFromExtraction(generator, itemSlug);
+      if (remaining <= tolerance) return false;
+
+      const linkedExtractions = allExtractions.filter((candidate) =>
+        isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
+      );
+      const covered = linkedExtractions.reduce(
+        (sum, candidate) => sum + (candidate.output_rate ?? candidate.target_output ?? 0),
+        0
+      );
+      if (covered + tolerance >= remaining) return false;
+
+      const surplus = getEnergyExtractionOutputSurplus(extraction, generators, allExtractions);
+      const hasNoLinks = getLinkedGeneratorsForExtraction(extraction, generators).length === 0;
+      return hasNoLinks || surplus > tolerance;
+    });
+  }
+
+  function formatEnergyExtractionConsumerLinkRate(
+    generator,
+    extraction,
+    itemSlug,
+    allExtractions,
+    unit
+  ) {
+    const UI = productionUi();
+    const formatRate = (value) =>
+      (UI.formatRateWithUnit ?? formatProductionValue)(value, unit);
+    const remaining = getGeneratorRemainingNeedFromExtraction(generator, itemSlug);
+    if (isExtractionLinkedToGenerator(generator, extraction.id, itemSlug)) {
+      const linkedExtractions = allExtractions.filter((candidate) =>
+        isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
+      );
+      const totalOutput = linkedExtractions.reduce(
+        (sum, candidate) => sum + (candidate.output_rate ?? candidate.target_output ?? 0),
+        0
+      );
+      const outputRate = extraction.output_rate ?? extraction.target_output ?? 0;
+      const share =
+        totalOutput > 0 ? (outputRate / totalOutput) * remaining : remaining;
+      if (share + (UI.LINK_BALANCE_TOLERANCE ?? 0.05) < remaining && linkedExtractions.length > 1) {
+        return t('production.linkPartialRate', {
+          allocated: formatRate(share),
+          required: formatRate(remaining),
+        });
+      }
+      return formatRate(share > 0 ? share : remaining);
+    }
+
+    const surplus = getEnergyExtractionOutputSurplus(
+      extraction,
+      activeEnergyDetail?.generators ?? [],
+      allExtractions
+    );
+    if (surplus + (UI.LINK_BALANCE_TOLERANCE ?? 0.05) < remaining) {
+      return t('production.surplusFree', { rate: formatRate(surplus) });
+    }
+    return formatRate(remaining);
+  }
+
+  function buildEnergyExtractionLinkUi(
+    extraction,
+    allExtractions = [],
+    generators = activeEnergyDetail?.generators ?? []
+  ) {
+    const UI = productionUi();
+    const tolerance = UI.LINK_BALANCE_TOLERANCE ?? 0.05;
+    const item = extraction.item;
+    const itemSlug = item?.slug ?? null;
+    const kind = getExtractionKind(extraction);
+    const outputUnit = UI.getExtractionOutputUnit?.(item, kind) ?? getExtractionOutputUnit(item, kind);
+    const formatRate = (value) =>
+      (UI.formatRateWithUnit ?? formatProductionValue)(value, outputUnit);
+    const outputRate = extraction.output_rate ?? extraction.target_output ?? 0;
+
+    const linkedGenerators = itemSlug ? getLinkedGeneratorsForExtraction(extraction, generators) : [];
+    const consumerCandidates = itemSlug
+      ? getEnergyExtractionConsumerCandidates(extraction, generators, allExtractions)
+      : [];
+    const unlinkedExcess = itemSlug
+      ? linkedGenerators.length === 0
+        ? outputRate
+        : getEnergyExtractionOutputSurplus(extraction, generators, allExtractions)
+      : 0;
+    const linkedShortfall =
+      itemSlug && linkedGenerators.length > 0
+        ? getEnergyExtractionLinkedShortfall(extraction, generators, allExtractions)
+        : 0;
+
+    const showLinkVisual =
+      Boolean(itemSlug && isEnergyBalanceSlug(itemSlug)) && outputRate > tolerance;
+
+    let linkState = null;
+    if (showLinkVisual) {
+      if (linkedGenerators.length === 0) {
+        linkState = 'excess';
+      } else if (linkedShortfall > tolerance) {
+        linkState = 'deficit';
+      } else if (unlinkedExcess > tolerance) {
+        linkState = 'excess';
+      } else {
+        linkState = 'balanced';
+      }
+    }
+
+    const linkStateClass =
+      UI.getExtractionLinkStateClass?.(
+        linkState,
+        showLinkVisual && (linkedGenerators.length > 0 || unlinkedExcess > tolerance)
+      ) ??
+      (linkState === 'balanced'
+        ? 'production-extraction--linked-full'
+        : linkState === 'deficit'
+          ? 'production-extraction--linked-deficit'
+          : linkState === 'excess'
+            ? 'production-extraction--linked-partial'
+            : '');
+
+    const statusMessage =
+      linkState === 'balanced'
+        ? `<span class="production-link-covered">${escapeHtml(t('production.linkFullyUsed'))}</span>`
+        : linkState === 'excess' && unlinkedExcess > tolerance
+          ? `<span class="production-link-external">${escapeHtml(t('production.linkExcess', { rate: formatRate(unlinkedExcess) }))}</span>`
+          : linkState === 'deficit' && linkedShortfall > tolerance
+            ? `<span class="production-link-deficit">${escapeHtml(t('production.linkMissingForLinked', { rate: formatRate(linkedShortfall) }))}</span>`
+            : '';
+
+    const html =
+      linkedGenerators.length > 0 || consumerCandidates.length > 0 || statusMessage
+        ? `<div class="production-extraction-links">
+            ${
+              linkedGenerators.length > 0 || statusMessage
+                ? `<div class="production-extraction-linked">
+                    ${linkedGenerators
+                      .map((generator) => {
+                        const remaining = getGeneratorRemainingNeedFromExtraction(
+                          generator,
+                          itemSlug
+                        );
+                        const linkedExtractions = allExtractions.filter((candidate) =>
+                          isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
+                        );
+                        const totalOutput = linkedExtractions.reduce(
+                          (sum, candidate) =>
+                            sum + (candidate.output_rate ?? candidate.target_output ?? 0),
+                          0
+                        );
+                        const output = extraction.output_rate ?? extraction.target_output ?? 0;
+                        const allocated =
+                          totalOutput > 0 ? (output / totalOutput) * remaining : remaining;
+                        const partial =
+                          allocated + tolerance < remaining && remaining > tolerance;
+                        const rateLabel = formatRate(allocated);
+                        return `<span class="production-link-badge production-link-badge--consumer${
+                          partial ? ' production-link-badge--partial' : ''
+                        }">→ ${escapeHtml(getGeneratorDisplayName(generator, generators))} (${rateLabel})</span>`;
+                      })
+                      .join('')}
+                    ${statusMessage}
+                  </div>`
+                : ''
+            }
+            ${
+              consumerCandidates.length > 0
+                ? `<div class="production-input-links">
+                    <span class="production-input-links-label">${escapeHtml(t('energy.linkToGenerator'))}</span>
+                    <div class="production-link-options">
+                      ${consumerCandidates
+                        .map((generator) => {
+                          const checked = isExtractionLinkedToGenerator(
+                            generator,
+                            extraction.id,
+                            itemSlug
+                          );
+                          const rateLabel = formatEnergyExtractionConsumerLinkRate(
+                            generator,
+                            extraction,
+                            itemSlug,
+                            allExtractions,
+                            outputUnit
+                          );
+                          return `
+                            <label class="production-link-option">
+                              <input
+                                type="checkbox"
+                                class="energy-extraction-generator-link-checkbox"
+                                data-generator-id="${generator.id}"
+                                data-extraction-id="${extraction.id}"
+                                data-item-slug="${escapeHtml(itemSlug)}"
+                                ${checked ? 'checked' : ''}
+                              />
+                              <span>${escapeHtml(getGeneratorDisplayName(generator, generators))}</span>
+                              <span class="production-link-rate">(${rateLabel})</span>
+                            </label>`;
+                        })
+                        .join('')}
+                    </div>
+                  </div>`
+                : ''
+            }
+          </div>`
+        : '';
+
+    return { linkStateClass, html };
+  }
+
+  function updateEnergyExtractionBalanceDisplay(extractionEl, extraction, allExtractions) {
+    const { linkStateClass, html } = buildEnergyExtractionLinkUi(
+      extraction,
+      allExtractions,
+      activeEnergyDetail?.generators ?? []
+    );
+
+    extractionEl.classList.remove(
+      'production-extraction--linked-full',
+      'production-extraction--linked-partial',
+      'production-extraction--linked-deficit'
+    );
+    if (linkStateClass) {
+      extractionEl.classList.add(linkStateClass);
+    }
+
+    const existingLinksEl = extractionEl.querySelector('.production-extraction-links');
+    if (html) {
+      if (existingLinksEl) {
+        existingLinksEl.outerHTML = html;
+      } else {
+        extractionEl.querySelector('.production-extraction-main')?.insertAdjacentHTML('beforeend', html);
+      }
+    } else if (existingLinksEl) {
+      existingLinksEl.remove();
+    }
+  }
+
+  function refreshAllEnergyExtractionBalanceDisplays() {
+    const extractions = activeEnergyDetail?.extractions ?? [];
+    for (const extraction of extractions) {
+      const extractionEl = energyDetailBody?.querySelector?.(
+        `[data-extraction-id="${extraction.id}"]`
+      );
+      if (extractionEl) {
+        updateEnergyExtractionBalanceDisplay(extractionEl, extraction, extractions);
+      }
+    }
   }
 
   function renderEnergySummary(detail) {
@@ -873,9 +1361,14 @@
         : extraction.item?.slug === 'coal'
           ? t('extraction.coal')
           : UI.getExtractionSubtitle?.('mineral') ?? t('energy.extractionCoal');
+    const { linkStateClass, html: balanceSection } = buildEnergyExtractionLinkUi(
+      extraction,
+      allExtractions,
+      activeEnergyDetail?.generators ?? []
+    );
 
     return `
-      <article class="production-extraction" data-extraction-id="${extraction.id}">
+      <article class="production-extraction ${linkStateClass}" data-extraction-id="${extraction.id}">
         <div class="production-extraction-layout">
           <div class="production-extraction-main">
             <header class="production-extraction-header">
@@ -917,6 +1410,7 @@
                 <input type="text" class="production-config-input production-config-readonly production-extraction-power-mw" id="energy-extraction-power-mw-${extraction.id}" readonly tabindex="-1" value="${(UI.formatRateWithUnit ?? ((v, u) => `${v} ${u}`))(window.ProductionScale.roundPowerMw(window.ProductionScale.computeMachinePowerMw(Number(extraction.power_consumption) || 0, extraction.overclock, nodeCount, 1)), 'MW')}" />
               </div>
             </div>
+            ${balanceSection}
           </div>
           <aside class="production-extraction-building">
             ${buildingImg}
@@ -965,6 +1459,36 @@
     return rates;
   }
 
+  function getGeneratorBuildingOutputRates(generator) {
+    const round = (value) => window.ProductionScale.roundProduction(value);
+    const machines = Math.max(1, Math.round(Number(generator.machine_count) || 1));
+    const rates = [
+      {
+        item_slug: 'power',
+        item_name: t('energy.title'),
+        item_image: null,
+        unit: 'MW',
+        base_per_min: generator.base_power_per_machine ?? 0,
+        current_per_min: round((generator.power_output_mw ?? 0) / machines),
+      },
+    ];
+
+    if ((generator.waste_output ?? 0) > 0 && generator.waste_item_slug) {
+      const wasteBase =
+        (Number(generator.fuel_rate_base) || 0) * (Number(generator.waste_per_rod) || 0);
+      rates.push({
+        item_slug: generator.waste_item_slug,
+        item_name: generator.waste_item?.name ?? generator.waste_label ?? generator.waste_item_slug,
+        item_image: generator.waste_item?.image ?? null,
+        is_fluid: false,
+        base_per_min: wasteBase,
+        current_per_min: round((generator.waste_output ?? 0) / machines),
+      });
+    }
+
+    return rates;
+  }
+
   function buildGeneratorBuildingConfig(generator) {
     return {
       machine_count: generator.machine_count,
@@ -973,6 +1497,7 @@
       target_output: generator.power_output_mw,
       output_unit: 'MW',
       input_rates: getGeneratorBuildingInputRates(generator),
+      output_rates: getGeneratorBuildingOutputRates(generator),
     };
   }
 
@@ -1306,8 +1831,8 @@
         ? t('energy.metaGeneratorsOne', { count: generators.length })
         : t('energy.metaGeneratorsMany', { count: generators.length });
     document.getElementById('energy-detail-meta').textContent = `${extPart}, ${genPart}`;
-    document.getElementById('energy-detail-external-summary').innerHTML = renderEnergySummary(detail);
     syncEnergyBalanceCache();
+    document.getElementById('energy-detail-external-summary').innerHTML = renderEnergySummary(detail);
     updateEnergyTreeButtonState();
 
     if (isEnergyTreeViewMode()) {
@@ -1367,6 +1892,23 @@
               `<option value="${escapeHtml(opt.slug)}">${escapeHtml(resolveFuelOptionLabel(opt))}</option>`
           )
           .join('');
+      });
+    }
+    const planMode = document.getElementById('energy-plan-target-mode');
+    const planValue = document.getElementById('energy-plan-target-value');
+    if (planMode && planValue) {
+      planMode.addEventListener('change', () => {
+        const nextMode = planMode.value === 'fuel' ? 'fuel' : 'mw';
+        const stored =
+          nextMode === 'fuel'
+            ? planValue.dataset.fuelValue || ''
+            : planValue.dataset.mwValue || '';
+        planValue.value = stored;
+      });
+      planValue.addEventListener('input', () => {
+        const mode = planMode.value === 'fuel' ? 'fuel' : 'mw';
+        if (mode === 'fuel') planValue.dataset.fuelValue = planValue.value;
+        else planValue.dataset.mwValue = planValue.value;
       });
     }
     document.getElementById('btn-energy-replan')?.addEventListener('click', () => {
@@ -1513,10 +2055,16 @@
         try {
           activeEnergyDetail = await window.satisfactory.updateEnergyExtraction(extractionId, config);
           refreshAllEnergyGeneratorInputDisplays();
+          refreshAllEnergyExtractionBalanceDisplays();
           const extraction = activeEnergyDetail?.extractions?.find((item) => item.id === extractionId);
           const extractionEl = energyDetailBody.querySelector(`[data-extraction-id="${extractionId}"]`);
           if (extraction && extractionEl) {
             productionUi().updateExtractionConfigDisplay?.(extractionEl, extraction);
+            updateEnergyExtractionBalanceDisplay(
+              extractionEl,
+              extraction,
+              activeEnergyDetail?.extractions ?? []
+            );
           }
           document.getElementById('energy-detail-external-summary').innerHTML = renderEnergySummary(
             activeEnergyDetail
@@ -1595,7 +2143,12 @@
 
     const extractionEl = energyDetailBody.querySelector(`[data-extraction-id="${extractionId}"]`);
     if (extractionEl) UI.updateExtractionConfigDisplay?.(extractionEl, extraction);
+    refreshAllEnergyExtractionBalanceDisplays();
     refreshAllEnergyGeneratorInputDisplays();
+
+    document.getElementById('energy-detail-external-summary').innerHTML = renderEnergySummary(
+      activeEnergyDetail
+    );
 
     const config = {
       miner_slug: updated.miner_slug,
@@ -1758,6 +2311,7 @@
     document.getElementById('energy-detail-external-summary').innerHTML = renderEnergySummary(
       activeEnergyDetail
     );
+    refreshAllEnergyExtractionBalanceDisplays();
     UI.lockConfigNumberInputsIn?.(card, { skipFocused: true });
   }
 
@@ -1777,13 +2331,19 @@
     const changeField =
       field === 'fuel' || field === 'energy-fuel'
         ? 'fuel'
-        : field === 'machines' || field === 'energy-machines'
-          ? 'machines'
-          : field === 'overclock-slider'
-            ? 'overclock-slider'
-            : field === 'overclock' || field === 'energy-overclock'
-              ? 'overclock'
-              : null;
+        : field === 'water'
+          ? 'water'
+          : field === 'power' || field === 'mw'
+            ? 'power'
+            : field === 'waste'
+              ? 'waste'
+              : field === 'machines' || field === 'energy-machines'
+                ? 'machines'
+                : field === 'overclock-slider'
+                  ? 'overclock-slider'
+                  : field === 'overclock' || field === 'energy-overclock'
+                    ? 'overclock'
+                    : null;
 
     if (!changeField) return;
 
@@ -1813,6 +2373,12 @@
       handleEnergyExtractionConfigChange(Number(input.dataset.extractionId), 'nodes', value);
       return;
     }
+    if (field === 'energy-io-rate') {
+      const kind = input.dataset.ioKind;
+      if (!kind) return;
+      handleGeneratorConfigChange(Number(input.dataset.generatorId), kind, value);
+      return;
+    }
     if (field === 'energy-fuel') {
       handleGeneratorConfigChange(Number(input.dataset.generatorId), 'energy-fuel', value);
       return;
@@ -1829,8 +2395,10 @@
   function commitEnergyConfigInputFromField(input, field) {
     const UI = productionUi();
     const value =
-      field === 'extraction-output' && input.classList.contains('production-config-decimal-input')
-        ? UI.parseConfigNumberInput?.(input.value)
+      field === 'extraction-output' || field === 'energy-fuel' || field === 'energy-io-rate'
+        ? input.classList.contains('production-config-decimal-input')
+          ? UI.parseConfigNumberInput?.(input.value)
+          : Number(input.value)
         : Number(input.value);
     commitEnergyConfigInputChange(input, field, value);
   }
@@ -1937,11 +2505,19 @@
     syncFuels();
   }
 
+  function syncEnergyCreateTargetPlaceholder() {
+    const mode = document.getElementById('energy-create-target-mode')?.value || 'mw';
+    const input = document.getElementById('energy-create-target-value');
+    if (!input) return;
+    input.placeholder = mode === 'fuel' ? '200' : '750';
+  }
+
   function renderEnergyTargetsEditor(chain = {}) {
     const catalog = window.EnergyScale?.getSupportedGenerators?.() || [];
     const buildingSlug = chain.target_building_slug || catalog[0]?.slug || 'generator-coal';
     const def = window.EnergyScale?.getGeneratorDefinition?.(buildingSlug);
     const fuelSlug = chain.target_fuel_slug || def?.fuelOptions?.[0]?.slug || 'coal';
+    const targetMode = chain.target_mode === 'fuel' ? 'fuel' : 'mw';
     const genOptions = catalog
       .map((gen) => {
         const label =
@@ -1969,6 +2545,11 @@
       chain.target_power_mw != null && Number(chain.target_power_mw) > 0
         ? String(chain.target_power_mw)
         : '';
+    const fuelRateValue =
+      chain.target_fuel_rate != null && Number(chain.target_fuel_rate) > 0
+        ? String(chain.target_fuel_rate)
+        : '';
+    const targetValue = targetMode === 'fuel' ? fuelRateValue : mwValue;
 
     return `
       <section class="production-targets-section energy-targets-section">
@@ -1980,14 +2561,22 @@
         </div>
         <div class="production-plan-constraints">
           <div class="production-plan-constraint">
-            <label for="energy-plan-target-mw">${escapeHtml(t('energy.targetMw'))}</label>
-            <input
-              type="text"
-              id="energy-plan-target-mw"
-              class="production-target-rate-input production-config-decimal-input"
-              inputmode="decimal"
-              value="${escapeHtml(mwValue)}"
-            />
+            <label for="energy-plan-target-mode">${escapeHtml(t('energy.targetMode'))}</label>
+            <div class="production-plan-constraint-controls">
+              <select id="energy-plan-target-mode">
+                <option value="mw" ${targetMode === 'mw' ? 'selected' : ''}>${escapeHtml(t('energy.targetModeMw'))}</option>
+                <option value="fuel" ${targetMode === 'fuel' ? 'selected' : ''}>${escapeHtml(t('energy.targetModeFuel'))}</option>
+              </select>
+              <input
+                type="text"
+                id="energy-plan-target-value"
+                class="production-target-rate-input production-config-decimal-input"
+                inputmode="decimal"
+                value="${escapeHtml(targetValue)}"
+                data-mw-value="${escapeHtml(mwValue)}"
+                data-fuel-value="${escapeHtml(fuelRateValue)}"
+              />
+            </div>
           </div>
           <div class="production-plan-constraint">
             <label for="energy-plan-generator">${escapeHtml(t('energy.generatorType'))}</label>
@@ -1999,31 +2588,55 @@
           </div>
           ${renderEnergyPowerShardControls(chain, { idPrefix: 'energy-plan' })}
         </div>
+        <div class="form-option energy-plan-link-fuel-option">
+          <label class="form-option-label" for="energy-plan-link-fuel-production">
+            <input
+              type="checkbox"
+              id="energy-plan-link-fuel-production"
+              ${chain.linked_production_chain_id ? 'checked' : ''}
+            />
+            <span class="form-option-copy">
+              <span class="form-option-title">${escapeHtml(t('energy.linkFuelProduction'))}</span>
+              <span class="form-option-hint">${escapeHtml(t('energy.linkFuelProductionHint'))}</span>
+            </span>
+          </label>
+        </div>
         <p class="production-targets-hint">${escapeHtml(t('energy.targetsHint'))}</p>
       </section>`;
   }
 
   async function applyEnergyPlanTargetsFromUi() {
     if (!activeEnergyChainId) return;
-    const mwRaw = document.getElementById('energy-plan-target-mw')?.value;
+    const mode = document.getElementById('energy-plan-target-mode')?.value === 'fuel' ? 'fuel' : 'mw';
+    const valueRaw = document.getElementById('energy-plan-target-value')?.value;
     const buildingSlug = document.getElementById('energy-plan-generator')?.value;
     const fuelSlug = document.getElementById('energy-plan-fuel')?.value;
     const powerShardLimit = readEnergyPowerShardLimitFromUi('energy-plan');
-    const targetMw = Number(String(mwRaw ?? '').replace(',', '.'));
-    if (!Number.isFinite(targetMw) || targetMw <= 0) {
+    const linkFuelProduction = Boolean(
+      document.getElementById('energy-plan-link-fuel-production')?.checked
+    );
+    const targetValue = Number(String(valueRaw ?? '').replace(',', '.'));
+    if (!Number.isFinite(targetValue) || targetValue <= 0) {
       await window.showAlert?.({
         title: t('errors.saveFailed'),
-        message: t('energy.invalidTargetMw'),
+        message: mode === 'fuel' ? t('energy.invalidTargetFuel') : t('energy.invalidTargetMw'),
       });
       return;
     }
     try {
-      activeEnergyDetail = await window.satisfactory.setEnergyChainTargets(activeEnergyChainId, {
-        target_power_mw: targetMw,
+      const payload = {
+        target_mode: mode,
         target_building_slug: buildingSlug,
         target_fuel_slug: fuelSlug,
         power_shard_limit: powerShardLimit,
-      });
+        link_fuel_production: linkFuelProduction,
+      };
+      if (mode === 'fuel') {
+        payload.target_fuel_rate = targetValue;
+      } else {
+        payload.target_power_mw = targetValue;
+      }
+      activeEnergyDetail = await window.satisfactory.setEnergyChainTargets(activeEnergyChainId, payload);
       renderEnergyDetailContent(activeEnergyDetail);
       loadEnergyChains().catch(console.error);
     } catch (err) {
@@ -2038,10 +2651,15 @@
   function openEnergyCreateModal() {
     hideEnergyCreateError();
     energyCreateForm.reset();
+    const modeSelect = document.getElementById('energy-create-target-mode');
+    if (modeSelect) modeSelect.value = 'mw';
+    syncEnergyCreateTargetPlaceholder();
     ensureItemNameCache()
       .then(() => populateEnergyCreateGeneratorSelects())
       .catch(() => populateEnergyCreateGeneratorSelects());
     bindEnergyPowerShardControls(energyCreateModal);
+    const linkFuelEl = document.getElementById('energy-create-link-fuel-production');
+    if (linkFuelEl) linkFuelEl.checked = true;
     energyCreateModal.classList.remove('hidden');
     energyCreateModal.setAttribute('aria-hidden', 'false');
     document.getElementById('energy-chain-name').focus();
@@ -2077,6 +2695,39 @@
     }
   }
 
+  async function handleEnergyExtractionLinkChange(checkbox) {
+    const generatorId = Number(checkbox.dataset.generatorId);
+    const itemSlug = checkbox.dataset.itemSlug;
+    const extractionId = Number(checkbox.dataset.extractionId);
+    if (!generatorId || !itemSlug || !extractionId) return;
+
+    const generator = activeEnergyDetail?.generators?.find((item) => item.id === generatorId);
+    if (!generator) return;
+
+    const currentIds = (generator.input_links?.[itemSlug] ?? [])
+      .map((link) => Number(link.producer_extraction_id))
+      .filter(Boolean);
+
+    let nextIds;
+    if (checkbox.checked) {
+      nextIds = [...new Set([...currentIds, extractionId])];
+    } else {
+      nextIds = currentIds.filter((id) => id !== extractionId);
+    }
+
+    try {
+      activeEnergyDetail = await window.satisfactory.setEnergyGeneratorInputLinks(
+        generatorId,
+        itemSlug,
+        nextIds
+      );
+      renderEnergyDetailContent(activeEnergyDetail);
+    } catch (err) {
+      checkbox.checked = !checkbox.checked;
+      console.error('Set energy extraction links error:', err);
+    }
+  }
+
   function setupEnergy() {
     document.getElementById('btn-new-energy').addEventListener('click', openEnergyCreateModal);
     document.getElementById('btn-import-energy').addEventListener('click', async () => {
@@ -2101,6 +2752,7 @@
     });
     document.getElementById('energy-create-modal-close').addEventListener('click', closeEnergyCreateModal);
     document.getElementById('energy-create-cancel').addEventListener('click', closeEnergyCreateModal);
+    document.getElementById('energy-create-target-mode')?.addEventListener('change', syncEnergyCreateTargetPlaceholder);
     document.getElementById('energy-detail-back').addEventListener('click', closeEnergyDetail);
     document.getElementById('btn-add-energy-extraction').addEventListener('click', openEnergyExtractionPickerModal);
     document.getElementById('btn-add-energy-generator').addEventListener('click', openEnergyGeneratorPickerModal);
@@ -2127,15 +2779,19 @@
         showEnergyCreateError(t('errors.nameRequired'));
         return;
       }
-      const mwRaw = document.getElementById('energy-create-target-mw')?.value?.trim() || '';
+      const mode =
+        document.getElementById('energy-create-target-mode')?.value === 'fuel' ? 'fuel' : 'mw';
+      const valueRaw = document.getElementById('energy-create-target-value')?.value?.trim() || '';
       const buildingSlug = document.getElementById('energy-create-generator')?.value || '';
       const fuelSlug = document.getElementById('energy-create-fuel')?.value || '';
       const powerShardLimit = readEnergyPowerShardLimitFromUi('energy-create');
-      const payload = { name, power_shard_limit: powerShardLimit };
-      if (mwRaw) {
-        const targetMw = Number(String(mwRaw).replace(',', '.'));
-        if (!Number.isFinite(targetMw) || targetMw <= 0) {
-          showEnergyCreateError(t('energy.invalidTargetMw'));
+      const payload = { name, power_shard_limit: powerShardLimit, target_mode: mode };
+      if (valueRaw) {
+        const targetValue = Number(String(valueRaw).replace(',', '.'));
+        if (!Number.isFinite(targetValue) || targetValue <= 0) {
+          showEnergyCreateError(
+            mode === 'fuel' ? t('energy.invalidTargetFuel') : t('energy.invalidTargetMw')
+          );
           return;
         }
         if (!buildingSlug || !fuelSlug) {
@@ -2143,9 +2799,16 @@
           return;
         }
         payload.auto_plan = true;
-        payload.target_power_mw = targetMw;
         payload.target_building_slug = buildingSlug;
         payload.target_fuel_slug = fuelSlug;
+        payload.link_fuel_production = Boolean(
+          document.getElementById('energy-create-link-fuel-production')?.checked
+        );
+        if (mode === 'fuel') {
+          payload.target_fuel_rate = targetValue;
+        } else {
+          payload.target_power_mw = targetValue;
+        }
       }
       try {
         const chain = await window.satisfactory.createEnergyChain(payload);
@@ -2384,6 +3047,14 @@
         return;
       }
 
+      const extractionLinkCheckbox = e.target.closest(
+        '.energy-extraction-link-checkbox, .energy-extraction-generator-link-checkbox'
+      );
+      if (extractionLinkCheckbox) {
+        await handleEnergyExtractionLinkChange(extractionLinkCheckbox);
+        return;
+      }
+
       const UI = productionUi();
       const themeSelectOption = e.target.closest('.theme-select-option');
       if (themeSelectOption) {
@@ -2501,6 +3172,7 @@
     openEnergyDetail,
     closeEnergyDetail,
     computeEnergyResourceBalance,
+    commitEnergyConfigInputChange,
     clearLocaleCaches: () => {
       energyExtractionItems = [];
       energyGeneratorCatalog = [];

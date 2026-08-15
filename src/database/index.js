@@ -10,7 +10,7 @@ const {
   getItemById,
   updateItem,
 } = require('./items');
-const { ensureSchemaTables, getItemDetail } = require('./schemas');
+const { ensureSchemaTables, getItemDetail, getItemConsumeDetail } = require('./schemas');
 const {
   ensureDefaultResources,
   resetDefaultResources,
@@ -295,6 +295,10 @@ function getResourceDetail(id) {
   return getItemDetail(getDb(), getItemById, id);
 }
 
+function getResourceConsumeDetail(id) {
+  return getItemConsumeDetail(getDb(), getItemById, id);
+}
+
 function restoreDefaultResources() {
   const result = resetDefaultResources(getDb(), persist);
   return {
@@ -521,25 +525,33 @@ function saveEnergyChain(data = {}) {
     target_power_mw = null,
     target_building_slug = null,
     target_fuel_slug = null,
+    target_fuel_rate = null,
+    target_mode = 'mw',
     power_shard_limit = 0,
+    link_fuel_production = true,
     ...createData
   } = data;
+
+  const mode = String(target_mode ?? 'mw').trim().toLowerCase() === 'fuel' ? 'fuel' : 'mw';
+  const hasMw = target_power_mw != null && target_power_mw !== '';
+  const hasFuelRate = target_fuel_rate != null && target_fuel_rate !== '';
+  const canAutoPlan =
+    Boolean(auto_plan) &&
+    target_building_slug &&
+    target_fuel_slug &&
+    ((mode === 'fuel' && hasFuelRate) || (mode === 'mw' && hasMw));
 
   const chain = createEnergyChain(db, persist, {
     ...createData,
     target_power_mw,
     target_building_slug,
     target_fuel_slug,
+    target_fuel_rate,
+    target_mode: mode,
     power_shard_limit,
   });
 
-  if (
-    Boolean(auto_plan) &&
-    target_power_mw != null &&
-    target_power_mw !== '' &&
-    target_building_slug &&
-    target_fuel_slug
-  ) {
+  if (canAutoPlan) {
     const { autoPlanEnergyChain } = require('./auto-plan-energy');
     autoPlanEnergyChain(
       db,
@@ -547,9 +559,12 @@ function saveEnergyChain(data = {}) {
       chain.id,
       {
         target_power_mw,
+        target_fuel_rate,
+        target_mode: mode,
         target_building_slug,
         target_fuel_slug,
         power_shard_limit,
+        link_fuel_production: link_fuel_production !== false,
       },
       getItemById
     );
@@ -691,6 +706,7 @@ module.exports = {
   getResourceById,
   saveResource,
   getResourceDetail,
+  getResourceConsumeDetail,
   restoreDefaultResources,
   getResourcesDataInfo: () => getResourcesDataInfo(getDb()),
   getProductionChains,

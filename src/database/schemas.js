@@ -214,6 +214,17 @@ function getItemSchemaById(db, schemaId) {
   });
 }
 
+function hydrateSchemas(db, schemas) {
+  return schemas.map((schema) =>
+    attachBuildingMeta(db, {
+      ...schema,
+      is_alternative: !!schema.is_alternative,
+      inputs: loadSchemaIo(db, schema.id, false),
+      outputs: loadSchemaIo(db, schema.id, true),
+    })
+  );
+}
+
 function getItemSchemas(db, itemId) {
   ensureI18nTables(db);
   const locale = getAppLocale(db);
@@ -229,30 +240,72 @@ function getItemSchemas(db, itemId) {
     [locale, locale, itemId]
   );
 
-  return schemas.map((schema) =>
-    attachBuildingMeta(db, {
-      ...schema,
-      is_alternative: !!schema.is_alternative,
-      inputs: loadSchemaIo(db, schema.id, false),
-      outputs: loadSchemaIo(db, schema.id, true),
-    })
-  );
+  return hydrateSchemas(db, schemas);
 }
+
+/** Recipes that consume the given item as an input (any slot). */
+function getSchemasByInputItem(db, itemId) {
+  ensureI18nTables(db);
+  const locale = getAppLocale(db);
+  const item = queryOne(db, 'SELECT slug FROM items WHERE id = ?', [itemId]);
+  if (!item?.slug) return [];
+
+  // Prefer schemas owned by their primary output (slot 1). Byproduct copies
+  // (e.g. Non-Fissile Uranium also seeded under Water) would otherwise duplicate.
+  const schemas = queryAll(
+    db,
+    `SELECT ${localizedSchemaSelect()}
+     FROM item_schemas s
+     JOIN items owner ON owner.id = s.item_id
+     LEFT JOIN schema_translations st ON st.schema_id = s.id AND st.locale = ?
+     LEFT JOIN buildings b ON b.slug = s.building_slug
+     LEFT JOIN building_translations bt ON bt.building_id = b.id AND bt.locale = ?
+     WHERE s.id IN (
+       SELECT sio.schema_id FROM schema_io sio
+       WHERE sio.is_output = 0 AND sio.item_slug = ?
+     )
+     AND EXISTS (
+       SELECT 1 FROM schema_io primary_out
+       WHERE primary_out.schema_id = s.id
+         AND primary_out.is_output = 1
+         AND primary_out.slot = 1
+         AND primary_out.item_slug = owner.slug
+     )
+     ORDER BY s.is_alternative ASC, s.sort_order ASC, s.id ASC`,
+    [locale, locale, item.slug]
+  );
+
+  return hydrateSchemas(db, schemas);
+}
+
+function splitSchemasByAlt(schemas) {
+  return {
+    schemas,
+    main: schemas.filter((s) => !s.is_alternative),
+    alternatives: schemas.filter((s) => s.is_alternative),
+  };
+}
+
 function getItemDetail(db, getItemByIdFn, itemId) {
   const item = getItemByIdFn(db, itemId);
   if (!item) return null;
 
-  const schemas = getItemSchemas(db, itemId);
-  const main = schemas.filter((s) => !s.is_alternative);
-  const alternatives = schemas.filter((s) => s.is_alternative);
+  return { item, ...splitSchemasByAlt(getItemSchemas(db, itemId)) };
+}
 
-  return { item, schemas, main, alternatives };
+function getItemConsumeDetail(db, getItemByIdFn, itemId) {
+  const item = getItemByIdFn(db, itemId);
+  if (!item) return null;
+
+  return { item, ...splitSchemasByAlt(getSchemasByInputItem(db, itemId)) };
 }
 
 module.exports = {
   ensureSchemaTables,
   seedSchemas,
   getItemDetail,
+  getItemConsumeDetail,
   getItemSchemas,
+  getSchemasByInputItem,
   getItemSchemaById,
 };

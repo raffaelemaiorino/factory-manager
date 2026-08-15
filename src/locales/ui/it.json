@@ -246,14 +246,14 @@
     "emptyList": "Nessuno schema di produzione.",
     "emptyListHint": "Crea il tuo primo schema con il pulsante «Nuovo schema».",
     "errorLoadList": "Errore nel caricamento degli schemi di produzione.",
-    "treeView": "Visualizzazione ad albero",
-    "treeViewGroups": "Visualizzazione ad albero Gruppi",
+    "treeView": "Albero",
+    "treeViewGroups": "Albero a Gruppi",
     "backToEditor": "Torna all'editor",
     "backToEditorPlan": "Torna all'editor dello schema",
     "treeViewTitle": "Visualizza tutta la catena come grafico ad albero",
     "treeViewGroupsTitle": "Visualizza la catena per raggruppamenti (solo input/output principali)",
-    "addExtraction": "Aggiungi estrazione",
-    "addResourceStep": "Aggiungi schema risorsa",
+    "addExtraction": "Estrazione",
+    "addResourceStep": "Schema Risorsa Input",
     "sectionExtractions": "Estrazioni risorse",
     "sectionResourceSteps": "Schemi risorsa",
     "groupMinerals": "Minerali",
@@ -277,7 +277,7 @@
     "expandGroup": "Espandi raggruppamento",
     "collapseGroup": "Comprimi raggruppamento",
     "treeViewOfGroup": "Visualizzazione ad albero di {name}",
-    "treeViewButton": "Visualizzazione ad albero",
+    "treeViewButton": "Albero",
     "highlightStep": "Evidenzia schema",
     "highlightStepTitle": "Evidenzia lo schema con sfondo verde",
     "highlightGroup": "Evidenzia raggruppamento",
@@ -339,6 +339,7 @@
     "totalPowerConsumption": "Consumo totale",
     "noProductionObjectives": "Nessun obiettivo di produzione",
     "inputsPerMachine": "Input / macchina",
+    "outputsPerMachine": "Output / macchina",
     "powerShardsRequired": "Necessari {count} Frammenti Energetici",
     "somersloopsRequired": "Necessari {count} Somersloop",
     "powerConsumptionRequired": "Consumo {mw}",
@@ -369,7 +370,9 @@
     "surplusFree": "{rate} liberi",
     "linkPartialRate": "{allocated} di {required}",
     "sinkByproducts": "Smaltisci sottoprodotti",
-    "sinkByproductsHint": "Smaltisce automaticamente i sottoprodotti non usati (imballaggio fluidi, AWESOME Sink per i solidi)."
+    "sinkByproductsHint": "Smaltisce automaticamente i sottoprodotti non usati (imballaggio fluidi, AWESOME Sink per i solidi).",
+    "addResourceStepOutput": "Schema Risorsa Output",
+    "addResourceStepOutputFor": "Schema Risorsa Output per {name}"
   },
   "transport": {
     "title": "Trasporti",
@@ -515,15 +518,23 @@
     "defaultOilExtractor": "Estrattore di petrolio",
     "defaultMiner": "Trivella",
     "targetMw": "Obiettivo MW",
+    "targetFuelRate": "Combustibile /min",
+    "targetMode": "Obiettivo",
+    "targetModeMw": "MW",
+    "targetModeFuel": "Combustibile /min",
     "generatorType": "Generatore",
     "generatorCoal": "Generatore a carbone",
     "generatorFuel": "Generatore a combustibile",
     "generatorNuclear": "Generatore nucleare",
-    "autoPlanHint": "Lascia MW vuoto per uno schema vuoto. Con MW + combustibile, generatori e fornitura sono automatici.",
+    "autoPlanHint": "Lascia l’obiettivo vuoto per uno schema vuoto. Con obiettivo + combustibile, generatori e fornitura sono automatici.",
+    "linkFuelProduction": "Crea produzione combustibile collegata",
+    "linkFuelProductionHint": "Per combustibili craftati (non carbone), crea anche uno schema in Produzione e lo collega ai generatori. Carbone e acqua restano come estrazioni in Energia.",
+    "linkToGenerator": "Collega a generatore:",
     "sectionTarget": "Obiettivo potenza",
     "replan": "Ricostruisci schema",
-    "targetsHint": "Cambiare MW, generatore, combustibile o frammenti energetici ricostruisce generatori, estrazioni e produzione collegata.",
+    "targetsHint": "Cambiare modalità/valore obiettivo, generatore, combustibile o frammenti energetici ricostruisce generatori ed estrazioni; la produzione combustibile collegata solo se l’opzione è attiva.",
     "invalidTargetMw": "Inserisci un obiettivo MW valido maggiore di zero.",
+    "invalidTargetFuel": "Inserisci un consumo combustibile valido maggiore di zero.",
     "invalidGeneratorFuel": "Scegli un generatore e un combustibile per la generazione automatica.",
     "treeView": "Visualizzazione ad albero",
     "treeViewTitle": "Visualizza tutto lo schema energia come grafico ad albero"
@@ -607,7 +618,9 @@
     "detailAltSchemas": "Schemi alternativi ({count})",
     "detailNoSchemas": "Nessuno schema di produzione registrato per questa risorsa.",
     "resourceNotFound": "Risorsa non trovata.",
-    "detailLoadError": "Errore nel caricamento del dettaglio."
+    "detailLoadError": "Errore nel caricamento del dettaglio.",
+    "selectResourceSubConsume": "Scegli la risorsa da usare o smaltire",
+    "selectSchemaConsumeHint": "Scegli uno schema che usa questa risorsa come input."
   },
   "legal": {
     "title": "Informazioni legali, attribuzioni e limitazione di responsabilità",
@@ -779,6 +792,7 @@
     "autoPlanFailed": "Impossibile generare automaticamente lo schema per questo prodotto."
   },
   "picker": {
-    "noResources": "Nessuna risorsa trovata."
+    "noResources": "Nessuna risorsa trovata.",
+    "history": "Cronologia (ultime risorse visualizzate)"
   }
 }

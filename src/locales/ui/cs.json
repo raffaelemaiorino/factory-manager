@@ -171,14 +171,14 @@
     "emptyList": "Žádné výrobní plány.",
     "emptyListHint": "Vytvořte první plán tlačítkem «Nový plán».",
     "errorLoadList": "Chyba načítání výrobních plánů.",
-    "treeView": "Stromové zobrazení",
-    "treeViewGroups": "Strom podle skupin",
+    "treeView": "Strom",
+    "treeViewGroups": "Strom skupin",
     "backToEditor": "Zpět do editoru",
     "backToEditorPlan": "Zpět do editoru plánu",
     "treeViewTitle": "Zobrazit celý řetězec jako strom",
     "treeViewGroupsTitle": "Řetězec podle skupin (hlavní vstupy/výstupy)",
-    "addExtraction": "Přidat těžbu",
-    "addResourceStep": "Přidat krok suroviny",
+    "addExtraction": "Těžba",
+    "addResourceStep": "Schéma suroviny Input",
     "sectionExtractions": "Těžba surovin",
     "sectionResourceSteps": "Kroky surovin",
     "groupMinerals": "Rudy",
@@ -202,7 +202,7 @@
     "expandGroup": "Rozbalit skupinu",
     "collapseGroup": "Sbalit skupinu",
     "treeViewOfGroup": "Strom skupiny {name}",
-    "treeViewButton": "Stromové zobrazení",
+    "treeViewButton": "Strom",
     "highlightStep": "Zvýraznit krok",
     "highlightStepTitle": "Zvýraznit krok zeleným pozadím",
     "highlightGroup": "Zvýraznit skupinu",
@@ -235,6 +235,7 @@
     "summaryStep": "Krok",
     "noProductionObjectives": "Žádné výrobní cíle",
     "inputsPerMachine": "Vstup / stroj",
+    "outputsPerMachine": "Výstup / stroj",
     "addResourceStepFor": "Přidat krok pro {name}",
     "addAnotherExtraction": "Přidat další těžbu této suroviny",
     "addAnotherExtractionAria": "Přidat další těžbu {name}",
@@ -328,7 +329,9 @@
     "manifoldAlignOptionShares": "Belts: {shares}/min",
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
-    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough."
+    "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
+    "addResourceStepOutput": "Schéma suroviny Output",
+    "addResourceStepOutputFor": "Schéma suroviny Output pro {name}"
   },
   "energy": {
     "title": "Energie",
@@ -457,7 +460,9 @@
     "productionCreateAddProduct": "Add product",
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Nová doprava",
-    "transportCreatePlaceholder": "např. Hypertrubice → továrna"
+    "transportCreatePlaceholder": "např. Hypertrubice → továrna",
+    "selectResourceSubConsume": "Vyberte surovinu k použití nebo likvidaci",
+    "selectSchemaConsumeHint": "Vyberte recept, který používá tuto surovinu jako vstup."
   },
   "legal": {
     "title": "Právní informace, atribuce a vyloučení odpovědnosti",
@@ -616,7 +621,8 @@
     "autoPlanFailed": "Could not auto-plan this product."
   },
   "picker": {
-    "noResources": "Nebyly nalezeny suroviny."
+    "noResources": "Nebyly nalezeny suroviny.",
+    "history": "Historie (naposledy zobrazené suroviny)"
   },
   "_meta": {
     "locale": "cs",
