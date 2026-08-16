@@ -535,6 +535,7 @@
     "targetsHint": "Cambiare modalità/valore obiettivo, generatore, combustibile o frammenti energetici ricostruisce generatori ed estrazioni; la produzione combustibile collegata solo se l’opzione è attiva.",
     "invalidTargetMw": "Inserisci un obiettivo MW valido maggiore di zero.",
     "invalidTargetFuel": "Inserisci un consumo combustibile valido maggiore di zero.",
+    "electricity": "Elettricità",
     "invalidGeneratorFuel": "Scegli un generatore e un combustibile per la generazione automatica.",
     "treeView": "Visualizzazione ad albero",
     "treeViewTitle": "Visualizza tutto lo schema energia come grafico ad albero"

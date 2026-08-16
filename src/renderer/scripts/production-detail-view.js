@@ -635,7 +635,7 @@ function renderResourcePickerItem(item) {
 function renderResourcePickerCategories(categories) {
   const countEl = document.getElementById('resource-picker-count');
   const total = categories.reduce((sum, cat) => sum + cat.items.length, 0);
-  countEl.textContent = `${total} risorse`;
+  countEl.textContent = formatUiResourcesCount(total);
 
   if (!total) {
     return `<p class="empty-state">${escapeHtml(t('picker.noResources'))}</p>`;

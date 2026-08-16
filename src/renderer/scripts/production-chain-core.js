@@ -1761,6 +1761,38 @@ function getProducerOutputSurplus(producer, itemSlug, allSteps) {
   return normalizeLinkDelta(outputRate - totalDemand, outputRate);
 }
 
+function getExternalProducerAttributedDemand(
+  producerStepId,
+  consumer,
+  itemSlug,
+  allSteps,
+  producerRate
+) {
+  const outputRate = Number(producerRate) || 0;
+  if (!(outputRate > 0) || !consumer) return 0;
+
+  const consumers = (allSteps || [])
+    .filter((candidate) => isProducerLinkedToConsumer(candidate, producerStepId, itemSlug))
+    .sort(
+      (left, right) =>
+        (left.sort_order ?? 0) - (right.sort_order ?? 0) || Number(left.id) - Number(right.id)
+    );
+
+  if (!consumers.length) {
+    const required = getStepInputRateForItem(consumer, itemSlug);
+    return window.ProductionScale.roundProduction(Math.min(outputRate, required || outputRate));
+  }
+
+  let remaining = outputRate;
+  for (const candidate of consumers) {
+    const required = getStepInputRateForItem(candidate, itemSlug);
+    const take = window.ProductionScale.roundProduction(Math.min(remaining, required));
+    if (Number(candidate.id) === Number(consumer.id)) return take;
+    remaining = window.ProductionScale.roundProduction(Math.max(0, remaining - take));
+  }
+  return 0;
+}
+
 function getConsumerProducerCoveredRate(consumer, itemSlug, allSteps) {
   if (!consumer) return 0;
   let total = 0;
@@ -1770,9 +1802,12 @@ function getConsumerProducerCoveredRate(consumer, itemSlug, allSteps) {
     if (producer) {
       total += getProducerAttributedDemand(producer, consumer, itemSlug, allSteps);
     } else {
-      const required = getStepInputRateForItem(consumer, itemSlug);
-      total += window.ProductionScale.roundProduction(
-        Math.min(Number(link.producer_rate) || 0, required || Number(link.producer_rate) || 0)
+      total += getExternalProducerAttributedDemand(
+        link.producer_step_id,
+        consumer,
+        itemSlug,
+        allSteps,
+        link.producer_rate
       );
     }
   }
@@ -1791,9 +1826,12 @@ function getConsumerLinkedInputRate(consumer, itemSlug, allSteps, allExtractions
       if (producer) {
         total += getProducerAttributedDemand(producer, consumer, itemSlug, allSteps);
       } else {
-        const required = getStepInputRateForItem(consumer, itemSlug);
-        total += window.ProductionScale.roundProduction(
-          Math.min(Number(link.producer_rate) || 0, required || Number(link.producer_rate) || 0)
+        total += getExternalProducerAttributedDemand(
+          link.producer_step_id,
+          consumer,
+          itemSlug,
+          allSteps,
+          link.producer_rate
         );
       }
       continue;
@@ -2184,11 +2222,14 @@ function getLinkedProducersForInput(step, itemSlug, allSteps) {
   const links = (step.input_links?.[itemSlug] ?? []).filter((link) => link.producer_step_id);
   return links.map((link) => {
     const producer = allSteps.find((candidate) => candidate.id === link.producer_step_id);
-    const required = getStepInputRateForItem(step, itemSlug);
     const attributed = producer
       ? getProducerAttributedDemand(producer, step, itemSlug, allSteps)
-      : window.ProductionScale.roundProduction(
-          Math.min(Number(link.producer_rate) || 0, required || Number(link.producer_rate) || 0)
+      : getExternalProducerAttributedDemand(
+          link.producer_step_id,
+          step,
+          itemSlug,
+          allSteps,
+          link.producer_rate
         );
     const displayName =
       link.producer_chain_name ||
