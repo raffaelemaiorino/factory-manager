@@ -307,19 +307,21 @@
       (link) => Number(link.producer_production_step_id) === Number(objective.step_id)
     );
     if (linkedHere) {
-      return formatRate(objective.rate);
+      return formatRate(getAttributedProductionShare(objective.step_id, generator, itemSlug));
     }
 
     // excess_rate already subtracts other production + energy outbound demand
-    const available = objective.excess_rate ?? objective.rate ?? 0;
-    if (
-      available > 0 &&
-      available + (UI.LINK_BALANCE_TOLERANCE ?? 0.05) < objective.rate
-    ) {
-      return `${formatRate(available)} liberi`;
+    const available = Number(objective.excess_rate);
+    const outputRate = Number(objective.rate) || 0;
+    const tolerance = UI.LINK_BALANCE_TOLERANCE ?? 0.05;
+    if (!Number.isFinite(available) || available <= tolerance) {
+      return t('production.linkFullyUsed');
+    }
+    if (available + tolerance < outputRate) {
+      return t('production.surplusFree', { rate: formatRate(available) });
     }
 
-    return formatRate(objective.rate);
+    return formatRate(outputRate);
   }
 
   function getProductionObjectivesForSlug(itemSlug, generator) {
@@ -347,12 +349,54 @@
     return generator.production_input_links?.[itemSlug] ?? [];
   }
 
+  function getLinkedProducerIds(generator, itemSlug) {
+    return [
+      ...new Set(
+        getLinkedProductionForInput(generator, itemSlug)
+          .map((link) => Number(link.producer_production_step_id))
+          .filter((id) => Number.isFinite(id) && id > 0)
+      ),
+    ];
+  }
+
+  function getAttributedProductionShare(producerStepId, generator, itemSlug) {
+    const round = (value) => window.ProductionScale.roundProduction(value);
+    const generators = activeEnergyDetail?.generators ?? [];
+    const consumers = generators
+      .filter((candidate) =>
+        getLinkedProducerIds(candidate, itemSlug).includes(Number(producerStepId))
+      )
+      .sort(
+        (left, right) =>
+          (left.sort_order ?? 0) - (right.sort_order ?? 0) || Number(left.id) - Number(right.id)
+      );
+
+    const link = getLinkedProductionForInput(generator, itemSlug).find(
+      (entry) => Number(entry.producer_production_step_id) === Number(producerStepId)
+    );
+    const objective = (activeEnergyDetail?.production_objectives ?? []).find(
+      (entry) =>
+        Number(entry.step_id) === Number(producerStepId) && entry.item_slug === itemSlug
+    );
+    const outputRate = Number(objective?.rate ?? link?.producer_rate) || 0;
+    if (!(outputRate > 0) || !consumers.length) return 0;
+
+    let remaining = outputRate;
+    for (const consumer of consumers) {
+      const need = getGeneratorDemandForSlug(consumer, itemSlug);
+      const take = round(Math.min(remaining, need));
+      if (Number(consumer.id) === Number(generator.id)) return take;
+      remaining = round(Math.max(0, remaining - take));
+    }
+    return 0;
+  }
+
   function getLinkedProductionRate(generator, itemSlug) {
-    const UI = productionUi();
     const round = (value) => window.ProductionScale.roundProduction(value);
     return round(
-      getLinkedProductionForInput(generator, itemSlug).reduce(
-        (sum, link) => sum + (link.producer_rate ?? 0),
+      getLinkedProducerIds(generator, itemSlug).reduce(
+        (sum, producerId) =>
+          sum + getAttributedProductionShare(producerId, generator, itemSlug),
         0
       )
     );
@@ -704,7 +748,7 @@
   }
 
   function renderEnergyGeneratorOutputs(generator) {
-    const powerLabel = 'Elettricità';
+    const powerLabel = t('energy.electricity');
     const parts = [
       `
       <div class="craft-io-item">
@@ -800,32 +844,55 @@
     );
   }
 
+  function getEnergyExtractionAllocationTable(
+    itemSlug,
+    generators = activeEnergyDetail?.generators ?? [],
+    allExtractions = activeEnergyDetail?.extractions ?? []
+  ) {
+    const buildTable = window.ExtractionLinkAlloc?.buildExtractionAllocationTable;
+    if (!itemSlug || typeof buildTable !== 'function') return new Map();
+    return buildTable({
+      itemSlug,
+      steps: generators,
+      extractions: allExtractions,
+      getStepInputRate: (generator, slug) => getGeneratorDemandForSlug(generator, slug),
+      getExtractionOutputRate: (extraction) =>
+        extraction.output_rate ?? extraction.target_output ?? 0,
+      getProducerCoveredRate: (generator, slug) => getLinkedProductionRate(generator, slug),
+      round: (value) => window.ProductionScale.roundProduction(value),
+    });
+  }
+
+  function getEnergyAllocatedExtractionRate(extractionId, generatorId, itemSlug, generators, allExtractions) {
+    const table = getEnergyExtractionAllocationTable(itemSlug, generators, allExtractions);
+    return table.get(Number(extractionId))?.get(Number(generatorId)) ?? 0;
+  }
+
+  function getEnergyCoveredFromExtractions(generator, itemSlug, allExtractions, generators) {
+    const round = (value) => window.ProductionScale.roundProduction(value);
+    const table = getEnergyExtractionAllocationTable(itemSlug, generators, allExtractions);
+    let covered = 0;
+    for (const row of table.values()) {
+      covered += row.get(Number(generator.id)) ?? 0;
+    }
+    return round(covered);
+  }
+
   function getEnergyExtractionAttributedDemand(
     extraction,
     generators = activeEnergyDetail?.generators ?? [],
     allExtractions = activeEnergyDetail?.extractions ?? []
   ) {
-    const UI = productionUi();
     const round = (value) => window.ProductionScale.roundProduction(value);
     const itemSlug = extraction.item?.slug;
     if (!itemSlug) return 0;
-
+    const row = getEnergyExtractionAllocationTable(itemSlug, generators, allExtractions).get(
+      Number(extraction.id)
+    );
+    if (!row) return 0;
     let demand = 0;
-    for (const generator of getLinkedGeneratorsForExtraction(extraction, generators)) {
-      const remaining = getGeneratorRemainingNeedFromExtraction(generator, itemSlug);
-      const linkedExtractions = allExtractions.filter((candidate) =>
-        isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
-      );
-      const totalOutput = linkedExtractions.reduce(
-        (sum, candidate) => sum + (candidate.output_rate ?? candidate.target_output ?? 0),
-        0
-      );
-      const outputRate = extraction.output_rate ?? extraction.target_output ?? 0;
-      const share =
-        totalOutput > 0 ? (outputRate / totalOutput) * remaining : remaining / Math.max(1, linkedExtractions.length);
-      demand = round(demand + share);
-    }
-    return demand;
+    for (const rate of row.values()) demand += rate;
+    return round(demand);
   }
 
   function getEnergyExtractionOutputSurplus(extraction, generators, allExtractions) {
@@ -842,15 +909,18 @@
     const itemSlug = extraction.item?.slug;
     if (!itemSlug) return 0;
 
+    const seen = new Set();
     let shortfall = 0;
     for (const generator of getLinkedGeneratorsForExtraction(extraction, generators)) {
+      const key = Number(generator.id);
+      if (seen.has(key)) continue;
+      seen.add(key);
       const remaining = getGeneratorRemainingNeedFromExtraction(generator, itemSlug);
-      const linkedExtractions = allExtractions.filter((candidate) =>
-        isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
-      );
-      const covered = linkedExtractions.reduce(
-        (sum, candidate) => sum + (candidate.output_rate ?? candidate.target_output ?? 0),
-        0
+      const covered = getEnergyCoveredFromExtractions(
+        generator,
+        itemSlug,
+        allExtractions,
+        generators
       );
       shortfall += normalize(remaining - covered, remaining);
     }
@@ -875,12 +945,11 @@
       const remaining = getGeneratorRemainingNeedFromExtraction(generator, itemSlug);
       if (remaining <= tolerance) return false;
 
-      const linkedExtractions = allExtractions.filter((candidate) =>
-        isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
-      );
-      const covered = linkedExtractions.reduce(
-        (sum, candidate) => sum + (candidate.output_rate ?? candidate.target_output ?? 0),
-        0
+      const covered = getEnergyCoveredFromExtractions(
+        generator,
+        itemSlug,
+        allExtractions,
+        generators
       );
       if (covered + tolerance >= remaining) return false;
 
@@ -902,16 +971,17 @@
       (UI.formatRateWithUnit ?? formatProductionValue)(value, unit);
     const remaining = getGeneratorRemainingNeedFromExtraction(generator, itemSlug);
     if (isExtractionLinkedToGenerator(generator, extraction.id, itemSlug)) {
+      const generators = activeEnergyDetail?.generators ?? [];
+      const share = getEnergyAllocatedExtractionRate(
+        extraction.id,
+        generator.id,
+        itemSlug,
+        generators,
+        allExtractions
+      );
       const linkedExtractions = allExtractions.filter((candidate) =>
         isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
       );
-      const totalOutput = linkedExtractions.reduce(
-        (sum, candidate) => sum + (candidate.output_rate ?? candidate.target_output ?? 0),
-        0
-      );
-      const outputRate = extraction.output_rate ?? extraction.target_output ?? 0;
-      const share =
-        totalOutput > 0 ? (outputRate / totalOutput) * remaining : remaining;
       if (share + (UI.LINK_BALANCE_TOLERANCE ?? 0.05) < remaining && linkedExtractions.length > 1) {
         return t('production.linkPartialRate', {
           allocated: formatRate(share),
@@ -1011,17 +1081,13 @@
                           generator,
                           itemSlug
                         );
-                        const linkedExtractions = allExtractions.filter((candidate) =>
-                          isExtractionLinkedToGenerator(generator, candidate.id, itemSlug)
+                        const allocated = getEnergyAllocatedExtractionRate(
+                          extraction.id,
+                          generator.id,
+                          itemSlug,
+                          generators,
+                          allExtractions
                         );
-                        const totalOutput = linkedExtractions.reduce(
-                          (sum, candidate) =>
-                            sum + (candidate.output_rate ?? candidate.target_output ?? 0),
-                          0
-                        );
-                        const output = extraction.output_rate ?? extraction.target_output ?? 0;
-                        const allocated =
-                          totalOutput > 0 ? (output / totalOutput) * remaining : remaining;
                         const partial =
                           allocated + tolerance < remaining && remaining > tolerance;
                         const rateLabel = formatRate(allocated);

@@ -316,7 +316,11 @@ function buildTransportProjectSummary(plan) {
   const calc = plan.calculation || {};
   const vehicle = plan.vehicle || {};
   const cargoCount = plan.cargo?.length ?? 0;
-  const vehiclesNeeded = Number(calc.vehicles_needed) || 0;
+  const perTrain = Number(calc.vehicles_needed) || 0;
+  const fleet = Number(calc.vehicles_needed_fleet);
+  const trainCount = Number(plan.train_count || calc.train_count) || 1;
+  const vehiclesNeeded =
+    Number.isFinite(fleet) && fleet > 0 ? fleet : perTrain * Math.max(1, trainCount);
   const health = getTransportPlanHealth(plan);
 
   const metrics = [];

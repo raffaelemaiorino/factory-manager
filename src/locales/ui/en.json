@@ -524,6 +524,7 @@
     "targetsHint": "Changing target mode/value, generator, fuel, or power shards rebuilds generators and extractions; linked fuel production only if the option is on.",
     "invalidTargetMw": "Enter a valid target MW greater than zero.",
     "invalidTargetFuel": "Enter a valid fuel rate greater than zero.",
+    "electricity": "Electricity",
     "invalidGeneratorFuel": "Choose a generator and fuel for auto-plan.",
     "treeView": "Tree view",
     "treeViewTitle": "View the full power plan as a tree graph",

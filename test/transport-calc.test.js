@@ -1,6 +1,6 @@
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
-const { calculateTransportNeed } = require('../src/database/transport-calc');
+const { calculateTransportNeed, isFluidItem } = require('../src/database/transport-calc');
 const { getVehicleBySlug } = require('../src/database/seeds/vehicles');
 
 describe('transport-calc', () => {
@@ -291,5 +291,24 @@ describe('transport-calc', () => {
     assert.equal(car.length, 48);
     assert.equal(car.filter((s) => s?.item_slug === 'iron-plate').length, 24);
     assert.equal(car.filter((s) => s?.item_slug === 'iron-rod').length, 24);
+  });
+
+  it('missing items are not treated as fluids', () => {
+    assert.equal(isFluidItem({ stack_size: null, is_fluid: true }), true);
+    assert.equal(isFluidItem({ stack_size: null, is_fluid: 1 }), true);
+    assert.equal(isFluidItem({ stack_size: null, is_fluid: false }), false);
+    assert.equal(isFluidItem({ stack_size: null, is_fluid: 0 }), false);
+    assert.equal(isFluidItem({ stack_size: 100, is_fluid: false }), false);
+    const missing = calculateTransportNeed(
+      getVehicleBySlug('freight-wagon'),
+      [{ item_slug: 'deleted-item', rate: 60, stack_size: null, is_fluid: false }],
+      180,
+      180,
+      { belt_mk: 5 }
+    );
+    assert.equal(missing.ok, false);
+    assert.ok(
+      (missing.incompatibilities || []).some((row) => row.error === 'missing_stack_size')
+    );
   });
 });

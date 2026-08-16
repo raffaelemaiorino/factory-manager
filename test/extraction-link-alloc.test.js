@@ -115,3 +115,33 @@ describe('extraction-link-alloc', () => {
     assert.equal(table.get(1).get(10), 600);
   });
 });
+
+describe('extraction-link-alloc energy generators', () => {
+  it('splits one 150 water extractor across two generators that each need 100', () => {
+    const extractor = { id: 1, item: { slug: 'water' }, output_rate: 150 };
+    const genA = {
+      id: 10,
+      sort_order: 0,
+      scaled_inputs: [{ item_slug: 'water', amount: 100 }],
+      input_links: { water: [{ producer_extraction_id: 1 }] },
+    };
+    const genB = {
+      id: 11,
+      sort_order: 1,
+      scaled_inputs: [{ item_slug: 'water', amount: 100 }],
+      input_links: { water: [{ producer_extraction_id: 1 }] },
+    };
+
+    const table = buildExtractionAllocationTable({
+      itemSlug: 'water',
+      steps: [genA, genB],
+      extractions: [extractor],
+      getStepInputRate: (step, slug) =>
+        Number((step.scaled_inputs ?? []).find((io) => io.item_slug === slug)?.amount) || 0,
+      getExtractionOutputRate: (extraction) => Number(extraction.output_rate) || 0,
+    });
+
+    assert.equal(table.get(1).get(10), 100);
+    assert.equal(table.get(1).get(11), 50);
+  });
+});
