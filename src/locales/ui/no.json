@@ -182,7 +182,7 @@
     "treeViewTitle": "Vis hele kjeden som tre",
     "treeViewGroupsTitle": "Kjede per gruppe (kun hoved inn/ut)",
     "addExtraction": "Utvinning",
-    "addResourceStep": "Ressursskjema Input",
+    "addResourceStep": "Ressursproduksjonsskjema",
     "sectionExtractions": "Ressursutvinning",
     "sectionResourceSteps": "Ressurstrinn",
     "groupMinerals": "Malmer",
@@ -240,7 +240,7 @@
     "noProductionObjectives": "Ingen produksjonsmål",
     "inputsPerMachine": "Input / maskin",
     "outputsPerMachine": "Output / maskin",
-    "addResourceStepFor": "Legg til ressurstrinn for {name}",
+    "addResourceStepFor": "Ressursproduksjonsskjema for {name}",
     "addAnotherExtraction": "Legg til utvinning for samme ressurs",
     "addAnotherExtractionAria": "Legg til utvinning av {name}",
     "resetExtraction": "Tilbakestill utvinning",
@@ -334,8 +334,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Ressursskjema Output",
-    "addResourceStepOutputFor": "Ressursskjema Output for {name}"
+    "addResourceStepOutput": "Ressursforbruksskjema",
+    "addResourceStepOutputFor": "Ressursforbruksskjema for {name}"
   },
   "energy": {
     "title": "Kraft",
@@ -466,7 +466,9 @@
     "transportCreateTitle": "Ny transport",
     "transportCreatePlaceholder": "f.eks. Hyperrør → fabrikk",
     "selectResourceSubConsume": "Velg ressurs å bruke eller kvitte deg med",
-    "selectSchemaConsumeHint": "Velg en oppskrift som bruker denne ressursen som input."
+    "selectSchemaConsumeHint": "Velg en oppskrift som bruker denne ressursen som input.",
+    "selectResourceOutput": "Velg OUTPUT-ressurs",
+    "selectResourceInput": "Velg INPUT-ressurs"
   },
   "legal": {
     "title": "Juridisk informasjon, attribusjon og ansvarsfraskrivelse",

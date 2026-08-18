@@ -182,7 +182,7 @@
     "treeViewTitle": "Näytä koko ketju puukaaviona",
     "treeViewGroupsTitle": "Ketju ryhmittäin (vain pääsyötteet/-tuotteet)",
     "addExtraction": "Louhinta",
-    "addResourceStep": "Resurssikaavio Input",
+    "addResourceStep": "Resurssin tuotantokaavio",
     "sectionExtractions": "Resurssien louhinta",
     "sectionResourceSteps": "Resurssivaiheet",
     "groupMinerals": "Malmit",
@@ -240,7 +240,7 @@
     "noProductionObjectives": "Ei tuotantotavoitteita",
     "inputsPerMachine": "Syöte / kone",
     "outputsPerMachine": "Tuotos / kone",
-    "addResourceStepFor": "Lisää resurssivaihe: {name}",
+    "addResourceStepFor": "Resurssin tuotantokaavio: {name}",
     "addAnotherExtraction": "Lisää toinen louhinta tälle resurssille",
     "addAnotherExtractionAria": "Lisää toinen louhinta: {name}",
     "resetExtraction": "Nollaa louhinta",
@@ -334,8 +334,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Resurssikaavio Output",
-    "addResourceStepOutputFor": "Resurssikaavio Output: {name}"
+    "addResourceStepOutput": "Resurssin kulutuskaavio",
+    "addResourceStepOutputFor": "Resurssin kulutuskaavio: {name}"
   },
   "energy": {
     "title": "Sähkö",
@@ -466,7 +466,9 @@
     "transportCreateTitle": "Uusi kuljetus",
     "transportCreatePlaceholder": "esim. Hyperputki → tehdas",
     "selectResourceSubConsume": "Valitse käytettävä tai hävitettävä resurssi",
-    "selectSchemaConsumeHint": "Valitse resepti, joka käyttää tätä resurssia syötteenä."
+    "selectSchemaConsumeHint": "Valitse resepti, joka käyttää tätä resurssia syötteenä.",
+    "selectResourceOutput": "Valitse OUTPUT-resurssi",
+    "selectResourceInput": "Valitse INPUT-resurssi"
   },
   "legal": {
     "title": "Oikeudelliset tiedot, attribuutiot ja vastuuvapauslauseke",

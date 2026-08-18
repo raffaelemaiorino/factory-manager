@@ -9,6 +9,16 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [3.9.7] - 2026-08-18
+
+### Changed
+- Produzione: i pulsanti sono «Schema Produzione Risorsa» e «Schema Consumo Risorsa»; il popup apre con «Seleziona risorsa di OUTPUT/INPUT» e i relativi sottotitoli
+
+## [3.9.6] - 2026-08-18
+
+### Changed
+- Produzione: i pulsanti «Schema Risorsa Input/Output» sono rinominati «Produrre risorsa» e «Consumare risorsa»; aggiornati anche i tooltip su ingredienti e prodotti
+
 ## [3.9.5] - 2026-08-17
 
 ### Changed

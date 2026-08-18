@@ -178,7 +178,7 @@
     "treeViewTitle": "Toon de hele keten als boom",
     "treeViewGroupsTitle": "Keten per groep (hoofd-inputs/outputs)",
     "addExtraction": "Winning",
-    "addResourceStep": "Grondstofschema Input",
+    "addResourceStep": "Grondstofproductieschema",
     "sectionExtractions": "Winning",
     "sectionResourceSteps": "Grondstofstappen",
     "groupMinerals": "Ertsen",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "Geen productiedoelen",
     "inputsPerMachine": "Input / machine",
     "outputsPerMachine": "Output / machine",
-    "addResourceStepFor": "Grondstofstap voor {name}",
+    "addResourceStepFor": "Grondstofproductieschema voor {name}",
     "addAnotherExtraction": "Nog een winning voor deze grondstof",
     "addAnotherExtractionAria": "Nog een winning van {name}",
     "resetExtraction": "Winning resetten",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Grondstofschema Output",
-    "addResourceStepOutputFor": "Grondstofschema Output voor {name}"
+    "addResourceStepOutput": "Grondstofverbruikschema",
+    "addResourceStepOutputFor": "Grondstofverbruikschema voor {name}"
   },
   "energy": {
     "title": "Stroom",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "Nieuw transport",
     "transportCreatePlaceholder": "bijv. Hyperbuis → fabriek",
     "selectResourceSubConsume": "Kies de grondstof om te gebruiken of af te voeren",
-    "selectSchemaConsumeHint": "Kies een recept dat deze grondstof als input gebruikt."
+    "selectSchemaConsumeHint": "Kies een recept dat deze grondstof als input gebruikt.",
+    "selectResourceOutput": "Selecteer OUTPUT-grondstof",
+    "selectResourceInput": "Selecteer INPUT-grondstof"
   },
   "legal": {
     "title": "Juridische informatie, attributies en disclaimer",

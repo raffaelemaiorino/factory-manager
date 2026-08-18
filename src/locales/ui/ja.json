@@ -178,7 +178,7 @@
     "treeViewTitle": "チェーン全体をツリーで表示",
     "treeViewGroupsTitle": "グループ別（主要入出力のみ）",
     "addExtraction": "採掘",
-    "addResourceStep": "リソーススキーマ Input",
+    "addResourceStep": "リソース生産スキーマ",
     "sectionExtractions": "資源採掘",
     "sectionResourceSteps": "リソースステップ",
     "groupMinerals": "鉱物",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "生産目標なし",
     "inputsPerMachine": "入力 / 機械",
     "outputsPerMachine": "出力 / 機械",
-    "addResourceStepFor": "{name} のステップを追加",
+    "addResourceStepFor": "{name} の生産スキーマ",
     "addAnotherExtraction": "このリソースの採掘を追加",
     "addAnotherExtractionAria": "{name} の採掘を追加",
     "resetExtraction": "採掘をリセット",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "リソーススキーマ Output",
-    "addResourceStepOutputFor": "{name} のリソーススキーマ Output"
+    "addResourceStepOutput": "リソース消費スキーマ",
+    "addResourceStepOutputFor": "{name} の消費スキーマ"
   },
   "energy": {
     "title": "電力",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "新規輸送",
     "transportCreatePlaceholder": "例: ハイパーループ → 工場",
     "selectResourceSubConsume": "使用または処理するリソースを選択",
-    "selectSchemaConsumeHint": "このリソースを入力として使うレシピを選んでください。"
+    "selectSchemaConsumeHint": "このリソースを入力として使うレシピを選んでください。",
+    "selectResourceOutput": "OUTPUT リソースを選択",
+    "selectResourceInput": "INPUT リソースを選択"
   },
   "legal": {
     "title": "法的情報、帰属、免責事項",

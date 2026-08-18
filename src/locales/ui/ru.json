@@ -178,7 +178,7 @@
     "treeViewTitle": "Показать всю цепочку деревом",
     "treeViewGroupsTitle": "Цепочка по группам (основные входы/выходы)",
     "addExtraction": "Добыча",
-    "addResourceStep": "Схема ресурса Input",
+    "addResourceStep": "Схема производства ресурса",
     "sectionExtractions": "Добыча ресурсов",
     "sectionResourceSteps": "Шаги ресурсов",
     "groupMinerals": "Руды",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "Нет целей производства",
     "inputsPerMachine": "Вход / машина",
     "outputsPerMachine": "Выход / машина",
-    "addResourceStepFor": "Добавить шаг для {name}",
+    "addResourceStepFor": "Схема производства ресурса для {name}",
     "addAnotherExtraction": "Ещё одна добыча этого ресурса",
     "addAnotherExtractionAria": "Ещё одна добыча {name}",
     "resetExtraction": "Сбросить добычу",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Схема ресурса Output",
-    "addResourceStepOutputFor": "Схема ресурса Output для {name}"
+    "addResourceStepOutput": "Схема потребления ресурса",
+    "addResourceStepOutputFor": "Схема потребления ресурса для {name}"
   },
   "energy": {
     "title": "Энергия",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "Новый транспорт",
     "transportCreatePlaceholder": "напр. Гипертруба → завод",
     "selectResourceSubConsume": "Выберите ресурс для использования или утилизации",
-    "selectSchemaConsumeHint": "Выберите рецепт, использующий этот ресурс как вход."
+    "selectSchemaConsumeHint": "Выберите рецепт, использующий этот ресурс как вход.",
+    "selectResourceOutput": "Выберите ресурс OUTPUT",
+    "selectResourceInput": "Выберите ресурс INPUT"
   },
   "legal": {
     "title": "Правовая информация, атрибуция и отказ от ответственности",

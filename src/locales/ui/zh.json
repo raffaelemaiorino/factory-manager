@@ -178,7 +178,7 @@
     "treeViewTitle": "以树图查看整条生产链",
     "treeViewGroupsTitle": "按分组查看（仅主要输入/输出）",
     "addExtraction": "开采",
-    "addResourceStep": "资源方案 Input",
+    "addResourceStep": "资源生产方案",
     "sectionExtractions": "资源开采",
     "sectionResourceSteps": "资源步骤",
     "groupMinerals": "矿物",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "无生产目标",
     "inputsPerMachine": "输入 / 机器",
     "outputsPerMachine": "输出 / 机器",
-    "addResourceStepFor": "为 {name} 添加资源步骤",
+    "addResourceStepFor": "{name} 的生产方案",
     "addAnotherExtraction": "为该资源再添加一处开采",
     "addAnotherExtractionAria": "再添加 {name} 的开采",
     "resetExtraction": "重置开采",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "资源方案 Output",
-    "addResourceStepOutputFor": "{name} 的资源方案 Output"
+    "addResourceStepOutput": "资源消耗方案",
+    "addResourceStepOutputFor": "{name} 的消耗方案"
   },
   "energy": {
     "title": "电力",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "新建运输",
     "transportCreatePlaceholder": "例如：超导管 → 工厂",
     "selectResourceSubConsume": "选择要使用或处理的资源",
-    "selectSchemaConsumeHint": "选择以该资源为输入的配方。"
+    "selectSchemaConsumeHint": "选择以该资源为输入的配方。",
+    "selectResourceOutput": "选择 OUTPUT 资源",
+    "selectResourceInput": "选择 INPUT 资源"
   },
   "legal": {
     "title": "法律信息、归属与免责声明",

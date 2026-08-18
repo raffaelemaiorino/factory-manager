@@ -178,7 +178,7 @@
     "treeViewTitle": "ดูทั้งสายเป็นต้นไม้",
     "treeViewGroupsTitle": "ดูสายตามกลุ่ม (อินพุต/เอาต์พุตหลักเท่านั้น)",
     "addExtraction": "การขุด",
-    "addResourceStep": "สคีมาทรัพยากร Input",
+    "addResourceStep": "สคีมาการผลิตทรัพยากร",
     "sectionExtractions": "การขุดทรัพยากร",
     "sectionResourceSteps": "ขั้นตอนทรัพยากร",
     "groupMinerals": "แร่",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "ไม่มีเป้าหมายการผลิต",
     "inputsPerMachine": "อินพุต / เครื่อง",
     "outputsPerMachine": "เอาต์พุต / เครื่อง",
-    "addResourceStepFor": "เพิ่มขั้นตอนสำหรับ {name}",
+    "addResourceStepFor": "สคีมาการผลิตสำหรับ {name}",
     "addAnotherExtraction": "เพิ่มการขุดอีกสำหรับทรัพยากรนี้",
     "addAnotherExtractionAria": "เพิ่มการขุด {name} อีก",
     "resetExtraction": "รีเซ็ตการขุด",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "สคีมาทรัพยากร Output",
-    "addResourceStepOutputFor": "สคีมาทรัพยากร Output สำหรับ {name}"
+    "addResourceStepOutput": "สคีมาการใช้ทรัพยากร",
+    "addResourceStepOutputFor": "สคีมาการใช้สำหรับ {name}"
   },
   "energy": {
     "title": "พลังงาน",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "ขนส่งใหม่",
     "transportCreatePlaceholder": "เช่น ท่อไฮเปอร์ → โรงงาน",
     "selectResourceSubConsume": "เลือกทรัพยากรที่จะใช้หรือกำจัด",
-    "selectSchemaConsumeHint": "เลือกสูตรที่ใช้ทรัพยากรนี้เป็นอินพุต"
+    "selectSchemaConsumeHint": "เลือกสูตรที่ใช้ทรัพยากรนี้เป็นอินพุต",
+    "selectResourceOutput": "เลือกทรัพยากร OUTPUT",
+    "selectResourceInput": "เลือกทรัพยากร INPUT"
   },
   "legal": {
     "title": "ข้อมูลทางกฎหมาย การระบุที่มา และข้อจำกัดความรับผิด",

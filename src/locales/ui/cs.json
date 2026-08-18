@@ -178,7 +178,7 @@
     "treeViewTitle": "Zobrazit celý řetězec jako strom",
     "treeViewGroupsTitle": "Řetězec podle skupin (hlavní vstupy/výstupy)",
     "addExtraction": "Těžba",
-    "addResourceStep": "Schéma suroviny Input",
+    "addResourceStep": "Schéma výroby suroviny",
     "sectionExtractions": "Těžba surovin",
     "sectionResourceSteps": "Kroky surovin",
     "groupMinerals": "Rudy",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "Žádné výrobní cíle",
     "inputsPerMachine": "Vstup / stroj",
     "outputsPerMachine": "Výstup / stroj",
-    "addResourceStepFor": "Přidat krok pro {name}",
+    "addResourceStepFor": "Schéma výroby suroviny pro {name}",
     "addAnotherExtraction": "Přidat další těžbu této suroviny",
     "addAnotherExtractionAria": "Přidat další těžbu {name}",
     "resetExtraction": "Resetovat těžbu",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Schéma suroviny Output",
-    "addResourceStepOutputFor": "Schéma suroviny Output pro {name}"
+    "addResourceStepOutput": "Schéma spotřeby suroviny",
+    "addResourceStepOutputFor": "Schéma spotřeby suroviny pro {name}"
   },
   "energy": {
     "title": "Energie",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "Nová doprava",
     "transportCreatePlaceholder": "např. Hypertrubice → továrna",
     "selectResourceSubConsume": "Vyberte surovinu k použití nebo likvidaci",
-    "selectSchemaConsumeHint": "Vyberte recept, který používá tuto surovinu jako vstup."
+    "selectSchemaConsumeHint": "Vyberte recept, který používá tuto surovinu jako vstup.",
+    "selectResourceOutput": "Vybrat surovinu OUTPUT",
+    "selectResourceInput": "Vybrat surovinu INPUT"
   },
   "legal": {
     "title": "Právní informace, atribuce a vyloučení odpovědnosti",

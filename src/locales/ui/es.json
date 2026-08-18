@@ -178,7 +178,7 @@
     "treeViewTitle": "Ver toda la cadena como árbol",
     "treeViewGroupsTitle": "Cadena por grupos (solo entradas/salidas principales)",
     "addExtraction": "Extracción",
-    "addResourceStep": "Esquema recurso Input",
+    "addResourceStep": "Esquema producción recurso",
     "sectionExtractions": "Extracciones",
     "sectionResourceSteps": "Pasos de recurso",
     "groupMinerals": "Minerales",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "Sin objetivos de producción",
     "inputsPerMachine": "Entrada / máquina",
     "outputsPerMachine": "Salida / máquina",
-    "addResourceStepFor": "Añadir paso para {name}",
+    "addResourceStepFor": "Esquema producción recurso para {name}",
     "addAnotherExtraction": "Añadir otra extracción para este recurso",
     "addAnotherExtractionAria": "Añadir otra extracción de {name}",
     "resetExtraction": "Restablecer extracción",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Esquema recurso Output",
-    "addResourceStepOutputFor": "Esquema recurso Output para {name}"
+    "addResourceStepOutput": "Esquema consumo recurso",
+    "addResourceStepOutputFor": "Esquema consumo recurso para {name}"
   },
   "energy": {
     "title": "Energía",
@@ -461,8 +461,10 @@
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Nuevo transporte",
     "transportCreatePlaceholder": "ej. Hilo rápido → fábrica",
-    "selectResourceSubConsume": "Elige el recurso a usar o eliminar",
-    "selectSchemaConsumeHint": "Elige una receta que use este recurso como entrada."
+    "selectResourceSubConsume": "Elige el recurso a usar o a desechar",
+    "selectSchemaConsumeHint": "Elige una receta que use este recurso como entrada.",
+    "selectResourceOutput": "Seleccionar recurso de OUTPUT",
+    "selectResourceInput": "Seleccionar recurso de INPUT"
   },
   "legal": {
     "title": "Información legal, atribuciones y descargo de responsabilidad",

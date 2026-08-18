@@ -178,7 +178,7 @@
     "treeViewTitle": "Vis hele kæden som træ",
     "treeViewGroupsTitle": "Kæde efter grupper (kun hoved-input/output)",
     "addExtraction": "Udvinding",
-    "addResourceStep": "Ressourceskema Input",
+    "addResourceStep": "Ressourceproduktionsskema",
     "sectionExtractions": "Ressourceudvinding",
     "sectionResourceSteps": "Ressourcetrin",
     "groupMinerals": "Malme",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "Ingen produktionsmål",
     "inputsPerMachine": "Input / maskine",
     "outputsPerMachine": "Output / maskine",
-    "addResourceStepFor": "Tilføj ressourcetrin for {name}",
+    "addResourceStepFor": "Ressourceproduktionsskema for {name}",
     "addAnotherExtraction": "Tilføj endnu en udvinding for denne ressource",
     "addAnotherExtractionAria": "Tilføj endnu en udvinding af {name}",
     "resetExtraction": "Nulstil udvinding",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Ressourceskema Output",
-    "addResourceStepOutputFor": "Ressourceskema Output for {name}"
+    "addResourceStepOutput": "Ressourceforbrugsskema",
+    "addResourceStepOutputFor": "Ressourceforbrugsskema for {name}"
   },
   "energy": {
     "title": "Strøm",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "Ny transport",
     "transportCreatePlaceholder": "fx Hyperrør → fabrik",
     "selectResourceSubConsume": "Vælg ressource at bruge eller bortskaffe",
-    "selectSchemaConsumeHint": "Vælg en opskrift der bruger denne ressource som input."
+    "selectSchemaConsumeHint": "Vælg en opskrift der bruger denne ressource som input.",
+    "selectResourceOutput": "Vælg OUTPUT-ressource",
+    "selectResourceInput": "Vælg INPUT-ressource"
   },
   "legal": {
     "title": "Juridisk information, attribution og ansvarsfraskrivelse",

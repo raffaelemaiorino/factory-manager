@@ -182,7 +182,7 @@
     "treeViewTitle": "Visa hela kedjan som träd",
     "treeViewGroupsTitle": "Kedja per grupp (endast huvud-in/ut)",
     "addExtraction": "Utvinning",
-    "addResourceStep": "Resursschema Input",
+    "addResourceStep": "Resursproduktionsschema",
     "sectionExtractions": "Resursutvinning",
     "sectionResourceSteps": "Resurssteg",
     "groupMinerals": "Malmer",
@@ -240,7 +240,7 @@
     "noProductionObjectives": "Inga produktionsmål",
     "inputsPerMachine": "Input / maskin",
     "outputsPerMachine": "Output / maskin",
-    "addResourceStepFor": "Lägg till resurssteg för {name}",
+    "addResourceStepFor": "Resursproduktionsschema för {name}",
     "addAnotherExtraction": "Lägg till utvinning för samma resurs",
     "addAnotherExtractionAria": "Lägg till utvinning av {name}",
     "resetExtraction": "Återställ utvinning",
@@ -334,8 +334,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Resursschema Output",
-    "addResourceStepOutputFor": "Resursschema Output för {name}"
+    "addResourceStepOutput": "Resursförbrukningsschema",
+    "addResourceStepOutputFor": "Resursförbrukningsschema för {name}"
   },
   "energy": {
     "title": "El",
@@ -466,7 +466,9 @@
     "transportCreateTitle": "Ny transport",
     "transportCreatePlaceholder": "t.ex. Hyperrör → fabrik",
     "selectResourceSubConsume": "Välj resurs att använda eller göra dig av med",
-    "selectSchemaConsumeHint": "Välj ett recept som använder denna resurs som input."
+    "selectSchemaConsumeHint": "Välj ett recept som använder denna resurs som input.",
+    "selectResourceOutput": "Välj OUTPUT-resurs",
+    "selectResourceInput": "Välj INPUT-resurs"
   },
   "legal": {
     "title": "Juridisk information, attribution och ansvarsfriskrivning",

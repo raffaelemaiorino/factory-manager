@@ -178,7 +178,7 @@
     "treeViewTitle": "Gesamte Kette als Baumdiagramm anzeigen",
     "treeViewGroupsTitle": "Kette nach Gruppen (nur Haupt-Ein-/Ausgänge)",
     "addExtraction": "Abbau",
-    "addResourceStep": "Ressourcenschema Input",
+    "addResourceStep": "Ressourcen-Produktionsschema",
     "sectionExtractions": "Ressourcenabbau",
     "sectionResourceSteps": "Ressourcenschritte",
     "groupMinerals": "Erze",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "Keine Produktionsziele",
     "inputsPerMachine": "Eingang / Maschine",
     "outputsPerMachine": "Ausgang / Maschine",
-    "addResourceStepFor": "Ressourcenschritt für {name}",
+    "addResourceStepFor": "Ressourcen-Produktionsschema für {name}",
     "addAnotherExtraction": "Weiteren Abbau für diese Ressource",
     "addAnotherExtractionAria": "Weiteren Abbau von {name}",
     "resetExtraction": "Abbau zurücksetzen",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Ressourcenschema Output",
-    "addResourceStepOutputFor": "Ressourcenschema Output für {name}"
+    "addResourceStepOutput": "Ressourcen-Verbrauchsschema",
+    "addResourceStepOutputFor": "Ressourcen-Verbrauchsschema für {name}"
   },
   "energy": {
     "title": "Strom",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "Neuer Transport",
     "transportCreatePlaceholder": "z. B. Schnelldraht → Fabrik",
     "selectResourceSubConsume": "Ressource zum Verbrauchen oder Entsorgen wählen",
-    "selectSchemaConsumeHint": "Rezept wählen, das diese Ressource als Input nutzt."
+    "selectSchemaConsumeHint": "Rezept wählen, das diese Ressource als Input nutzt.",
+    "selectResourceOutput": "OUTPUT-Ressource wählen",
+    "selectResourceInput": "INPUT-Ressource wählen"
   },
   "legal": {
     "title": "Rechtliche Hinweise, Attributionen und Haftungsausschluss",

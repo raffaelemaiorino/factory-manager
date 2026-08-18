@@ -182,7 +182,7 @@
     "treeViewTitle": "Teljes lánc megjelenítése faként",
     "treeViewGroupsTitle": "Lánc csoportok szerint (csak fő be-/kimenetek)",
     "addExtraction": "Kitermelés",
-    "addResourceStep": "Erőforrás-séma Input",
+    "addResourceStep": "Erőforrás-termelési séma",
     "sectionExtractions": "Erőforrás-kitermelés",
     "sectionResourceSteps": "Erőforrás-lépések",
     "groupMinerals": "Ásványok",
@@ -240,7 +240,7 @@
     "noProductionObjectives": "Nincs termelési cél",
     "inputsPerMachine": "Bemenet / gép",
     "outputsPerMachine": "Kimenet / gép",
-    "addResourceStepFor": "Erőforrás-lépés hozzáadása: {name}",
+    "addResourceStepFor": "Erőforrás-termelési séma: {name}",
     "addAnotherExtraction": "További kitermelés ugyanahhoz az erőforráshoz",
     "addAnotherExtractionAria": "További kitermelés: {name}",
     "resetExtraction": "Kitermelés visszaállítása",
@@ -334,8 +334,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Erőforrás-séma Output",
-    "addResourceStepOutputFor": "Erőforrás-séma Output: {name}"
+    "addResourceStepOutput": "Erőforrás-felhasználási séma",
+    "addResourceStepOutputFor": "Erőforrás-felhasználási séma: {name}"
   },
   "energy": {
     "title": "Energia",
@@ -465,8 +465,10 @@
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "Új szállítás",
     "transportCreatePlaceholder": "pl. Hipercső → gyár",
-    "selectResourceSubConsume": "Válaszd ki a felhasználandó vagy elhelyezendő erőforrást",
-    "selectSchemaConsumeHint": "Válassz receptet, amely ezt az erőforrást bemenetként használja."
+    "selectResourceSubConsume": "Válaszd ki a felhasználandó vagy eltávolítandó erőforrást",
+    "selectSchemaConsumeHint": "Válassz receptet, amely ezt az erőforrást bemenetként használja.",
+    "selectResourceOutput": "OUTPUT erőforrás kiválasztása",
+    "selectResourceInput": "INPUT erőforrás kiválasztása"
   },
   "legal": {
     "title": "Jogi információk, attribúciók és felelősségkizárás",

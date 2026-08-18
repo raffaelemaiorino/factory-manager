@@ -178,7 +178,7 @@
     "treeViewTitle": "عرض السلسلة كاملة كشجرة",
     "treeViewGroupsTitle": "عرض السلسلة حسب المجموعات (المداخل/المخرجات الرئيسية فقط)",
     "addExtraction": "استخراج",
-    "addResourceStep": "مخطط مورد Input",
+    "addResourceStep": "مخطط إنتاج المورد",
     "sectionExtractions": "استخراج الموارد",
     "sectionResourceSteps": "خطوات الموارد",
     "groupMinerals": "معادن",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "لا أهداف إنتاج",
     "inputsPerMachine": "مدخل / آلة",
     "outputsPerMachine": "مخرج / آلة",
-    "addResourceStepFor": "إضافة خطوة مورد لـ {name}",
+    "addResourceStepFor": "مخطط إنتاج المورد لـ {name}",
     "addAnotherExtraction": "إضافة استخراج آخر لهذا المورد",
     "addAnotherExtractionAria": "إضافة استخراج آخر لـ {name}",
     "resetExtraction": "إعادة ضبط الاستخراج",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "مخطط مورد Output",
-    "addResourceStepOutputFor": "مخطط مورد Output لـ {name}"
+    "addResourceStepOutput": "مخطط استهلاك المورد",
+    "addResourceStepOutputFor": "مخطط استهلاك المورد لـ {name}"
   },
   "energy": {
     "title": "الطاقة",
@@ -461,8 +461,10 @@
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "نقل جديد",
     "transportCreatePlaceholder": "مثال: أنبوب فائق → مصنع",
-    "selectResourceSubConsume": "اختر المورد للاستخدام أو التخلص",
-    "selectSchemaConsumeHint": "اختر وصفة تستخدم هذا المورد كمدخل."
+    "selectResourceSubConsume": "اختر المورد للاستخدام أو للتخلص",
+    "selectSchemaConsumeHint": "اختر وصفة تستخدم هذا المورد كمدخل.",
+    "selectResourceOutput": "اختر مورد OUTPUT",
+    "selectResourceInput": "اختر مورد INPUT"
   },
   "legal": {
     "title": "معلومات قانونية وإسنادات وإخلاء مسؤولية",

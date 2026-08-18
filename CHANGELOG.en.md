@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.7] - 2026-08-18
+
+### Changed
+- Production: buttons are now «Resource production schema» and «Resource consumption schema»; the picker titles are «Select OUTPUT/INPUT resource» with matching subtitles
+
+## [3.9.6] - 2026-08-18
+
+### Changed
+- Production: «Resource Schema Input/Output» buttons renamed to «Produce resource» and «Consume resource»; tooltips on ingredients and products updated too
+
 ## [3.9.5] - 2026-08-17
 
 ### Changed

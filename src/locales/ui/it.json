@@ -253,7 +253,7 @@
     "treeViewTitle": "Visualizza tutta la catena come grafico ad albero",
     "treeViewGroupsTitle": "Visualizza la catena per raggruppamenti (solo input/output principali)",
     "addExtraction": "Estrazione",
-    "addResourceStep": "Schema Risorsa Input",
+    "addResourceStep": "Schema Produzione Risorsa",
     "sectionExtractions": "Estrazioni risorse",
     "sectionResourceSteps": "Schemi risorsa",
     "groupMinerals": "Minerali",
@@ -344,7 +344,7 @@
     "somersloopsRequired": "Necessari {count} Somersloop",
     "powerConsumptionRequired": "Consumo {mw}",
     "powerConsumptionRequiredMax": "Consumo (massimo) {mw}",
-    "addResourceStepFor": "Aggiungi schema risorsa per {name}",
+    "addResourceStepFor": "Schema produzione risorsa per {name}",
     "addAnotherExtraction": "Aggiungi altra estrazione per questa risorsa",
     "addAnotherExtractionAria": "Aggiungi altra estrazione di {name}",
     "resetExtraction": "Reimposta estrazione",
@@ -371,8 +371,8 @@
     "linkPartialRate": "{allocated} di {required}",
     "sinkByproducts": "Smaltisci sottoprodotti",
     "sinkByproductsHint": "Smaltisce automaticamente i sottoprodotti non usati (imballaggio fluidi, AWESOME Sink per i solidi).",
-    "addResourceStepOutput": "Schema Risorsa Output",
-    "addResourceStepOutputFor": "Schema Risorsa Output per {name}"
+    "addResourceStepOutput": "Schema Consumo Risorsa",
+    "addResourceStepOutputFor": "Schema consumo risorsa per {name}"
   },
   "transport": {
     "title": "Trasporti",
@@ -619,8 +619,10 @@
     "detailNoSchemas": "Nessuno schema di produzione registrato per questa risorsa.",
     "resourceNotFound": "Risorsa non trovata.",
     "detailLoadError": "Errore nel caricamento del dettaglio.",
-    "selectResourceSubConsume": "Scegli la risorsa da usare o smaltire",
-    "selectSchemaConsumeHint": "Scegli uno schema che usa questa risorsa come input."
+    "selectResourceSubConsume": "Scegli la risorsa da usare o da smaltire",
+    "selectSchemaConsumeHint": "Scegli uno schema che usa questa risorsa come input.",
+    "selectResourceOutput": "Seleziona risorsa di OUTPUT",
+    "selectResourceInput": "Seleziona risorsa di INPUT"
   },
   "legal": {
     "title": "Informazioni legali, attribuzioni e limitazione di responsabilità",

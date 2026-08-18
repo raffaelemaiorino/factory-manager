@@ -178,7 +178,7 @@
     "treeViewTitle": "הצג את כל השרשרת כעץ",
     "treeViewGroupsTitle": "הצג את השרשרת לפי קבוצות (קלט/פלט ראשיים בלבד)",
     "addExtraction": "כרייה",
-    "addResourceStep": "סכמת משאב Input",
+    "addResourceStep": "סכמת ייצור משאב",
     "sectionExtractions": "כריית משאבים",
     "sectionResourceSteps": "שלבי משאב",
     "groupMinerals": "מינרלים",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "אין יעדי ייצור",
     "inputsPerMachine": "קלט / מכונה",
     "outputsPerMachine": "פלט / מכונה",
-    "addResourceStepFor": "הוסף שלב משאב עבור {name}",
+    "addResourceStepFor": "סכמת ייצור משאב עבור {name}",
     "addAnotherExtraction": "הוסף כרייה נוספת למשאב זה",
     "addAnotherExtractionAria": "הוסף כרייה נוספת של {name}",
     "resetExtraction": "אפס כרייה",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "סכמת משאב Output",
-    "addResourceStepOutputFor": "סכמת משאב Output עבור {name}"
+    "addResourceStepOutput": "סכמת צריכת משאב",
+    "addResourceStepOutputFor": "סכמת צריכת משאב עבור {name}"
   },
   "energy": {
     "title": "אנרגיה",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "תובלה חדשה",
     "transportCreatePlaceholder": "לדוגמה: צינור היפר → מפעל",
     "selectResourceSubConsume": "בחר משאב לשימוש או לסילוק",
-    "selectSchemaConsumeHint": "בחר מתכון שמשתמש במשאב זה כקלט."
+    "selectSchemaConsumeHint": "בחר מתכון שמשתמש במשאב זה כקלט.",
+    "selectResourceOutput": "בחר משאב OUTPUT",
+    "selectResourceInput": "בחר משאב INPUT"
   },
   "legal": {
     "title": "מידע משפטי, ייחוסים והצהרת אחריות",

@@ -178,7 +178,7 @@
     "treeViewTitle": "Показати весь ланцюг як дерево",
     "treeViewGroupsTitle": "Ланцюг за групами (лише головні входи/виходи)",
     "addExtraction": "Видобуток",
-    "addResourceStep": "Схема ресурсу Input",
+    "addResourceStep": "Схема виробництва ресурсу",
     "sectionExtractions": "Видобуток ресурсів",
     "sectionResourceSteps": "Кроки ресурсів",
     "groupMinerals": "Мінерали",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "Немає цілей виробництва",
     "inputsPerMachine": "Вхід / машина",
     "outputsPerMachine": "Вихід / машина",
-    "addResourceStepFor": "Додати крок для {name}",
+    "addResourceStepFor": "Схема виробництва ресурсу для {name}",
     "addAnotherExtraction": "Додати ще видобуток цього ресурсу",
     "addAnotherExtractionAria": "Додати ще видобуток {name}",
     "resetExtraction": "Скинути видобуток",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Схема ресурсу Output",
-    "addResourceStepOutputFor": "Схема ресурсу Output для {name}"
+    "addResourceStepOutput": "Схема споживання ресурсу",
+    "addResourceStepOutputFor": "Схема споживання ресурсу для {name}"
   },
   "energy": {
     "title": "Енергія",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "Новий транспорт",
     "transportCreatePlaceholder": "напр. Гіпертруба → завод",
     "selectResourceSubConsume": "Оберіть ресурс для використання або утилізації",
-    "selectSchemaConsumeHint": "Оберіть рецепт, що використовує цей ресурс як вхід."
+    "selectSchemaConsumeHint": "Оберіть рецепт, що використовує цей ресурс як вхід.",
+    "selectResourceOutput": "Оберіть ресурс OUTPUT",
+    "selectResourceInput": "Оберіть ресурс INPUT"
   },
   "legal": {
     "title": "Правова інформація, атрибуція та відмова від відповідальності",

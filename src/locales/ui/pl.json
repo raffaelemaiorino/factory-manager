@@ -178,7 +178,7 @@
     "treeViewTitle": "Pokaż cały łańcuch jako drzewo",
     "treeViewGroupsTitle": "Łańcuch wg grup (główne wejścia/wyjścia)",
     "addExtraction": "Wydobycie",
-    "addResourceStep": "Schemat zasobu Input",
+    "addResourceStep": "Schemat produkcji zasobu",
     "sectionExtractions": "Wydobycie",
     "sectionResourceSteps": "Kroki zasobów",
     "groupMinerals": "Minerały",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "Brak celów produkcji",
     "inputsPerMachine": "Wejście / maszyna",
     "outputsPerMachine": "Wyjście / maszyna",
-    "addResourceStepFor": "Dodaj krok dla {name}",
+    "addResourceStepFor": "Schemat produkcji zasobu dla {name}",
     "addAnotherExtraction": "Dodaj kolejne wydobycie tego zasobu",
     "addAnotherExtractionAria": "Dodaj kolejne wydobycie {name}",
     "resetExtraction": "Resetuj wydobycie",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Schemat zasobu Output",
-    "addResourceStepOutputFor": "Schemat zasobu Output dla {name}"
+    "addResourceStepOutput": "Schemat zużycia zasobu",
+    "addResourceStepOutputFor": "Schemat zużycia zasobu dla {name}"
   },
   "energy": {
     "title": "Energia",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "Nowy transport",
     "transportCreatePlaceholder": "np. Hiperrura → fabryka",
     "selectResourceSubConsume": "Wybierz zasób do użycia lub utylizacji",
-    "selectSchemaConsumeHint": "Wybierz recepturę, która używa tego zasobu jako wejścia."
+    "selectSchemaConsumeHint": "Wybierz recepturę, która używa tego zasobu jako wejścia.",
+    "selectResourceOutput": "Wybierz zasób OUTPUT",
+    "selectResourceInput": "Wybierz zasób INPUT"
   },
   "legal": {
     "title": "Informacje prawne, atrybucje i wyłączenie odpowiedzialności",

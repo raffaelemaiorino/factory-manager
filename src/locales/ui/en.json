@@ -253,7 +253,7 @@
     "treeViewTitle": "View the full chain as a tree graph",
     "treeViewGroupsTitle": "View the chain by groups (main inputs/outputs only)",
     "addExtraction": "Extraction",
-    "addResourceStep": "Resource Schema Input",
+    "addResourceStep": "Resource production schema",
     "sectionExtractions": "Resource extraction",
     "sectionResourceSteps": "Resource steps",
     "groupMinerals": "Minerals",
@@ -344,7 +344,7 @@
     "somersloopsRequired": "{count} Somersloops required",
     "powerConsumptionRequired": "Power use {mw}",
     "powerConsumptionRequiredMax": "Peak power use {mw}",
-    "addResourceStepFor": "Add resource step for {name}",
+    "addResourceStepFor": "Resource production schema for {name}",
     "addAnotherExtraction": "Add another extraction for this resource",
     "addAnotherExtractionAria": "Add another extraction of {name}",
     "resetExtraction": "Reset extraction",
@@ -371,8 +371,8 @@
     "linkPartialRate": "{allocated} of {required}",
     "sinkByproducts": "Sink byproducts",
     "sinkByproductsHint": "Automatically dispose unused secondary outputs (package fluids, sink solids).",
-    "addResourceStepOutput": "Resource Schema Output",
-    "addResourceStepOutputFor": "Resource Schema Output for {name}"
+    "addResourceStepOutput": "Resource consumption schema",
+    "addResourceStepOutputFor": "Resource consumption schema for {name}"
   },
   "transport": {
     "title": "Transport",
@@ -620,7 +620,9 @@
     "resourceNotFound": "Resource not found.",
     "detailLoadError": "Error loading details.",
     "selectResourceSubConsume": "Choose the resource to use or dispose of",
-    "selectSchemaConsumeHint": "Choose a recipe that uses this resource as an input."
+    "selectSchemaConsumeHint": "Choose a recipe that uses this resource as an input.",
+    "selectResourceOutput": "Select OUTPUT resource",
+    "selectResourceInput": "Select INPUT resource"
   },
   "legal": {
     "title": "Legal information, attributions, and disclaimer",

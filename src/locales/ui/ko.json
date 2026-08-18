@@ -178,7 +178,7 @@
     "treeViewTitle": "전체 체인을 트리로 보기",
     "treeViewGroupsTitle": "그룹별 (주요 입·출력만)",
     "addExtraction": "채굴",
-    "addResourceStep": "자원 스키마 Input",
+    "addResourceStep": "자원 생산 스키마",
     "sectionExtractions": "자원 채굴",
     "sectionResourceSteps": "자원 단계",
     "groupMinerals": "광물",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "생산 목표 없음",
     "inputsPerMachine": "입력 / 기계",
     "outputsPerMachine": "출력 / 기계",
-    "addResourceStepFor": "{name} 단계 추가",
+    "addResourceStepFor": "{name} 생산 스키마",
     "addAnotherExtraction": "이 자원의 채굴 추가",
     "addAnotherExtractionAria": "{name} 채굴 추가",
     "resetExtraction": "채굴 초기화",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "자원 스키마 Output",
-    "addResourceStepOutputFor": "{name} 자원 스키마 Output"
+    "addResourceStepOutput": "자원 소비 스키마",
+    "addResourceStepOutputFor": "{name} 소비 스키마"
   },
   "energy": {
     "title": "전력",
@@ -461,8 +461,10 @@
     "productionCreateRemoveTargetAria": "Remove {name}",
     "transportCreateTitle": "새 운송",
     "transportCreatePlaceholder": "예: 하이퍼 튜브 → 공장",
-    "selectResourceSubConsume": "사용하거나 처리할 자원 선택",
-    "selectSchemaConsumeHint": "이 자원을 입력으로 사용하는 레시피를 선택하세요."
+    "selectResourceSubConsume": "사용하거나 처리할 자원을 선택",
+    "selectSchemaConsumeHint": "이 자원을 입력으로 사용하는 레시피를 선택하세요.",
+    "selectResourceOutput": "OUTPUT 자원 선택",
+    "selectResourceInput": "INPUT 자원 선택"
   },
   "legal": {
     "title": "법적 정보, 귀속 및 면책 조항",

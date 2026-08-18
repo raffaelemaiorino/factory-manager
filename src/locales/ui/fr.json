@@ -178,7 +178,7 @@
     "treeViewTitle": "Afficher toute la chaîne en arbre",
     "treeViewGroupsTitle": "Chaîne par groupes (entrées/sorties principales)",
     "addExtraction": "Extraction",
-    "addResourceStep": "Schéma ressource Input",
+    "addResourceStep": "Schéma production ressource",
     "sectionExtractions": "Extractions",
     "sectionResourceSteps": "Étapes ressource",
     "groupMinerals": "Minerais",
@@ -236,7 +236,7 @@
     "noProductionObjectives": "Aucun objectif de production",
     "inputsPerMachine": "Entrée / machine",
     "outputsPerMachine": "Sortie / machine",
-    "addResourceStepFor": "Ajouter une étape pour {name}",
+    "addResourceStepFor": "Schéma production ressource pour {name}",
     "addAnotherExtraction": "Ajouter une autre extraction pour cette ressource",
     "addAnotherExtractionAria": "Ajouter une autre extraction de {name}",
     "resetExtraction": "Réinitialiser l'extraction",
@@ -330,8 +330,8 @@
     "manifoldAlignOptionBelt": "With belt Mk.{mk} (max {capacity}/min)",
     "buildSplitAlignHintBelt": "With belt Mk.{mk} ({capacity}/min), lines ({shares}/min) do not yield whole machine groups — use the robot to align.",
     "manifoldAlignSingleLine": "With the current belt, extra lines are not needed: one row is enough.",
-    "addResourceStepOutput": "Schéma ressource Output",
-    "addResourceStepOutputFor": "Schéma ressource Output pour {name}"
+    "addResourceStepOutput": "Schéma consommation ressource",
+    "addResourceStepOutputFor": "Schéma consommation ressource pour {name}"
   },
   "energy": {
     "title": "Énergie",
@@ -462,7 +462,9 @@
     "transportCreateTitle": "Nouveau transport",
     "transportCreatePlaceholder": "ex. Fil rapide → usine",
     "selectResourceSubConsume": "Choisissez la ressource à utiliser ou à évacuer",
-    "selectSchemaConsumeHint": "Choisissez une recette qui utilise cette ressource en entrée."
+    "selectSchemaConsumeHint": "Choisissez une recette qui utilise cette ressource en entrée.",
+    "selectResourceOutput": "Sélectionner ressource OUTPUT",
+    "selectResourceInput": "Sélectionner ressource INPUT"
   },
   "legal": {
     "title": "Informations légales, attributions et clause de non-responsabilité",

@@ -732,13 +732,17 @@ async function openMineralPickerModal() {
 }
 
 async function openResourcePickerModal() {
-  return openResourcePickerWithMode('step', 'modals.selectResource', 'modals.selectResourceSub');
+  return openResourcePickerWithMode(
+    'step',
+    'modals.selectResourceOutput',
+    'modals.selectResourceSub'
+  );
 }
 
 async function openResourceOutputPickerModal() {
   return openResourcePickerWithMode(
     'step-output',
-    'modals.selectResource',
+    'modals.selectResourceInput',
     'modals.selectResourceSubConsume'
   );
 }
