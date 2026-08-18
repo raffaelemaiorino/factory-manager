@@ -663,7 +663,6 @@ function getProductionChainDetail(db, chainId, getItemById, options = {}) {
     ? listProductionObjectives(db, getItemById, {
         excludeChainId: chainId,
         itemSlugs: collectStepInputSlugs(steps),
-        includeAllocated: true,
       })
     : [];
   return { chain, steps, extractions, links, group_marks, targets, production_objectives };
@@ -1584,11 +1583,11 @@ function listProductionObjectives(
         if (!rate) continue;
 
         const key = demandKey(step.id, io.item_slug);
-        const totalDemand = roundProduction(
-          (productionDemand.get(key) ?? 0) + (energyDemand.get(key) ?? 0)
-        );
-        const excessRate = normalizeLinkDelta(rate - totalDemand, rate);
-        if (excessRate <= 0 && !includeAllocated) continue;
+        const productionTake = productionDemand.get(key) ?? 0;
+        const energyTake = energyDemand.get(key) ?? 0;
+        const productionExcessRate = normalizeLinkDelta(rate - productionTake, rate);
+        const excessRate = normalizeLinkDelta(rate - productionTake - energyTake, rate);
+        if (productionExcessRate <= 0 && !includeAllocated) continue;
 
         results.push({
           step_id: step.id,
@@ -1599,6 +1598,7 @@ function listProductionObjectives(
           is_fluid: Boolean(io.is_fluid),
           rate,
           excess_rate: excessRate,
+          production_excess_rate: productionExcessRate,
           chain_id: chain.id,
           chain_name: chain.name,
         });

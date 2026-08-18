@@ -9,6 +9,11 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [3.9.5] - 2026-08-17
+
+### Changed
+- Produzione: tra piani produzione «Collega da produzione» è esclusivo — se l’output è già usato da un altro schema produzione (anche nello stesso piano), non viene più proposto; il collegamento con Energia resta indipendente
+
 ## [3.9.4] - 2026-08-15
 
 ### Fixed

@@ -218,6 +218,16 @@ describe('cross-chain production links', () => {
         ?.production_input_links?.['compacted-coal'] ?? [];
     assert.equal(energyLinks.length, 1);
 
+    const stillOfferedToProduction = listProductionObjectives(db, getItemById, {
+      itemSlugs: ['compacted-coal'],
+    });
+    assert.ok(
+      stillOfferedToProduction.some(
+        (obj) => Number(obj.step_id) === Number(fuelStep.id) && obj.item_slug === 'compacted-coal'
+      ),
+      'energy demand must not hide leftover production surplus'
+    );
+
     const stillLinked = getProductionChainDetail(db, sinkChain.id, getItemById);
     const stillSink = (stillLinked.steps || []).find((s) => Number(s.is_sink) === 1);
     assert.equal((stillSink.input_links?.['compacted-coal'] ?? []).length, 1);
@@ -289,11 +299,12 @@ describe('cross-chain production links', () => {
     const sinkEditor = getProductionChainDetail(db, sinkChain.id, getItemById, {
       includeProductionObjectives: true,
     });
-    assert.ok(
+    assert.equal(
       sinkEditor.production_objectives.some(
         (obj) => Number(obj.step_id) === Number(plateStep.id) && obj.item_slug === 'iron-plate'
       ),
-      'production should still offer a producer already fully allocated'
+      false,
+      'production-to-production links stay exclusive when the producer is fully used'
     );
   });
 });

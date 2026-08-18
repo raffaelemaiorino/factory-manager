@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.9.5] - 2026-08-17
+
+### Changed
+- Production: «Link from production» between production plans is exclusive — if the output is already used by another production step (even in the same plan), it is no longer offered; links to Power stay independent
+
 ## [3.9.4] - 2026-08-15
 
 ### Fixed

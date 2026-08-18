@@ -1847,7 +1847,8 @@ function formatProducerLinkOptionRate(producer, consumerStepId, itemSlug, allSte
     if (isProducerLinkedToConsumer(consumer, producer.id, itemSlug)) {
       return formatRateWithUnit(outputRate, unit);
     }
-    const surplus = Number(producer.excess_rate) || 0;
+    const surplus =
+      Number(producer.production_excess_rate ?? producer.excess_rate) || 0;
     if (surplus > 0 && surplus + LINK_BALANCE_TOLERANCE < outputRate) {
       return t('production.surplusFree', { rate: formatRateWithUnit(surplus, unit) });
     }
@@ -1877,7 +1878,7 @@ function getExternalProducerCandidates(consumerStepId, itemSlug, allSteps, allEx
     .filter((objective) => {
       if (isProducerLinkedToConsumer(consumer, objective.step_id, itemSlug)) return true;
       if (isConsumerInputFullyCovered(consumer, itemSlug, allSteps, allExtractions)) return false;
-      return true;
+      return (objective.production_excess_rate ?? objective.excess_rate ?? 0) > 0;
     })
     .map((objective) => ({
       id: objective.step_id,
@@ -1887,6 +1888,7 @@ function getExternalProducerCandidates(consumerStepId, itemSlug, allSteps, allEx
       chain_name: objective.chain_name,
       is_external_producer: true,
       excess_rate: objective.excess_rate,
+      production_excess_rate: objective.production_excess_rate,
       rate: objective.rate,
       scaled_outputs: [
         {
