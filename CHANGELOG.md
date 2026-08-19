@@ -9,6 +9,13 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [3.12.8] - 2026-08-19
+
+### Fixed
+- Traduzioni: banner aggiornamento, etichetta categoria e fallback «Acqua» presenti in italiano e inglese
+- Picker risorse: il conteggio («N risorse») segue la lingua invece di restare in italiano
+- Lingue diverse da IT/EN: allineate le chiavi mancanti (pozzi, bilancio potenza, calcolatrice, zoom albero, allineamento linee, impostazioni) e tradotto l’inglese rimasto nell’interfaccia
+
 ## [3.12.7] - 2026-08-19
 
 ### Fixed

@@ -79,7 +79,9 @@
     "resultsMany": "{count} results",
     "resourcesOne": "{count} resource",
     "resourcesMany": "{count} resources",
-    "somersloop": "Somersloop"
+    "somersloop": "Somersloop",
+    "category": "Category",
+    "water": "Water"
   },
   "health": {
     "deficitOne": "1 deficit",
@@ -811,5 +813,10 @@
   "picker": {
     "noResources": "No resources found.",
     "history": "History (last viewed resources)"
+  },
+  "update": {
+    "available": "A new version is available: {latest} (current {current}).",
+    "download": "Download",
+    "dismiss": "Later"
   }
 }

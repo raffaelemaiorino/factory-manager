@@ -79,7 +79,9 @@
     "resultsMany": "{count} risultati",
     "resourcesOne": "{count} risorsa",
     "resourcesMany": "{count} risorse",
-    "somersloop": "Somersloop"
+    "somersloop": "Somersloop",
+    "category": "Categoria",
+    "water": "Acqua"
   },
   "health": {
     "deficitOne": "1 deficit",
@@ -811,5 +813,10 @@
   "picker": {
     "noResources": "Nessuna risorsa trovata.",
     "history": "Cronologia (ultime risorse visualizzate)"
+  },
+  "update": {
+    "available": "È disponibile una nuova versione: {latest} (attuale {current}).",
+    "download": "Scarica",
+    "dismiss": "Dopo"
   }
 }

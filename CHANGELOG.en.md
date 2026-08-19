@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.8] - 2026-08-19
+
+### Fixed
+- Translations: update banner, category label, and water fallback now present in Italian and English
+- Resource picker: the count (“N resources”) follows the UI language instead of staying in Italian
+- Non-IT/EN languages: filled missing keys (wells, power balance, calculator, tree zoom, line alignment, settings) and translated leftover English UI strings
+
 ## [3.12.7] - 2026-08-19
 
 ### Fixed
