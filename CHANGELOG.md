@@ -9,6 +9,69 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [3.12.7] - 2026-08-19
+
+### Fixed
+- Pozzi di risorse: pulsanti + e cestino sui sottonodi funzionanti; riconoscimento corretto delle estrazioni da pozzo nel calcolo
+
+### Changed
+- Pozzi di risorse: testo campo estrattori allineato a sinistra come gli altri input
+
+## [3.12.6] - 2026-08-19
+
+### Changed
+- Pozzi di risorse: output nodo solo in lettura (niente campo editabile); ripristinato slider estrattori per nodo con righe allineate
+
+## [3.12.5] - 2026-08-19
+
+### Changed
+- Pozzi di risorse: righe nodo allineate (niente slider sotto gli estrattori); output editabile con stile e comportamento degli schemi produzione (campo giallo + unità esterna)
+
+## [3.12.4] - 2026-08-19
+
+### Changed
+- Pozzi di risorse: righe nodo con card dedicate, intestazioni colonne, output in campo readonly e allineamento coerente con le altre estrazioni
+
+## [3.12.3] - 2026-08-19
+
+### Changed
+- Pozzi di risorse: griglia superiore solo output e overclock pressurizzatore; sottonodi sotto con purezza, estrattori per nodo, output e pulsanti +/×; risolto lo slider che copriva le etichette
+
+## [3.12.2] - 2026-08-19
+
+### Changed
+- Pozzi di risorse: stessa griglia delle altre estrazioni (output, overclock pressurizzatore, estrattori); slider estrattori di nuovo configurabile; purezza per sottonodo con pulsante elimina visibile
+
+## [3.12.1] - 2026-08-19
+
+### Changed
+- Pozzi di risorse: overclock sul pressurizzatore (configurazione unica per tutto il pozzo) con frammenti energetici e consumo aggiornati di conseguenza; gli estrattori restano senza overclock individuale
+
+## [3.12.0] - 2026-08-19
+
+### Added
+- Pozzi di risorse: sottonodi con purezza dedicata, pulsanti +/× per aggiungere o rimuovere estrattori, collegamento agli schemi anche per azoto gassoso
+
+### Changed
+- Pozzi di risorse: consumo del pressurizzatore (150 MW fissi per pozzo a 100% OC, indipendente dal numero di estrattori)
+
+## [3.11.0] - 2026-08-19
+
+### Added
+- Estrazioni: popup diviso in Minerali, Liquidi e Pozzi di risorse; acqua e greggio compaiono sia come pompa sia come pozzo; aggiunto azoto gassoso da pozzo
+
+## [3.10.1] - 2026-08-19
+
+### Changed
+- Schemi risorse: ampliata del 20% la colonna del riepilogo (resoconto)
+
+## [3.10.0] - 2026-08-19
+
+### Changed
+- Layout produzione: colonna estrazioni risorse al 45%, schemi risorse al 55%
+- Estrazioni risorse: rimossi i campi «Frammento energetico» e «Consumo (MW)» dalla card, già visibili nel riepilogo sottostante
+- Schemi risorse: rimossi i campi «Frammento energetico» e «Consumo (MW)» dagli step di produzione, già visibili nel riepilogo sottostante
+
 ## [3.9.7] - 2026-08-18
 
 ### Changed

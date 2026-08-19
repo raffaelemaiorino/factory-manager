@@ -293,13 +293,17 @@ function renderBuildingPowerShards(overclockOrConfig, machineCount) {
         })()
       : '';
 
-  return `
-    <div class="craft-building-power-shards">
+  const shardsLine = config.hidePowerShards
+    ? ''
+    : `<div class="craft-building-power-shards">
       <img class="craft-building-power-shards-icon" src="${POWER_SHARD_IMAGE}" alt="" />
       <span class="craft-building-power-shards-label">${escapeHtml(before)}<strong>${escapeHtml(
         count
       )}</strong>${escapeHtml(after)}</span>
-    </div>
+    </div>`;
+
+  return `
+    ${shardsLine}
     ${somersloopLine}
     ${powerLine}`;
 }
@@ -309,10 +313,17 @@ function updateBuildingPowerShardsEl(container, overclockOrConfig, machineCount)
   const existingShards = container.querySelector('.craft-building-power-shards');
   const existingSomersloop = container.querySelector('.craft-building-somersloop');
   const existingPower = container.querySelector('.craft-building-power-consumption');
+  const config =
+    overclockOrConfig != null && typeof overclockOrConfig === 'object'
+      ? overclockOrConfig
+      : { overclock: overclockOrConfig, machine_count: machineCount };
   const html = renderBuildingPowerShards(overclockOrConfig, machineCount);
   existingPower?.remove();
   existingSomersloop?.remove();
-  if (existingShards) {
+  if (existingShards && config.hidePowerShards) {
+    existingShards.remove();
+  }
+  if (existingShards && !config.hidePowerShards) {
     existingShards.outerHTML = html;
     return;
   }

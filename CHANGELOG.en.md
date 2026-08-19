@@ -9,6 +9,69 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.7] - 2026-08-19
+
+### Fixed
+- Resource wells: + and trash buttons on sub-nodes work; well extractions are correctly recognized in calculations
+
+### Changed
+- Resource wells: extractor field text left-aligned like other inputs
+
+## [3.12.6] - 2026-08-19
+
+### Changed
+- Resource wells: node output is read-only (no editable field); restored per-node extractor slider with aligned rows
+
+## [3.12.5] - 2026-08-19
+
+### Changed
+- Resource wells: aligned node rows (no slider under extractors); editable output with production-schema styling and behavior (yellow field + external unit)
+
+## [3.12.4] - 2026-08-19
+
+### Changed
+- Resource wells: dedicated node row cards, column headers, readonly output field, and alignment consistent with other extractions
+
+## [3.12.3] - 2026-08-19
+
+### Changed
+- Resource wells: top row only output and pressurizer overclock; sub-nodes below with purity, extractors per node, output, and +/× buttons; fixed sliders overlapping labels
+
+## [3.12.2] - 2026-08-19
+
+### Changed
+- Resource wells: same config grid as other extractions (output, pressurizer overclock, extractors); extractor count slider restored; per-sub-node purity rows with visible delete button
+
+## [3.12.1] - 2026-08-19
+
+### Changed
+- Resource wells: overclock applies to the pressurizer only (one setting for the whole well), with power shards and consumption updated accordingly; extractors have no individual overclock
+
+## [3.12.0] - 2026-08-19
+
+### Added
+- Resource wells: per-sub-node purity, +/× buttons to add or remove extractors, schema linking for nitrogen gas too
+
+### Changed
+- Resource wells: pressurizer power consumption (150 MW fixed per well at 100% OC, regardless of extractor count)
+
+## [3.11.0] - 2026-08-19
+
+### Added
+- Extractions: picker split into Minerals, Fluids, and Resource wells; water and crude oil appear as both pump and well; nitrogen gas added from wells
+
+## [3.10.1] - 2026-08-19
+
+### Changed
+- Resource schemas: widened the summary (power/consumption) column by 20%
+
+## [3.10.0] - 2026-08-19
+
+### Changed
+- Production layout: extraction column now 45%, resource schemas column 55%
+- Resource extractions: removed "Power shard" and "Power consumption (MW)" fields from the card, already shown in the summary below
+- Resource schemas: removed "Power shard" and "Power consumption (MW)" fields from production steps, already shown in the summary below
+
 ## [3.9.7] - 2026-08-18
 
 ### Changed

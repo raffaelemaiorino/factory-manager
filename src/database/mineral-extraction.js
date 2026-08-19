@@ -7,6 +7,7 @@ const {
   computeExtractionRate,
   resolveExtractionProduction,
   mergeExtractionStored,
+  serializeSubNodes,
   normalizeExtractorSlug,
   normalizePurity,
   normalizeNodeCount,
@@ -15,14 +16,22 @@ const {
 const MINER_SLUGS = ['miner-mk1', 'miner-mk2', 'miner-mk3'];
 const OIL_PUMP_SLUG = 'oil-pump';
 const WATER_PUMP_SLUG = 'water-pump';
-const EXTRACTOR_SLUGS = [...MINER_SLUGS, OIL_PUMP_SLUG, WATER_PUMP_SLUG];
+const FRACKING_EXTRACTOR_SLUG = 'fracking-extractor';
+const FRACKING_SMASHER_SLUG = 'fracking-smasher';
+const EXTRACTOR_SLUGS = [
+  ...MINER_SLUGS,
+  OIL_PUMP_SLUG,
+  WATER_PUMP_SLUG,
+  FRACKING_EXTRACTOR_SLUG,
+];
 
 const LIQUID_EXTRACTION_SLUGS = ['liquid-oil', 'water'];
+const WELL_EXTRACTION_ITEM_SLUGS = ['nitrogen-gas', 'water', 'liquid-oil'];
 
 const PURITY_VALUES = ['impure', 'normal', 'pure'];
 
 const EXTRACTION_SELECT = `
-  id, chain_id, item_id, miner_slug, purity, overclock, node_count, target_output, sort_order, created_at
+  id, chain_id, item_id, miner_slug, purity, overclock, node_count, target_output, sub_nodes, sort_order, created_at
 `;
 
 function queryOne(db, sql, params = []) {
@@ -48,19 +57,36 @@ function queryAll(db, sql, params = []) {
   return rows;
 }
 
-function getExtractionKindForItem(item) {
+function getExtractionKindForItem(item, stored = {}) {
   if (!item) return 'mineral';
+  if (stored.miner_slug === FRACKING_EXTRACTOR_SLUG || stored.extraction_method === 'well') {
+    return 'well';
+  }
   if (item.slug === 'liquid-oil') return 'oil';
   if (item.slug === 'water') return 'water';
+  if (item.slug === 'nitrogen-gas') return 'well';
   if (item.category === 'minerali') return 'mineral';
   return null;
 }
 
-function isExtractionItem(item) {
+function isExtractionItem(item, options = {}) {
+  if (options.extraction_method === 'well') {
+    return WELL_EXTRACTION_ITEM_SLUGS.includes(item?.slug);
+  }
   return getExtractionKindForItem(item) != null;
 }
 
-function getDefaultExtractionConfig(item) {
+function getDefaultExtractionConfig(item, options = {}) {
+  const method = options.extraction_method;
+  if (method === 'well' || options.miner_slug === FRACKING_EXTRACTOR_SLUG) {
+    return {
+      miner_slug: FRACKING_EXTRACTOR_SLUG,
+      purity: 'normal',
+      overclock: DEFAULT_OVERCLOCK,
+      node_count: 1,
+    };
+  }
+
   const kind = getExtractionKindForItem(item);
   if (kind === 'oil') {
     return {
@@ -112,12 +138,20 @@ function ensureExtractionsTable(db) {
   if (!cols.has('target_output')) {
     db.run('ALTER TABLE production_chain_extractions ADD COLUMN target_output REAL');
   }
+  if (!cols.has('sub_nodes')) {
+    db.run('ALTER TABLE production_chain_extractions ADD COLUMN sub_nodes TEXT');
+  }
 }
 
 function mapExtraction(row, item, db) {
   const resolved = resolveExtractionProduction(item, row);
-  const building = getBuildingBySlug(db, resolved.miner_slug);
-  const extractionKind = getExtractionKindForItem(item);
+  const extractionKind = getExtractionKindForItem(item, {
+    miner_slug: resolved.miner_slug,
+  });
+  const isWell = extractionKind === 'well';
+  const extractorBuilding = getBuildingBySlug(db, resolved.miner_slug);
+  const pressurizerBuilding = isWell ? getBuildingBySlug(db, FRACKING_SMASHER_SLUG) : null;
+  const building = isWell ? pressurizerBuilding : extractorBuilding;
 
   return {
     id: row.id,
@@ -127,8 +161,10 @@ function mapExtraction(row, item, db) {
     purity: resolved.purity,
     overclock: resolved.overclock,
     node_count: resolved.node_count,
+    sub_nodes: resolved.sub_nodes,
     target_output: resolved.target_output,
     base_per_node: resolved.base_per_node,
+    min_target_output: resolved.min_target_output,
     max_target_output: resolved.max_target_output,
     sort_order: row.sort_order,
     created_at: row.created_at,
@@ -137,6 +173,8 @@ function mapExtraction(row, item, db) {
     item,
     building_name: building?.name ?? resolved.miner_slug,
     building_image: building?.image ?? null,
+    extractor_building_name: isWell ? extractorBuilding?.name ?? null : null,
+    extractor_building_image: isWell ? extractorBuilding?.image ?? null : null,
     power_consumption: Number(building?.power_consumption) || 0,
   };
 }
@@ -168,7 +206,7 @@ function getExtractionById(db, extractionId, getItemById) {
   return mapExtraction(row, getItemById(db, row.item_id), db);
 }
 
-function addMineralExtraction(db, persist, chainId, { item_id }, getItemById) {
+function addMineralExtraction(db, persist, chainId, { item_id, extraction_method }, getItemById) {
   ensureExtractionsTable(db);
 
   const chainRow = queryOne(db, 'SELECT id FROM production_chains WHERE id = ?', [chainId]);
@@ -180,11 +218,11 @@ function addMineralExtraction(db, persist, chainId, { item_id }, getItemById) {
   if (!item) {
     throw new Error('Risorsa non trovata');
   }
-  if (!isExtractionItem(item)) {
+  if (!isExtractionItem(item, { extraction_method })) {
     throw new Error('Seleziona una risorsa estraibile valida');
   }
 
-  const defaults = getDefaultExtractionConfig(item);
+  const defaults = getDefaultExtractionConfig(item, { extraction_method });
   const resolved = resolveExtractionProduction(item, defaults);
 
   const sortRow = queryOne(
@@ -196,8 +234,8 @@ function addMineralExtraction(db, persist, chainId, { item_id }, getItemById) {
 
   db.run(
     `INSERT INTO production_chain_extractions
-      (chain_id, item_id, miner_slug, purity, overclock, node_count, target_output, sort_order)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      (chain_id, item_id, miner_slug, purity, overclock, node_count, target_output, sub_nodes, sort_order)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       chainId,
       item.id,
@@ -206,6 +244,7 @@ function addMineralExtraction(db, persist, chainId, { item_id }, getItemById) {
       resolved.overclock,
       resolved.node_count,
       resolved.target_output,
+      serializeSubNodes(resolved.sub_nodes),
       sortOrder,
     ]
   );
@@ -221,7 +260,7 @@ function updateMineralExtraction(
   db,
   persist,
   extractionId,
-  { miner_slug, purity, overclock, node_count, target_output },
+  { miner_slug, purity, overclock, node_count, target_output, sub_nodes },
   getItemById
 ) {
   ensureExtractionsTable(db);
@@ -237,20 +276,23 @@ function updateMineralExtraction(
   }
 
   const item = getItemById(db, existing.item_id);
-  const resolved = resolveExtractionProduction(
-    item,
-    mergeExtractionStored(existing, {
-      miner_slug,
-      purity,
-      overclock,
-      node_count,
-      target_output,
-    })
-  );
+  const merged = mergeExtractionStored(existing, {
+    miner_slug,
+    purity,
+    overclock,
+    node_count,
+    target_output,
+    sub_nodes,
+  });
+  if (sub_nodes != null) {
+    merged.sub_nodes =
+      typeof sub_nodes === 'string' ? sub_nodes : serializeSubNodes(sub_nodes);
+  }
+  const resolved = resolveExtractionProduction(item, merged);
 
   db.run(
     `UPDATE production_chain_extractions
-     SET miner_slug = ?, purity = ?, overclock = ?, node_count = ?, target_output = ?
+     SET miner_slug = ?, purity = ?, overclock = ?, node_count = ?, target_output = ?, sub_nodes = ?
      WHERE id = ?`,
     [
       resolved.miner_slug,
@@ -258,6 +300,7 @@ function updateMineralExtraction(
       resolved.overclock,
       resolved.node_count,
       resolved.target_output,
+      serializeSubNodes(resolved.sub_nodes),
       extractionId,
     ]
   );
@@ -304,12 +347,14 @@ function resetMineralExtraction(db, persist, extractionId, getItemById) {
   }
 
   const item = getItemById(db, existing.item_id);
-  const defaults = getDefaultExtractionConfig(item);
+  const defaults = getDefaultExtractionConfig(item, {
+    miner_slug: existing.miner_slug,
+  });
   const resolved = resolveExtractionProduction(item, defaults);
 
   db.run(
     `UPDATE production_chain_extractions
-     SET miner_slug = ?, purity = ?, overclock = ?, node_count = ?, target_output = ?
+     SET miner_slug = ?, purity = ?, overclock = ?, node_count = ?, target_output = ?, sub_nodes = ?
      WHERE id = ?`,
     [
       resolved.miner_slug,
@@ -317,6 +362,7 @@ function resetMineralExtraction(db, persist, extractionId, getItemById) {
       resolved.overclock,
       resolved.node_count,
       resolved.target_output,
+      serializeSubNodes(resolved.sub_nodes),
       extractionId,
     ]
   );
@@ -337,8 +383,11 @@ module.exports = {
   MINER_SLUGS,
   OIL_PUMP_SLUG,
   WATER_PUMP_SLUG,
+  FRACKING_EXTRACTOR_SLUG,
+  FRACKING_SMASHER_SLUG,
   EXTRACTOR_SLUGS,
   LIQUID_EXTRACTION_SLUGS,
+  WELL_EXTRACTION_ITEM_SLUGS,
   MINER_BASE_RATES,
   OIL_PUMP_BASE_RATES,
   WATER_PUMP_BASE_RATE,

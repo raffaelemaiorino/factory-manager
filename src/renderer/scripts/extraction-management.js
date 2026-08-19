@@ -1,5 +1,11 @@
 function formatExtractionBuildingConfigContent(extraction, outputUnit) {
+  const kind = getExtractionKind(extraction);
   const nodeCount = extraction.node_count ?? 1;
+
+  if (kind === 'well') {
+    return `${formatMachineCountLabel(getWellTotalExtractors(extraction))} · ${t('production.pressurizerAt', { overclock: formatOverclockLabel(extraction.overclock) })}`;
+  }
+
   const basePerNode =
     extraction.base_per_node ??
     window.ExtractionScale.getBaseExtractionPerNode(
@@ -196,6 +202,207 @@ function isLiquidExtraction(extraction) {
   return kind === 'water' || kind === 'oil';
 }
 
+function isWellExtraction(extraction) {
+  return getExtractionKind(extraction) === 'well';
+}
+
+function getWellSubNodes(extraction) {
+  return window.ExtractionScale.parseSubNodes(extraction, extraction.item);
+}
+
+function getWellTotalExtractors(extraction) {
+  return getWellSubNodes(extraction).reduce(
+    (sum, node) => sum + (node.extractor_count ?? 1),
+    0
+  );
+}
+
+function computeWellSubNodeOutput(extraction, subNode) {
+  return window.ExtractionScale.computeWellOutput([subNode], extraction.overclock, extraction.item);
+}
+
+function renderWellSubNodeRow(extraction, subNode, index, subNodeCount, outputUnit) {
+  const nodeOutput = computeWellSubNodeOutput(extraction, subNode);
+  const extractorCount = subNode.extractor_count ?? 1;
+  const extractorsMax = getNodesSliderMax(extractorCount, extraction);
+  const canRemove = subNodeCount > 1;
+  const outputValue = formatExtractionOutputInputValue(nodeOutput, extraction.overclock);
+
+  return `
+    <div class="production-well-node-row" data-sub-node-index="${index}">
+      <div class="production-config-field production-config-field--select production-well-node-purity">
+        <label class="production-config-label" for="production-well-purity-${extraction.id}-${index}">
+          ${escapeHtml(t('production.wellNodeLabel', { index: index + 1 }))}
+        </label>
+        ${renderThemeSelect({
+          id: `production-well-purity-${extraction.id}-${index}`,
+          options: PURITY_OPTIONS.map((purity) => ({
+            value: purity.value,
+            label: purity.label,
+          })),
+          selectedValue: subNode.purity,
+          dataset: {
+            extractionId: extraction.id,
+            field: 'sub-node-purity',
+            subNodeIndex: index,
+          },
+        })}
+        <span class="production-well-node-field-spacer" aria-hidden="true"></span>
+      </div>
+      <div class="production-config-field production-well-node-extractors">
+        <label class="production-config-label" for="production-well-extractors-${extraction.id}-${index}">
+          ${escapeHtml(t('production.configExtractors'))}
+        </label>
+        <input
+          type="number"
+          class="production-config-input production-well-node-extractors-input"
+          id="production-well-extractors-${extraction.id}-${index}"
+          data-extraction-id="${extraction.id}"
+          data-sub-node-index="${index}"
+          min="1"
+          max="${extractorsMax}"
+          step="1"
+          value="${formatMachineCountInput(extractorCount)}"
+        />
+        <input
+          type="range"
+          class="production-config-slider production-well-node-extractors-slider"
+          data-extraction-id="${extraction.id}"
+          data-sub-node-index="${index}"
+          min="1"
+          max="${extractorsMax}"
+          step="1"
+          value="${Math.round(extractorCount)}"
+          aria-label="${escapeHtml(t('production.adjustWellNodeExtractors', { index: index + 1 }))}"
+        />
+      </div>
+      <div class="production-well-node-output-wrap">
+        <label class="production-config-label">${escapeHtml(t('production.wellNodeOutput'))}</label>
+        <span class="production-well-node-output">
+          <span class="production-well-node-output-value">${escapeHtml(outputValue)}</span>
+          <span class="production-well-node-output-unit">${escapeHtml(outputUnit)}</span>
+        </span>
+        <span class="production-well-node-field-spacer" aria-hidden="true"></span>
+      </div>
+      <div class="production-well-node-actions">
+        <button
+          type="button"
+          class="production-step-delete-btn production-well-remove-node-btn"
+          data-extraction-id="${extraction.id}"
+          data-sub-node-index="${index}"
+          aria-label="${escapeHtml(t('production.removeWellNodeAria', { index: index + 1 }))}"
+          title="${escapeHtml(t('production.removeWellNode'))}"
+          ${canRemove ? '' : 'disabled'}
+        >${DELETE_ICON}</button>
+      </div>
+    </div>`;
+}
+
+function renderWellNodesSection(extraction, outputUnit) {
+  const subNodes = getWellSubNodes(extraction);
+
+  return `
+    <div class="production-well-nodes">
+      <div class="production-well-nodes-header">
+        <span class="production-well-nodes-title">${escapeHtml(t('production.wellSubNodes'))}</span>
+        <button
+          type="button"
+          class="production-step-reset-btn production-well-add-node-btn"
+          data-extraction-id="${extraction.id}"
+          aria-label="${escapeHtml(t('production.addWellNode'))}"
+          title="${escapeHtml(t('production.addWellNode'))}"
+        >${ADD_ICON}</button>
+      </div>
+      <div class="production-well-nodes-columns" aria-hidden="true">
+        <span>${escapeHtml(t('production.configPurity'))}</span>
+        <span>${escapeHtml(t('production.configExtractors'))}</span>
+        <span>${escapeHtml(t('production.wellNodeOutput'))}</span>
+        <span></span>
+      </div>
+      <div class="production-well-nodes-list">
+        ${subNodes
+          .map((subNode, index) =>
+            renderWellSubNodeRow(extraction, subNode, index, subNodes.length, outputUnit)
+          )
+          .join('')}
+      </div>
+    </div>`;
+}
+
+function renderWellExtractionConfig(extraction, outputUnit) {
+  const subNodes = getWellSubNodes(extraction);
+  const targetOutput =
+    extraction.target_output ??
+    extraction.output_rate ??
+    window.ExtractionScale.computeWellOutput(subNodes, extraction.overclock, extraction.item);
+  const outputSliderMax = getExtractionOutputSliderMax(extraction);
+  const outputSliderMin = getExtractionOutputSliderMin(extraction);
+  const outputSliderStep = getExtractionOutputSliderStep(extraction);
+  const fractionalExtractionOutput = usesFractionalExtractionOutput(extraction);
+  const outputDisplayValue = formatExtractionOutputInputValue(targetOutput, extraction.overclock);
+
+  return `
+    <div class="production-well-config">
+      <div class="production-config-grid production-well-top-grid">
+        <div class="production-config-oc-machines production-well-top-fields">
+        <div class="production-config-field">
+          <label class="production-config-label" for="production-extraction-output-${extraction.id}">
+            ${escapeHtml(t('production.configOutput', { unit: outputUnit }))}
+          </label>
+          <input
+            type="text"
+            class="production-config-input production-extraction-output-input production-config-decimal-input"
+            id="production-extraction-output-${extraction.id}"
+            data-extraction-id="${extraction.id}"
+            min="${outputSliderMin}"
+            max="${outputSliderMax}"
+            inputmode="decimal"
+            readonly
+            value="${outputDisplayValue}"
+          />
+          <input
+            type="range"
+            class="production-config-slider production-extraction-output-slider"
+            data-extraction-id="${extraction.id}"
+            min="${outputSliderMin}"
+            max="${outputSliderMax}"
+            step="${outputSliderStep}"
+            value="${fractionalExtractionOutput ? targetOutput : Math.round(targetOutput)}"
+            aria-label="${escapeHtml(t('production.adjustExtractionOutput'))}"
+          />
+        </div>
+        <div class="production-config-field">
+          <label class="production-config-label" for="production-extraction-overclock-${extraction.id}">
+            ${escapeHtml(t('production.configPressurizerOverclock'))}
+          </label>
+          <input
+            type="number"
+            class="production-config-input production-extraction-overclock-input"
+            id="production-extraction-overclock-${extraction.id}"
+            data-extraction-id="${extraction.id}"
+            min="${window.ProductionScale.OVERCLOCK_MIN}"
+            max="${window.ProductionScale.OVERCLOCK_MAX}"
+            step="1"
+            readonly
+            value="${formatOverclockInputValue(extraction.overclock)}"
+          />
+          <input
+            type="range"
+            class="production-config-slider production-extraction-overclock-slider"
+            data-extraction-id="${extraction.id}"
+            min="${window.ProductionScale.OVERCLOCK_MIN}"
+            max="${window.ProductionScale.OVERCLOCK_MAX}"
+            step="1"
+            value="${Math.round(extraction.overclock)}"
+            aria-label="${escapeHtml(t('production.adjustOverclock'))}"
+          />
+        </div>
+        </div>
+      </div>
+      ${renderWellNodesSection(extraction, outputUnit)}
+    </div>`;
+}
+
 function compareExtractionsByDisplayName(a, b, allExtractions) {
   const nameA = getExtractionDisplayName(a, allExtractions);
   const nameB = getExtractionDisplayName(b, allExtractions);
@@ -217,11 +424,15 @@ function renderProductionExtractionsList(extractions = [], allSteps = []) {
   }
 
   const minerals = sortExtractionsAlphabetically(
-    extractions.filter((extraction) => !isLiquidExtraction(extraction)),
+    extractions.filter((extraction) => !isLiquidExtraction(extraction) && !isWellExtraction(extraction)),
     extractions
   );
   const liquids = sortExtractionsAlphabetically(
     extractions.filter((extraction) => isLiquidExtraction(extraction)),
+    extractions
+  );
+  const wells = sortExtractionsAlphabetically(
+    extractions.filter((extraction) => isWellExtraction(extraction)),
     extractions
   );
 
@@ -242,6 +453,7 @@ function renderProductionExtractionsList(extractions = [], allSteps = []) {
   return `<div class="production-extractions-groups">
     ${renderGroup(minerals, t('production.groupMinerals'), 'minerals')}
     ${renderGroup(liquids, t('production.groupLiquids'), 'liquids')}
+    ${renderGroup(wells, t('production.groupWells'), 'wells')}
   </div>`;
 }
 
@@ -299,7 +511,7 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
       : '';
 
   const purityField =
-    kind !== 'water'
+    kind !== 'water' && kind !== 'well'
       ? `
             <div class="production-config-field production-config-field--select">
               <span class="production-config-label">${escapeHtml(t('production.configPurity'))}</span>
@@ -317,47 +529,10 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
 
   const nodesLabel = kind === 'water' ? t('production.configExtractors') : t('production.configNodes');
 
-  const { linkStateClass, html: linkedConsumersSection } = buildExtractionLinkUi(
-    extraction,
-    allExtractions,
-    allSteps
-  );
-
-  return `
-    <article class="production-extraction ${linkStateClass}" data-extraction-id="${extraction.id}">
-      <div class="production-extraction-layout">
-        <div class="production-extraction-main">
-          <header class="production-extraction-header">
-            ${img}
-            <div class="production-extraction-title">
-              <h4>${escapeHtml(displayName)}</h4>
-              <p>${escapeHtml(getExtractionSubtitle(kind))}</p>
-              ${renderExtractionBuildStatsBlock(extraction, { compact: true })}
-            </div>
-            <div class="production-step-actions">
-              <button
-                type="button"
-                class="production-step-reset-btn production-extraction-duplicate-btn"
-                data-item-id="${extraction.item_id}"
-                aria-label="${escapeHtml(t('production.addAnotherExtractionAria', { name: displayName }))}"
-                title="${escapeHtml(t('production.addAnotherExtraction'))}"
-              >${ADD_ICON}</button>
-              <button
-                type="button"
-                class="production-step-reset-btn"
-                data-extraction-id="${extraction.id}"
-                aria-label="${escapeHtml(t('production.resetExtraction'))}"
-                title="${escapeHtml(t('production.resetDefaults'))}"
-              >${RESET_ICON}</button>
-              ${renderBuildStatsToggleBtn('extraction', extraction.id)}
-              <button
-                type="button"
-                class="production-step-delete-btn"
-                data-extraction-id="${extraction.id}"
-                aria-label="${escapeHtml(t('production.deleteExtraction'))}"
-              >${DELETE_ICON}</button>
-            </div>
-          </header>
+  const configSection =
+    kind === 'well'
+      ? renderWellExtractionConfig(extraction, outputUnit)
+      : `
           <div class="production-config-grid">
             ${minerField}
             ${purityField}
@@ -439,45 +614,71 @@ function renderProductionExtraction(extraction, allExtractions = [], allSteps = 
                 aria-label="${escapeHtml(t('production.adjustNodes', { nodes: nodesLabel.toLowerCase() }))}"
               />
             </div>
-            <div class="production-config-field">
-              <label class="production-config-label" for="production-extraction-power-${extraction.id}">
-                ${escapeHtml(t('production.configPowerShard'))}
-              </label>
-              <input
-                type="text"
-                class="production-config-input production-config-readonly production-extraction-power-shards"
-                id="production-extraction-power-${extraction.id}"
-                readonly
-                tabindex="-1"
-                value="${computeTotalPowerShards(extraction.overclock, nodeCount)}"
-              />
+          </div>`;
+
+  const asideExtractorNote =
+    kind === 'well' && extraction.extractor_building_name
+      ? `<span class="production-extraction-building-note">${escapeHtml(extraction.extractor_building_name)} · ${formatMachineCountLabel(getWellTotalExtractors(extraction))}</span>`
+      : '';
+
+  const powerSummary = renderBuildingPowerShards({
+    overclock: extraction.overclock,
+    machine_count: kind === 'well' ? 1 : nodeCount,
+    power_consumption: extraction.power_consumption,
+  });
+
+  const { linkStateClass, html: linkedConsumersSection } = buildExtractionLinkUi(
+    extraction,
+    allExtractions,
+    allSteps
+  );
+
+  return `
+    <article class="production-extraction ${linkStateClass}" data-extraction-id="${extraction.id}">
+      <div class="production-extraction-layout">
+        <div class="production-extraction-main">
+          <header class="production-extraction-header">
+            ${img}
+            <div class="production-extraction-title">
+              <h4>${escapeHtml(displayName)}</h4>
+              <p>${escapeHtml(getExtractionSubtitle(kind))}</p>
+              ${renderExtractionBuildStatsBlock(extraction, { compact: true })}
             </div>
-            <div class="production-config-field">
-              <label class="production-config-label" for="production-extraction-power-mw-${extraction.id}">
-                ${escapeHtml(t('production.configPowerConsumption'))}
-              </label>
-              <input
-                type="text"
-                class="production-config-input production-config-readonly production-extraction-power-mw"
-                id="production-extraction-power-mw-${extraction.id}"
-                readonly
-                tabindex="-1"
-                value="${formatRateWithUnit(computeExtractionPowerMw(extraction), 'MW')}"
-              />
+            <div class="production-step-actions">
+              <button
+                type="button"
+                class="production-step-reset-btn production-extraction-duplicate-btn"
+                data-item-id="${extraction.item_id}"
+                ${kind === 'well' ? 'data-extraction-method="well"' : ''}
+                aria-label="${escapeHtml(t('production.addAnotherExtractionAria', { name: displayName }))}"
+                title="${escapeHtml(t('production.addAnotherExtraction'))}"
+              >${ADD_ICON}</button>
+              <button
+                type="button"
+                class="production-step-reset-btn"
+                data-extraction-id="${extraction.id}"
+                aria-label="${escapeHtml(t('production.resetExtraction'))}"
+                title="${escapeHtml(t('production.resetDefaults'))}"
+              >${RESET_ICON}</button>
+              ${renderBuildStatsToggleBtn('extraction', extraction.id)}
+              <button
+                type="button"
+                class="production-step-delete-btn"
+                data-extraction-id="${extraction.id}"
+                aria-label="${escapeHtml(t('production.deleteExtraction'))}"
+              >${DELETE_ICON}</button>
             </div>
-          </div>
+          </header>
+          ${configSection}
           ${linkedConsumersSection}
         </div>
         <aside class="production-extraction-building">
           ${buildingImg}
-          <span class="production-extraction-building-name">${escapeHtml(extraction.building_name || defaultBuildingName)}</span>
+          <span class="production-extraction-building-name">${escapeHtml(extraction.building_name || (kind === 'well' ? t('production.defaultPressurizer') : defaultBuildingName))}</span>
+          ${asideExtractorNote}
           <span class="production-extraction-building-config">${formatExtractionBuildingConfigContent(extraction, outputUnit)}</span>
           <span class="production-extraction-output">${formatRateWithUnit(outputRate, outputUnit)}</span>
-          ${renderBuildingPowerShards({
-            overclock: extraction.overclock,
-            machine_count: nodeCount,
-            power_consumption: extraction.power_consumption,
-          })}
+          ${powerSummary}
         </aside>
       </div>
     </article>`;
@@ -489,10 +690,23 @@ function updateExtractionThemeSelects(extractionEl, extraction) {
   extractionEl.querySelectorAll('.theme-select').forEach((select) => {
     const field = select.dataset.field;
     if (field === 'miner' && kind !== 'mineral' && kind !== 'coal') return;
-    if (field === 'purity' && kind === 'water') return;
+    if (field === 'purity' && (kind === 'water' || kind === 'well')) return;
 
-    const value = field === 'miner' ? extraction.miner_slug : extraction.purity;
-    const options = field === 'miner' ? MINER_OPTIONS : PURITY_OPTIONS;
+    let value;
+    let options;
+    if (field === 'miner') {
+      value = extraction.miner_slug;
+      options = MINER_OPTIONS;
+    } else if (field === 'sub-node-purity') {
+      const index = Number(select.dataset.subNodeIndex);
+      const subNodes = getWellSubNodes(extraction);
+      value = subNodes[index]?.purity ?? 'normal';
+      options = PURITY_OPTIONS;
+    } else {
+      value = extraction.purity;
+      options = PURITY_OPTIONS;
+    }
+
     const label =
       field === 'miner'
         ? options.find((item) => item.slug === value)?.label
@@ -524,7 +738,6 @@ function updateExtractionConfigDisplay(extractionEl, extraction) {
   );
   const outputEl = extractionEl.querySelector('.production-extraction-output');
   const buildingConfigEl = extractionEl.querySelector('.production-extraction-building-config');
-  const powerShards = extractionEl.querySelector('.production-extraction-power-shards');
   const nodeCount = extraction.node_count ?? 1;
   const targetOutput = extraction.target_output ?? extraction.output_rate ?? 0;
   const outputSliderMax = getExtractionOutputSliderMax(extraction);
@@ -576,22 +789,50 @@ function updateExtractionConfigDisplay(extractionEl, extraction) {
     const unit = getExtractionOutputUnit(extraction.item, getExtractionKind(extraction));
     buildingConfigEl.innerHTML = formatExtractionBuildingConfigContent(extraction, unit);
   }
-  if (powerShards) {
-    powerShards.value = String(computeTotalPowerShards(extraction.overclock, nodeCount));
-  }
-
-  const powerMw = extractionEl.querySelector('.production-extraction-power-mw');
-  if (powerMw) {
-    powerMw.value = formatRateWithUnit(computeExtractionPowerMw(extraction), 'MW');
-  }
-
   const extractionBuilding = extractionEl.querySelector('.production-extraction-building');
   if (extractionBuilding) {
+    const kind = getExtractionKind(extraction);
     updateBuildingPowerShardsEl(extractionBuilding, {
       overclock: extraction.overclock,
-      machine_count: nodeCount,
+      machine_count: kind === 'well' ? 1 : nodeCount,
       power_consumption: extraction.power_consumption,
     });
+  }
+
+  if (isWellExtraction(extraction)) {
+    const outputUnit = getExtractionOutputUnit(extraction.item, 'well');
+    extractionEl.querySelectorAll('.production-well-node-row').forEach((rowEl) => {
+      const index = Number(rowEl.dataset.subNodeIndex);
+      const subNodes = getWellSubNodes(extraction);
+      const subNode = subNodes[index];
+      const outputValueEl = rowEl.querySelector('.production-well-node-output-value');
+      if (outputValueEl && subNode) {
+        outputValueEl.textContent = formatExtractionOutputInputValue(
+          computeWellSubNodeOutput(extraction, subNode),
+          extraction.overclock
+        );
+      }
+      const extractorsInput = rowEl.querySelector('.production-well-node-extractors-input');
+      const extractorsSlider = rowEl.querySelector('.production-well-node-extractors-slider');
+      const extractorCount = subNode?.extractor_count ?? 1;
+      if (extractorsInput) {
+        const extractorsMax = getNodesSliderMax(extractorCount, extraction);
+        extractorsInput.max = String(extractorsMax);
+        extractorsInput.value = formatMachineCountInput(extractorCount);
+        rememberConfigInputValue(extractorsInput);
+      }
+      if (extractorsSlider) {
+        const rounded = Math.max(1, Math.round(extractorCount));
+        extractorsSlider.max = String(getNodesSliderMax(rounded, extraction));
+        extractorsSlider.value = String(rounded);
+      }
+      const removeBtn = rowEl.querySelector('.production-well-remove-node-btn');
+      if (removeBtn) removeBtn.disabled = subNodes.length <= 1;
+    });
+    const noteEl = extractionBuilding?.querySelector('.production-extraction-building-note');
+    if (noteEl && extraction.extractor_building_name) {
+      noteEl.textContent = `${extraction.extractor_building_name} · ${formatMachineCountLabel(getWellTotalExtractors(extraction))}`;
+    }
   }
 
   updateExtractionThemeSelects(extractionEl, extraction);
@@ -651,6 +892,7 @@ function handleExtractionConfigChange(extractionId, field, rawValue) {
       overclock: extraction.overclock,
       miner_slug: extraction.miner_slug,
       purity: extraction.purity,
+      sub_nodes: extraction.sub_nodes ?? getWellSubNodes(extraction),
     },
     changeField,
     parsedValue
@@ -661,6 +903,7 @@ function handleExtractionConfigChange(extractionId, field, rawValue) {
   extraction.purity = updated.purity;
   extraction.overclock = updated.overclock;
   extraction.node_count = updated.node_count;
+  extraction.sub_nodes = updated.sub_nodes;
   extraction.target_output = updated.target_output;
   extraction.base_per_node = updated.base_per_node;
   extraction.max_target_output = updated.max_target_output;
@@ -669,20 +912,30 @@ function handleExtractionConfigChange(extractionId, field, rawValue) {
   refreshAllStepIoDisplays();
   refreshAllExtractionLinkDisplays();
 
-  const extractionEl = productionDetailBody.querySelector(`[data-extraction-id="${extractionId}"]`);
-  if (extractionEl) updateExtractionConfigDisplay(extractionEl, extraction);
-  refreshEntityBuildStatsBlock('extraction', extractionId);
-  updateProductionDetailExternalSummary();
-
   const config = {
     miner_slug: updated.miner_slug,
     purity: updated.purity,
     overclock: updated.overclock,
     node_count: updated.node_count,
     target_output: updated.target_output,
+    sub_nodes: updated.sub_nodes,
   };
 
-  const immediate = field === 'miner' || field === 'purity';
+  const wellNodeStructuralChange =
+    changeField === 'add-sub-node' || changeField === 'remove-sub-node';
+
+  if (wellNodeStructuralChange) {
+    saveExtractionConfig(extractionId, config, { immediate: true });
+    return;
+  }
+
+  const extractionEl = productionDetailBody.querySelector(`[data-extraction-id="${extractionId}"]`);
+  if (extractionEl) updateExtractionConfigDisplay(extractionEl, extraction);
+  refreshEntityBuildStatsBlock('extraction', extractionId);
+  updateProductionDetailExternalSummary();
+
+  const immediate =
+    field === 'miner' || field === 'purity' || field === 'sub-node-purity';
   saveExtractionConfig(extractionId, config, { immediate });
 }
 
@@ -756,12 +1009,13 @@ async function deleteProductionExtraction(extractionId) {
   }
 }
 
-async function addMineralExtractionFromPicker(itemId) {
+async function addMineralExtractionFromPicker(itemId, { extractionMethod } = {}) {
   if (!activeProductionChainId) return;
 
   try {
     activeProductionDetail = await window.satisfactory.addMineralExtraction(activeProductionChainId, {
       item_id: itemId,
+      extraction_method: extractionMethod,
     });
     closeResourcePickerModal();
     renderProductionDetailContent(activeProductionDetail);

@@ -21,6 +21,9 @@ const SOMERSLOOP_IMAGE = 'assets/items/Somersloop.png';
 const DRAG_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h2v2H9V5zm0 6h2v2H9v-2zm0 6h2v2H9v-2zm4-12h2v2h-2V5zm0 6h2v2h-2v-2zm0 6h2v2h-2v-2z"/></svg>`;
 
 const EXTRACTION_LIQUID_SLUGS = ['liquid-oil', 'water'];
+const EXTRACTION_WELL_ITEM_SLUGS = ['nitrogen-gas', 'water', 'liquid-oil'];
+const FRACKING_EXTRACTOR_SLUG = 'fracking-extractor';
+const FRACKING_SMASHER_SLUG = 'fracking-smasher';
 
 const MINER_OPTIONS = [
   { slug: 'miner-mk1', label: 'Miner Mk.1' },

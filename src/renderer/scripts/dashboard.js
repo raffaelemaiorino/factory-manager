@@ -98,14 +98,29 @@ function computeStepPowerMw(step) {
 }
 
 function computeExtractionPowerMw(extraction) {
+  const kind = getExtractionKind?.(extraction) ?? null;
+  const machineCount = kind === 'well' ? 1 : extraction?.node_count ?? 1;
+  const powerBase =
+    kind === 'well'
+      ? Number(extraction?.power_consumption) || 150
+      : Number(extraction?.power_consumption) || 0;
+
   return window.ProductionScale.roundPowerMw(
     window.ProductionScale.computeMachinePowerMw(
-      Number(extraction?.power_consumption) || 0,
+      powerBase,
       extraction?.overclock,
-      extraction?.node_count ?? 1,
+      machineCount,
       1
     )
   );
+}
+
+function computeExtractionsPowerShards(extractions = []) {
+  return extractions.reduce((sum, extraction) => {
+    const kind = getExtractionKind?.(extraction) ?? null;
+    const machineCount = kind === 'well' ? 1 : extraction.node_count ?? 1;
+    return sum + computeTotalPowerShards(extraction.overclock, machineCount);
+  }, 0);
 }
 
 function computeChainPowerMw(steps = []) {
@@ -123,14 +138,6 @@ function computeExtractionsPowerMw(extractions = []) {
 function computeDetailPowerMw(machines = [], extractions = []) {
   return window.ProductionScale.roundPowerMw(
     computeChainPowerMw(machines) + computeExtractionsPowerMw(extractions)
-  );
-}
-
-function computeExtractionsPowerShards(extractions = []) {
-  return extractions.reduce(
-    (sum, extraction) =>
-      sum + computeTotalPowerShards(extraction.overclock, extraction.node_count ?? 1),
-    0
   );
 }
 

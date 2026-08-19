@@ -488,11 +488,20 @@ function closeProductionDetail() {
     .catch(console.error);
 }
 
-function renderExtractionPickerItem(item) {
+function renderExtractionPickerItem(entry) {
+  const methodLabel = getExtractionPickerMethodLabel(entry);
+  const extractionMethod = entry.extraction_method ?? 'mineral';
+
   return `
-    <button type="button" class="picker-item" data-id="${item.id}">
-      ${renderItemImage(item)}
-      <span>${escapeHtml(item.name)}</span>
+    <button
+      type="button"
+      class="picker-item"
+      data-id="${entry.id}"
+      data-extraction-method="${escapeHtml(extractionMethod)}"
+    >
+      ${renderItemImage(entry)}
+      <span>${escapeHtml(entry.name)}</span>
+      ${methodLabel ? `<span class="picker-item-note">${escapeHtml(methodLabel)}</span>` : ''}
     </button>`;
 }
 
@@ -559,13 +568,8 @@ function renderResourcePickerHistorySection(items, renderItem = renderResourcePi
 }
 
 function renderExtractionPickerList(categories) {
-  const mineralCategory = categories.find((cat) => cat.slug === 'minerali');
-  const liquidiCategory = categories.find((cat) => cat.slug === 'liquidi');
-  const mineralItems = mineralCategory?.items ?? [];
-  const liquidItems = (liquidiCategory?.items ?? []).filter((item) =>
-    EXTRACTION_LIQUID_SLUGS.includes(item.slug)
-  );
-  const total = mineralItems.length + liquidItems.length;
+  const { minerals, liquids, wells } = buildExtractionPickerEntries(categories);
+  const total = minerals.length + liquids.length + wells.length;
   const countEl = document.getElementById('resource-picker-count');
   countEl.textContent = formatUiResourcesCount(total);
 
@@ -582,25 +586,20 @@ function renderExtractionPickerList(categories) {
     ),
   ];
 
-  if (mineralItems.length) {
-    sections.push(`
+  const renderGroup = (entries, title) => {
+    if (!entries.length) return '';
+    return `
       <section class="picker-category">
-        <h4>${escapeHtml(mineralCategory.name)}</h4>
+        <h4>${escapeHtml(title)}</h4>
         <div class="picker-grid">
-          ${mineralItems.map(renderExtractionPickerItem).join('')}
+          ${entries.map(renderExtractionPickerItem).join('')}
         </div>
-      </section>`);
-  }
+      </section>`;
+  };
 
-  if (liquidItems.length) {
-    sections.push(`
-      <section class="picker-category">
-        <h4>${escapeHtml(t('production.groupLiquids'))}</h4>
-        <div class="picker-grid">
-          ${liquidItems.map(renderExtractionPickerItem).join('')}
-        </div>
-      </section>`);
-  }
+  sections.push(renderGroup(minerals, t('production.groupMinerals')));
+  sections.push(renderGroup(liquids, t('production.groupLiquids')));
+  sections.push(renderGroup(wells, t('production.groupWells')));
 
   document.getElementById('resource-picker-list').innerHTML = sections.join('');
 }
@@ -885,9 +884,9 @@ async function addProductionStep(itemId, schemaId) {
   }
 }
 
-async function handleResourceSelection(itemId) {
+async function handleResourceSelection(itemId, { extractionMethod } = {}) {
   if (resourcePickerMode === 'extraction') {
-    await addMineralExtractionFromPicker(itemId);
+    await addMineralExtractionFromPicker(itemId, { extractionMethod });
     return;
   }
 

@@ -396,6 +396,28 @@ function setupProduction() {
       guardConfigSliderInput(extractionNodesSlider, () =>
         handleExtractionSliderInput(extractionNodesSlider, 'nodes')
       );
+      return;
+    }
+
+    const wellNodeExtractorsSlider = e.target.closest('.production-well-node-extractors-slider');
+    if (wellNodeExtractorsSlider) {
+      guardConfigSliderInput(wellNodeExtractorsSlider, () => {
+        const value = snapProductionSliderValue(wellNodeExtractorsSlider);
+        if (value == null) return;
+        const extractionId = Number(wellNodeExtractorsSlider.dataset.extractionId);
+        const index = Number(wellNodeExtractorsSlider.dataset.subNodeIndex);
+        const extractionEl = productionDetailBody.querySelector(
+          `[data-extraction-id="${extractionId}"]`
+        );
+        const input = extractionEl?.querySelector(
+          `.production-well-node-extractors-input[data-sub-node-index="${index}"]`
+        );
+        if (input) input.value = String(value);
+        handleExtractionConfigChange(extractionId, 'sub-node-extractors-slider', {
+          index,
+          count: value,
+        });
+      });
     }
   });
 
@@ -535,6 +557,15 @@ function setupProduction() {
       }
       if (!select?.dataset.extractionId || !select.dataset.field) return;
 
+      if (select.dataset.field === 'sub-node-purity') {
+        handleExtractionConfigChange(Number(select.dataset.extractionId), 'sub-node-purity', {
+          index: Number(select.dataset.subNodeIndex),
+          purity: themeSelectOption.dataset.value,
+        });
+        closeAllThemeSelects();
+        return;
+      }
+
       handleExtractionConfigChange(
         Number(select.dataset.extractionId),
         select.dataset.field,
@@ -560,11 +591,35 @@ function setupProduction() {
     if (duplicateBtn) {
       e.preventDefault();
       e.stopPropagation();
-      addMineralExtractionFromPicker(Number(duplicateBtn.dataset.itemId));
+      addMineralExtractionFromPicker(Number(duplicateBtn.dataset.itemId), {
+        extractionMethod: duplicateBtn.dataset.extractionMethod || undefined,
+      });
       return;
     }
 
-    const extractionResetBtn = e.target.closest('.production-step-reset-btn[data-extraction-id]');
+    const wellAddNodeBtn = e.target.closest('.production-well-add-node-btn');
+    if (wellAddNodeBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleExtractionConfigChange(Number(wellAddNodeBtn.dataset.extractionId), 'add-sub-node');
+      return;
+    }
+
+    const wellRemoveNodeBtn = e.target.closest('.production-well-remove-node-btn:not([disabled])');
+    if (wellRemoveNodeBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleExtractionConfigChange(
+        Number(wellRemoveNodeBtn.dataset.extractionId),
+        'remove-sub-node',
+        Number(wellRemoveNodeBtn.dataset.subNodeIndex)
+      );
+      return;
+    }
+
+    const extractionResetBtn = e.target.closest(
+      '.production-step-reset-btn[data-extraction-id]:not(.production-well-add-node-btn)'
+    );
     if (extractionResetBtn) {
       e.preventDefault();
       e.stopPropagation();
@@ -572,7 +627,9 @@ function setupProduction() {
       return;
     }
 
-    const extractionDeleteBtn = e.target.closest('.production-step-delete-btn[data-extraction-id]');
+    const extractionDeleteBtn = e.target.closest(
+      '.production-step-delete-btn[data-extraction-id]:not(.production-well-remove-node-btn)'
+    );
     if (extractionDeleteBtn) {
       e.preventDefault();
       e.stopPropagation();
@@ -674,7 +731,9 @@ function setupProduction() {
     if (!btn) return;
     const itemId = Number(btn.dataset.id);
     rememberResourcePickerSelection(itemId);
-    handleResourceSelection(itemId);
+    handleResourceSelection(itemId, {
+      extractionMethod: btn.dataset.extractionMethod || undefined,
+    });
   });
 
   const pickerSearch = document.getElementById('resource-picker-search');
@@ -697,37 +756,34 @@ function setupProduction() {
       try {
         let results = await window.satisfactory.searchResources(query);
         if (resourcePickerMode === 'extraction') {
-          results = results.filter(isExtractionPickerItem);
-          const minerals = results.filter((item) => item.category === 'minerali');
-          const liquids = results.filter((item) => EXTRACTION_LIQUID_SLUGS.includes(item.slug));
+          const entries = expandItemsForExtractionPicker(results.filter(isExtractionPickerItem));
+          const minerals = entries.filter((entry) => entry.extraction_method === 'mineral');
+          const liquids = entries.filter((entry) => entry.extraction_method === 'liquid');
+          const wells = entries.filter((entry) => entry.extraction_method === 'well');
 
-          if (!results.length) {
+          if (!entries.length) {
             listEl.innerHTML = `<p class="empty-state">${escapeHtml(t('errors.pickerExtractEmpty'))}</p>`;
           } else {
-            const sections = [];
-            if (minerals.length) {
-              sections.push(`
+            const renderGroup = (items, title) => {
+              if (!items.length) return '';
+              return `
                 <section class="picker-category">
-                  <h4>${escapeHtml(t('production.groupMinerals'))}</h4>
+                  <h4>${escapeHtml(title)}</h4>
                   <div class="picker-grid">
-                    ${minerals.map(renderExtractionPickerItem).join('')}
+                    ${items.map(renderExtractionPickerItem).join('')}
                   </div>
-                </section>`);
-            }
-            if (liquids.length) {
-              sections.push(`
-                <section class="picker-category">
-                  <h4>${escapeHtml(t('production.groupLiquids'))}</h4>
-                  <div class="picker-grid">
-                    ${liquids.map(renderExtractionPickerItem).join('')}
-                  </div>
-                </section>`);
-            }
-            listEl.innerHTML = sections.join('');
+                </section>`;
+            };
+
+            listEl.innerHTML = [
+              renderGroup(minerals, t('production.groupMinerals')),
+              renderGroup(liquids, t('production.groupLiquids')),
+              renderGroup(wells, t('production.groupWells')),
+            ].join('');
           }
 
           document.getElementById('resource-picker-count').textContent =
-            `${formatUiResultsCount(results.length)}`;
+            `${formatUiResultsCount(entries.length)}`;
         } else {
           listEl.innerHTML = renderResourcePickerSearchResults(results);
         }

@@ -190,7 +190,7 @@ function getExtractionOutputSliderMin(extraction) {
 
 function usesFractionalExtractionOutput(extraction) {
   if (!extraction) return false;
-  if (getExtractionKind(extraction) === 'water') return true;
+  if (getExtractionKind(extraction) === 'water' || getExtractionKind(extraction) === 'well') return true;
   const min = getExtractionOutputSliderMin(extraction);
   if (min < 1 - 0.0005) return true;
   return !window.ProductionScale.isIntegerOverclock(extraction.overclock ?? 100);
@@ -2787,9 +2787,11 @@ function toggleProductionGroupTreeView() {
 
 function getExtractionKind(extraction) {
   if (extraction?.extraction_kind) return extraction.extraction_kind;
+  if (extraction?.miner_slug === FRACKING_EXTRACTOR_SLUG) return 'well';
   const slug = extraction?.item?.slug;
   if (slug === 'liquid-oil') return 'oil';
   if (slug === 'water') return 'water';
+  if (slug === 'nitrogen-gas') return 'well';
   return 'mineral';
 }
 
@@ -2799,6 +2801,8 @@ function getExtractionSubtitle(kind) {
       return t('extraction.oil');
     case 'water':
       return t('extraction.water');
+    case 'well':
+      return t('extraction.well');
     case 'coal':
       return t('extraction.coal');
     default:
@@ -2807,12 +2811,88 @@ function getExtractionSubtitle(kind) {
 }
 
 function isExtractionPickerItem(item) {
-  return item.category === 'minerali' || EXTRACTION_LIQUID_SLUGS.includes(item.slug);
+  return (
+    item.category === 'minerali' ||
+    EXTRACTION_LIQUID_SLUGS.includes(item.slug) ||
+    item.slug === 'nitrogen-gas'
+  );
+}
+
+function buildExtractionPickerEntry(item, extractionMethod) {
+  return { ...item, extraction_method: extractionMethod };
+}
+
+function buildExtractionPickerEntries(categories = []) {
+  const mineralCategory = categories.find((cat) => cat.slug === 'minerali');
+  const liquidiCategory = categories.find((cat) => cat.slug === 'liquidi');
+  const allItems = categories.flatMap((cat) => cat.items ?? []);
+
+  const minerals = (mineralCategory?.items ?? []).map((item) =>
+    buildExtractionPickerEntry(item, 'mineral')
+  );
+
+  const liquids = [];
+  const wells = [];
+
+  for (const item of liquidiCategory?.items ?? []) {
+    if (EXTRACTION_LIQUID_SLUGS.includes(item.slug)) {
+      liquids.push(buildExtractionPickerEntry(item, 'liquid'));
+      wells.push(buildExtractionPickerEntry(item, 'well'));
+    }
+  }
+
+  const nitrogen = allItems.find((item) => item.slug === 'nitrogen-gas');
+  if (nitrogen) {
+    wells.push(buildExtractionPickerEntry(nitrogen, 'well'));
+  }
+
+  return { minerals, liquids, wells };
+}
+
+function expandItemsForExtractionPicker(items = []) {
+  const entries = [];
+
+  for (const item of items) {
+    if (!isExtractionPickerItem(item)) continue;
+
+    if (item.category === 'minerali') {
+      entries.push(buildExtractionPickerEntry(item, 'mineral'));
+      continue;
+    }
+
+    if (EXTRACTION_LIQUID_SLUGS.includes(item.slug)) {
+      entries.push(buildExtractionPickerEntry(item, 'liquid'));
+      entries.push(buildExtractionPickerEntry(item, 'well'));
+      continue;
+    }
+
+    if (item.slug === 'nitrogen-gas') {
+      entries.push(buildExtractionPickerEntry(item, 'well'));
+    }
+  }
+
+  return entries;
+}
+
+function getExtractionPickerMethodLabel(entry) {
+  const method = entry?.extraction_method ?? 'mineral';
+  if (method === 'well') return t('extraction.methodWell');
+  if (method === 'liquid') {
+    if (entry.slug === 'water') return t('extraction.methodWaterPump');
+    if (entry.slug === 'liquid-oil') return t('extraction.methodOilPump');
+  }
+  return '';
 }
 
 function getExtractionOutputUnit(item, kind = null) {
   const resolvedKind = kind ?? (item ? getExtractionKind({ item }) : 'mineral');
-  if (resolvedKind === 'oil' || resolvedKind === 'water' || item?.category === 'liquidi') {
+  if (
+    resolvedKind === 'oil' ||
+    resolvedKind === 'water' ||
+    resolvedKind === 'well' ||
+    item?.category === 'liquidi' ||
+    item?.slug === 'nitrogen-gas'
+  ) {
     return 'm³/min';
   }
   return item?.is_fluid ? 'm³/min' : '/min';
@@ -2821,7 +2901,8 @@ function getExtractionOutputUnit(item, kind = null) {
 function isExternalSummarySlug(slug) {
   const mineralSlugs = getMineralSlugs();
   if (mineralSlugs.has(slug)) return true;
-  return EXTRACTION_LIQUID_SLUGS.includes(slug);
+  if (EXTRACTION_LIQUID_SLUGS.includes(slug)) return true;
+  return EXTRACTION_WELL_ITEM_SLUGS.includes(slug);
 }
 
 function computeChainResourceBalance(allSteps, extractions = []) {
@@ -3546,40 +3627,6 @@ function renderProductionStep(step, allSteps = []) {
               />
             </div>
           </div>
-          <div class="production-config-oc-machines">
-            <div class="production-config-field">
-              <label class="production-config-label" for="production-power-shards-${step.id}">
-                ${escapeHtml(t('production.configPowerShard'))}
-              </label>
-              <input
-                type="text"
-                class="production-config-input production-config-readonly production-power-shards"
-                id="production-power-shards-${step.id}"
-                readonly
-                tabindex="-1"
-                value="${computeTotalPowerShards(step.overclock, step.machine_count)}"
-              />
-            </div>
-            <div class="production-config-field">
-              <label class="production-config-label" for="production-power-mw-${step.id}">
-                ${escapeHtml(
-                  t(
-                    window.ProductionScale.isPeakPowerBuilding(schema?.building_slug)
-                      ? 'production.configPowerConsumptionMax'
-                      : 'production.configPowerConsumption'
-                  )
-                )}
-              </label>
-              <input
-                type="text"
-                class="production-config-input production-config-readonly production-power-mw"
-                id="production-power-mw-${step.id}"
-                readonly
-                tabindex="-1"
-                value="${formatRateWithUnit(computeStepPowerMw(step), 'MW')}"
-              />
-            </div>
-          </div>
           <div class="production-config-field production-somersloop-field">
             <label class="production-config-label">Somersloop</label>
             ${renderSomersloopCheckboxes(step)}
@@ -3870,24 +3917,6 @@ function updateStepConfigInputs(stepEl, config, step) {
     );
   }
 
-  const powerShardsInput = stepEl.querySelector('.production-power-shards');
-  if (powerShardsInput) {
-    powerShardsInput.value = String(computeTotalPowerShards(config.overclock, config.machine_count));
-  }
-
-  const powerMwInput = stepEl.querySelector('.production-power-mw');
-  if (powerMwInput && step) {
-    powerMwInput.value = formatRateWithUnit(
-      computeStepPowerMw({
-        ...step,
-        overclock: config.overclock,
-        machine_count: config.machine_count,
-        somersloop_mask: config.somersloop_mask ?? step.somersloop_mask,
-      }),
-      'MW'
-    );
-  }
-
   const baseHintEl = stepEl.querySelector('.craft-building-base');
   if (baseHintEl && step?.schema) {
     const primary = window.ProductionScale.getPrimaryOutput(step.schema, step.item);
@@ -3989,6 +4018,12 @@ function getConfigInputNudgeMax(input, field, candidateValue) {
     return getMachinesSliderMax(step ?? {}, candidateValue);
   }
   if (field === 'extraction-nodes' && input.dataset.extractionId) {
+    const extraction = activeProductionDetail?.extractions?.find(
+      (item) => item.id === Number(input.dataset.extractionId)
+    );
+    return getNodesSliderMax(candidateValue, extraction);
+  }
+  if (field === 'well-node-extractors' && input.dataset.extractionId) {
     const extraction = activeProductionDetail?.extractions?.find(
       (item) => item.id === Number(input.dataset.extractionId)
     );
@@ -4098,6 +4133,7 @@ function getConfigInputField(input) {
   if (input.classList.contains('production-machines-input')) return 'machines';
   if (input.classList.contains('production-extraction-overclock-input')) return 'extraction-overclock';
   if (input.classList.contains('production-extraction-nodes-input')) return 'extraction-nodes';
+  if (input.classList.contains('production-well-node-extractors-input')) return 'well-node-extractors';
   if (input.classList.contains('production-io-rate-input')) return 'io-rate';
   if (input.classList.contains('energy-generator-io-rate-input')) return 'energy-io-rate';
   if (input.classList.contains('energy-generator-fuel-input')) return 'energy-fuel';
@@ -4171,7 +4207,7 @@ function applyConfigInputNudge(input, field, delta, commit = commitConfigInputCh
     if (Number.isFinite(min)) value = Math.max(min, value);
     const max = getConfigInputNudgeMax(input, field, value);
     if (max != null) value = Math.min(max, value);
-    if (field === 'machines' || field === 'extraction-nodes' || field === 'energy-machines') {
+    if (field === 'machines' || field === 'extraction-nodes' || field === 'energy-machines' || field === 'well-node-extractors') {
       value = Math.max(1, Math.round(value));
       formatted = formatMachineCountInput(value);
       if (max != null) input.max = String(max);
@@ -4223,6 +4259,14 @@ function commitConfigInputFromField(input, field) {
   }
   if (field === 'extraction-nodes') {
     handleExtractionConfigChange(Number(input.dataset.extractionId), 'nodes', input.value);
+    return;
+  }
+  if (field === 'well-node-extractors') {
+    handleExtractionConfigChange(Number(input.dataset.extractionId), 'sub-node-extractors', {
+      index: Number(input.dataset.subNodeIndex),
+      count: parseConfigNumberInput(input.value) || input.value,
+    });
+    return;
   }
 }
 
@@ -4254,6 +4298,14 @@ function commitConfigInputChange(input, field, value) {
   }
   if (field === 'extraction-nodes') {
     handleExtractionConfigChange(Number(input.dataset.extractionId), 'nodes', value);
+    return;
+  }
+  if (field === 'well-node-extractors') {
+    handleExtractionConfigChange(Number(input.dataset.extractionId), 'sub-node-extractors', {
+      index: Number(input.dataset.subNodeIndex),
+      count: value,
+    });
+    return;
   }
 }
 
