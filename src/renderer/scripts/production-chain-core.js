@@ -2075,7 +2075,7 @@ function getLinkedConsumersForExtraction(extraction, allSteps, allExtractions = 
     .map((step) => ({
       consumer_step_id: step.id,
       consumer_name: step.name,
-      allocated_rate: allocations.get(step.id) ?? 0,
+      allocated_rate: allocations.get(Number(step.id)) ?? 0,
       required_rate: getStepInputRateForItem(step, itemSlug),
     }));
 }
@@ -2160,7 +2160,9 @@ function getExtractionAttributedDemand(
   allExtractions = []
 ) {
   return (
-    getExtractionAllocations(extraction, itemSlug, allSteps, allExtractions).get(consumer.id) ?? 0
+    getExtractionAllocations(extraction, itemSlug, allSteps, allExtractions).get(
+      Number(consumer.id)
+    ) ?? 0
   );
 }
 
@@ -2410,6 +2412,15 @@ function refreshRelatedStepIoDisplays(changedStepId) {
   const changedStep = allSteps.find((item) => Number(item.id) === Number(changedStepId));
   const changedOutputSlugs = new Set((changedStep?.scaled_outputs ?? []).map((io) => io.item_slug));
 
+  const sharedExtractionIds = new Set();
+  for (const links of Object.values(changedStep?.input_links ?? {})) {
+    for (const link of links ?? []) {
+      if (link.producer_extraction_id != null) {
+        sharedExtractionIds.add(Number(link.producer_extraction_id));
+      }
+    }
+  }
+
   for (const step of allSteps) {
     if (stepLinksToProducer(step, changedStepId)) {
       stepsToRefresh.add(step.id);
@@ -2422,11 +2433,20 @@ function refreshRelatedStepIoDisplays(changedStepId) {
       stepsToRefresh.add(step.id);
     }
 
+    if (sharedExtractionIds.size > 0) {
+      const sharesExtraction = Object.values(step.input_links ?? {}).some((links) =>
+        (links ?? []).some((link) =>
+          sharedExtractionIds.has(Number(link.producer_extraction_id))
+        )
+      );
+      if (sharesExtraction) stepsToRefresh.add(step.id);
+    }
+
     if (Number(step.id) !== Number(changedStepId)) continue;
 
     for (const links of Object.values(step.input_links ?? {})) {
       for (const link of links) {
-        stepsToRefresh.add(link.producer_step_id);
+        if (link.producer_step_id != null) stepsToRefresh.add(link.producer_step_id);
       }
     }
   }
@@ -2443,6 +2463,10 @@ function refreshRelatedStepIoDisplays(changedStepId) {
       step,
       allSteps
     );
+  }
+
+  if (typeof refreshAllExtractionLinkDisplays === 'function') {
+    refreshAllExtractionLinkDisplays();
   }
 }
 
@@ -2877,10 +2901,7 @@ function expandItemsForExtractionPicker(items = []) {
 function getExtractionPickerMethodLabel(entry) {
   const method = entry?.extraction_method ?? 'mineral';
   if (method === 'well') return t('extraction.methodWell');
-  if (method === 'liquid') {
-    if (entry.slug === 'water') return t('extraction.methodWaterPump');
-    if (entry.slug === 'liquid-oil') return t('extraction.methodOilPump');
-  }
+  if (method === 'liquid') return t('extraction.methodLiquid');
   return '';
 }
 
@@ -3671,6 +3692,13 @@ function renderProductionStep(step, allSteps = []) {
                 />
                 <i class="fa-solid ${getProductionMarkIconClass(isMarked)}" aria-hidden="true"></i>
               </label>
+              <button
+                type="button"
+                class="production-step-rename-btn"
+                data-step-id="${step.id}"
+                title="${escapeHtml(t('production.renameStep'))}"
+                aria-label="${escapeHtml(t('production.renameStepAria', { name: step.name }))}"
+              ><i class="fa-solid fa-pen" aria-hidden="true"></i></button>
               <button
                 type="button"
                 class="production-step-toggle-btn"

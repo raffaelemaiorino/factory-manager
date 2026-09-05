@@ -229,13 +229,15 @@
     "highlightGroupTitle": "Gruppe mit grünem Hintergrund hervorheben",
     "renameGroup": "Gruppe umbenennen",
     "renameGroupAria": "Gruppe {name} umbenennen",
+    "renameStep": "Schritt umbenennen",
+    "renameStepAria": "Schritt {name} umbenennen",
     "newGroupOption": "+ Neue Gruppe…",
     "dragReorder": "Zum Sortieren ziehen",
     "configOutput": "Ausgang ({unit})",
     "configOverclock": "Overclock (%)",
     "configMachines": "Maschinen",
     "configPowerShard": "Energiescherbe",
-    "configMiner": "Miner",
+    "configMiner": "Bohrer",
     "configPurity": "Knotenreinheit",
     "configNodes": "Knoten",
     "configExtractors": "Extraktoren",
@@ -355,7 +357,7 @@
     "configPowerConsumption": "Verbrauch (MW)",
     "configPowerConsumptionMax": "Verbrauch (max.)",
     "configPressurizerOverclock": "Pressurizer-Overclock (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "Druckerhöher",
     "groupWells": "Ressourcenquellen",
     "wellSubNodes": "Unterknoten",
     "wellNodeLabel": "Knoten {index}",
@@ -364,7 +366,7 @@
     "addWellNode": "Unterknoten hinzufügen",
     "removeWellNode": "Unterknoten entfernen",
     "removeWellNodeAria": "Knoten {index} entfernen",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "Druckerhöher @ {overclock}%",
     "powerShardsRequired": "{count} Energiescherben erforderlich",
     "somersloopsRequired": "{count} Somersloops erforderlich",
     "powerConsumptionRequired": "Verbrauch {mw}",
@@ -410,7 +412,7 @@
     "pickerNoGenerators": "Keine Generatoren verfügbar.",
     "defaultWaterExtractor": "Wasserextraktor",
     "defaultOilExtractor": "Ölextraktor",
-    "defaultMiner": "Miner",
+    "defaultMiner": "Bohrer",
     "targetMw": "Ziel-MW",
     "generatorType": "Generator",
     "generatorCoal": "Kohlegenerator",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "Produktionsplan umbenennen",
     "renameEnergyPlan": "Stromplan umbenennen",
     "renameGroup": "Gruppe",
+    "renameStep": "Schritt umbenennen",
     "addExtractionTitle": "Abbau hinzufügen",
     "selectResource": "Ressource wählen",
     "selectResourceSub": "Zu produzierende Ressource wählen",
@@ -576,9 +579,9 @@
     "sectionRights.p4": "Alle Rechte vorbehalten."
   },
   "miners": {
-    "mk1": "Miner Mk.1",
-    "mk2": "Miner Mk.2",
-    "mk3": "Miner Mk.3"
+    "mk1": "Bohrer Mk.1",
+    "mk2": "Bohrer Mk.2",
+    "mk3": "Bohrer Mk.3"
   },
   "purity": {
     "impure": "Unrein",
@@ -597,6 +600,7 @@
     "coal": "Kohleabbau",
     "well": "Abbau aus Ressourcenquelle",
     "methodWell": "Ressourcenquelle",
+    "methodLiquid": "Flüssigkeit",
     "methodWaterPump": "Wasserpumpe",
     "methodOilPump": "Ölpumpe"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "Abbau",
     "objective": "Ziel",
+    "externalSource": "(extern)",
+    "unlinkedSource": "(nicht verknüpft)",
     "grouping": "Gruppe",
     "mainInputs": "Haupteingänge",
     "mainOutputs": "Hauptausgänge",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "Wiederherstellen",
     "newGroupTitle": "Neue Gruppe",
     "renameGroupTitle": "Gruppe umbenennen",
+    "renameStepTitle": "Schritt umbenennen",
     "deleteTransportPlanTitle": "Transport löschen",
     "deleteTransportPlanMessage": "Plan «{name}» löschen? Das kann nicht rückgängig gemacht werden."
   },
@@ -758,7 +765,7 @@
     "metaReturn": "{value} {unit} Rückfahrt",
     "cardVehicles": "Benötigte Fahrzeuge",
     "cardRoundTrip": "Gesamtfahrtzeit",
-    "cardMixShort": "mix",
+    "cardMixShort": "gemischt",
     "listTripTimes": "{outbound}/{return} {unit} · ges. {total} {unit}",
     "slotsCount": "{count} Slots",
     "unitsGeneric": "{count} Fahrzeuge",
@@ -808,7 +815,9 @@
     "returnShort": "Rück",
     "totalShort": "Gesamt",
     "trainCountShort": "Züge",
-    "routeTimesHint": "Gesamt = Hin + Rück; manuell gesetzt werden beide zur Hälfte. Mehrere Züge teilen die Last."
+    "routeTimesHint": "Gesamt = Hin + Rück; manuell gesetzt werden beide zur Hälfte. Mehrere Züge teilen die Last.",
+    "vehicleSoonHint": "Vorerst nur Züge (Güterwagen): andere Fahrzeuge folgen nach und nach.",
+    "vehicleDisabledTitle": "Noch nicht verfügbar"
   },
   "calculator": {
     "title": "Rechner",

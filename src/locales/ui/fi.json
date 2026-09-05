@@ -233,6 +233,8 @@
     "highlightGroupTitle": "Korosta ryhmä vihreällä taustalla",
     "renameGroup": "Nimeä ryhmä uudelleen",
     "renameGroupAria": "Nimeä ryhmä {name} uudelleen",
+    "renameStep": "Nimeä vaihe uudelleen",
+    "renameStepAria": "Nimeä vaihe {name} uudelleen",
     "newGroupOption": "+ Uusi ryhmä…",
     "dragReorder": "Vedä järjestääksesi",
     "configOutput": "Tuote ({unit})",
@@ -359,7 +361,7 @@
     "configPowerConsumption": "Kulutus (MW)",
     "configPowerConsumptionMax": "Kulutus (enintään)",
     "configPressurizerOverclock": "Pressurizerin overclock (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "Paineistin",
     "groupWells": "Resurssilähteet",
     "wellSubNodes": "Alisolmut",
     "wellNodeLabel": "Solmu {index}",
@@ -368,7 +370,7 @@
     "addWellNode": "Lisää alisolmu",
     "removeWellNode": "Poista alisolmu",
     "removeWellNodeAria": "Poista solmu {index}",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "Paineistin @ {overclock}%",
     "powerShardsRequired": "Tarvitaan {count} energiasirua",
     "somersloopsRequired": "Tarvitaan {count} Somersloopia",
     "powerConsumptionRequired": "Kulutus {mw}",
@@ -489,6 +491,7 @@
     "renameProductionPlan": "Nimeä tuotantosuunnitelma uudelleen",
     "renameEnergyPlan": "Nimeä sähkösuunnitelma uudelleen",
     "renameGroup": "Ryhmä",
+    "renameStep": "Nimeä vaihe uudelleen",
     "addExtractionTitle": "Lisää louhinta",
     "selectResource": "Valitse resurssi",
     "selectResourceSub": "Valitse tuotettava resurssi",
@@ -601,6 +604,7 @@
     "coal": "Hiilen louhinta",
     "well": "Louhinta resurssilähteestä",
     "methodWell": "Resurssilähde",
+    "methodLiquid": "Neste",
     "methodWaterPump": "Vesipumppu",
     "methodOilPump": "Öljypumppu"
   },
@@ -619,6 +623,8 @@
   "graph": {
     "extraction": "Louhinta",
     "objective": "Tavoite",
+    "externalSource": "(ulkoinen)",
+    "unlinkedSource": "(ei linkitetty)",
     "grouping": "Ryhmä",
     "mainInputs": "Pääsyötteet",
     "mainOutputs": "Päätuotteet",
@@ -678,6 +684,7 @@
     "restoreDefaultsConfirm": "Palauta",
     "newGroupTitle": "Uusi ryhmä",
     "renameGroupTitle": "Nimeä ryhmä uudelleen",
+    "renameStepTitle": "Nimeä vaihe uudelleen",
     "deleteTransportPlanTitle": "Poista kuljetus",
     "deleteTransportPlanMessage": "Poistetaanko suunnitelma «{name}»? Tätä ei voi perua."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Paluu",
     "totalShort": "Yht.",
     "trainCountShort": "Junat",
-    "routeTimesHint": "Yht. = meno + paluu; käsin molemmat puoliksi. Useampi juna jakaa kuorman."
+    "routeTimesHint": "Yht. = meno + paluu; käsin molemmat puoliksi. Useampi juna jakaa kuorman.",
+    "vehicleSoonHint": "Toistaiseksi vain junat (tavaravaunu): muut kulkuneuvot otetaan käyttöön vähitellen.",
+    "vehicleDisabledTitle": "Ei vielä saatavilla"
   },
   "calculator": {
     "title": "Laskin",

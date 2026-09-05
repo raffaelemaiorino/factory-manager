@@ -219,6 +219,16 @@
     return String(slug) === 'freight-wagon';
   }
 
+  /** Solo treni ottimizzati per ora; altri mezzi restano in catalogo ma non selezionabili. */
+  function isTransportVehicleSelectable(slugOrVehicle) {
+    return isTrainVehicleSlug(slugOrVehicle);
+  }
+
+  function defaultSelectableVehicleSlug() {
+    const train = vehiclesCatalog.find((v) => isTransportVehicleSelectable(v.slug));
+    return train?.slug || vehiclesCatalog[0]?.slug || null;
+  }
+
   function formatVehiclesNeededLabel(vehicle, calc, trainCount) {
     const needed = calc?.vehicles_needed ?? 0;
     const base = vehicleUnitLabel(vehicle, needed);
@@ -430,12 +440,14 @@
   function renderCreateVehicleGrid() {
     const grid = document.getElementById('transport-create-vehicle-grid');
     if (!grid) return;
-    if (!selectedVehicleSlug && vehiclesCatalog.length) {
-      selectedVehicleSlug = vehiclesCatalog[0].slug;
+    if (!selectedVehicleSlug || !isTransportVehicleSelectable(selectedVehicleSlug)) {
+      selectedVehicleSlug = defaultSelectableVehicleSlug();
     }
     grid.innerHTML = vehiclesCatalog
       .map((vehicle) => {
+        const selectable = isTransportVehicleSelectable(vehicle.slug);
         const selected = vehicle.slug === selectedVehicleSlug ? ' is-selected' : '';
+        const disabledClass = selectable ? '' : ' is-disabled';
         const img = vehicleImageSrc(vehicle);
         const cap =
           vehicle.cargo_kind === 'fluid'
@@ -443,14 +455,21 @@
             : vehicle.cargo_kind === 'mixed'
               ? `${t('transport.slotsCount', { count: vehicle.inventory_slots })} · ${vehicle.fluid_capacity} m³`
               : t('transport.slotsCount', { count: vehicle.inventory_slots });
+        const titleAttr = selectable
+          ? ''
+          : ` title="${escapeHtml(t('transport.vehicleDisabledTitle'))}"`;
         return `
-          <button type="button" class="transport-vehicle-option${selected}" data-vehicle-slug="${escapeHtml(vehicle.slug)}">
+          <button type="button" class="transport-vehicle-option${selected}${disabledClass}" data-vehicle-slug="${escapeHtml(vehicle.slug)}"${
+            selectable ? '' : ' disabled aria-disabled="true"'
+          }${titleAttr}>
             ${img ? `<img src="${escapeHtml(img)}" alt="" />` : ''}
             <span class="transport-vehicle-option-name">${escapeHtml(vehicleDisplayName(vehicle))}</span>
             <span class="transport-vehicle-option-cap">${escapeHtml(cap)}</span>
           </button>`;
       })
       .join('');
+    const hint = document.getElementById('transport-create-vehicle-hint');
+    if (hint) hint.textContent = t('transport.vehicleSoonHint');
     syncCreateTrainCountVisibility();
   }
 
@@ -471,7 +490,7 @@
 
   async function openTransportCreateModal() {
     await ensureVehicles();
-    selectedVehicleSlug = vehiclesCatalog[0]?.slug || null;
+    selectedVehicleSlug = defaultSelectableVehicleSlug();
     createTimeUnit = 'min';
     showCreateError('');
     const nameInput = document.getElementById('transport-plan-name');
@@ -575,6 +594,10 @@
       return;
     }
     if (!selectedVehicleSlug) {
+      showCreateError(t('transport.vehicleRequired'));
+      return;
+    }
+    if (!isTransportVehicleSelectable(selectedVehicleSlug)) {
       showCreateError(t('transport.vehicleRequired'));
       return;
     }
@@ -801,13 +824,17 @@
                 <label for="transport-detail-vehicle">${escapeHtml(t('transport.vehicleType'))}</label>
                 <select id="transport-detail-vehicle" class="production-config-input">
                   ${vehiclesCatalog
-                    .map(
-                      (v) =>
-                        `<option value="${escapeHtml(v.slug)}" ${v.slug === plan.vehicle_slug ? 'selected' : ''}>${escapeHtml(vehicleDisplayName(v))}</option>`
-                    )
+                    .map((v) => {
+                      const selected = v.slug === plan.vehicle_slug ? 'selected' : '';
+                      const keepCurrent = v.slug === plan.vehicle_slug;
+                      const disabled =
+                        !isTransportVehicleSelectable(v.slug) && !keepCurrent ? 'disabled' : '';
+                      return `<option value="${escapeHtml(v.slug)}" ${selected} ${disabled}>${escapeHtml(vehicleDisplayName(v))}</option>`;
+                    })
                     .join('')}
                 </select>
                 <p class="form-hint">${escapeHtml(vehicleCap)}</p>
+                <p class="form-hint">${escapeHtml(t('transport.vehicleSoonHint'))}</p>
               </div>
             </div>
 
@@ -1273,7 +1300,7 @@
 
     document.getElementById('transport-create-vehicle-grid')?.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-vehicle-slug]');
-      if (!btn) return;
+      if (!btn || btn.disabled || !isTransportVehicleSelectable(btn.dataset.vehicleSlug)) return;
       selectedVehicleSlug = btn.dataset.vehicleSlug;
       renderCreateVehicleGrid();
     });
@@ -1329,6 +1356,7 @@
       }
       const vehicle = e.target.closest('#transport-detail-vehicle');
       if (vehicle) {
+        if (!isTransportVehicleSelectable(vehicle.value)) return;
         const patch = { vehicle_slug: vehicle.value };
         if (!isTrainVehicleSlug(vehicle.value)) {
           patch.train_count = 1;

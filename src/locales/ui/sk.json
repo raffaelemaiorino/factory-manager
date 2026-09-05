@@ -233,6 +233,8 @@
     "highlightGroupTitle": "Zvýrazniť skupinu zeleným pozadím",
     "renameGroup": "Premenovať skupinu",
     "renameGroupAria": "Premenovať skupinu {name}",
+    "renameStep": "Premenovať krok",
+    "renameStepAria": "Premenovať krok {name}",
     "newGroupOption": "+ Nová skupina…",
     "dragReorder": "Potiahnuť na zoradenie",
     "configOutput": "Výstup ({unit})",
@@ -489,6 +491,7 @@
     "renameProductionPlan": "Premenovať výrobný plán",
     "renameEnergyPlan": "Premenovať energetický plán",
     "renameGroup": "Skupina",
+    "renameStep": "Premenovať krok",
     "addExtractionTitle": "Pridať ťažbu",
     "selectResource": "Vybrať surovinu",
     "selectResourceSub": "Vyberte surovinu na výrobu",
@@ -601,6 +604,7 @@
     "coal": "Ťažba uhlia",
     "well": "Ťažba z vrtu",
     "methodWell": "Surovinový vrt",
+    "methodLiquid": "Kvapalina",
     "methodWaterPump": "Vodné čerpadlo",
     "methodOilPump": "Ropné čerpadlo"
   },
@@ -619,6 +623,8 @@
   "graph": {
     "extraction": "Ťažba",
     "objective": "Cieľ",
+    "externalSource": "(externé)",
+    "unlinkedSource": "(neprepojené)",
     "grouping": "Skupina",
     "mainInputs": "Hlavné vstupy",
     "mainOutputs": "Hlavné výstupy",
@@ -678,6 +684,7 @@
     "restoreDefaultsConfirm": "Obnoviť",
     "newGroupTitle": "Nová skupina",
     "renameGroupTitle": "Premenovať skupinu",
+    "renameStepTitle": "Premenovať krok",
     "deleteTransportPlanTitle": "Zmazať dopravu",
     "deleteTransportPlanMessage": "Zmazať plán «{name}»? Túto akciu nemožno vrátiť."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Späť",
     "totalShort": "Spolu",
     "trainCountShort": "Vlaky",
-    "routeTimesHint": "Spolu = tam + späť; ručne obe polovice. Viac vlakov delí náklad."
+    "routeTimesHint": "Spolu = tam + späť; ručne obe polovice. Viac vlakov delí náklad.",
+    "vehicleSoonHint": "Zatiaľ len vlaky (nákladný vagón): ostatné prostriedky budú zapínané postupne.",
+    "vehicleDisabledTitle": "Zatiaľ nedostupné"
   },
   "calculator": {
     "title": "Kalkulačka",

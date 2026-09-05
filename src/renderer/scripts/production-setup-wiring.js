@@ -660,6 +660,22 @@ function setupProduction() {
       return;
     }
 
+    const stepRenameBtn = e.target.closest('.production-step-rename-btn[data-step-id]');
+    if (stepRenameBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const stepId = normalizeProductionStepId(stepRenameBtn.dataset.stepId);
+      const step = activeProductionDetail?.steps?.find((item) => Number(item.id) === Number(stepId));
+      if (!stepId || !step) return;
+      openSchemaRenameModal({
+        kind: 'rename-step',
+        id: stepId,
+        name: step.name,
+        title: t('confirm.renameStepTitle'),
+      });
+      return;
+    }
+
     const groupToggleBtn = e.target.closest('.production-step-group-toggle-btn');
     if (groupToggleBtn) {
       e.preventDefault();
@@ -730,9 +746,12 @@ function setupProduction() {
     const btn = e.target.closest('.picker-item:not([disabled])');
     if (!btn) return;
     const itemId = Number(btn.dataset.id);
-    rememberResourcePickerSelection(itemId);
+    const extractionMethod = btn.dataset.extractionMethod || undefined;
+    rememberResourcePickerSelection(itemId, {
+      extractionMethod: resourcePickerMode === 'extraction' ? extractionMethod : undefined,
+    });
     handleResourceSelection(itemId, {
-      extractionMethod: btn.dataset.extractionMethod || undefined,
+      extractionMethod,
     });
   });
 

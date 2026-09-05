@@ -229,6 +229,8 @@
     "highlightGroupTitle": "เน้นกลุ่มด้วยพื้นหลังสีเขียว",
     "renameGroup": "เปลี่ยนชื่อกลุ่ม",
     "renameGroupAria": "เปลี่ยนชื่อกลุ่ม {name}",
+    "renameStep": "เปลี่ยนชื่อขั้นตอน",
+    "renameStepAria": "เปลี่ยนชื่อขั้นตอน {name}",
     "newGroupOption": "+ กลุ่มใหม่…",
     "dragReorder": "ลากเพื่อจัดลำดับ",
     "configOutput": "เอาต์พุต ({unit})",
@@ -355,7 +357,7 @@
     "configPowerConsumption": "การใช้พลังงาน (MW)",
     "configPowerConsumptionMax": "การใช้พลังงาน (สูงสุด)",
     "configPressurizerOverclock": "Overclock ของ Pressurizer (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "เครื่องอัดแรงดัน",
     "groupWells": "บ่อทรัพยากร",
     "wellSubNodes": "โหนดย่อย",
     "wellNodeLabel": "โหนด {index}",
@@ -364,7 +366,7 @@
     "addWellNode": "เพิ่มโหนดย่อย",
     "removeWellNode": "ลบโหนดย่อย",
     "removeWellNodeAria": "ลบโหนด {index}",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "เครื่องอัดแรงดัน @ {overclock}%",
     "powerShardsRequired": "ต้องใช้เศษพลังงาน {count} ชิ้น",
     "somersloopsRequired": "ต้องใช้ Somersloop {count} ชิ้น",
     "powerConsumptionRequired": "ใช้พลังงาน {mw}",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "เปลี่ยนชื่อแผนการผลิต",
     "renameEnergyPlan": "เปลี่ยนชื่อแผนพลังงาน",
     "renameGroup": "กลุ่ม",
+    "renameStep": "เปลี่ยนชื่อขั้นตอน",
     "addExtractionTitle": "เพิ่มการขุด",
     "selectResource": "เลือกทรัพยากร",
     "selectResourceSub": "ทรัพยากรที่จะผลิต",
@@ -597,6 +600,7 @@
     "coal": "ขุดถ่านหิน",
     "well": "การขุดจากบ่อทรัพยากร",
     "methodWell": "บ่อทรัพยากร",
+    "methodLiquid": "ของเหลว",
     "methodWaterPump": "เครื่องสูบน้ำ",
     "methodOilPump": "เครื่องสูบน้ำมัน"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "การขุด",
     "objective": "เป้าหมาย",
+    "externalSource": "(ภายนอก)",
+    "unlinkedSource": "(ไม่ได้เชื่อม)",
     "grouping": "กลุ่ม",
     "mainInputs": "อินพุตหลัก",
     "mainOutputs": "เอาต์พุตหลัก",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "คืนค่า",
     "newGroupTitle": "กลุ่มใหม่",
     "renameGroupTitle": "เปลี่ยนชื่อกลุ่ม",
+    "renameStepTitle": "เปลี่ยนชื่อขั้นตอน",
     "deleteTransportPlanTitle": "ลบการขนส่ง",
     "deleteTransportPlanMessage": "ลบแผน «{name}»? ยกเลิกไม่ได้"
   },
@@ -808,7 +815,9 @@
     "returnShort": "กลับ",
     "totalShort": "รวม",
     "trainCountShort": "ขบวน",
-    "routeTimesHint": "รวม = ไป + กลับ; กรอกเองแล้วอย่างละครึ่ง หลายขบวนแบ่งภาระ"
+    "routeTimesHint": "รวม = ไป + กลับ; กรอกเองแล้วอย่างละครึ่ง หลายขบวนแบ่งภาระ",
+    "vehicleSoonHint": "ตอนนี้เฉพาะรถไฟ (ตู้สินค้า): ยานพาหนะอื่นจะเปิดใช้ทีละน้อย",
+    "vehicleDisabledTitle": "ยังไม่พร้อมใช้งาน"
   },
   "calculator": {
     "title": "เครื่องคิดเลข",

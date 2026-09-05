@@ -229,13 +229,15 @@
     "highlightGroupTitle": "Surligner le groupe en vert",
     "renameGroup": "Renommer le groupe",
     "renameGroupAria": "Renommer le groupe {name}",
+    "renameStep": "Renommer l'étape",
+    "renameStepAria": "Renommer l'étape {name}",
     "newGroupOption": "+ Nouveau groupe…",
     "dragReorder": "Glisser pour réordonner",
     "configOutput": "Sortie ({unit})",
     "configOverclock": "Overclock (%)",
     "configMachines": "Machines",
     "configPowerShard": "Fragment de puissance",
-    "configMiner": "Miner",
+    "configMiner": "Mineur",
     "configPurity": "Pureté du nœud",
     "configNodes": "Nœuds",
     "configExtractors": "Extracteurs",
@@ -410,7 +412,7 @@
     "pickerNoGenerators": "Aucun générateur disponible.",
     "defaultWaterExtractor": "Extracteur d'eau",
     "defaultOilExtractor": "Extracteur de pétrole",
-    "defaultMiner": "Miner",
+    "defaultMiner": "Mineur",
     "targetMw": "Objectif MW",
     "generatorType": "Générateur",
     "generatorCoal": "Générateur à charbon",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "Renommer le plan de production",
     "renameEnergyPlan": "Renommer le plan énergie",
     "renameGroup": "Groupe",
+    "renameStep": "Renommer l'étape",
     "addExtractionTitle": "Ajouter une extraction",
     "selectResource": "Choisir une ressource",
     "selectResourceSub": "Ressource à produire",
@@ -576,9 +579,9 @@
     "sectionRights.p4": "Tous droits réservés."
   },
   "miners": {
-    "mk1": "Miner Mk.1",
-    "mk2": "Miner Mk.2",
-    "mk3": "Miner Mk.3"
+    "mk1": "Mineur Mk.1",
+    "mk2": "Mineur Mk.2",
+    "mk3": "Mineur Mk.3"
   },
   "purity": {
     "impure": "Impur",
@@ -597,6 +600,7 @@
     "coal": "Extraction charbon",
     "well": "Extraction par puits de ressources",
     "methodWell": "Puits de ressources",
+    "methodLiquid": "Fluide",
     "methodWaterPump": "Pompe à eau",
     "methodOilPump": "Pompe à pétrole"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "Extraction",
     "objective": "Objectif",
+    "externalSource": "(externe)",
+    "unlinkedSource": "(non relié)",
     "grouping": "Groupe",
     "mainInputs": "Entrées principales",
     "mainOutputs": "Sorties principales",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "Restaurer",
     "newGroupTitle": "Nouveau groupe",
     "renameGroupTitle": "Renommer le groupe",
+    "renameStepTitle": "Renommer l'étape",
     "deleteTransportPlanTitle": "Supprimer le transport",
     "deleteTransportPlanMessage": "Supprimer le plan « {name} » ? Cette action est irréversible."
   },
@@ -758,7 +765,7 @@
     "metaReturn": "{value} {unit} retour",
     "cardVehicles": "Véhicules nécessaires",
     "cardRoundTrip": "Temps total du trajet",
-    "cardMixShort": "mix",
+    "cardMixShort": "mixte",
     "listTripTimes": "{outbound}/{return} {unit} · tot {total} {unit}",
     "slotsCount": "{count} emplacements",
     "unitsGeneric": "{count} véhicules",
@@ -808,7 +815,9 @@
     "returnShort": "Retour",
     "totalShort": "Total",
     "trainCountShort": "Trains",
-    "routeTimesHint": "Total = aller + retour ; saisi à la main, chaque trajet devient la moitié. Plusieurs trains partagent la charge."
+    "routeTimesHint": "Total = aller + retour ; saisi à la main, chaque trajet devient la moitié. Plusieurs trains partagent la charge.",
+    "vehicleSoonHint": "Pour l’instant seuls les trains (wagon de fret) : les autres moyens seront activés progressivement.",
+    "vehicleDisabledTitle": "Pas encore disponible"
   },
   "calculator": {
     "title": "Calculatrice",

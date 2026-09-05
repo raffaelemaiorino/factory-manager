@@ -229,6 +229,8 @@
     "highlightGroupTitle": "以绿色背景高亮分组",
     "renameGroup": "重命名分组",
     "renameGroupAria": "重命名分组 {name}",
+    "renameStep": "重命名步骤",
+    "renameStepAria": "重命名步骤 {name}",
     "newGroupOption": "+ 新建分组…",
     "dragReorder": "拖动以排序",
     "configOutput": "产出 ({unit})",
@@ -355,7 +357,7 @@
     "configPowerConsumption": "消耗 (MW)",
     "configPowerConsumptionMax": "消耗（峰值）",
     "configPressurizerOverclock": "Pressurizer 的 Overclock (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "增压器",
     "groupWells": "资源井",
     "wellSubNodes": "子节点",
     "wellNodeLabel": "节点 {index}",
@@ -364,7 +366,7 @@
     "addWellNode": "添加子节点",
     "removeWellNode": "移除子节点",
     "removeWellNodeAria": "移除节点 {index}",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "增压器 @ {overclock}%",
     "powerShardsRequired": "需要 {count} 个能量碎片",
     "somersloopsRequired": "需要 {count} 个 Somersloop",
     "powerConsumptionRequired": "消耗 {mw}",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "重命名生产方案",
     "renameEnergyPlan": "重命名电力方案",
     "renameGroup": "分组",
+    "renameStep": "重命名步骤",
     "addExtractionTitle": "添加开采",
     "selectResource": "选择资源",
     "selectResourceSub": "选择要生产的资源",
@@ -597,6 +600,7 @@
     "coal": "煤炭开采",
     "well": "资源井开采",
     "methodWell": "资源井",
+    "methodLiquid": "流体",
     "methodWaterPump": "抽水机",
     "methodOilPump": "抽油机"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "开采",
     "objective": "目标",
+    "externalSource": "(外部)",
+    "unlinkedSource": "(未连接)",
     "grouping": "分组",
     "mainInputs": "主要输入",
     "mainOutputs": "主要输出",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "恢复",
     "newGroupTitle": "新建分组",
     "renameGroupTitle": "重命名分组",
+    "renameStepTitle": "重命名步骤",
     "deleteTransportPlanTitle": "删除运输",
     "deleteTransportPlanMessage": "删除方案「{name}」？此操作无法撤销。"
   },
@@ -808,7 +815,9 @@
     "returnShort": "返程",
     "totalShort": "合计",
     "trainCountShort": "列车",
-    "routeTimesHint": "合计＝去程＋返程；手填则各为一半。多列车分摊负载。"
+    "routeTimesHint": "合计＝去程＋返程；手填则各为一半。多列车分摊负载。",
+    "vehicleSoonHint": "目前仅火车（货运车厢）：其他载具将逐步启用。",
+    "vehicleDisabledTitle": "暂不可用"
   },
   "calculator": {
     "title": "计算器",

@@ -57,6 +57,8 @@ contextBridge.exposeInMainWorld('satisfactory', {
     ipcRenderer.invoke('production:set-step-group', stepId, groupName),
   renameProductionStepGroup: (chainId, oldGroupName, newGroupName) =>
     ipcRenderer.invoke('production:rename-step-group', chainId, oldGroupName, newGroupName),
+  renameProductionStep: (stepId, newName) =>
+    ipcRenderer.invoke('production:rename-step', stepId, newName),
   setProductionStepInputLinks: (consumerStepId, itemSlug, producerStepIds) =>
     ipcRenderer.invoke('production:set-step-links', consumerStepId, itemSlug, producerStepIds),
   setProductionStepExtractionLinks: (consumerStepId, itemSlug, producerExtractionIds) =>

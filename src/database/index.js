@@ -37,6 +37,7 @@ const {
   reorderProductionChainGroups: reorderChainStepGroups,
   setProductionStepGroupName: setStepGroupName,
   renameProductionStepGroup: renameChainStepGroup,
+  renameProductionStep: renameChainStep,
   setProductionStepInputLinks: patchStepInputLinks,
   setProductionStepExtractionLinks: patchStepExtractionLinks,
   ensureProductionChainStepsTable,
@@ -472,6 +473,10 @@ function renameProductionStepGroup(chainId, oldGroupName, newGroupName) {
   return renameChainStepGroup(getDb(), persist, chainId, oldGroupName, newGroupName, getItemById);
 }
 
+function renameProductionStep(stepId, newName) {
+  return renameChainStep(getDb(), persist, stepId, newName, getItemById);
+}
+
 function setProductionStepInputLinks(consumerStepId, itemSlug, producerStepIds) {
   return patchStepInputLinks(
     getDb(),
@@ -741,6 +746,7 @@ module.exports = {
   reorderProductionChainGroups,
   setProductionStepGroupName,
   renameProductionStepGroup,
+  renameProductionStep,
   setProductionStepInputLinks,
   setProductionStepExtractionLinks,
   addMineralExtraction,

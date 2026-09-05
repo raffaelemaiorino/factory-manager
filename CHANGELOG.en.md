@@ -9,6 +9,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.17] - 2026-09-05
+
+### Added
+- Production plans: pencil button to rename a resource step (e.g. “Non-fissile Uranium #1”)
+
+### Fixed
+- Translations: localized pressurizer and miner/extractor terms that were still English; UI keys aligned (no missing keys)
+
+## [3.12.16] - 2026-08-30
+
+### Fixed
+- Production steps: when multiple recipes produce the same output, progressive names use `#1`, `#2`, … by product item (no longer a separate `#1` per different recipe)
+- Transport: the trash button to remove a cargo line is always visible on the cargo card
+
+## [3.12.15] - 2026-08-20
+
+### Changed
+- Transport: only the **freight car** (trains) can be selected when creating or editing a plan; trucks, drones and other vehicles stay visible but disabled until they are optimized
+
+## [3.12.14] - 2026-08-20
+
+### Added
+- Production tree: inputs with no link show bold **(unlinked)** (e.g. Pressure Conversion Cube)
+
+## [3.12.13] - 2026-08-20
+
+### Added
+- Production tree: inputs linked from another plan show bold **(external)** (e.g. Uranium Waste)
+
+## [3.12.12] - 2026-08-20
+
+### Fixed
+- Production tree: extractions appear and connect only when the link flag to a step is set (no more auto-wiring by resource type)
+
+## [3.12.11] - 2026-08-20
+
+### Fixed
+- Extraction links: after changing a step’s output, other steps and the shared extraction refresh too (no more “fully covered” while undersupplied)
+
+## [3.12.10] - 2026-08-20
+
+### Changed
+- Extraction picker: fluid/well label only in history (same card subtitle style), not repeated in the already split sections
+
+## [3.12.9] - 2026-08-20
+
+### Fixed
+- Extractions: from Fluids, water and crude oil again use the water pump / oil pump instead of a resource well
+- Extraction picker: history labels water and crude oil with (fluid) or (resource well)
+
 ## [3.12.8] - 2026-08-19
 
 ### Fixed

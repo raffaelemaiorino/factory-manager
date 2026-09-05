@@ -229,6 +229,8 @@
     "highlightGroupTitle": "Підсвітити групу зеленим фоном",
     "renameGroup": "Перейменувати групу",
     "renameGroupAria": "Перейменувати групу {name}",
+    "renameStep": "Перейменувати крок",
+    "renameStepAria": "Перейменувати крок {name}",
     "newGroupOption": "+ Нова група…",
     "dragReorder": "Перетягніть для зміни порядку",
     "configOutput": "Вихід ({unit})",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "Перейменувати виробничу схему",
     "renameEnergyPlan": "Перейменувати енергосхему",
     "renameGroup": "Група",
+    "renameStep": "Перейменувати крок",
     "addExtractionTitle": "Додати видобуток",
     "selectResource": "Оберіть ресурс",
     "selectResourceSub": "Ресурс для виробництва",
@@ -597,6 +600,7 @@
     "coal": "Видобуток вугілля",
     "well": "Видобуток зі свердловини",
     "methodWell": "Ресурсна свердловина",
+    "methodLiquid": "Рідина",
     "methodWaterPump": "Водяний насос",
     "methodOilPump": "Нафтовий насос"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "Видобуток",
     "objective": "Ціль",
+    "externalSource": "(зовнішній)",
+    "unlinkedSource": "(не зв’язано)",
     "grouping": "Група",
     "mainInputs": "Головні входи",
     "mainOutputs": "Головні виходи",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "Відновити",
     "newGroupTitle": "Нова група",
     "renameGroupTitle": "Перейменувати групу",
+    "renameStepTitle": "Перейменувати крок",
     "deleteTransportPlanTitle": "Видалити транспорт",
     "deleteTransportPlanMessage": "Видалити план «{name}»? Цю дію не можна скасувати."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Назад",
     "totalShort": "Усього",
     "trainCountShort": "Поїзди",
-    "routeTimesHint": "Усього = туди + назад; вручну — по половині. Кілька поїздів ділять навантаження."
+    "routeTimesHint": "Усього = туди + назад; вручну — по половині. Кілька поїздів ділять навантаження.",
+    "vehicleSoonHint": "Поки лише поїзди (вантажний вагон): інші засоби вмикатимуться поступово.",
+    "vehicleDisabledTitle": "Поки недоступно"
   },
   "calculator": {
     "title": "Калькулятор",

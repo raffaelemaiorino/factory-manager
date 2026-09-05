@@ -75,15 +75,16 @@
       for (const entry of ordered) {
         const consumerAlloc = table.get(entry.id) ?? new Map();
         table.set(entry.id, consumerAlloc);
+        const consumerId = Number(consumer.id);
 
         if (!(need > tolerance)) {
-          if (!consumerAlloc.has(consumer.id)) consumerAlloc.set(consumer.id, 0);
+          if (!consumerAlloc.has(consumerId)) consumerAlloc.set(consumerId, 0);
           continue;
         }
 
         const cap = remaining.get(entry.id) || 0;
         const take = round(Math.min(cap, need));
-        consumerAlloc.set(consumer.id, take);
+        consumerAlloc.set(consumerId, take);
         if (take > 0) {
           remaining.set(entry.id, round(Math.max(0, cap - take)));
           need = round(Math.max(0, need - take));

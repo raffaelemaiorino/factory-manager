@@ -2129,6 +2129,10 @@ a:hover {
   opacity: 1;
 }
 
+.transport-cargo-box .production-delete-btn {
+  opacity: 1;
+}
+
 .production-edit-btn:hover,
 .production-duplicate-btn:hover,
 .production-export-btn:hover {
@@ -2591,6 +2595,7 @@ body.production-step-drag-active * {
 
 .production-step-toggle-btn,
 .production-step-mark-btn,
+.production-step-rename-btn,
 .production-step-build-info-btn,
 .production-step-reset-btn,
 .production-step-delete-btn {
@@ -2611,6 +2616,7 @@ body.production-step-drag-active * {
 
 .production-step-toggle-btn:hover,
 .production-step-mark-btn:hover,
+.production-step-rename-btn:hover,
 .production-step-build-info-btn:hover,
 .production-step-reset-btn:hover {
   color: var(--accent-bright);
@@ -2652,6 +2658,11 @@ body.production-step-drag-active * {
 
 .production-step-mark-btn i {
   font-size: 0.8rem;
+  line-height: 1;
+}
+
+.production-step-rename-btn i {
+  font-size: 0.75rem;
   line-height: 1;
 }
 
@@ -5682,6 +5693,12 @@ select.production-config-input option:checked {
   word-break: break-word;
 }
 
+.production-graph-node-io-external,
+.production-graph-node-io-unlinked {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 .production-graph-node-io-rate {
   font-family: var(--mono);
   font-size: 0.65rem;
@@ -6187,9 +6204,23 @@ select.production-config-input option:checked {
 }
 
 .transport-vehicle-option.is-selected,
-.transport-vehicle-option:hover {
+.transport-vehicle-option:hover:not(:disabled):not(.is-disabled) {
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent-glow);
+}
+
+.transport-vehicle-option:disabled,
+.transport-vehicle-option.is-disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  filter: grayscale(0.35);
+  box-shadow: none;
+}
+
+.transport-vehicle-option:disabled.is-selected,
+.transport-vehicle-option.is-disabled.is-selected {
+  border-color: var(--border);
+  box-shadow: none;
 }
 
 #transport-create-modal .modal-wide {

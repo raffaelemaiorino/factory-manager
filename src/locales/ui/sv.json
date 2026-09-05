@@ -233,16 +233,18 @@
     "highlightGroupTitle": "Markera grupp med grön bakgrund",
     "renameGroup": "Byt namn på grupp",
     "renameGroupAria": "Byt namn på grupp {name}",
+    "renameStep": "Byt namn på steg",
+    "renameStepAria": "Byt namn på steg {name}",
     "newGroupOption": "+ Ny grupp…",
     "dragReorder": "Dra för att sortera",
     "configOutput": "Output ({unit})",
     "configOverclock": "Overclock (%)",
     "configMachines": "Maskiner",
     "configPowerShard": "Energisplitter",
-    "configMiner": "Miner",
+    "configMiner": "Gruvborr",
     "configPurity": "Nodrenhet",
     "configNodes": "Noder",
-    "configExtractors": "Extractors",
+    "configExtractors": "Extraktorer",
     "adjustOutput": "Justera output",
     "adjustOverclock": "Justera overclock",
     "adjustMachines": "Justera antal maskiner",
@@ -359,7 +361,7 @@
     "configPowerConsumption": "Förbrukning (MW)",
     "configPowerConsumptionMax": "Förbrukning (max)",
     "configPressurizerOverclock": "Pressurizer-overclock (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "Tryckhöjare",
     "groupWells": "Resurskällor",
     "wellSubNodes": "Undernoder",
     "wellNodeLabel": "Nod {index}",
@@ -368,7 +370,7 @@
     "addWellNode": "Lägg till undernod",
     "removeWellNode": "Ta bort undernod",
     "removeWellNodeAria": "Ta bort nod {index}",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "Tryckhöjare @ {overclock}%",
     "powerShardsRequired": "{count} energisplitter krävs",
     "somersloopsRequired": "{count} Somersloops krävs",
     "powerConsumptionRequired": "Förbrukning {mw}",
@@ -414,7 +416,7 @@
     "pickerNoGenerators": "Inga generatorer tillgängliga.",
     "defaultWaterExtractor": "Vattenextractor",
     "defaultOilExtractor": "Oljextractor",
-    "defaultMiner": "Miner",
+    "defaultMiner": "Gruvborr",
     "targetMw": "Mål-MW",
     "generatorType": "Generator",
     "generatorCoal": "Kolgenerator",
@@ -489,6 +491,7 @@
     "renameProductionPlan": "Byt namn på produktionsplan",
     "renameEnergyPlan": "Byt namn på elplan",
     "renameGroup": "Grupp",
+    "renameStep": "Byt namn på steg",
     "addExtractionTitle": "Lägg till utvinning",
     "selectResource": "Välj resurs",
     "selectResourceSub": "Välj resurs att producera",
@@ -580,9 +583,9 @@
     "sectionRights.p4": "Alla rättigheter förbehållna."
   },
   "miners": {
-    "mk1": "Miner Mk.1",
-    "mk2": "Miner Mk.2",
-    "mk3": "Miner Mk.3"
+    "mk1": "Gruvborr Mk.1",
+    "mk2": "Gruvborr Mk.2",
+    "mk3": "Gruvborr Mk.3"
   },
   "purity": {
     "impure": "Oren",
@@ -601,6 +604,7 @@
     "coal": "Kolutvinning",
     "well": "Utvinning från resurskälla",
     "methodWell": "Resurskälla",
+    "methodLiquid": "Vätska",
     "methodWaterPump": "Vattenpump",
     "methodOilPump": "Oljepump"
   },
@@ -619,6 +623,8 @@
   "graph": {
     "extraction": "Utvinning",
     "objective": "Mål",
+    "externalSource": "(extern)",
+    "unlinkedSource": "(ej länkad)",
     "grouping": "Grupp",
     "mainInputs": "Huvudinputs",
     "mainOutputs": "Huvudoutputs",
@@ -678,6 +684,7 @@
     "restoreDefaultsConfirm": "Återställ",
     "newGroupTitle": "Ny grupp",
     "renameGroupTitle": "Byt namn på grupp",
+    "renameStepTitle": "Byt namn på steg",
     "deleteTransportPlanTitle": "Ta bort transport",
     "deleteTransportPlanMessage": "Ta bort planen «{name}»? Det går inte att ångra."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Retur",
     "totalShort": "Totalt",
     "trainCountShort": "Tåg",
-    "routeTimesHint": "Totalt = tur + retur; manuellt blir båda hälften. Flera tåg delar lasten."
+    "routeTimesHint": "Totalt = tur + retur; manuellt blir båda hälften. Flera tåg delar lasten.",
+    "vehicleSoonHint": "Tills vidare bara tåg (godsvagn): övriga fordon aktiveras successivt.",
+    "vehicleDisabledTitle": "Inte tillgängligt ännu"
   },
   "calculator": {
     "title": "Miniräknare",

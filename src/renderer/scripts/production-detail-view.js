@@ -488,8 +488,8 @@ function closeProductionDetail() {
     .catch(console.error);
 }
 
-function renderExtractionPickerItem(entry) {
-  const methodLabel = getExtractionPickerMethodLabel(entry);
+function renderExtractionPickerItem(entry, { showMethod = false } = {}) {
+  const methodLabel = showMethod ? getExtractionPickerMethodLabel(entry) : '';
   const extractionMethod = entry.extraction_method ?? 'mineral';
 
   return `
@@ -508,26 +508,60 @@ function renderExtractionPickerItem(entry) {
 const RESOURCE_PICKER_RECENT_KEY = 'satisfactory-resource-picker-recent';
 const RESOURCE_PICKER_RECENT_MAX = 4;
 
-function loadRecentResourcePickerIds() {
+function normalizeRecentPickerEntry(raw) {
+  if (raw != null && typeof raw === 'object') {
+    const id = Number(raw.id);
+    if (!Number.isFinite(id) || id <= 0) return null;
+    const extractionMethod =
+      typeof raw.extractionMethod === 'string' && raw.extractionMethod
+        ? raw.extractionMethod
+        : undefined;
+    return extractionMethod ? { id, extractionMethod } : { id };
+  }
+  const id = Number(raw);
+  if (!Number.isFinite(id) || id <= 0) return null;
+  return { id };
+}
+
+function recentPickerEntryKey(entry) {
+  return entry.extractionMethod ? `${entry.id}:${entry.extractionMethod}` : String(entry.id);
+}
+
+function loadRecentResourcePickerEntries() {
   try {
     const parsed = JSON.parse(localStorage.getItem(RESOURCE_PICKER_RECENT_KEY) || '[]');
     if (!Array.isArray(parsed)) return [];
-    return parsed
-      .map((id) => Number(id))
-      .filter((id) => Number.isFinite(id) && id > 0)
-      .slice(0, RESOURCE_PICKER_RECENT_MAX);
+    const seen = new Set();
+    const entries = [];
+    for (const raw of parsed) {
+      const entry = normalizeRecentPickerEntry(raw);
+      if (!entry) continue;
+      const key = recentPickerEntryKey(entry);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      entries.push(entry);
+      if (entries.length >= RESOURCE_PICKER_RECENT_MAX) break;
+    }
+    return entries;
   } catch {
     return [];
   }
 }
 
-function rememberResourcePickerSelection(itemId) {
+function rememberResourcePickerSelection(itemId, { extractionMethod } = {}) {
   const id = Number(itemId);
   if (!Number.isFinite(id) || id <= 0) return;
-  const next = [id, ...loadRecentResourcePickerIds().filter((existing) => existing !== id)].slice(
-    0,
-    RESOURCE_PICKER_RECENT_MAX
-  );
+  const nextEntry = {
+    id,
+    ...(typeof extractionMethod === 'string' && extractionMethod
+      ? { extractionMethod }
+      : {}),
+  };
+  const nextKey = recentPickerEntryKey(nextEntry);
+  const next = [
+    nextEntry,
+    ...loadRecentResourcePickerEntries().filter((entry) => recentPickerEntryKey(entry) !== nextKey),
+  ].slice(0, RESOURCE_PICKER_RECENT_MAX);
   try {
     localStorage.setItem(RESOURCE_PICKER_RECENT_KEY, JSON.stringify(next));
   } catch {
@@ -547,12 +581,44 @@ function findPickerItemById(categories, itemId) {
 
 function getRecentPickerItems(categories, { filter } = {}) {
   const items = [];
-  for (const id of loadRecentResourcePickerIds()) {
-    const item = findPickerItemById(categories, id);
+  const seen = new Set();
+  for (const entry of loadRecentResourcePickerEntries()) {
+    if (seen.has(entry.id)) continue;
+    const item = findPickerItemById(categories, entry.id);
     if (!item) continue;
     if (typeof filter === 'function' && !filter(item)) continue;
+    seen.add(entry.id);
     items.push(item);
   }
+  return items;
+}
+
+function getRecentExtractionPickerItems(categories) {
+  const catalog = expandItemsForExtractionPicker(
+    (categories || []).flatMap((cat) => cat.items || [])
+  );
+  const items = [];
+  const seen = new Set();
+
+  for (const recent of loadRecentResourcePickerEntries()) {
+    const candidates = catalog.filter((entry) => Number(entry.id) === recent.id);
+    if (!candidates.length) continue;
+
+    let match = null;
+    if (recent.extractionMethod) {
+      match = candidates.find((entry) => entry.extraction_method === recent.extractionMethod);
+    }
+    if (!match && EXTRACTION_LIQUID_SLUGS.includes(candidates[0]?.slug)) {
+      match = candidates.find((entry) => entry.extraction_method === 'liquid') ?? candidates[0];
+    }
+    if (!match) match = candidates[0];
+
+    const key = `${match.id}:${match.extraction_method}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    items.push(match);
+  }
+
   return items;
 }
 
@@ -581,8 +647,8 @@ function renderExtractionPickerList(categories) {
 
   const sections = [
     renderResourcePickerHistorySection(
-      getRecentPickerItems(categories, { filter: isExtractionPickerItem }),
-      renderExtractionPickerItem
+      getRecentExtractionPickerItems(categories),
+      (entry) => renderExtractionPickerItem(entry, { showMethod: true })
     ),
   ];
 
@@ -1334,6 +1400,8 @@ function openSchemaRenameModal({ kind, id, name, title, onSaved, groupKey }) {
         ? t('modals.renameTransportPlan')
       : kind === 'step-group' || kind === 'rename-step-group'
         ? t('modals.renameGroup')
+        : kind === 'rename-step'
+          ? t('modals.renameStep')
         : t('modals.renameProductionPlan'));
   schemaRenameOnSaved = typeof onSaved === 'function' ? onSaved : null;
   schemaRenameGroupKey = groupKey ?? null;
@@ -1381,6 +1449,14 @@ function setupSchemaRenameModal() {
 
       if (kind === 'rename-step-group') {
         await handleProductionStepGroupRename(schemaRenameGroupKey, name);
+        schemaRenameOnSaved?.(activeProductionDetail);
+        closeSchemaRenameModal();
+        return;
+      }
+
+      if (kind === 'rename-step') {
+        activeProductionDetail = await window.satisfactory.renameProductionStep(id, name);
+        renderProductionDetailContent(activeProductionDetail);
         schemaRenameOnSaved?.(activeProductionDetail);
         closeSchemaRenameModal();
         return;

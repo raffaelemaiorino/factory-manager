@@ -229,6 +229,8 @@
     "highlightGroupTitle": "تمييز المجموعة بخلفية خضراء",
     "renameGroup": "إعادة تسمية المجموعة",
     "renameGroupAria": "إعادة تسمية المجموعة {name}",
+    "renameStep": "إعادة تسمية الخطوة",
+    "renameStepAria": "إعادة تسمية الخطوة {name}",
     "newGroupOption": "+ مجموعة جديدة…",
     "dragReorder": "اسحب لإعادة الترتيب",
     "configOutput": "مخرج ({unit})",
@@ -355,7 +357,7 @@
     "configPowerConsumption": "الاستهلاك (MW)",
     "configPowerConsumptionMax": "الاستهلاك (الأقصى)",
     "configPressurizerOverclock": "Overclock الـ Pressurizer (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "ضاغط",
     "groupWells": "آبار الموارد",
     "wellSubNodes": "عُقد فرعية",
     "wellNodeLabel": "العقدة {index}",
@@ -364,7 +366,7 @@
     "addWellNode": "إضافة عقدة فرعية",
     "removeWellNode": "إزالة عقدة فرعية",
     "removeWellNodeAria": "إزالة العقدة {index}",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "ضاغط @ {overclock}%",
     "powerShardsRequired": "يلزم {count} من شظايا الطاقة",
     "somersloopsRequired": "يلزم {count} من Somersloop",
     "powerConsumptionRequired": "الاستهلاك {mw}",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "إعادة تسمية مخطط الإنتاج",
     "renameEnergyPlan": "إعادة تسمية مخطط الطاقة",
     "renameGroup": "مجموعة",
+    "renameStep": "إعادة تسمية الخطوة",
     "addExtractionTitle": "إضافة استخراج",
     "selectResource": "اختر موردًا",
     "selectResourceSub": "المورد المراد إنتاجه",
@@ -597,6 +600,7 @@
     "coal": "استخراج فحم",
     "well": "استخراج من بئر موارد",
     "methodWell": "بئر موارد",
+    "methodLiquid": "سائل",
     "methodWaterPump": "مضخة ماء",
     "methodOilPump": "مضخة نفط"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "استخراج",
     "objective": "هدف",
+    "externalSource": "(خارجي)",
+    "unlinkedSource": "(غير مرتبط)",
     "grouping": "مجموعة",
     "mainInputs": "مداخل رئيسية",
     "mainOutputs": "مخرجات رئيسية",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "استعادة",
     "newGroupTitle": "مجموعة جديدة",
     "renameGroupTitle": "إعادة تسمية المجموعة",
+    "renameStepTitle": "إعادة تسمية الخطوة",
     "deleteTransportPlanTitle": "حذف النقل",
     "deleteTransportPlanMessage": "حذف الخطة «{name}»؟ لا يمكن التراجع."
   },
@@ -808,7 +815,9 @@
     "returnShort": "عودة",
     "totalShort": "الإجمالي",
     "trainCountShort": "قطارات",
-    "routeTimesHint": "الإجمالي = ذهاب + عودة؛ بالإدخال اليدوي يصبح كل منهما نصفًا. عدة قطارات تقسم الحمولة."
+    "routeTimesHint": "الإجمالي = ذهاب + عودة؛ بالإدخال اليدوي يصبح كل منهما نصفًا. عدة قطارات تقسم الحمولة.",
+    "vehicleSoonHint": "حاليًا القطارات فقط (عربة شحن): سيتم تفعيل وسائل النقل الأخرى تدريجيًا.",
+    "vehicleDisabledTitle": "غير متاح بعد"
   },
   "calculator": {
     "title": "آلة حاسبة",

@@ -297,6 +297,8 @@
     "highlightGroupTitle": "Highlight group with green background",
     "renameGroup": "Rename group",
     "renameGroupAria": "Rename group {name}",
+    "renameStep": "Rename step",
+    "renameStepAria": "Rename step {name}",
     "newGroupOption": "+ New group…",
     "dragReorder": "Drag to reorder",
     "configOutput": "Output ({unit})",
@@ -424,6 +426,8 @@
     "slotEmpty": "Empty slot",
     "vehicleType": "Transport type",
     "vehicleRequired": "Choose a transport type.",
+    "vehicleSoonHint": "For now only trains (freight car): other vehicles will be enabled gradually.",
+    "vehicleDisabledTitle": "Not available yet",
     "outboundMinutes": "Outbound time (min)",
     "outboundSeconds": "Outbound time (s)",
     "outboundShort": "Outbound",
@@ -615,6 +619,7 @@
     "renameEnergyPlan": "Rename power plan",
     "renameTransportPlan": "Rename transport",
     "renameGroup": "Group",
+    "renameStep": "Rename step",
     "addExtractionTitle": "Add extraction",
     "selectResource": "Select resource",
     "selectResourceSub": "Choose the resource to produce",
@@ -716,6 +721,7 @@
     "coal": "Coal extraction",
     "well": "Resource well extraction",
     "methodWell": "Resource well",
+    "methodLiquid": "Fluid",
     "methodWaterPump": "Water pump",
     "methodOilPump": "Oil pump"
   },
@@ -734,6 +740,8 @@
   "graph": {
     "extraction": "Extraction",
     "objective": "Target",
+    "externalSource": "(external)",
+    "unlinkedSource": "(unlinked)",
     "grouping": "Group",
     "mainInputs": "Main inputs",
     "mainOutputs": "Main outputs",
@@ -794,7 +802,8 @@
     "restoreDefaultsMessage": "Restore resources, buildings, and recipes to defaults? Manual edits to names and categories will be lost.",
     "restoreDefaultsConfirm": "Restore",
     "newGroupTitle": "New group",
-    "renameGroupTitle": "Rename group"
+    "renameGroupTitle": "Rename group",
+    "renameStepTitle": "Rename step"
   },
   "errors": {
     "nameRequired": "Name is required.",

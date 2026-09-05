@@ -44,11 +44,26 @@ function getExtractionKindForItem(item) {
   return 'mineral';
 }
 
+function hasNonEmptySubNodes(raw) {
+  let value = raw;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed || trimmed === '[]') return false;
+    try {
+      value = JSON.parse(trimmed);
+    } catch {
+      return false;
+    }
+  }
+  return Array.isArray(value) && value.length > 0;
+}
+
 function isWellExtractionContext(item, stored = {}) {
-  if (String(stored.miner_slug ?? '').trim() === FRACKING_EXTRACTOR_SLUG) return true;
-  if (Array.isArray(stored.sub_nodes) && stored.sub_nodes.length > 0) return true;
-  if (typeof stored.sub_nodes === 'string' && stored.sub_nodes.trim()) return true;
-  return item?.slug === 'nitrogen-gas';
+  if (item?.slug === 'nitrogen-gas') return true;
+  const miner = String(stored.miner_slug ?? '').trim();
+  if (miner === FRACKING_EXTRACTOR_SLUG) return true;
+  if (miner) return false;
+  return hasNonEmptySubNodes(stored.sub_nodes);
 }
 
 function normalizeExtractorSlug(slug, item) {
@@ -184,7 +199,8 @@ function parseSubNodes(stored = {}, item = null) {
   return Array.from({ length: nodeCount }, () => parseSubNode(null, item, defaultPurity));
 }
 
-function serializeSubNodes(subNodes = []) {
+function serializeSubNodes(subNodes) {
+  if (!Array.isArray(subNodes) || subNodes.length === 0) return null;
   return JSON.stringify(
     subNodes.map((node) => ({
       purity: normalizePurity(node?.purity, null, FRACKING_EXTRACTOR_SLUG),

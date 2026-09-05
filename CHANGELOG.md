@@ -9,6 +9,56 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [3.12.17] - 2026-09-05
+
+### Added
+- Schemi di produzione: pulsante matita per rinominare lo schema risorsa (es. «Uranio non fissile #1»)
+
+### Fixed
+- Traduzioni: pressurizzatore e termini estrazione/trivella localizzati dove restavano in inglese; chiavi UI allineate (nessuna chiave mancante)
+
+## [3.12.16] - 2026-08-30
+
+### Fixed
+- Schemi di produzione: con più ricette per lo stesso output il nome progressivo è `#1`, `#2`, … in base all’item prodotto (non più una `#1` per ogni ricetta diversa)
+- Trasporti: il cestino per rimuovere un cargo è sempre visibile sulla card
+
+## [3.12.15] - 2026-08-20
+
+### Changed
+- Trasporti: in creazione e nel dettaglio si può selezionare solo il **vagone merci** (treni); camion, drone e altri mezzi restano visibili ma disabilitati finché non vengono ottimizzati
+
+## [3.12.14] - 2026-08-20
+
+### Added
+- Albero produzione: sugli input senza collegamento compare **(non collegato)** in grassetto (es. Cubo convertitore di pressione)
+
+## [3.12.13] - 2026-08-20
+
+### Added
+- Albero produzione: sugli input collegati da uno schema esterno compare **(esterno)** in grassetto (es. Scorie di uranio)
+
+## [3.12.12] - 2026-08-20
+
+### Fixed
+- Albero produzione: le estrazioni compaiono e si collegano solo se c’è il flag di collegamento allo schema (niente più collegamento automatico per tipo di risorsa)
+
+## [3.12.11] - 2026-08-20
+
+### Fixed
+- Collegamenti estrazione: dopo aver cambiato l’output di uno schema, si aggiornano anche gli altri schemi e l’estrazione che condividono la stessa risorsa (niente più «coperto completamente» in sottoscorta)
+
+## [3.12.10] - 2026-08-20
+
+### Changed
+- Picker estrazioni: etichetta liquido/pozzo solo in cronologia (stesso stile delle card), non ripetuta nelle sezioni già divise
+
+## [3.12.9] - 2026-08-20
+
+### Fixed
+- Estrazioni: da Liquidi, acqua e greggio usano di nuovo pompa acqua / pompa petrolio invece del pozzo di risorse
+- Picker estrazioni: in cronologia acqua e greggio indicano tra parentesi se sono liquido o pozzo di risorse
+
 ## [3.12.8] - 2026-08-19
 
 ### Fixed

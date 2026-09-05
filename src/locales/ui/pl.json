@@ -229,6 +229,8 @@
     "highlightGroupTitle": "Podświetl grupę na zielono",
     "renameGroup": "Zmień nazwę grupy",
     "renameGroupAria": "Zmień nazwę grupy {name}",
+    "renameStep": "Zmień nazwę kroku",
+    "renameStepAria": "Zmień nazwę kroku {name}",
     "newGroupOption": "+ Nowa grupa…",
     "dragReorder": "Przeciągnij, aby zmienić kolejność",
     "configOutput": "Wyjście ({unit})",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "Zmień nazwę planu produkcji",
     "renameEnergyPlan": "Zmień nazwę planu energii",
     "renameGroup": "Grupa",
+    "renameStep": "Zmień nazwę kroku",
     "addExtractionTitle": "Dodaj wydobycie",
     "selectResource": "Wybierz zasób",
     "selectResourceSub": "Zasób do produkcji",
@@ -597,6 +600,7 @@
     "coal": "Wydobycie węgla",
     "well": "Wydobycie z odwiertu",
     "methodWell": "Odwiert zasobów",
+    "methodLiquid": "Ciecz",
     "methodWaterPump": "Pompa wody",
     "methodOilPump": "Pompa ropy"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "Wydobycie",
     "objective": "Cel",
+    "externalSource": "(zewnętrzne)",
+    "unlinkedSource": "(niepołączone)",
     "grouping": "Grupa",
     "mainInputs": "Główne wejścia",
     "mainOutputs": "Główne wyjścia",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "Przywróć",
     "newGroupTitle": "Nowa grupa",
     "renameGroupTitle": "Zmień nazwę grupy",
+    "renameStepTitle": "Zmień nazwę kroku",
     "deleteTransportPlanTitle": "Usuń transport",
     "deleteTransportPlanMessage": "Usunąć plan «{name}»? Tej operacji nie można cofnąć."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Powrót",
     "totalShort": "Razem",
     "trainCountShort": "Pociągi",
-    "routeTimesHint": "Razem = tam + powrót; ręcznie obie drogi po połowie. Więcej pociągów dzieli ładunek."
+    "routeTimesHint": "Razem = tam + powrót; ręcznie obie drogi po połowie. Więcej pociągów dzieli ładunek.",
+    "vehicleSoonHint": "Na razie tylko pociągi (wagon towarowy): inne środki będą włączane stopniowo.",
+    "vehicleDisabledTitle": "Jeszcze niedostępne"
   },
   "calculator": {
     "title": "Kalkulator",

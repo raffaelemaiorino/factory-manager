@@ -229,6 +229,8 @@
     "highlightGroupTitle": "グループを緑背景で強調",
     "renameGroup": "グループ名を変更",
     "renameGroupAria": "グループ {name} の名前を変更",
+    "renameStep": "ステップ名を変更",
+    "renameStepAria": "ステップ {name} の名前を変更",
     "newGroupOption": "+ 新しいグループ…",
     "dragReorder": "ドラッグで並べ替え",
     "configOutput": "出力 ({unit})",
@@ -355,7 +357,7 @@
     "configPowerConsumption": "消費 (MW)",
     "configPowerConsumptionMax": "消費 (最大)",
     "configPressurizerOverclock": "Pressurizer の Overclock (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "加圧器",
     "groupWells": "リソースウェル",
     "wellSubNodes": "サブノード",
     "wellNodeLabel": "ノード {index}",
@@ -364,7 +366,7 @@
     "addWellNode": "サブノードを追加",
     "removeWellNode": "サブノードを削除",
     "removeWellNodeAria": "ノード {index} を削除",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "加圧器 @ {overclock}%",
     "powerShardsRequired": "パワーシャードが {count} 個必要",
     "somersloopsRequired": "Somersloop が {count} 個必要",
     "powerConsumptionRequired": "消費 {mw}",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "生産プラン名を変更",
     "renameEnergyPlan": "電力プラン名を変更",
     "renameGroup": "グループ",
+    "renameStep": "ステップ名を変更",
     "addExtractionTitle": "採掘を追加",
     "selectResource": "リソースを選択",
     "selectResourceSub": "生産するリソース",
@@ -597,6 +600,7 @@
     "coal": "石炭採掘",
     "well": "リソースウェルからの採掘",
     "methodWell": "リソースウェル",
+    "methodLiquid": "液体",
     "methodWaterPump": "水ポンプ",
     "methodOilPump": "石油ポンプ"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "採掘",
     "objective": "目標",
+    "externalSource": "(外部)",
+    "unlinkedSource": "(未接続)",
     "grouping": "グループ",
     "mainInputs": "主要入力",
     "mainOutputs": "主要出力",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "復元",
     "newGroupTitle": "新しいグループ",
     "renameGroupTitle": "グループ名を変更",
+    "renameStepTitle": "ステップ名を変更",
     "deleteTransportPlanTitle": "輸送を削除",
     "deleteTransportPlanMessage": "プラン「{name}」を削除しますか？元に戻せません。"
   },
@@ -808,7 +815,9 @@
     "returnShort": "復路",
     "totalShort": "合計",
     "trainCountShort": "列車",
-    "routeTimesHint": "合計＝往路＋復路。手入力で各半分。複数列車で負荷を分割。"
+    "routeTimesHint": "合計＝往路＋復路。手入力で各半分。複数列車で負荷を分割。",
+    "vehicleSoonHint": "当面は列車（貨物ワゴン）のみ：他の輸送手段は順次有効化します。",
+    "vehicleDisabledTitle": "まだ利用できません"
   },
   "calculator": {
     "title": "電卓",

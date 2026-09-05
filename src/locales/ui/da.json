@@ -229,16 +229,18 @@
     "highlightGroupTitle": "Fremhæv gruppe med grøn baggrund",
     "renameGroup": "Omdøb gruppe",
     "renameGroupAria": "Omdøb gruppe {name}",
+    "renameStep": "Omdøb trin",
+    "renameStepAria": "Omdøb trin {name}",
     "newGroupOption": "+ Ny gruppe…",
     "dragReorder": "Træk for at sortere",
     "configOutput": "Output ({unit})",
     "configOverclock": "Overclock (%)",
     "configMachines": "Maskiner",
     "configPowerShard": "Energisplint",
-    "configMiner": "Miner",
+    "configMiner": "Minebor",
     "configPurity": "Node-renhed",
     "configNodes": "Noder",
-    "configExtractors": "Extractors",
+    "configExtractors": "Extractorer",
     "adjustOutput": "Juster output",
     "adjustOverclock": "Juster overclock",
     "adjustMachines": "Juster antal maskiner",
@@ -249,7 +251,7 @@
     "summaryRequired": "Behov",
     "summaryProduced": "Produceret",
     "summaryMissing": "Mangler",
-    "summaryNode": "Node",
+    "summaryNode": "Knude",
     "summaryCount": "Ant.",
     "summaryObjective": "Mål",
     "summaryStep": "Trin",
@@ -355,16 +357,16 @@
     "configPowerConsumption": "Forbrug (MW)",
     "configPowerConsumptionMax": "Forbrug (maks.)",
     "configPressurizerOverclock": "Pressurizer-overclock (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "Trykforøger",
     "groupWells": "Ressourcekilder",
     "wellSubNodes": "Undernoder",
-    "wellNodeLabel": "Node {index}",
+    "wellNodeLabel": "Knude {index}",
     "wellNodeOutput": "Output",
     "adjustWellNodeExtractors": "Juster extractors på node {index}",
     "addWellNode": "Tilføj undernode",
     "removeWellNode": "Fjern undernode",
     "removeWellNodeAria": "Fjern node {index}",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "Trykforøger @ {overclock}%",
     "powerShardsRequired": "{count} energisplinter kræves",
     "somersloopsRequired": "{count} Somersloops kræves",
     "powerConsumptionRequired": "Forbrug {mw}",
@@ -410,7 +412,7 @@
     "pickerNoGenerators": "Ingen generatorer tilgængelige.",
     "defaultWaterExtractor": "Vandextractor",
     "defaultOilExtractor": "Olieextractor",
-    "defaultMiner": "Miner",
+    "defaultMiner": "Minebor",
     "targetMw": "Mål-MW",
     "generatorType": "Generator",
     "generatorCoal": "Kulgenerator",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "Omdøb produktionsplan",
     "renameEnergyPlan": "Omdøb strømplan",
     "renameGroup": "Gruppe",
+    "renameStep": "Omdøb trin",
     "addExtractionTitle": "Tilføj udvinding",
     "selectResource": "Vælg ressource",
     "selectResourceSub": "Ressource der skal produceres",
@@ -576,9 +579,9 @@
     "sectionRights.p4": "Alle rettigheder forbeholdes."
   },
   "miners": {
-    "mk1": "Miner Mk.1",
-    "mk2": "Miner Mk.2",
-    "mk3": "Miner Mk.3"
+    "mk1": "Minebor Mk.1",
+    "mk2": "Minebor Mk.2",
+    "mk3": "Minebor Mk.3"
   },
   "purity": {
     "impure": "Uren",
@@ -597,6 +600,7 @@
     "coal": "Kuludvinding",
     "well": "Udvinding fra ressourcekilde",
     "methodWell": "Ressourcekilde",
+    "methodLiquid": "Væske",
     "methodWaterPump": "Vandpumpe",
     "methodOilPump": "Oliepumpe"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "Udvinding",
     "objective": "Mål",
+    "externalSource": "(ekstern)",
+    "unlinkedSource": "(ikke forbundet)",
     "grouping": "Gruppe",
     "mainInputs": "Hovedinput",
     "mainOutputs": "Hovedoutput",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "Gendan",
     "newGroupTitle": "Ny gruppe",
     "renameGroupTitle": "Omdøb gruppe",
+    "renameStepTitle": "Omdøb trin",
     "deleteTransportPlanTitle": "Slet transport",
     "deleteTransportPlanMessage": "Slet planen «{name}»? Det kan ikke fortrydes."
   },
@@ -701,7 +708,7 @@
   },
   "update": {
     "available": "En ny version er tilgængelig: {latest} (du har {current}).",
-    "download": "Download",
+    "download": "Hent",
     "dismiss": "Senere"
   },
   "transport": {
@@ -808,7 +815,9 @@
     "returnShort": "Retur",
     "totalShort": "I alt",
     "trainCountShort": "Tog",
-    "routeTimesHint": "I alt = tur + retur; manuelt bliver begge halvdelen. Flere tog deler lasten."
+    "routeTimesHint": "I alt = tur + retur; manuelt bliver begge halvdelen. Flere tog deler lasten.",
+    "vehicleSoonHint": "Foreløbig kun tog (godsvogn): øvrige midler aktiveres løbende.",
+    "vehicleDisabledTitle": "Ikke tilgængelig endnu"
   },
   "calculator": {
     "title": "Lommeregner",

@@ -229,6 +229,8 @@
     "highlightGroupTitle": "Выделить группу зелёным фоном",
     "renameGroup": "Переименовать группу",
     "renameGroupAria": "Переименовать группу {name}",
+    "renameStep": "Переименовать шаг",
+    "renameStepAria": "Переименовать шаг {name}",
     "newGroupOption": "+ Новая группа…",
     "dragReorder": "Перетащите для сортировки",
     "configOutput": "Выход ({unit})",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "Переименовать производственный план",
     "renameEnergyPlan": "Переименовать энергоплан",
     "renameGroup": "Группа",
+    "renameStep": "Переименовать шаг",
     "addExtractionTitle": "Добавить добычу",
     "selectResource": "Выберите ресурс",
     "selectResourceSub": "Ресурс для производства",
@@ -597,6 +600,7 @@
     "coal": "Добыча угля",
     "well": "Добыча из скважины",
     "methodWell": "Ресурсная скважина",
+    "methodLiquid": "Жидкость",
     "methodWaterPump": "Водный насос",
     "methodOilPump": "Нефтяной насос"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "Добыча",
     "objective": "Цель",
+    "externalSource": "(внешний)",
+    "unlinkedSource": "(не связано)",
     "grouping": "Группа",
     "mainInputs": "Основные входы",
     "mainOutputs": "Основные выходы",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "Восстановить",
     "newGroupTitle": "Новая группа",
     "renameGroupTitle": "Переименовать группу",
+    "renameStepTitle": "Переименовать шаг",
     "deleteTransportPlanTitle": "Удалить транспорт",
     "deleteTransportPlanMessage": "Удалить план «{name}»? Это нельзя отменить."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Обратно",
     "totalShort": "Всего",
     "trainCountShort": "Поезда",
-    "routeTimesHint": "Всего = туда + обратно; вручную — по половине. Несколько поездов делят нагрузку."
+    "routeTimesHint": "Всего = туда + обратно; вручную — по половине. Несколько поездов делят нагрузку.",
+    "vehicleSoonHint": "Пока только поезда (товарный вагон): остальные средства будут включаться постепенно.",
+    "vehicleDisabledTitle": "Пока недоступно"
   },
   "calculator": {
     "title": "Калькулятор",

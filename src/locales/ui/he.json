@@ -229,6 +229,8 @@
     "highlightGroupTitle": "הדגש קבוצה ברקע ירוק",
     "renameGroup": "שנה שם קבוצה",
     "renameGroupAria": "שנה שם קבוצה {name}",
+    "renameStep": "שנה שם שלב",
+    "renameStepAria": "שנה שם שלב {name}",
     "newGroupOption": "+ קבוצה חדשה…",
     "dragReorder": "גרור לסידור מחדש",
     "configOutput": "פלט ({unit})",
@@ -355,7 +357,7 @@
     "configPowerConsumption": "צריכה (MW)",
     "configPowerConsumptionMax": "צריכה (מרבית)",
     "configPressurizerOverclock": "Overclock של ה-Pressurizer (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "מגביר לחץ",
     "groupWells": "בארות משאבים",
     "wellSubNodes": "תת-צמתים",
     "wellNodeLabel": "צומת {index}",
@@ -364,7 +366,7 @@
     "addWellNode": "הוסף תת-צומת",
     "removeWellNode": "הסר תת-צומת",
     "removeWellNodeAria": "הסר צומת {index}",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "מגביר לחץ @ {overclock}%",
     "powerShardsRequired": "נדרשים {count} רסיסי אנרגיה",
     "somersloopsRequired": "נדרשים {count} Somersloop",
     "powerConsumptionRequired": "צריכה {mw}",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "שנה שם תוכנית ייצור",
     "renameEnergyPlan": "שנה שם תוכנית אנרגיה",
     "renameGroup": "קבוצה",
+    "renameStep": "שנה שם שלב",
     "addExtractionTitle": "הוסף כרייה",
     "selectResource": "בחר משאב",
     "selectResourceSub": "משאב לייצור",
@@ -597,6 +600,7 @@
     "coal": "כריית פחם",
     "well": "כרייה מבאר משאבים",
     "methodWell": "באר משאבים",
+    "methodLiquid": "נוזל",
     "methodWaterPump": "משאבת מים",
     "methodOilPump": "משאבת נפט"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "כרייה",
     "objective": "יעד",
+    "externalSource": "(חיצוני)",
+    "unlinkedSource": "(לא מקושר)",
     "grouping": "קבוצה",
     "mainInputs": "קלטים ראשיים",
     "mainOutputs": "פלטים ראשיים",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "שחזור",
     "newGroupTitle": "קבוצה חדשה",
     "renameGroupTitle": "שנה שם קבוצה",
+    "renameStepTitle": "שנה שם שלב",
     "deleteTransportPlanTitle": "מחיקת תובלה",
     "deleteTransportPlanMessage": "למחוק את התוכנית «{name}»? לא ניתן לבטל."
   },
@@ -808,7 +815,9 @@
     "returnShort": "חזור",
     "totalShort": "סה״כ",
     "trainCountShort": "רכבות",
-    "routeTimesHint": "סה״כ = הלוך + חזור; הזנה ידנית מחלקת לשניים. כמה רכבות מחלקות עומס."
+    "routeTimesHint": "סה״כ = הלוך + חזור; הזנה ידנית מחלקת לשניים. כמה רכבות מחלקות עומס.",
+    "vehicleSoonHint": "לעת עתה רק רכבות (קרון משא): שאר האמצעים יופעלו בהדרגה.",
+    "vehicleDisabledTitle": "עדיין לא זמין"
   },
   "calculator": {
     "title": "מחשבון",

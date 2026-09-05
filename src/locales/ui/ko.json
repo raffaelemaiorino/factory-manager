@@ -229,6 +229,8 @@
     "highlightGroupTitle": "그룹을 녹색 배경으로 강조",
     "renameGroup": "그룹 이름 변경",
     "renameGroupAria": "그룹 {name} 이름 변경",
+    "renameStep": "단계 이름 변경",
+    "renameStepAria": "단계 {name} 이름 변경",
     "newGroupOption": "+ 새 그룹…",
     "dragReorder": "드래그하여 순서 변경",
     "configOutput": "출력 ({unit})",
@@ -355,7 +357,7 @@
     "configPowerConsumption": "소비 (MW)",
     "configPowerConsumptionMax": "소비 (최대)",
     "configPressurizerOverclock": "Pressurizer의 Overclock (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "가압기",
     "groupWells": "자원정",
     "wellSubNodes": "하위 노드",
     "wellNodeLabel": "노드 {index}",
@@ -364,7 +366,7 @@
     "addWellNode": "하위 노드 추가",
     "removeWellNode": "하위 노드 제거",
     "removeWellNodeAria": "노드 {index} 제거",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "가압기 @ {overclock}%",
     "powerShardsRequired": "파워 샤드 {count}개 필요",
     "somersloopsRequired": "Somersloop {count}개 필요",
     "powerConsumptionRequired": "소비 {mw}",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "생산 계획 이름 변경",
     "renameEnergyPlan": "전력 계획 이름 변경",
     "renameGroup": "그룹",
+    "renameStep": "단계 이름 변경",
     "addExtractionTitle": "채굴 추가",
     "selectResource": "자원 선택",
     "selectResourceSub": "생산할 자원",
@@ -597,6 +600,7 @@
     "coal": "석탄 채굴",
     "well": "자원정에서 채굴",
     "methodWell": "자원정",
+    "methodLiquid": "유체",
     "methodWaterPump": "물 펌프",
     "methodOilPump": "석유 펌프"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "채굴",
     "objective": "목표",
+    "externalSource": "(외부)",
+    "unlinkedSource": "(연결 안 됨)",
     "grouping": "그룹",
     "mainInputs": "주요 입력",
     "mainOutputs": "주요 출력",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "복원",
     "newGroupTitle": "새 그룹",
     "renameGroupTitle": "그룹 이름 변경",
+    "renameStepTitle": "단계 이름 변경",
     "deleteTransportPlanTitle": "운송 삭제",
     "deleteTransportPlanMessage": "계획 «{name}»을(를) 삭제할까요? 되돌릴 수 없습니다."
   },
@@ -808,7 +815,9 @@
     "returnShort": "오는 길",
     "totalShort": "합계",
     "trainCountShort": "열차",
-    "routeTimesHint": "합계 = 왕복 합. 직접 입력 시 각각 절반. 여러 열차가 부하를 나눔."
+    "routeTimesHint": "합계 = 왕복 합. 직접 입력 시 각각 절반. 여러 열차가 부하를 나눔.",
+    "vehicleSoonHint": "지금은 열차(화물 왜건)만: 다른 수송 수단은 단계적으로 활성화됩니다.",
+    "vehicleDisabledTitle": "아직 사용할 수 없음"
   },
   "calculator": {
     "title": "계산기",

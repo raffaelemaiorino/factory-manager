@@ -4,6 +4,7 @@ const {
   applyExtractionChange,
   computeNodesForTargetOutput,
   computeMaxExtractionOutput,
+  resolveExtractionProduction,
   WATER_PUMP_BASE_RATE,
 } = require('../src/database/extraction-scale');
 
@@ -60,5 +61,42 @@ describe('extraction-scale output auto-bump', () => {
     // max at 10 nodes = 3000, so no bump
     assert.equal(resolved.node_count, 10);
     assert.ok(Math.abs(resolved.target_output - 2400) < 0.05);
+  });
+});
+
+describe('extraction-scale well vs pump context', () => {
+  const waterItem = { slug: 'water', category: 'liquidi', name: 'Acqua' };
+  const oilItem = { slug: 'liquid-oil', category: 'liquidi', name: 'Greggio' };
+
+  it('does not treat water pumps with empty sub_nodes JSON as resource wells', () => {
+    const resolved = resolveExtractionProduction(waterItem, {
+      miner_slug: 'water-pump',
+      purity: 'normal',
+      node_count: 1,
+      overclock: 100,
+      sub_nodes: '[]',
+    });
+    assert.equal(resolved.miner_slug, 'water-pump');
+  });
+
+  it('does not treat oil pumps with empty sub_nodes JSON as resource wells', () => {
+    const resolved = resolveExtractionProduction(oilItem, {
+      miner_slug: 'oil-pump',
+      purity: 'normal',
+      node_count: 1,
+      overclock: 100,
+      sub_nodes: '[]',
+    });
+    assert.equal(resolved.miner_slug, 'oil-pump');
+  });
+
+  it('keeps explicit well water as fracking extractor', () => {
+    const resolved = resolveExtractionProduction(waterItem, {
+      miner_slug: 'fracking-extractor',
+      purity: 'normal',
+      node_count: 1,
+      overclock: 100,
+    });
+    assert.equal(resolved.miner_slug, 'fracking-extractor');
   });
 });

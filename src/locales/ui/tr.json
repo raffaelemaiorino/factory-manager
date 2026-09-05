@@ -233,6 +233,8 @@
     "highlightGroupTitle": "Grubu yeşil arka planla vurgula",
     "renameGroup": "Grubu yeniden adlandır",
     "renameGroupAria": "{name} grubunu yeniden adlandır",
+    "renameStep": "Adımı yeniden adlandır",
+    "renameStepAria": "{name} adımını yeniden adlandır",
     "newGroupOption": "+ Yeni grup…",
     "dragReorder": "Sıralamak için sürükle",
     "configOutput": "Çıktı ({unit})",
@@ -489,6 +491,7 @@
     "renameProductionPlan": "Üretim planını yeniden adlandır",
     "renameEnergyPlan": "Enerji planını yeniden adlandır",
     "renameGroup": "Grup",
+    "renameStep": "Adımı yeniden adlandır",
     "addExtractionTitle": "Çıkarma ekle",
     "selectResource": "Kaynak seç",
     "selectResourceSub": "Üretilecek kaynağı seçin",
@@ -601,6 +604,7 @@
     "coal": "Kömür çıkarma",
     "well": "Kuyudan çıkarma",
     "methodWell": "Kaynak kuyusu",
+    "methodLiquid": "Sıvı",
     "methodWaterPump": "Su pompası",
     "methodOilPump": "Petrol pompası"
   },
@@ -619,6 +623,8 @@
   "graph": {
     "extraction": "Çıkarma",
     "objective": "Hedef",
+    "externalSource": "(harici)",
+    "unlinkedSource": "(bağlı değil)",
     "grouping": "Grup",
     "mainInputs": "Ana girdiler",
     "mainOutputs": "Ana çıktılar",
@@ -678,6 +684,7 @@
     "restoreDefaultsConfirm": "Geri yükle",
     "newGroupTitle": "Yeni grup",
     "renameGroupTitle": "Grubu yeniden adlandır",
+    "renameStepTitle": "Adımı yeniden adlandır",
     "deleteTransportPlanTitle": "Taşımayı sil",
     "deleteTransportPlanMessage": "«{name}» planı silinsin mi? Bu geri alınamaz."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Dönüş",
     "totalShort": "Toplam",
     "trainCountShort": "Trenler",
-    "routeTimesHint": "Toplam = gidiş + dönüş; elle girilirse her biri yarı. Birden fazla tren yükü böler."
+    "routeTimesHint": "Toplam = gidiş + dönüş; elle girilirse her biri yarı. Birden fazla tren yükü böler.",
+    "vehicleSoonHint": "Şimdilik yalnızca trenler (yük vagonu): diğer araçlar kademeli olarak etkinleştirilecek.",
+    "vehicleDisabledTitle": "Henüz kullanılamıyor"
   },
   "calculator": {
     "title": "Hesap makinesi",

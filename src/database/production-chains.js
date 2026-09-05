@@ -553,16 +553,18 @@ function schemaNameForStep(schema) {
   const name = String(schema?.name ?? '').trim();
   return name.replace(/^(Alternativo|Alternate):\s*/i, '') || 'Schema';
 }
-function generateStepName(db, chainId, itemSchemaId, schemaName) {
+function generateStepName(db, chainId, itemId, displayName) {
+  // Count by output item (not recipe): the label is the product name, so
+  // two recipes for the same item must become "Item #1" / "Item #2".
   const countRow = queryOne(
     db,
     `SELECT COUNT(*) AS count
      FROM production_chain_steps
-     WHERE chain_id = ? AND item_schema_id = ?`,
-    [chainId, itemSchemaId]
+     WHERE chain_id = ? AND item_id = ? AND COALESCE(is_sink, 0) = 0`,
+    [chainId, itemId]
   );
   const nextNum = (countRow?.count ?? 0) + 1;
-  const baseName = String(schemaName ?? '').trim() || 'Schema';
+  const baseName = String(displayName ?? '').trim() || 'Schema';
   return `${baseName} #${nextNum}`;
 }
 
@@ -794,7 +796,7 @@ function addProductionChainStep(
   const stepName = generateStepName(
     db,
     chainId,
-    schema.id,
+    item.id,
     item.name || schemaNameForStep(schema)
   );
   const targetOutput = getDefaultTargetOutput(schema, item);
@@ -1273,6 +1275,32 @@ function renameProductionStepGroup(db, persist, chainId, oldGroupName, newGroupN
   db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [chainId]);
   persist();
   return getProductionChainEditorDetail(db, chainId, getItemById);
+}
+
+function renameProductionStep(db, persist, stepId, newName, getItemById) {
+  ensureProductionChainStepsTable(db);
+
+  const existing = queryOne(
+    db,
+    `SELECT id, chain_id, name FROM production_chain_steps WHERE id = ?`,
+    [stepId]
+  );
+  if (!existing) {
+    throw new Error('Schema risorsa non trovato');
+  }
+
+  const name = String(newName ?? '').trim();
+  if (!name) {
+    throw new Error('Il nome è obbligatorio');
+  }
+  if (name === existing.name) {
+    return getProductionChainEditorDetail(db, existing.chain_id, getItemById);
+  }
+
+  db.run('UPDATE production_chain_steps SET name = ? WHERE id = ?', [name, stepId]);
+  db.run(`UPDATE production_chains SET updated_at = datetime('now') WHERE id = ?`, [existing.chain_id]);
+  persist();
+  return getProductionChainEditorDetail(db, existing.chain_id, getItemById);
 }
 
 function setProductionStepInputLinks(
@@ -2054,6 +2082,7 @@ module.exports = {
   reorderProductionChainGroups,
   setProductionStepGroupName,
   renameProductionStepGroup,
+  renameProductionStep,
   setProductionStepInputLinks,
   setProductionStepExtractionLinks,
   deleteProductionChain,

@@ -229,6 +229,8 @@
     "highlightGroupTitle": "برجسته‌سازی گروه با پس‌زمینه سبز",
     "renameGroup": "تغییر نام گروه",
     "renameGroupAria": "تغییر نام گروه {name}",
+    "renameStep": "تغییر نام مرحله",
+    "renameStepAria": "تغییر نام مرحله {name}",
     "newGroupOption": "+ گروه جدید…",
     "dragReorder": "برای مرتب‌سازی بکشید",
     "configOutput": "خروجی ({unit})",
@@ -355,7 +357,7 @@
     "configPowerConsumption": "مصرف (MW)",
     "configPowerConsumptionMax": "مصرف (بیشینه)",
     "configPressurizerOverclock": "Overclock دستگاه Pressurizer (%)",
-    "defaultPressurizer": "Pressurizer",
+    "defaultPressurizer": "فشاردهنده",
     "groupWells": "چاه‌های منابع",
     "wellSubNodes": "زیرگره‌ها",
     "wellNodeLabel": "گره {index}",
@@ -364,7 +366,7 @@
     "addWellNode": "افزودن زیرگره",
     "removeWellNode": "حذف زیرگره",
     "removeWellNodeAria": "حذف گره {index}",
-    "pressurizerAt": "Pressurizer @ {overclock}%",
+    "pressurizerAt": "فشاردهنده @ {overclock}%",
     "powerShardsRequired": "{count} تراشه انرژی لازم است",
     "somersloopsRequired": "{count} Somersloop لازم است",
     "powerConsumptionRequired": "مصرف {mw}",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "تغییر نام طرح تولید",
     "renameEnergyPlan": "تغییر نام طرح انرژی",
     "renameGroup": "گروه",
+    "renameStep": "تغییر نام مرحله",
     "addExtractionTitle": "افزودن استخراج",
     "selectResource": "انتخاب منبع",
     "selectResourceSub": "منبعی که تولید می‌شود",
@@ -597,6 +600,7 @@
     "coal": "استخراج زغال‌سنگ",
     "well": "استخراج از چاه منابع",
     "methodWell": "چاه منابع",
+    "methodLiquid": "مایع",
     "methodWaterPump": "پمپ آب",
     "methodOilPump": "پمپ نفت"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "استخراج",
     "objective": "هدف",
+    "externalSource": "(خارجی)",
+    "unlinkedSource": "(متصل نیست)",
     "grouping": "گروه",
     "mainInputs": "ورودی‌های اصلی",
     "mainOutputs": "خروجی‌های اصلی",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "بازیابی",
     "newGroupTitle": "گروه جدید",
     "renameGroupTitle": "تغییر نام گروه",
+    "renameStepTitle": "تغییر نام مرحله",
     "deleteTransportPlanTitle": "حذف حمل",
     "deleteTransportPlanMessage": "طرح «{name}» حذف شود؟ قابل بازگشت نیست."
   },
@@ -808,7 +815,9 @@
     "returnShort": "برگشت",
     "totalShort": "جمع",
     "trainCountShort": "قطارها",
-    "routeTimesHint": "جمع = رفت + برگشت؛ دستی یعنی هر کدام نصف. چند قطار بار را تقسیم می‌کنند."
+    "routeTimesHint": "جمع = رفت + برگشت؛ دستی یعنی هر کدام نصف. چند قطار بار را تقسیم می‌کنند.",
+    "vehicleSoonHint": "فعلاً فقط قطارها (واگن باری): وسایل دیگر به تدریج فعال می‌شوند.",
+    "vehicleDisabledTitle": "هنوز در دسترس نیست"
   },
   "calculator": {
     "title": "ماشین‌حساب",

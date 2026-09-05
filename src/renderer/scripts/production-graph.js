@@ -176,101 +176,31 @@
       }
     }
 
-    const extractionsBySlug = new Map();
-    for (const extraction of extractions) {
-      const slug = extraction.item?.slug;
-      if (!slug) continue;
-      if (!extractionsBySlug.has(slug)) extractionsBySlug.set(slug, []);
-      extractionsBySlug.get(slug).push(extraction);
-    }
-
+    // Tree edges follow explicit link flags only (no auto-wire by resource slug).
     for (const step of visibleSteps) {
       const toBanks = stepBanksById.get(step.id) || [];
       for (const io of step.scaled_inputs ?? []) {
         if (!helpers.isExternalSummarySlug(io.item_slug)) continue;
 
-        const demand = helpers.getStepInputRateForItem(step, io.item_slug);
-        if (!demand) continue;
-
-        const linkedRate = (step.input_links?.[io.item_slug] ?? []).reduce((sum, link) => {
-          if (link.producer_step_id) {
-            const producer = allSteps.find((candidate) => candidate.id === link.producer_step_id);
-            if (!producer) return sum;
-            return sum + helpers.getProducerAttributedDemand(producer, step, io.item_slug, allSteps);
-          }
-          if (link.producer_extraction_id) {
-            const extraction = extractions.find(
-              (candidate) => candidate.id === link.producer_extraction_id
-            );
-            if (!extraction) return sum;
-            return (
-              sum +
-              helpers.getExtractionAttributedDemand(extraction, step, io.item_slug, allSteps, extractions)
-            );
-          }
-          return sum;
-        }, 0);
-
         const manualExtractionLinks = (step.input_links?.[io.item_slug] ?? []).filter(
           (link) => link.producer_extraction_id
         );
-        const usesManualExtraction =
-          manualExtractionLinks.length > 0 || helpers.hasManualExtractionLinks?.(step, io.item_slug);
+        if (!manualExtractionLinks.length) continue;
 
-        if (usesManualExtraction) {
-          for (const link of manualExtractionLinks) {
-            const extraction = extractions.find(
-              (candidate) => candidate.id === link.producer_extraction_id
-            );
-            if (!extraction) continue;
+        for (const link of manualExtractionLinks) {
+          const extraction = extractions.find(
+            (candidate) => candidate.id === link.producer_extraction_id
+          );
+          if (!extraction) continue;
 
-            const rate = helpers.getExtractionAttributedDemand(
-              extraction,
-              step,
-              io.item_slug,
-              allSteps,
-              extractions
-            );
-            if (rate <= helpers.linkTolerance) continue;
-
-            let fromBanks = extractionBanksById.get(extraction.id);
-            if (!fromBanks) {
-              fromBanks = getExtractionBanks(extraction, helpers).map((bank) => ({
-                ...bank,
-                id: extractionNodeId(extraction.id, bank.index, bank.split),
-              }));
-              extractionBanksById.set(extraction.id, fromBanks);
-            }
-
-            addDistributedEdges(addEdge, fromBanks, toBanks, {
-              itemSlug: io.item_slug,
-              itemName: io.item_name ?? io.item_slug,
-              itemImage: io.item_image ?? null,
-              isFluid: Boolean(io.is_fluid),
-              rate,
-              kind: 'extraction-link',
-            }, round);
-          }
-          continue;
-        }
-
-        const externalNeed = helpers.roundProduction(Math.max(0, demand - linkedRate));
-        if (externalNeed <= helpers.linkTolerance) continue;
-
-        const slugExtractions = extractionsBySlug.get(io.item_slug) ?? [];
-        if (!slugExtractions.length) continue;
-
-        const totalExtractionRate = slugExtractions.reduce(
-          (sum, extraction) => sum + helpers.getExtractionOutputRate(extraction),
-          0
-        );
-
-        for (const extraction of slugExtractions) {
-          const extractionRate = helpers.getExtractionOutputRate(extraction);
-          const share =
-            totalExtractionRate > 0 ? extractionRate / totalExtractionRate : 1 / slugExtractions.length;
-          const rate = helpers.roundProduction(externalNeed * share);
-          if (rate <= 0) continue;
+          const rate = helpers.getExtractionAttributedDemand(
+            extraction,
+            step,
+            io.item_slug,
+            allSteps,
+            extractions
+          );
+          if (rate <= helpers.linkTolerance) continue;
 
           let fromBanks = extractionBanksById.get(extraction.id);
           if (!fromBanks) {
@@ -321,7 +251,7 @@
     );
 
     for (const extraction of extractions) {
-      if (groupKey && !usedExtractionIds.has(extraction.id)) continue;
+      if (!usedExtractionIds.has(extraction.id)) continue;
       let banks = extractionBanksById.get(extraction.id);
       if (!banks) {
         banks = getExtractionBanks(extraction, helpers).map((bank) => ({
@@ -872,12 +802,30 @@
     return positions;
   }
 
-  function renderIoRow(io, rate, helpers) {
+  function isExternalLinkedInput(step, itemSlug) {
+    return (step?.input_links?.[itemSlug] ?? []).some(
+      (link) => link.producer_step_id != null && Boolean(link.producer_chain_name)
+    );
+  }
+
+  function hasAnyInputLink(step, itemSlug) {
+    return (step?.input_links?.[itemSlug] ?? []).some(
+      (link) => link.producer_step_id != null || link.producer_extraction_id != null
+    );
+  }
+
+  function renderIoRow(io, rate, helpers, { external = false, unlinked = false } = {}) {
     const unit = io.unit || (io.is_fluid ? 'm³/min' : '/min');
+    let statusLabel = '';
+    if (external) {
+      statusLabel = ` <strong class="production-graph-node-io-external">${helpers.escapeHtml(t('graph.externalSource'))}</strong>`;
+    } else if (unlinked) {
+      statusLabel = ` <strong class="production-graph-node-io-unlinked">${helpers.escapeHtml(t('graph.unlinkedSource'))}</strong>`;
+    }
     return `
       <div class="production-graph-node-io-row">
         ${renderNodeIcon(io.item_image, 'production-graph-node-io-icon', helpers)}
-        <span class="production-graph-node-io-name">${helpers.escapeHtml(io.item_name || io.item_slug)}</span>
+        <span class="production-graph-node-io-name">${helpers.escapeHtml(io.item_name || io.item_slug)}${statusLabel}</span>
         <span class="production-graph-node-io-rate">${helpers.formatRateWithUnit(rate, unit)}</span>
       </div>`;
   }
@@ -886,10 +834,15 @@
     const share = step._bank?.share ?? 1;
     const round = (value) => helpers.roundProduction?.(value) ?? value;
     const inputs = (step.scaled_inputs ?? [])
-      .map((io) => ({
-        io,
-        rate: round(helpers.getStepInputRateForItem(step, io.item_slug) * share),
-      }))
+      .map((io) => {
+        const external = isExternalLinkedInput(step, io.item_slug);
+        return {
+          io,
+          rate: round(helpers.getStepInputRateForItem(step, io.item_slug) * share),
+          external,
+          unlinked: !external && !hasAnyInputLink(step, io.item_slug),
+        };
+      })
       .filter(({ rate }) => rate > 0);
 
     const outputs = (step.scaled_outputs ?? [])
@@ -902,7 +855,11 @@
     const inputHtml = inputs.length
       ? `<div class="production-graph-node-io">
           <span class="production-graph-node-io-label">${escapeHtml(t('common.input'))}</span>
-          ${inputs.map(({ io, rate }) => renderIoRow(io, rate, helpers)).join('')}
+          ${inputs
+            .map(({ io, rate, external, unlinked }) =>
+              renderIoRow(io, rate, helpers, { external, unlinked })
+            )
+            .join('')}
         </div>`
       : '';
 

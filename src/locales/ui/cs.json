@@ -229,6 +229,8 @@
     "highlightGroupTitle": "Zvýraznit skupinu zeleným pozadím",
     "renameGroup": "Přejmenovat skupinu",
     "renameGroupAria": "Přejmenovat skupinu {name}",
+    "renameStep": "Přejmenovat krok",
+    "renameStepAria": "Přejmenovat krok {name}",
     "newGroupOption": "+ Nová skupina…",
     "dragReorder": "Přetáhnout pro změnu pořadí",
     "configOutput": "Výstup ({unit})",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "Přejmenovat výrobní plán",
     "renameEnergyPlan": "Přejmenovat energetický plán",
     "renameGroup": "Skupina",
+    "renameStep": "Přejmenovat krok",
     "addExtractionTitle": "Přidat těžbu",
     "selectResource": "Vybrat surovinu",
     "selectResourceSub": "Surovina k výrobě",
@@ -597,6 +600,7 @@
     "coal": "Těžba uhlí",
     "well": "Těžba z vrtu",
     "methodWell": "Surovinový vrt",
+    "methodLiquid": "Kapalina",
     "methodWaterPump": "Vodní čerpadlo",
     "methodOilPump": "Ropné čerpadlo"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "Těžba",
     "objective": "Cíl",
+    "externalSource": "(externí)",
+    "unlinkedSource": "(nepropojeno)",
     "grouping": "Skupina",
     "mainInputs": "Hlavní vstupy",
     "mainOutputs": "Hlavní výstupy",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "Obnovit",
     "newGroupTitle": "Nová skupina",
     "renameGroupTitle": "Přejmenovat skupinu",
+    "renameStepTitle": "Přejmenovat krok",
     "deleteTransportPlanTitle": "Smazat dopravu",
     "deleteTransportPlanMessage": "Smazat plán «{name}»? Tuto akci nelze vrátit."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Zpět",
     "totalShort": "Celkem",
     "trainCountShort": "Vlaky",
-    "routeTimesHint": "Celkem = tam + zpět; ručně obě poloviny. Více vlaků dělí náklad."
+    "routeTimesHint": "Celkem = tam + zpět; ručně obě poloviny. Více vlaků dělí náklad.",
+    "vehicleSoonHint": "Zatím jen vlaky (nákladní vagón): ostatní prostředky budou zapínány postupně.",
+    "vehicleDisabledTitle": "Zatím nedostupné"
   },
   "calculator": {
     "title": "Kalkulačka",

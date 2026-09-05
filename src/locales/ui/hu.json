@@ -233,6 +233,8 @@
     "highlightGroupTitle": "Csoport kiemelése zöld háttérrel",
     "renameGroup": "Csoport átnevezése",
     "renameGroupAria": "Csoport átnevezése: {name}",
+    "renameStep": "Lépés átnevezése",
+    "renameStepAria": "{name} lépés átnevezése",
     "newGroupOption": "+ Új csoport…",
     "dragReorder": "Húzd az átrendezéshez",
     "configOutput": "Kimenet ({unit})",
@@ -489,6 +491,7 @@
     "renameProductionPlan": "Termelési terv átnevezése",
     "renameEnergyPlan": "Energiater átnevezése",
     "renameGroup": "Csoport",
+    "renameStep": "Lépés átnevezése",
     "addExtractionTitle": "Kitermelés hozzáadása",
     "selectResource": "Erőforrás kiválasztása",
     "selectResourceSub": "Válaszd ki a termelendő erőforrást",
@@ -601,6 +604,7 @@
     "coal": "Szén kitermelés",
     "well": "Kitermelés kútból",
     "methodWell": "Erőforráskút",
+    "methodLiquid": "Folyadék",
     "methodWaterPump": "Vízpumpa",
     "methodOilPump": "Olajpumpa"
   },
@@ -619,6 +623,8 @@
   "graph": {
     "extraction": "Kitermelés",
     "objective": "Cél",
+    "externalSource": "(külső)",
+    "unlinkedSource": "(nincs kapcsolva)",
     "grouping": "Csoport",
     "mainInputs": "Fő bemenetek",
     "mainOutputs": "Fő kimenetek",
@@ -678,6 +684,7 @@
     "restoreDefaultsConfirm": "Visszaállítás",
     "newGroupTitle": "Új csoport",
     "renameGroupTitle": "Csoport átnevezése",
+    "renameStepTitle": "Lépés átnevezése",
     "deleteTransportPlanTitle": "Szállítás törlése",
     "deleteTransportPlanMessage": "Töröljük a(z) «{name}» tervet? Nem vonható vissza."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Vissza",
     "totalShort": "Össz",
     "trainCountShort": "Vonatok",
-    "routeTimesHint": "Össz = oda + vissza; kézzel mindkettő fele. Több vonat megosztja a terhelést."
+    "routeTimesHint": "Össz = oda + vissza; kézzel mindkettő fele. Több vonat megosztja a terhelést.",
+    "vehicleSoonHint": "Egyelőre csak vonatok (tehervagon): a többi jármű fokozatosan lesz elérhető.",
+    "vehicleDisabledTitle": "Még nem elérhető"
   },
   "calculator": {
     "title": "Számológép",

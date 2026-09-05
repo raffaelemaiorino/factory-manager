@@ -297,6 +297,8 @@
     "highlightGroupTitle": "Evidenzia il raggruppamento con sfondo verde",
     "renameGroup": "Rinomina raggruppamento",
     "renameGroupAria": "Rinomina raggruppamento {name}",
+    "renameStep": "Rinomina schema",
+    "renameStepAria": "Rinomina schema {name}",
     "newGroupOption": "+ Nuovo gruppo…",
     "dragReorder": "Trascina per riordinare",
     "configOutput": "Output ({unit})",
@@ -424,6 +426,8 @@
     "slotEmpty": "Slot vuoto",
     "vehicleType": "Tipo di trasporto",
     "vehicleRequired": "Scegli un tipo di trasporto.",
+    "vehicleSoonHint": "Per ora solo i treni (vagone merci): gli altri mezzi saranno attivati man mano.",
+    "vehicleDisabledTitle": "Non ancora disponibile",
     "outboundMinutes": "Tempo andata (min)",
     "outboundSeconds": "Tempo andata (s)",
     "outboundShort": "Andata",
@@ -615,6 +619,7 @@
     "renameEnergyPlan": "Rinomina schema energia",
     "renameTransportPlan": "Rinomina trasporto",
     "renameGroup": "Raggruppamento",
+    "renameStep": "Rinomina schema",
     "addExtractionTitle": "Aggiungi estrazione",
     "selectResource": "Seleziona risorsa",
     "selectResourceSub": "Scegli la risorsa da produrre",
@@ -716,6 +721,7 @@
     "coal": "Estrazione carbone",
     "well": "Estrazione da pozzo",
     "methodWell": "Pozzo di risorse",
+    "methodLiquid": "Liquido",
     "methodWaterPump": "Pompa acqua",
     "methodOilPump": "Pompa petrolio"
   },
@@ -734,6 +740,8 @@
   "graph": {
     "extraction": "Estrazione",
     "objective": "Obiettivo",
+    "externalSource": "(esterno)",
+    "unlinkedSource": "(non collegato)",
     "grouping": "Raggruppamento",
     "mainInputs": "Input principali",
     "mainOutputs": "Output principali",
@@ -794,7 +802,8 @@
     "restoreDefaultsMessage": "Ripristinare risorse, strutture e schemi ai valori predefiniti? Le modifiche manuali a nomi e categorie verranno perse.",
     "restoreDefaultsConfirm": "Ripristina",
     "newGroupTitle": "Nuovo raggruppamento",
-    "renameGroupTitle": "Rinomina raggruppamento"
+    "renameGroupTitle": "Rinomina raggruppamento",
+    "renameStepTitle": "Rinomina schema"
   },
   "errors": {
     "nameRequired": "Il nome è obbligatorio.",

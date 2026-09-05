@@ -229,13 +229,15 @@
     "highlightGroupTitle": "Destacar grupo a verde",
     "renameGroup": "Renomear grupo",
     "renameGroupAria": "Renomear grupo {name}",
+    "renameStep": "Renomear etapa",
+    "renameStepAria": "Renomear etapa {name}",
     "newGroupOption": "+ Novo grupo…",
     "dragReorder": "Arrastar para reordenar",
     "configOutput": "Saída ({unit})",
     "configOverclock": "Overclock (%)",
     "configMachines": "Máquinas",
     "configPowerShard": "Fragmento de energia",
-    "configMiner": "Miner",
+    "configMiner": "Minerador",
     "configPurity": "Pureza do nó",
     "configNodes": "Nós",
     "configExtractors": "Extratores",
@@ -410,7 +412,7 @@
     "pickerNoGenerators": "Sem geradores disponíveis.",
     "defaultWaterExtractor": "Extrator de água",
     "defaultOilExtractor": "Extrator de petróleo",
-    "defaultMiner": "Miner",
+    "defaultMiner": "Minerador",
     "targetMw": "Objetivo MW",
     "generatorType": "Gerador",
     "generatorCoal": "Gerador a carvão",
@@ -485,6 +487,7 @@
     "renameProductionPlan": "Renomear plano de produção",
     "renameEnergyPlan": "Renomear plano de energia",
     "renameGroup": "Grupo",
+    "renameStep": "Renomear etapa",
     "addExtractionTitle": "Adicionar extração",
     "selectResource": "Selecionar recurso",
     "selectResourceSub": "Recurso a produzir",
@@ -576,9 +579,9 @@
     "sectionRights.p4": "Todos os direitos reservados."
   },
   "miners": {
-    "mk1": "Miner Mk.1",
-    "mk2": "Miner Mk.2",
-    "mk3": "Miner Mk.3"
+    "mk1": "Minerador Mk.1",
+    "mk2": "Minerador Mk.2",
+    "mk3": "Minerador Mk.3"
   },
   "purity": {
     "impure": "Impuro",
@@ -597,6 +600,7 @@
     "coal": "Extração de carvão",
     "well": "Extração de poço de recursos",
     "methodWell": "Poço de recursos",
+    "methodLiquid": "Fluido",
     "methodWaterPump": "Bomba de água",
     "methodOilPump": "Bomba de petróleo"
   },
@@ -615,6 +619,8 @@
   "graph": {
     "extraction": "Extração",
     "objective": "Objetivo",
+    "externalSource": "(externo)",
+    "unlinkedSource": "(não ligado)",
     "grouping": "Grupo",
     "mainInputs": "Entradas principais",
     "mainOutputs": "Saídas principais",
@@ -674,6 +680,7 @@
     "restoreDefaultsConfirm": "Restaurar",
     "newGroupTitle": "Novo grupo",
     "renameGroupTitle": "Renomear grupo",
+    "renameStepTitle": "Renomear etapa",
     "deleteTransportPlanTitle": "Eliminar transporte",
     "deleteTransportPlanMessage": "Eliminar o plano «{name}»? Esta ação não pode ser anulada."
   },
@@ -808,7 +815,9 @@
     "returnShort": "Volta",
     "totalShort": "Total",
     "trainCountShort": "Comboios",
-    "routeTimesHint": "Total = ida + volta; se escrever, cada trecho fica metade. Vários comboios dividem a carga."
+    "routeTimesHint": "Total = ida + volta; se escrever, cada trecho fica metade. Vários comboios dividem a carga.",
+    "vehicleSoonHint": "Por agora só comboios (vagão de carga): os outros meios serão ativados gradualmente.",
+    "vehicleDisabledTitle": "Ainda não disponível"
   },
   "calculator": {
     "title": "Calculadora",

@@ -99,6 +99,7 @@ const {
   reorderProductionChainGroups,
   setProductionStepGroupName,
   renameProductionStepGroup,
+  renameProductionStep,
   setProductionStepInputLinks,
   setProductionStepExtractionLinks,
   addMineralExtraction,
@@ -505,6 +506,9 @@ ipcMain.handle('production:set-step-group', (_event, stepId, groupName) =>
 );
 ipcMain.handle('production:rename-step-group', (_event, chainId, oldGroupName, newGroupName) =>
   renameProductionStepGroup(chainId, oldGroupName, newGroupName)
+);
+ipcMain.handle('production:rename-step', (_event, stepId, newName) =>
+  renameProductionStep(stepId, newName)
 );
 ipcMain.handle('production:set-step-links', (_event, consumerStepId, itemSlug, producerStepIds) =>
   setProductionStepInputLinks(consumerStepId, itemSlug, producerStepIds)
