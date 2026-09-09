@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "For fremstillede brændstoffer (ikke kul) oprettes også en produktionsplan, som tilknyttes generatorerne. Kul og vand forbliver udvinding her.",
     "linkToGenerator": "Tilknyt generator:",
     "invalidTargetFuel": "Indtast et gyldigt brændstofforbrug større end nul.",
+    "electricity": "Elektricitet",
     "treeView": "Trævisning",
     "treeViewTitle": "Vis hele strømplanen som træ"
   },

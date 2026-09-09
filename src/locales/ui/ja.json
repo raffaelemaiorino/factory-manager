@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "製造する燃料（石炭以外）では生産プランも作成し、発電機に連携します。石炭と水はここでの採掘のままです。",
     "linkToGenerator": "発電機に連携:",
     "invalidTargetFuel": "0 より大きい有効な燃料消費量を入力してください。",
+    "electricity": "電力",
     "treeView": "ツリー表示",
     "treeViewTitle": "電力プラン全体をツリーで表示"
   },

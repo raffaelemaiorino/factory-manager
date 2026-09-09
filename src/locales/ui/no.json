@@ -436,6 +436,7 @@
     "linkFuelProductionHint": "For produserte drivstoff (ikke kull) opprettes også en produksjonsplan som knyttes til generatorene. Kull og vann forblir utvinning her.",
     "linkToGenerator": "Knytt til generator:",
     "invalidTargetFuel": "Skriv inn et gyldig drivstofforbruk større enn null.",
+    "electricity": "Elektrisitet",
     "treeView": "Trevisning",
     "treeViewTitle": "Vis hele kraftplanen som tre"
   },

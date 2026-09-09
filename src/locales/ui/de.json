@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "Für hergestellte Brennstoffe (nicht Kohle) wird zusätzlich ein Produktionsplan angelegt und mit den Generatoren verknüpft. Kohle und Wasser bleiben hier Abbau.",
     "linkToGenerator": "Mit Generator verknüpfen:",
     "invalidTargetFuel": "Gib einen gültigen Brennstoffverbrauch größer als null ein.",
+    "electricity": "Elektrizität",
     "treeView": "Baumansicht",
     "treeViewTitle": "Den gesamten Stromplan als Baumdiagramm anzeigen"
   },

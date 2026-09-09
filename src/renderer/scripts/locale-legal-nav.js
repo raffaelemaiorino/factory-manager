@@ -78,6 +78,7 @@ async function refreshAfterLocaleChange() {
   syncLocaleDependentLabels();
   pickerResourcesData = [];
   window.EnergyUI?.clearLocaleCaches?.();
+  window.TransportUI?.clearLocaleCaches?.();
 
   // Rebuild catalog cache before any summary that depends on mineral slugs
   // (otherwise the resource balance box vanishes after IT→EN switch).
@@ -133,6 +134,22 @@ async function refreshAfterLocaleChange() {
       await window.EnergyUI.reloadActiveDetail();
     } catch (err) {
       console.error('Locale energy detail refresh error:', err);
+    }
+  }
+
+  if (currentView === 'transport' && window.TransportUI?.loadTransportPlans) {
+    try {
+      await window.TransportUI.loadTransportPlans();
+    } catch (err) {
+      console.error('Locale transport refresh error:', err);
+    }
+  }
+
+  if (currentView === 'transport-detail' && window.TransportUI?.reloadActiveDetail) {
+    try {
+      await window.TransportUI.reloadActiveDetail();
+    } catch (err) {
+      console.error('Locale transport detail refresh error:', err);
     }
   }
 

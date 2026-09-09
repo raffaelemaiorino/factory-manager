@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "Para combustibles fabricados (no carbón), crea también un plan de Producción y lo enlaza a los generadores. El carbón y el agua siguen siendo extracciones aquí.",
     "linkToGenerator": "Enlazar al generador:",
     "invalidTargetFuel": "Introduce un caudal de combustible válido mayor que cero.",
+    "electricity": "Electricidad",
     "treeView": "Vista de árbol",
     "treeViewTitle": "Ver todo el plan de energía como árbol"
   },

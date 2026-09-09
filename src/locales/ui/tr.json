@@ -436,6 +436,7 @@
     "linkFuelProductionHint": "Üretilen yakıtlar için (kömür hariç) Üretim'de de bir plan oluşturur ve jeneratörlere bağlar. Kömür ve su Enerji'de çıkarma olarak kalır.",
     "linkToGenerator": "Jeneratöre bağla:",
     "invalidTargetFuel": "Sıfırdan büyük geçerli bir yakıt debisi girin.",
+    "electricity": "Elektrik",
     "treeView": "Ağaç görünümü",
     "treeViewTitle": "Tüm enerji planını ağaç olarak göster"
   },

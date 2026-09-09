@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "U vyráběných paliv (ne uhlí) vytvoří i plán v Produkci a propojí ho s generátory. Uhlí a voda zůstávají jako těžba v Energii.",
     "linkToGenerator": "Propojit s generátorem:",
     "invalidTargetFuel": "Zadejte platnou spotřebu paliva větší než nula.",
+    "electricity": "Elektřina",
     "treeView": "Zobrazení stromu",
     "treeViewTitle": "Zobrazit celý energetický plán jako strom"
   },

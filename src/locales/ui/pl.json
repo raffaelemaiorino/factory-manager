@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "Dla paliw wytwarzanych (nie węgla) tworzy też plan w Produkcji i łączy go z generatorami. Węgiel i woda pozostają jako wydobycie w Energii.",
     "linkToGenerator": "Połącz z generatorem:",
     "invalidTargetFuel": "Podaj prawidłowe zużycie paliwa większe od zera.",
+    "electricity": "Elektryczność",
     "treeView": "Widok drzewa",
     "treeViewTitle": "Pokaż cały plan energii jako drzewo"
   },

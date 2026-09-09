@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "对于需要制造的燃料（煤炭除外），还会创建生产方案并关联到发电机。煤炭和水在此仍为开采。",
     "linkToGenerator": "关联到发电机：",
     "invalidTargetFuel": "请输入大于零的有效燃料消耗。",
+    "electricity": "电力",
     "treeView": "树状视图",
     "treeViewTitle": "以树状图查看整个电力方案"
   },

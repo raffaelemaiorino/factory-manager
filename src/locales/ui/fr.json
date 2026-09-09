@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "Pour les combustibles fabriqués (hors charbon), crée aussi un plan de Production et le lie aux générateurs. Le charbon et l'eau restent des extractions ici.",
     "linkToGenerator": "Lier au générateur :",
     "invalidTargetFuel": "Entrez un débit de combustible valide supérieur à zéro.",
+    "electricity": "Électricité",
     "treeView": "Vue en arbre",
     "treeViewTitle": "Afficher tout le plan énergie en arbre"
   },

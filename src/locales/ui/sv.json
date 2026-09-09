@@ -436,6 +436,7 @@
     "linkFuelProductionHint": "För tillverkade bränslen (inte kol) skapas även en produktionsplan som länkas till generatorerna. Kol och vatten förblir utvinning här.",
     "linkToGenerator": "Länka till generator:",
     "invalidTargetFuel": "Ange en giltig bränsleförbrukning större än noll.",
+    "electricity": "Elektricitet",
     "treeView": "Trädvy",
     "treeViewTitle": "Visa hela elplanen som träd"
   },

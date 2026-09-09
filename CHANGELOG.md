@@ -9,6 +9,15 @@ e il versioning [Semantic Versioning](https://semver.org/lang/it/).
 
 ## [Unreleased]
 
+## [3.12.18] - 2026-09-09
+
+### Fixed
+- Energia: la capacità residua delle estrazioni è ripartita tra i generatori collegati invece di conteggiare l’output completo per ciascuno
+- Energia / Produzione: il surplus collegato usa la quota attribuita, non l’output pieno del produttore; i produttori esauriti mostrano «usato completamente»
+- Energia: etichetta uscita generatore localizzata («Elettricità» / «Electricity») invece del testo italiano fisso
+- Trasporto: il cambio lingua ricarica elenco e piano aperto; cargo sconosciuto non è più trattato come fluido
+- Dashboard: il KPI veicoli usa la flotta (treni × vagoni), non i vagoni per treno
+
 ## [3.12.17] - 2026-09-05
 
 ### Added

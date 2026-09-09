@@ -27,6 +27,7 @@ function ceilPositive(value) {
 function isFluidItem(item) {
   if (!item) return false;
   if (item.is_fluid === 1 || item.is_fluid === true) return true;
+  if (item.is_fluid === 0 || item.is_fluid === false) return false;
   if (item.stack_size == null) return true;
   return false;
 }

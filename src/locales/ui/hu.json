@@ -436,6 +436,7 @@
     "linkFuelProductionHint": "Gyártott üzemanyagokhoz (nem szénhez) tervet is létrehoz a Termelésben, és összekapcsolja a generátorokkal. A szén és a víz kitermelésként marad az Energiában.",
     "linkToGenerator": "Kapcsolás generátorhoz:",
     "invalidTargetFuel": "Adj meg érvényes, nullánál nagyobb üzemanyag-fogyasztást.",
+    "electricity": "Elektromosság",
     "treeView": "Fanézet",
     "treeViewTitle": "A teljes energiaterv megjelenítése faként"
   },

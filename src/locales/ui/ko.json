@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "제작 연료(석탄 제외)는 생산 계획도 만들어 발전기에 연결합니다. 석탄과 물은 여기서 채굴로 유지됩니다.",
     "linkToGenerator": "발전기에 연결:",
     "invalidTargetFuel": "0보다 큰 유효한 연료 소비량을 입력하세요.",
+    "electricity": "전력",
     "treeView": "트리 보기",
     "treeViewTitle": "전체 전력 계획을 트리로 보기"
   },

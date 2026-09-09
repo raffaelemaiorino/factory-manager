@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "Voor gemaakte brandstoffen (geen kolen) wordt ook een productieplan gemaakt en aan de generatoren gekoppeld. Kolen en water blijven hier winning.",
     "linkToGenerator": "Koppel aan generator:",
     "invalidTargetFuel": "Voer een geldig brandstofdebiet groter dan nul in.",
+    "electricity": "Elektriciteit",
     "treeView": "Boomweergave",
     "treeViewTitle": "Het hele stroomplan als boomdiagram tonen"
   },

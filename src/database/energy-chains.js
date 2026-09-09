@@ -75,7 +75,7 @@ function attachProductionLinksToGenerators(generators, productionLinks, getItemB
       item_slug: link.item_slug,
       producer_production_step_id: link.producer_production_step_id,
       producer_step_name: producer.name,
-      producer_chain_name: productionChain?.name ?? 'Produzione',
+      producer_chain_name: productionChain?.name ?? '',
       producer_rate: getStepOutputRateForItem(producer, link.item_slug),
     };
 

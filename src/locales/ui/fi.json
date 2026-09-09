@@ -436,6 +436,7 @@
     "linkFuelProductionHint": "Valmistettaville polttoaineille (ei hiilelle) luodaan myös tuotantosuunnitelma, joka linkitetään generaattoreihin. Hiili ja vesi pysyvät täällä louhintana.",
     "linkToGenerator": "Linkitä generaattoriin:",
     "invalidTargetFuel": "Anna kelvollinen polttoaineen kulutus, joka on suurempi kuin nolla.",
+    "electricity": "Sähkö",
     "treeView": "Puunäkymä",
     "treeViewTitle": "Näytä koko sähkösuunnitelma puukaaviona"
   },

@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.12.18] - 2026-09-09
+
+### Fixed
+- Power: leftover extraction capacity is split across linked generators instead of each treating the full miner output as its own
+- Power / Production: linked surplus uses attributed leftover, not the producer’s full rate; exhausted producers show «fully used»
+- Power: generator output uses a localized «Electricity» label instead of hardcoded Italian
+- Transport: language switch reloads the list and open plan; unknown cargo is treated as missing stack size, not as a fluid
+- Dashboard: vehicle KPI uses fleet size (trains × cars), not per-train cars
+
 ## [3.12.17] - 2026-09-05
 
 ### Added

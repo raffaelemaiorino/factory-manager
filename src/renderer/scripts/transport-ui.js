@@ -354,7 +354,7 @@
         const cargoChips = (plan.cargo || [])
           .map((line) => {
             const itemImg = itemImageSrc(line);
-            const isFluid = line.is_fluid || line.stack_size == null;
+            const isFluid = Boolean(line.is_fluid);
             const rateLabel = formatRate(line.rate, isFluid);
             const mixHint =
               !isFluid && line.allow_mix
@@ -1457,5 +1457,12 @@
     loadTransportPlans,
     openTransportDetail,
     onCargoPicked,
+    clearLocaleCaches: () => {
+      vehiclesCatalog = [];
+    },
+    reloadActiveDetail: async () => {
+      if (!activeTransportPlanId) return null;
+      return openTransportDetail(activeTransportPlanId);
+    },
   };
 })();

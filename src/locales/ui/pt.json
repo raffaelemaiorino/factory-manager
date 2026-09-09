@@ -432,6 +432,7 @@
     "linkFuelProductionHint": "Para combustíveis fabricados (não carvão), cria também um plano de Produção e liga-o aos geradores. Carvão e água continuam a ser extrações aqui.",
     "linkToGenerator": "Ligar ao gerador:",
     "invalidTargetFuel": "Introduz um caudal de combustível válido maior que zero.",
+    "electricity": "Eletricidade",
     "treeView": "Vista em árvore",
     "treeViewTitle": "Ver todo o plano de energia como árvore"
   },
